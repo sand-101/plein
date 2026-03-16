@@ -13,147 +13,80 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
         html{height:100%}
-        body{
-            min-height:100%;
-            font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text',system-ui,sans-serif;
-            background:#0a0a0f;color:#fff;
-            -webkit-user-select:none;user-select:none;
-            -webkit-overflow-scrolling:touch;
-            padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-        }
-
+        body{min-height:100%;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text',system-ui,sans-serif;background:#0a0a0f;color:#fff;-webkit-user-select:none;user-select:none;-webkit-overflow-scrolling:touch;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
         .app{max-width:420px;margin:0 auto;padding:12px 18px 50px}
 
-        /* HEADER */
-        .header{text-align:center;padding:24px 0 6px}
+        /* LANG BAR */
+        .lang-bar{display:flex;justify-content:center;gap:4px;padding:14px 0 2px;flex-wrap:wrap}
+        .lang-btn{width:40px;height:32px;border-radius:8px;border:2px solid transparent;background:#1c1c1e;font-size:18px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
+        .lang-btn:active{transform:scale(.92)}
+        .lang-btn.on{border-color:#ff9500;background:#2c2c2e}
+
+        /* CURRENCY PILLS under lang */
+        .currency-bar{display:flex;justify-content:center;gap:6px;padding:8px 0 4px;flex-wrap:wrap}
+        .cur-pill{padding:5px 12px;border-radius:14px;border:1.5px solid #3a3a3c;background:transparent;color:#aaa;font-size:12px;font-weight:600;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s}
+        .cur-pill:active{transform:scale(.94)}
+        .cur-pill.on{background:#ff9500;border-color:#ff9500;color:#000}
+
+        .header{text-align:center;padding:10px 0 6px}
         .header h1{font-size:26px;font-weight:700;letter-spacing:-.5px}
         .header .sub{font-size:14px;color:#8e8e93;margin-top:3px}
 
-        /* CARD */
         .card{background:#1c1c1e;border-radius:16px;margin-bottom:14px;padding:20px;animation:cardIn .45s cubic-bezier(.21,1.02,.73,1) both}
-        .card:nth-child(2){animation-delay:.03s}
-        .card:nth-child(3){animation-delay:.06s}
-        .card:nth-child(4){animation-delay:.09s}
-        .card:nth-child(5){animation-delay:.12s}
-        .card:nth-child(6){animation-delay:.15s}
+        .card:nth-child(2){animation-delay:.03s}.card:nth-child(3){animation-delay:.06s}.card:nth-child(4){animation-delay:.09s}.card:nth-child(5){animation-delay:.12s}.card:nth-child(6){animation-delay:.15s}.card:nth-child(7){animation-delay:.18s}
         @keyframes cardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
         .card-label{font-size:12px;font-weight:600;color:#8e8e93;text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px}
 
-        /* ===== RÉSERVOIR CARD ===== */
+        /* TANK */
         .tank-card{padding:18px}
-
-        .tank-row{
-            display:flex;align-items:center;justify-content:space-between;
-            gap:12px;
-        }
-
-        .tank-visual{
-            display:flex;align-items:center;gap:12px;flex:1;min-width:0;
-        }
-
-        .tank-icon-box{
-            width:48px;height:48px;border-radius:12px;
-            background:rgba(255,149,0,.1);
-            display:flex;align-items:center;justify-content:center;
-            font-size:22px;flex-shrink:0;
-        }
-
+        .tank-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+        .tank-visual{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+        .tank-icon-box{width:48px;height:48px;border-radius:12px;background:rgba(255,149,0,.1);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
         .tank-info{flex:1;min-width:0}
         .tank-val{font-size:28px;font-weight:700;letter-spacing:-1px;font-variant-numeric:tabular-nums}
         .tank-val span{font-size:16px;font-weight:500;color:#8e8e93;margin-left:2px}
         .tank-sub{font-size:12px;color:#636366;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-        /* Stepper iOS style */
-        .stepper{
-            display:flex;align-items:center;
-            background:#2c2c2e;border-radius:10px;
-            overflow:hidden;flex-shrink:0;
-            border:1px solid #3a3a3c;
-        }
-        .stepper button{
-            width:44px;height:40px;border:none;
-            background:transparent;color:#ff9500;
-            font-size:22px;font-weight:500;
-            font-family:-apple-system,sans-serif;
-            cursor:pointer;display:flex;align-items:center;justify-content:center;
-            transition:background .1s;
-        }
+        .stepper{display:flex;align-items:center;background:#2c2c2e;border-radius:10px;overflow:hidden;flex-shrink:0;border:1px solid #3a3a3c}
+        .stepper button{width:44px;height:40px;border:none;background:transparent;color:#ff9500;font-size:22px;font-weight:500;font-family:-apple-system,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .1s}
         .stepper button:active{background:rgba(255,149,0,.15)}
-        .stepper button:disabled{color:#48484a}
         .stepper .sep{width:1px;height:22px;background:#48484a}
-
-        /* Mini bar */
-        .tank-bar-wrap{
-            margin-top:12px;height:6px;background:#2c2c2e;border-radius:3px;
-            overflow:hidden;position:relative;
-        }
-        .tank-bar{
-            height:100%;border-radius:3px;
-            background:linear-gradient(90deg,#ff9f0a,#ff6723);
-            transition:width .3s ease;
-            min-width:2px;
-        }
+        .tank-bar-wrap{margin-top:12px;height:6px;background:#2c2c2e;border-radius:3px;overflow:hidden}
+        .tank-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,#ff9f0a,#ff6723);transition:width .3s ease;min-width:2px}
         .tank-bar-labels{display:flex;justify-content:space-between;margin-top:5px}
         .tank-bar-labels span{font-size:10px;color:#636366}
-
-        /* Presets véhicules */
-        .tank-presets{
-            display:flex;gap:6px;margin-top:14px;
-            overflow-x:auto;-webkit-overflow-scrolling:touch;
-            padding-bottom:2px;scrollbar-width:none;
-        }
+        .tank-presets{display:flex;gap:6px;margin-top:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
         .tank-presets::-webkit-scrollbar{display:none}
-
-        .tp{
-            flex-shrink:0;padding:7px 12px;
-            border-radius:18px;border:1.5px solid #3a3a3c;
-            background:transparent;color:#e5e5ea;
-            font-size:11.5px;font-weight:500;
-            font-family:-apple-system,sans-serif;
-            cursor:pointer;transition:all .15s;white-space:nowrap;
-        }
+        .tp{flex-shrink:0;padding:7px 12px;border-radius:18px;border:1.5px solid #3a3a3c;background:transparent;color:#e5e5ea;font-size:11.5px;font-weight:500;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
         .tp:active{transform:scale(.94)}
         .tp.on{background:#ff9500;border-color:#ff9500;color:#000;font-weight:600}
 
-        /* ===== JAUGE ===== */
+        /* GAUGE */
         .gauge-card{padding:22px 18px 16px;background:linear-gradient(180deg,#1c1c1e,#17171a)}
         .gauge-wrap{display:flex;flex-direction:column;align-items:center}
         .gauge-box{position:relative;width:240px;height:145px}
         .gauge-svg{width:100%;height:100%;overflow:visible}
         .g-bg{fill:none;stroke:#2c2c2e;stroke-width:15;stroke-linecap:round}
         .g-fill{fill:none;stroke-width:15;stroke-linecap:round;transition:stroke-dashoffset .4s cubic-bezier(.25,.46,.45,.94),stroke .4s ease;filter:drop-shadow(0 0 6px rgba(255,149,0,.25))}
-        .g-tick{stroke:#48484a;stroke-width:1.5}
-        .g-tick-major{stroke:#636366;stroke-width:2.5}
+        .g-tick{stroke:#48484a;stroke-width:1.5}.g-tick-major{stroke:#636366;stroke-width:2.5}
         .g-lbl{fill:#8e8e93;font-size:11px;font-family:-apple-system,sans-serif;font-weight:500}
         .g-needle{transition:transform .4s cubic-bezier(.25,.46,.45,.94);transform-origin:120px 120px}
         .g-needle-bar{fill:#ff3b30;filter:drop-shadow(0 0 3px rgba(255,59,48,.5))}
-        .g-needle-cap1{fill:#3a3a3c}
-        .g-needle-cap2{fill:#636366}
-
+        .g-needle-cap1{fill:#3a3a3c}.g-needle-cap2{fill:#636366}
         .g-val{display:flex;align-items:baseline;justify-content:center;gap:4px;margin-top:12px}
         .g-pct{font-size:42px;font-weight:700;letter-spacing:-2px;font-variant-numeric:tabular-nums}
         .g-pct-sign{font-size:20px;font-weight:600;color:#8e8e93}
         .g-liters{font-size:14px;color:#8e8e93;text-align:center;margin-top:2px}
-
-        /* Quick btns */
         .q-btns{display:flex;gap:6px;margin-top:18px;width:100%}
-        .q-btn{
-            flex:1;padding:10px 2px;border-radius:10px;border:none;
-            background:#2c2c2e;color:#fff;font-size:14px;font-weight:600;
-            font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;
-        }
+        .q-btn{flex:1;padding:10px 2px;border-radius:10px;border:none;background:#2c2c2e;color:#fff;font-size:13px;font-weight:600;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s}
         .q-btn:active{transform:scale(.94);background:#3a3a3c}
         .q-btn.on{background:#ff9500;color:#000}
         .q-btn small{display:block;font-size:10px;font-weight:400;opacity:.55;margin-top:1px}
-
-        /* Slider */
         .slider-sec{margin-top:18px}
         input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:#2c2c2e;outline:none}
         input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:30px;height:30px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.06)}
         .slider-marks{display:flex;justify-content:space-between;margin-top:7px}
         .slider-marks span{font-size:10px;color:#636366;font-weight:500}
 
-        /* Alert */
         .alert{display:none;align-items:center;gap:10px;background:rgba(255,59,48,.1);border:1px solid rgba(255,59,48,.18);border-radius:14px;padding:13px 15px;margin-bottom:14px;animation:fadeIn .3s ease}
         .alert.on{display:flex}
         .alert-dot{width:10px;height:10px;border-radius:50%;background:#ff3b30;flex-shrink:0;animation:blink 1.8s infinite}
@@ -161,7 +94,7 @@
         @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
         @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 
-        /* Prix */
+        /* PRICE */
         .price-card{padding:16px 18px}
         .price-row{display:flex;align-items:center;background:#2c2c2e;border-radius:12px;overflow:hidden;border:2px solid transparent;transition:border-color .2s}
         .price-row:focus-within{border-color:#ff9500}
@@ -171,96 +104,67 @@
         .price-row .unit{padding:13px;font-size:13px;color:#636366;font-weight:500;white-space:nowrap}
         input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
         input[type=number]{-moz-appearance:textfield}
-
         .pills{display:flex;gap:6px;margin-top:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
         .pills::-webkit-scrollbar{display:none}
         .pill{flex-shrink:0;padding:8px 13px;border-radius:20px;border:1.5px solid #3a3a3c;background:transparent;color:#e5e5ea;font-size:12.5px;font-weight:500;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
         .pill:active{transform:scale(.94)}
         .pill.on{background:#ff9500;border-color:#ff9500;color:#000;font-weight:600}
 
-        /* Résultat */
+        /* RESULT */
         .res-card{background:linear-gradient(145deg,#1c1c1e,#19191d);border:1px solid #2c2c2e;padding:26px 20px 22px}
         .res-top{text-align:center;padding-bottom:22px;margin-bottom:18px;border-bottom:1px solid rgba(255,255,255,.05)}
         .res-lbl{font-size:12px;font-weight:600;color:#8e8e93;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-        .res-amount{font-size:52px;font-weight:800;letter-spacing:-2.5px;background:linear-gradient(135deg,#ff9f0a,#ff6723);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;font-variant-numeric:tabular-nums}
+        .res-amount{font-size:48px;font-weight:800;letter-spacing:-2px;background:linear-gradient(135deg,#ff9f0a,#ff6723);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;font-variant-numeric:tabular-nums;word-break:break-all}
         .res-detail{font-size:13px;color:#8e8e93;margin-top:6px}
-
         .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
         .stat{background:#2c2c2e;border-radius:13px;padding:14px;text-align:center}
         .stat-v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
         .stat-l{font-size:10px;color:#8e8e93;font-weight:500;text-transform:uppercase;letter-spacing:.3px;margin-top:3px;line-height:1.3}
 
-        /* Sauvegarde indicator */
-        .save-toast{
-            position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-80px);
-            background:#2c2c2e;color:#fff;padding:10px 20px;border-radius:22px;
-            font-size:13px;font-weight:500;
-            box-shadow:0 8px 30px rgba(0,0,0,.4);
-            transition:transform .35s cubic-bezier(.21,1.02,.73,1),opacity .35s;
-            opacity:0;z-index:100;pointer-events:none;
-        }
+        .save-toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-80px);background:#2c2c2e;color:#fff;padding:10px 20px;border-radius:22px;font-size:13px;font-weight:500;box-shadow:0 8px 30px rgba(0,0,0,.4);transition:transform .35s cubic-bezier(.21,1.02,.73,1),opacity .35s;opacity:0;z-index:100;pointer-events:none}
         .save-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
-        @media(max-height:480px){
-            .gauge-card{display:none}
-            .header{padding:10px 0 4px}
-            .header h1{font-size:20px}
-        }
+        @media(max-height:480px){.gauge-card{display:none}.header{padding:10px 0 4px}.header h1{font-size:20px}}
     </style>
 </head>
 <body>
-
-<div class="save-toast" id="toast">💾 Réservoir sauvegardé</div>
-
+<div class="save-toast" id="toast">💾</div>
 <div class="app">
 
+    <!-- LANG -->
+    <div class="lang-bar" id="langBar"></div>
+
+    <!-- CURRENCY OVERRIDE -->
+    <div class="currency-bar" id="curBar"></div>
+
     <div class="header">
-        <h1>⛽ Plein d'Essence</h1>
-        <p class="sub" id="headerSub">Réservoir 42 L</p>
+        <h1 id="hTitle">⛽ Plein d'Essence</h1>
+        <p class="sub" id="hSub">Réservoir 42 L</p>
     </div>
 
-    <!-- ===== RÉSERVOIR ===== -->
+    <!-- TANK -->
     <div class="card tank-card">
-        <div class="card-label">Capacité du réservoir</div>
-
+        <div class="card-label" id="lTank"></div>
         <div class="tank-row">
             <div class="tank-visual">
                 <div class="tank-icon-box">🛢️</div>
                 <div class="tank-info">
                     <div class="tank-val" id="tankVal">42<span>L</span></div>
-                    <div class="tank-sub" id="tankSub">Citadine / Berline compacte</div>
+                    <div class="tank-sub" id="tankSub"></div>
                 </div>
             </div>
             <div class="stepper">
-                <button id="btnMinus" aria-label="Diminuer">−</button>
-                <div class="sep"></div>
-                <button id="btnPlus" aria-label="Augmenter">+</button>
+                <button id="btnMinus">−</button><div class="sep"></div><button id="btnPlus">+</button>
             </div>
         </div>
-
-        <div class="tank-bar-wrap">
-            <div class="tank-bar" id="tankBar" style="width:42%"></div>
-        </div>
-        <div class="tank-bar-labels">
-            <span>10 L</span>
-            <span>50 L</span>
-            <span>100 L</span>
-        </div>
-
-        <div class="tank-presets" id="tankPresets">
-            <button class="tp" data-t="35">Citadine · 35L</button>
-            <button class="tp on" data-t="42">Compacte · 42L</button>
-            <button class="tp" data-t="50">Berline · 50L</button>
-            <button class="tp" data-t="55">Break · 55L</button>
-            <button class="tp" data-t="60">SUV · 60L</button>
-            <button class="tp" data-t="70">Grand SUV · 70L</button>
-            <button class="tp" data-t="80">Utilitaire · 80L</button>
-        </div>
+        <div class="tank-bar-wrap"><div class="tank-bar" id="tankBar"></div></div>
+        <div class="tank-bar-labels"><span>10 L</span><span>50 L</span><span>100 L</span></div>
+        <div class="tank-presets" id="tankPresets"></div>
     </div>
 
-    <!-- ===== JAUGE ===== -->
+    <!-- GAUGE -->
     <div class="card gauge-card">
-        <div class="card-label">Niveau actuel</div>
+        <div class="card-label" id="lLevel"></div>
         <div class="gauge-wrap">
             <div class="gauge-box">
                 <svg class="gauge-svg" viewBox="0 0 240 148">
@@ -286,305 +190,515 @@
                     </g>
                 </svg>
             </div>
-            <div class="g-val">
-                <span class="g-pct" id="dPct">12</span>
-                <span class="g-pct-sign">%</span>
-            </div>
-            <div class="g-liters" id="dLiters">5,0 L dans le réservoir</div>
-
-            <div class="q-btns" id="qBtnsWrap">
-                <!-- Generated dynamically -->
-            </div>
+            <div class="g-val"><span class="g-pct" id="dPct">12</span><span class="g-pct-sign">%</span></div>
+            <div class="g-liters" id="dLiters"></div>
+            <div class="q-btns" id="qBtnsWrap"></div>
         </div>
         <div class="slider-sec">
             <input type="range" id="sLevel" min="0" max="100" value="12" step="1">
-            <div class="slider-marks">
-                <span>Vide</span><span>¼</span><span>½</span><span>¾</span><span>Plein</span>
-            </div>
+            <div class="slider-marks" id="sliderMarks"></div>
         </div>
     </div>
 
     <!-- ALERT -->
-    <div class="alert" id="alertBox">
-        <div class="alert-dot"></div>
-        <span class="alert-txt">Niveau très bas — faites le plein rapidement !</span>
-    </div>
+    <div class="alert" id="alertBox"><div class="alert-dot"></div><span class="alert-txt" id="alertTxt"></span></div>
 
-    <!-- ===== PRIX ===== -->
+    <!-- PRICE -->
     <div class="card price-card">
-        <div class="card-label">Prix à la pompe</div>
+        <div class="card-label" id="lPrice"></div>
         <div class="price-row">
-            <span class="sym">€</span>
+            <span class="sym" id="pSym">€</span>
             <input type="number" id="iPrice" value="1.72" step="0.01" min="0" placeholder="1.72" inputmode="decimal" enterkeyhint="done">
-            <span class="unit">/ litre</span>
+            <span class="unit" id="pUnit">/ litre</span>
         </div>
-        <div class="pills" id="pills">
-            <button class="pill" data-p="1.58">E10 · 1,58</button>
-            <button class="pill" data-p="1.65">SP95 · 1,65</button>
-            <button class="pill on" data-p="1.72">SP98 · 1,72</button>
-            <button class="pill" data-p="1.55">Diesel · 1,55</button>
-            <button class="pill" data-p="0.85">E85 · 0,85</button>
-        </div>
+        <div class="pills" id="pillsWrap"></div>
     </div>
 
-    <!-- ===== RÉSULTAT ===== -->
+    <!-- RESULT -->
     <div class="card res-card">
         <div class="res-top">
-            <div class="res-lbl">Montant à mettre</div>
-            <div class="res-amount" id="rAmount">63,58 €</div>
-            <div class="res-detail" id="rDetail">37,0 L × 1,72 €/L</div>
+            <div class="res-lbl" id="lResult"></div>
+            <div class="res-amount" id="rAmount"></div>
+            <div class="res-detail" id="rDetail"></div>
         </div>
         <div class="stats">
-            <div class="stat">
-                <div class="stat-v" id="sAdd">37,0 L</div>
-                <div class="stat-l">Litres à ajouter</div>
-            </div>
-            <div class="stat">
-                <div class="stat-v" id="sCur">5,0 L</div>
-                <div class="stat-l">Litres actuels</div>
-            </div>
-            <div class="stat">
-                <div class="stat-v" id="sFull">72,24 €</div>
-                <div class="stat-l">Prix plein complet</div>
-            </div>
-            <div class="stat">
-                <div class="stat-v" id="sCap">42 L</div>
-                <div class="stat-l">Capacité réservoir</div>
-            </div>
+            <div class="stat"><div class="stat-v" id="sAdd"></div><div class="stat-l" id="lAdd"></div></div>
+            <div class="stat"><div class="stat-v" id="sCur"></div><div class="stat-l" id="lCur"></div></div>
+            <div class="stat"><div class="stat-v" id="sFull"></div><div class="stat-l" id="lFull"></div></div>
+            <div class="stat"><div class="stat-v" id="sCap"></div><div class="stat-l" id="lCap"></div></div>
         </div>
     </div>
-
 </div>
 
 <script>
+// ==================== CURRENCIES ====================
+const CURRENCIES = {
+    EUR: { symbol:'€', code:'EUR', decSep:',', thousSep:' ', after:true,  flag:'🇪🇺' },
+    GBP: { symbol:'£', code:'GBP', decSep:'.', thousSep:',', after:false, flag:'🇬🇧' },
+    USD: { symbol:'$', code:'USD', decSep:'.', thousSep:',', after:false, flag:'🇺🇸' },
+    RUB: { symbol:'₽', code:'RUB', decSep:',', thousSep:' ', after:true,  flag:'🇷🇺' },
+    CNY: { symbol:'¥', code:'CNY', decSep:'.', thousSep:',', after:false, flag:'🇨🇳' },
+    JPY: { symbol:'¥', code:'JPY', decSep:'.', thousSep:',', after:false, flag:'🇯🇵' },
+    BRL: { symbol:'R$',code:'BRL', decSep:',', thousSep:'.', after:false, flag:'🇧🇷' },
+    CHF: { symbol:'CHF',code:'CHF',decSep:'.', thousSep:'\'',after:true,  flag:'🇨🇭' },
+};
+
+// ==================== FUEL PRICES PER CURRENCY ====================
+// Realistic local prices per liter in each currency
+const FUEL_PRICES = {
+    EUR: [
+        {p:1.58, names:{fr:'E10',en:'E10',es:'E10',it:'E10',pt:'E10',ru:'E10',zh:'E10',ja:'E10'}},
+        {p:1.65, names:{fr:'SP95',en:'SP95',es:'SP95',it:'SP95',pt:'SP95',ru:'АИ-95',zh:'95号',ja:'レギュラー'}},
+        {p:1.72, names:{fr:'SP98',en:'SP98',es:'SP98',it:'SP98',pt:'SP98',ru:'АИ-98',zh:'98号',ja:'ハイオク'}},
+        {p:1.55, names:{fr:'Diesel',en:'Diesel',es:'Diésel',it:'Diesel',pt:'Gasóleo',ru:'ДТ',zh:'柴油',ja:'軽油'}},
+        {p:0.85, names:{fr:'E85',en:'E85',es:'E85',it:'E85',pt:'E85',ru:'E85',zh:'E85',ja:'E85'}},
+    ],
+    GBP: [
+        {p:1.35, names:{en:'E10',fr:'E10'}},
+        {p:1.40, names:{en:'Unleaded',fr:'SP95'}},
+        {p:1.48, names:{en:'Super',fr:'SP98'}},
+        {p:1.42, names:{en:'Diesel',fr:'Diesel'}},
+        {p:0.75, names:{en:'E85',fr:'E85'}},
+    ],
+    USD: [
+        {p:0.92, names:{en:'Regular 87',fr:'Regular 87'}},
+        {p:1.02, names:{en:'Mid-Grade 89',fr:'Mid-Grade 89'}},
+        {p:1.12, names:{en:'Premium 93',fr:'Premium 93'}},
+        {p:1.05, names:{en:'Diesel',fr:'Diesel'}},
+        {p:0.65, names:{en:'E85',fr:'E85'}},
+    ],
+    RUB: [
+        {p:54.0, names:{ru:'АИ-92',en:'AI-92',fr:'AI-92'}},
+        {p:58.0, names:{ru:'АИ-95',en:'AI-95',fr:'AI-95'}},
+        {p:65.0, names:{ru:'АИ-98',en:'AI-98',fr:'AI-98'}},
+        {p:60.0, names:{ru:'ДТ',en:'Diesel',fr:'Diesel'}},
+    ],
+    CNY: [
+        {p:8.20, names:{zh:'92号',en:'RON 92',fr:'RON 92'}},
+        {p:8.80, names:{zh:'95号',en:'RON 95',fr:'RON 95'}},
+        {p:9.90, names:{zh:'98号',en:'RON 98',fr:'RON 98'}},
+        {p:8.10, names:{zh:'柴油',en:'Diesel',fr:'Diesel'}},
+    ],
+    JPY: [
+        {p:175, names:{ja:'レギュラー',en:'Regular',fr:'Regular'}},
+        {p:186, names:{ja:'ハイオク',en:'Premium',fr:'Premium'}},
+        {p:155, names:{ja:'軽油',en:'Diesel',fr:'Diesel'}},
+    ],
+    BRL: [
+        {p:5.80, names:{pt:'Gasolina',en:'Gasoline',fr:'Essence'}},
+        {p:6.20, names:{pt:'Gasolina Aditivada',en:'Premium',fr:'Premium'}},
+        {p:5.90, names:{pt:'Diesel S-10',en:'Diesel S-10',fr:'Diesel S-10'}},
+        {p:3.60, names:{pt:'Etanol',en:'Ethanol',fr:'Éthanol'}},
+    ],
+    CHF: [
+        {p:1.72, names:{fr:'SP95',en:'SP95'}},
+        {p:1.80, names:{fr:'SP98',en:'SP98'}},
+        {p:1.85, names:{fr:'Diesel',en:'Diesel'}},
+        {p:0.90, names:{fr:'E85',en:'E85'}},
+    ],
+};
+
+// ==================== i18n ====================
+const LANGS = {
+    fr:{
+        flag:'🇫🇷',name:'Français',defaultCur:'EUR',
+        title:'⛽ Plein d\'Essence',
+        tankLabel:'Capacité du réservoir',levelLabel:'Niveau actuel',
+        priceLabel:'Prix à la pompe',resultLabel:'Montant à mettre',
+        addLabel:'Litres à ajouter',curLabel:'Litres actuels',
+        fullLabel:'Prix plein complet',capLabel:'Capacité réservoir',
+        perLiter:'/ litre',
+        inTank:'{n} L dans le réservoir',sub:'Réservoir {n} L',
+        alert:'Niveau très bas — faites le plein rapidement !',
+        toastTank:'🛢️ Réservoir : {n} L',toastLang:'🌐 {n}',toastCur:'💱 Devise : {n}',
+        empty:'Vide',reserve:'Réserve',full:'Plein',
+        cat:{xs:'Petite citadine',s:'Citadine',m:'Compacte / Berline',l:'Berline / Break',xl:'SUV',xxl:'Grand SUV / Utilitaire',xxxl:'Grand véhicule'},
+        vehicles:{35:'Citadine · 35L',42:'Compacte · 42L',50:'Berline · 50L',55:'Break · 55L',60:'SUV · 60L',70:'Grand SUV · 70L',80:'Utilitaire · 80L'},
+        sliderMarks:['Vide','¼','½','¾','Plein'],
+    },
+    en:{
+        flag:'🇬🇧',name:'English',defaultCur:'GBP',
+        title:'⛽ Fuel Calculator',
+        tankLabel:'Tank capacity',levelLabel:'Current level',
+        priceLabel:'Price at pump',resultLabel:'Amount to pay',
+        addLabel:'Liters to add',curLabel:'Current liters',
+        fullLabel:'Full tank price',capLabel:'Tank capacity',
+        perLiter:'/ liter',
+        inTank:'{n} L in the tank',sub:'Tank {n} L',
+        alert:'Very low level — fill up soon!',
+        toastTank:'🛢️ Tank: {n} L',toastLang:'🌐 {n}',toastCur:'💱 Currency: {n}',
+        empty:'Empty',reserve:'Reserve',full:'Full',
+        cat:{xs:'Small city car',s:'City car',m:'Compact / Sedan',l:'Sedan / Wagon',xl:'SUV',xxl:'Large SUV / Van',xxxl:'Large vehicle'},
+        vehicles:{35:'City car · 35L',42:'Compact · 42L',50:'Sedan · 50L',55:'Wagon · 55L',60:'SUV · 60L',70:'Large SUV · 70L',80:'Van · 80L'},
+        sliderMarks:['Empty','¼','½','¾','Full'],
+    },
+    es:{
+        flag:'🇪🇸',name:'Español',defaultCur:'EUR',
+        title:'⛽ Calculadora de Combustible',
+        tankLabel:'Capacidad del depósito',levelLabel:'Nivel actual',
+        priceLabel:'Precio en surtidor',resultLabel:'Importe a poner',
+        addLabel:'Litros a añadir',curLabel:'Litros actuales',
+        fullLabel:'Precio depósito lleno',capLabel:'Capacidad depósito',
+        perLiter:'/ litro',
+        inTank:'{n} L en el depósito',sub:'Depósito {n} L',
+        alert:'Nivel muy bajo — ¡reposta pronto!',
+        toastTank:'🛢️ Depósito: {n} L',toastLang:'🌐 {n}',toastCur:'💱 Moneda: {n}',
+        empty:'Vacío',reserve:'Reserva',full:'Lleno',
+        cat:{xs:'Utilitario pequeño',s:'Utilitario',m:'Compacto / Berlina',l:'Berlina / Familiar',xl:'SUV',xxl:'SUV grande / Furgoneta',xxxl:'Vehículo grande'},
+        vehicles:{35:'Utilitario · 35L',42:'Compacto · 42L',50:'Berlina · 50L',55:'Familiar · 55L',60:'SUV · 60L',70:'SUV grande · 70L',80:'Furgoneta · 80L'},
+        sliderMarks:['Vacío','¼','½','¾','Lleno'],
+    },
+    it:{
+        flag:'🇮🇹',name:'Italiano',defaultCur:'EUR',
+        title:'⛽ Calcolatore Carburante',
+        tankLabel:'Capacità serbatoio',levelLabel:'Livello attuale',
+        priceLabel:'Prezzo al distributore',resultLabel:'Importo da mettere',
+        addLabel:'Litri da aggiungere',curLabel:'Litri attuali',
+        fullLabel:'Prezzo pieno completo',capLabel:'Capacità serbatoio',
+        perLiter:'/ litro',
+        inTank:'{n} L nel serbatoio',sub:'Serbatoio {n} L',
+        alert:'Livello molto basso — fai rifornimento!',
+        toastTank:'🛢️ Serbatoio: {n} L',toastLang:'🌐 {n}',toastCur:'💱 Valuta: {n}',
+        empty:'Vuoto',reserve:'Riserva',full:'Pieno',
+        cat:{xs:'Piccola utilitaria',s:'Utilitaria',m:'Compatta / Berlina',l:'Berlina / SW',xl:'SUV',xxl:'SUV grande / Furgone',xxxl:'Veicolo grande'},
+        vehicles:{35:'Utilitaria · 35L',42:'Compatta · 42L',50:'Berlina · 50L',55:'SW · 55L',60:'SUV · 60L',70:'SUV grande · 70L',80:'Furgone · 80L'},
+        sliderMarks:['Vuoto','¼','½','¾','Pieno'],
+    },
+    pt:{
+        flag:'🇵🇹',name:'Português',defaultCur:'EUR',
+        title:'⛽ Calculadora de Combustível',
+        tankLabel:'Capacidade do depósito',levelLabel:'Nível atual',
+        priceLabel:'Preço na bomba',resultLabel:'Valor a abastecer',
+        addLabel:'Litros a adicionar',curLabel:'Litros atuais',
+        fullLabel:'Preço depósito cheio',capLabel:'Capacidade depósito',
+        perLiter:'/ litro',
+        inTank:'{n} L no depósito',sub:'Depósito {n} L',
+        alert:'Nível muito baixo — abasteça em breve!',
+        toastTank:'🛢️ Depósito: {n} L',toastLang:'🌐 {n}',toastCur:'💱 Moeda: {n}',
+        empty:'Vazio',reserve:'Reserva',full:'Cheio',
+        cat:{xs:'Citadino pequeno',s:'Citadino',m:'Compacto / Sedan',l:'Sedan / Carrinha',xl:'SUV',xxl:'SUV grande / Furgão',xxxl:'Veículo grande'},
+        vehicles:{35:'Citadino · 35L',42:'Compacto · 42L',50:'Sedan · 50L',55:'Carrinha · 55L',60:'SUV · 60L',70:'SUV grande · 70L',80:'Furgão · 80L'},
+        sliderMarks:['Vazio','¼','½','¾','Cheio'],
+    },
+    ru:{
+        flag:'🇷🇺',name:'Русский',defaultCur:'RUB',
+        title:'⛽ Калькулятор заправки',
+        tankLabel:'Объём бака',levelLabel:'Текущий уровень',
+        priceLabel:'Цена на заправке',resultLabel:'Сумма к оплате',
+        addLabel:'Литров долить',curLabel:'Литров сейчас',
+        fullLabel:'Полный бак',capLabel:'Объём бака',
+        perLiter:'/ литр',
+        inTank:'{n} л в баке',sub:'Бак {n} л',
+        alert:'Очень низкий уровень — заправьтесь!',
+        toastTank:'🛢️ Бак: {n} л',toastLang:'🌐 {n}',toastCur:'💱 Валюта: {n}',
+        empty:'Пусто',reserve:'Резерв',full:'Полный',
+        cat:{xs:'Малолитражка',s:'Городской',m:'Компакт / Седан',l:'Седан / Универсал',xl:'Кроссовер',xxl:'Большой SUV / Фургон',xxxl:'Большое авто'},
+        vehicles:{35:'Малолитражка · 35л',42:'Компакт · 42л',50:'Седан · 50л',55:'Универсал · 55л',60:'Кроссовер · 60л',70:'Большой SUV · 70л',80:'Фургон · 80л'},
+        sliderMarks:['Пусто','¼','½','¾','Полный'],
+    },
+    zh:{
+        flag:'🇨🇳',name:'中文',defaultCur:'CNY',
+        title:'⛽ 加油计算器',
+        tankLabel:'油箱容量',levelLabel:'当前油量',
+        priceLabel:'油价',resultLabel:'需要支付金额',
+        addLabel:'需加升数',curLabel:'当前升数',
+        fullLabel:'加满价格',capLabel:'油箱容量',
+        perLiter:'/ 升',
+        inTank:'油箱中 {n} 升',sub:'油箱 {n} 升',
+        alert:'油量极低——请尽快加油！',
+        toastTank:'🛢️ 油箱：{n} 升',toastLang:'🌐 {n}',toastCur:'💱 货币：{n}',
+        empty:'空',reserve:'储备',full:'满',
+        cat:{xs:'微型车',s:'小型车',m:'紧凑型/轿车',l:'轿车/旅行车',xl:'SUV',xxl:'大型SUV/面包车',xxxl:'大型车辆'},
+        vehicles:{35:'小型车 · 35L',42:'紧凑型 · 42L',50:'轿车 · 50L',55:'旅行车 · 55L',60:'SUV · 60L',70:'大型SUV · 70L',80:'面包车 · 80L'},
+        sliderMarks:['空','¼','½','¾','满'],
+    },
+    ja:{
+        flag:'🇯🇵',name:'日本語',defaultCur:'JPY',
+        title:'⛽ 給油計算機',
+        tankLabel:'タンク容量',levelLabel:'現在の残量',
+        priceLabel:'ガソリン価格',resultLabel:'給油金額',
+        addLabel:'追加リットル',curLabel:'現在のリットル',
+        fullLabel:'満タン価格',capLabel:'タンク容量',
+        perLiter:'/ L',
+        inTank:'タンク内 {n} L',sub:'タンク {n} L',
+        alert:'残量が非常に少ないです！',
+        toastTank:'🛢️ タンク：{n} L',toastLang:'🌐 {n}',toastCur:'💱 通貨：{n}',
+        empty:'空',reserve:'予備',full:'満タン',
+        cat:{xs:'軽自動車',s:'コンパクト',m:'セダン',l:'ワゴン',xl:'SUV',xxl:'大型SUV/バン',xxxl:'大型車'},
+        vehicles:{35:'軽自動車 · 35L',42:'コンパクト · 42L',50:'セダン · 50L',55:'ワゴン · 55L',60:'SUV · 60L',70:'大型SUV · 70L',80:'バン · 80L'},
+        sliderMarks:['空','¼','½','¾','満タン'],
+    }
+};
+
 // ==================== STATE ====================
 let tank = parseInt(localStorage.getItem('tank')) || 42;
 let lvl  = parseInt(localStorage.getItem('lvl'))  || 12;
 let prc  = parseFloat(localStorage.getItem('prc')) || 1.72;
+let lang = localStorage.getItem('lang') || 'fr';
+let cur  = localStorage.getItem('cur')  || LANGS[lang].defaultCur;
+
+let L, C;
+function loadLC(){ L=LANGS[lang]; C=CURRENCIES[cur]; }
+loadLC();
+
+const $=id=>document.getElementById(id);
+
+// ==================== FORMAT ====================
+function fmt(n,d=1){ return n.toFixed(d).replace('.',C.decSep) }
+
+function fmtCur(n){
+    const isJPY = cur==='JPY';
+    const d = isJPY ? 0 : 2;
+    let v = n.toFixed(d);
+    // Thousands separator
+    const parts = v.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, C.thousSep);
+    v = parts.join(C.decSep);
+    return C.after ? v+' '+C.symbol : C.symbol+' '+v;
+}
+
+function fmtPriceShort(n){
+    const isJPY = cur==='JPY';
+    return isJPY ? n.toFixed(0) : n.toFixed(2).replace('.',C.decSep);
+}
 
 // ==================== ELEMENTS ====================
-const $=id=>document.getElementById(id);
-const f=(n,d=1)=>n.toFixed(d).replace('.',',');
-const fe=n=>f(n,2)+' €';
-
-const sLevel=$('sLevel'), iPrice=$('iPrice');
-const gFill=$('gFill'), needle=$('needle'), gBg=$('gBg');
-const dPct=$('dPct'), dLiters=$('dLiters');
-const rAmount=$('rAmount'), rDetail=$('rDetail');
-const sAdd=$('sAdd'), sCur=$('sCur'), sFull=$('sFull'), sCap=$('sCap');
-const alertBox=$('alertBox');
-const tankVal=$('tankVal'), tankSub=$('tankSub'), tankBar=$('tankBar');
-const headerSub=$('headerSub');
-const toast=$('toast');
-const qBtnsWrap=$('qBtnsWrap');
-const pills=document.querySelectorAll('.pill');
-const tPresets=document.querySelectorAll('.tp');
-
+const sLevel=$('sLevel'),iPrice=$('iPrice');
+const gFill=$('gFill'),needleEl=$('needle'),gBg=$('gBg');
 let arcLen;
-let holdTimer=null, holdSpeed=500;
+
+// ==================== BUILD LANG BAR ====================
+function buildLangBar(){
+    const bar=$('langBar');bar.innerHTML='';
+    Object.entries(LANGS).forEach(([code,data])=>{
+        const btn=document.createElement('button');
+        btn.className='lang-btn'+(code===lang?' on':'');
+        btn.textContent=data.flag;
+        btn.addEventListener('click',()=>setLang(code));
+        bar.appendChild(btn);
+    });
+}
+
+// ==================== BUILD CURRENCY BAR ====================
+function buildCurBar(){
+    const bar=$('curBar');bar.innerHTML='';
+    Object.entries(CURRENCIES).forEach(([code,data])=>{
+        const btn=document.createElement('button');
+        btn.className='cur-pill'+(code===cur?' on':'');
+        btn.textContent=data.flag+' '+data.symbol;
+        btn.addEventListener('click',()=>setCurrency(code));
+        bar.appendChild(btn);
+    });
+}
+
+// ==================== SET LANGUAGE ====================
+function setLang(code){
+    lang=code; loadLC();
+    // Auto-switch currency to default for this language
+    cur=L.defaultCur; loadLC();
+    localStorage.setItem('lang',lang);
+    localStorage.setItem('cur',cur);
+    document.documentElement.lang=lang;
+
+    // Set default price for this currency
+    const fuels=FUEL_PRICES[cur];
+    if(fuels && fuels.length>=2){ prc=fuels[1].p; }
+    iPrice.value = cur==='JPY' ? prc.toFixed(0) : prc.toFixed(2);
+    save();
+
+    document.querySelectorAll('.lang-btn').forEach((btn,i)=>{
+        btn.classList.toggle('on',Object.keys(LANGS)[i]===lang);
+    });
+    buildCurBar();
+    rebuildAll();
+    showToast(L.toastLang.replace('{n}',L.name));
+}
+
+// ==================== SET CURRENCY ====================
+function setCurrency(code){
+    cur=code; loadLC();
+    localStorage.setItem('cur',cur);
+
+    // Set default price for new currency
+    const fuels=FUEL_PRICES[cur];
+    if(fuels && fuels.length>=2){ prc=fuels[1].p; }
+    else if(fuels && fuels.length>=1){ prc=fuels[0].p; }
+    iPrice.value = cur==='JPY' ? prc.toFixed(0) : prc.toFixed(2);
+    iPrice.step  = cur==='JPY' ? '1' : '0.01';
+    save();
+
+    document.querySelectorAll('.cur-pill').forEach((btn,i)=>{
+        btn.classList.toggle('on',Object.keys(CURRENCIES)[i]===cur);
+    });
+    rebuildAll();
+    showToast(L.toastCur.replace('{n}',C.symbol+' '+C.code));
+}
+
+// ==================== REBUILD ALL ====================
+function rebuildAll(){
+    applyTexts();
+    buildTankPresets();
+    buildQuickBtns();
+    buildFuelPills();
+    buildSliderMarks();
+    updateTankUI();
+    calc();
+}
+
+// ==================== APPLY TEXTS ====================
+function applyTexts(){
+    $('hTitle').textContent=L.title;
+    $('lTank').textContent=L.tankLabel;
+    $('lLevel').textContent=L.levelLabel;
+    $('lPrice').textContent=L.priceLabel;
+    $('lResult').textContent=L.resultLabel;
+    $('lAdd').textContent=L.addLabel;
+    $('lCur').textContent=L.curLabel;
+    $('lFull').textContent=L.fullLabel;
+    $('lCap').textContent=L.capLabel;
+    $('pUnit').textContent=L.perLiter;
+    $('pSym').textContent=C.symbol;
+    $('alertTxt').textContent=L.alert;
+}
+
+// ==================== TANK ====================
+function tankCategory(t){
+    const c=L.cat;
+    if(t<=30)return c.xs;if(t<=40)return c.s;if(t<=47)return c.m;
+    if(t<=55)return c.l;if(t<=65)return c.xl;if(t<=80)return c.xxl;return c.xxxl;
+}
+function updateTankUI(){
+    $('tankVal').innerHTML=tank+'<span>L</span>';
+    $('tankSub').textContent=tankCategory(tank);
+    $('hSub').textContent=L.sub.replace('{n}',tank);
+    $('sCap').textContent=tank+' L';
+    $('tankBar').style.width=Math.max(0,Math.min(100,((tank-10)/90)*100))+'%';
+    document.querySelectorAll('.tp').forEach(p=>p.classList.toggle('on',parseInt(p.dataset.t)===tank));
+}
+function buildTankPresets(){
+    const w=$('tankPresets');w.innerHTML='';
+    Object.entries(L.vehicles).forEach(([val,label])=>{
+        const b=document.createElement('button');
+        b.className='tp'+(parseInt(val)===tank?' on':'');
+        b.dataset.t=val;b.textContent=label;
+        b.addEventListener('click',()=>{
+            tank=parseInt(val);updateTankUI();buildQuickBtns();save();calc();
+            showToast(L.toastTank.replace('{n}',tank));
+        });
+        w.appendChild(b);
+    });
+}
+
+// ==================== QUICK BTNS ====================
+function buildQuickBtns(){
+    const w=$('qBtnsWrap');w.innerHTML='';
+    [{l:0,label:L.empty},{l:12,label:L.reserve},{l:25,label:'¼'},{l:50,label:'½'},{l:75,label:'¾'}].forEach(({l,label})=>{
+        const b=document.createElement('button');
+        b.className='q-btn';b.dataset.l=l;
+        b.innerHTML=label+'<small>'+fmt((l/100)*tank)+' L</small>';
+        b.addEventListener('click',()=>{lvl=l;sLevel.value=lvl;save();calc()});
+        w.appendChild(b);
+    });
+}
+
+// ==================== SLIDER MARKS ====================
+function buildSliderMarks(){
+    const w=$('sliderMarks');w.innerHTML='';
+    L.sliderMarks.forEach(t=>{const s=document.createElement('span');s.textContent=t;w.appendChild(s)});
+}
+
+// ==================== FUEL PILLS ====================
+function buildFuelPills(){
+    const w=$('pillsWrap');w.innerHTML='';
+    const fuels=FUEL_PRICES[cur]||FUEL_PRICES.EUR;
+    fuels.forEach(fuel=>{
+        const name=fuel.names[lang]||fuel.names.en||fuel.names.fr||'';
+        const label=name+' · '+fmtPriceShort(fuel.p);
+        const b=document.createElement('button');
+        b.className='pill'+(Math.abs(fuel.p-prc)<0.005?' on':'');
+        b.dataset.p=fuel.p;
+        b.textContent=label;
+        b.addEventListener('click',()=>{
+            prc=fuel.p;
+            iPrice.value=cur==='JPY'?prc.toFixed(0):prc.toFixed(2);
+            document.querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));
+            b.classList.add('on');save();calc();
+        });
+        w.appendChild(b);
+    });
+}
+
+// ==================== GAUGE ====================
+function gColor(p){
+    if(p<=12)return'#ff3b30';if(p<=25)return'#ff6723';
+    if(p<=40)return'#ff9f0a';if(p<=65)return'#ffd60a';return'#30d158';
+}
+
+// ==================== CALC ====================
+function calc(){
+    const cL=(lvl/100)*tank,add=tank-cL,cost=add*prc,full=tank*prc;
+    gFill.style.strokeDashoffset=arcLen-(arcLen*lvl/100);
+    gFill.style.stroke=gColor(lvl);
+    needleEl.style.transform='rotate('+(-90+(lvl/100)*180)+'deg)';
+    $('dPct').textContent=lvl;
+    $('dLiters').textContent=L.inTank.replace('{n}',fmt(cL));
+    $('rAmount').textContent=fmtCur(cost);
+    $('rDetail').textContent=fmt(add)+' L × '+fmtPriceShort(prc)+' '+C.symbol+'/L';
+    $('sAdd').textContent=fmt(add)+' L';
+    $('sCur').textContent=fmt(cL)+' L';
+    $('sFull').textContent=fmtCur(full);
+    $('alertBox').classList.toggle('on',lvl<=12);
+    $('qBtnsWrap').querySelectorAll('.q-btn').forEach(b=>b.classList.toggle('on',parseInt(b.dataset.l)===lvl));
+}
+
+// ==================== SAVE ====================
+function save(){localStorage.setItem('tank',tank);localStorage.setItem('lvl',lvl);localStorage.setItem('prc',prc)}
+
+// ==================== TOAST ====================
+let toastT;
+function showToast(m){
+    clearTimeout(toastT);
+    $('toast').textContent=m;$('toast').classList.add('show');
+    toastT=setTimeout(()=>$('toast').classList.remove('show'),1800);
+}
+
+// ==================== STEPPER ====================
+function changeTank(d){const n=tank+d;if(n<10||n>120)return;tank=n;updateTankUI();buildQuickBtns();save();calc()}
+$('btnMinus').addEventListener('click',()=>changeTank(-1));
+$('btnPlus').addEventListener('click',()=>changeTank(1));
+let holdTimer=null,holdSpeed=500;
+function startHold(d){holdSpeed=400;changeTank(d);holdTimer=setTimeout(function r(){changeTank(d);holdSpeed=Math.max(60,holdSpeed*.8);holdTimer=setTimeout(r,holdSpeed)},holdSpeed)}
+function stopHold(){clearTimeout(holdTimer);holdTimer=null;showToast(L.toastTank.replace('{n}',tank))}
+['touchstart','mousedown'].forEach(e=>{
+    $('btnMinus').addEventListener(e,ev=>{ev.preventDefault();startHold(-1)},{passive:false});
+    $('btnPlus').addEventListener(e,ev=>{ev.preventDefault();startHold(1)},{passive:false});
+});
+['touchend','touchcancel','mouseup','mouseleave'].forEach(e=>{$('btnMinus').addEventListener(e,stopHold);$('btnPlus').addEventListener(e,stopHold)});
+
+// ==================== SLIDER ====================
+sLevel.addEventListener('input',e=>{lvl=+e.target.value;save();calc()});
+
+// ==================== PRICE INPUT ====================
+iPrice.addEventListener('input',()=>{prc=parseFloat(iPrice.value)||0;document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));save();calc()});
+iPrice.addEventListener('keydown',e=>{if(e.key==='Enter')iPrice.blur()});
+
+// ==================== FOCUS ====================
+document.querySelectorAll('input[type=number]').forEach(inp=>{
+    inp.addEventListener('focus',()=>{setTimeout(()=>inp.scrollIntoView({behavior:'smooth',block:'center'}),300)});
+});
 
 // ==================== INIT ====================
 function init(){
     arcLen=gBg.getTotalLength();
     gFill.style.strokeDasharray=arcLen;
-
-    // Restore
-    iPrice.value=prc.toFixed(2);
+    iPrice.value=cur==='JPY'?prc.toFixed(0):prc.toFixed(2);
+    iPrice.step=cur==='JPY'?'1':'0.01';
     sLevel.value=lvl;
-
-    // Highlight saved fuel pill
-    pills.forEach(p=>{
-        if(Math.abs(parseFloat(p.dataset.p)-prc)<0.005) p.classList.add('on');
-        else p.classList.remove('on');
-    });
-
-    updateTankUI();
-    buildQuickBtns();
-    calc();
+    buildLangBar();
+    buildCurBar();
+    rebuildAll();
 }
-
-// ==================== SAVE ====================
-function save(){
-    localStorage.setItem('tank',tank);
-    localStorage.setItem('lvl',lvl);
-    localStorage.setItem('prc',prc);
-}
-
-function showToast(msg){
-    toast.textContent=msg||'💾 Sauvegardé';
-    toast.classList.add('show');
-    setTimeout(()=>toast.classList.remove('show'),1800);
-}
-
-// ==================== TANK CATEGORY ====================
-function tankCategory(t){
-    if(t<=30) return 'Petite citadine';
-    if(t<=40) return 'Citadine';
-    if(t<=47) return 'Compacte / Berline';
-    if(t<=55) return 'Berline / Break';
-    if(t<=65) return 'SUV';
-    if(t<=80) return 'Grand SUV / Utilitaire';
-    return 'Grand véhicule';
-}
-
-// ==================== TANK UI ====================
-function updateTankUI(){
-    tankVal.innerHTML=tank+'<span>L</span>';
-    tankSub.textContent=tankCategory(tank);
-    headerSub.textContent='Réservoir '+tank+' L';
-    sCap.textContent=tank+' L';
-
-    // Bar (10-100 range)
-    const pct=Math.max(0,Math.min(100,((tank-10)/(100-10))*100));
-    tankBar.style.width=pct+'%';
-
-    // Preset highlight
-    tPresets.forEach(p=>{
-        p.classList.toggle('on',parseInt(p.dataset.t)===tank);
-    });
-}
-
-// ==================== QUICK BTNS (dynamic) ====================
-function buildQuickBtns(){
-    const levels=[
-        {l:0, label:'Vide'},
-        {l:12, label:'Réserve'},
-        {l:25, label:'¼'},
-        {l:50, label:'½'},
-        {l:75, label:'¾'},
-    ];
-    qBtnsWrap.innerHTML='';
-    levels.forEach(({l,label})=>{
-        const btn=document.createElement('button');
-        btn.className='q-btn';
-        btn.dataset.l=l;
-        const liters=(l/100)*tank;
-        btn.innerHTML=label+'<small>'+f(liters)+' L</small>';
-        btn.addEventListener('click',()=>{
-            lvl=l; sLevel.value=lvl; save(); calc();
-        });
-        qBtnsWrap.appendChild(btn);
-    });
-}
-
-// ==================== GAUGE COLOR ====================
-function gColor(p){
-    if(p<=12) return '#ff3b30';
-    if(p<=25) return '#ff6723';
-    if(p<=40) return '#ff9f0a';
-    if(p<=65) return '#ffd60a';
-    return '#30d158';
-}
-
-// ==================== CALC ====================
-function calc(){
-    const cL=(lvl/100)*tank, add=tank-cL, cost=add*prc, full=tank*prc;
-
-    gFill.style.strokeDashoffset=arcLen-(arcLen*lvl/100);
-    gFill.style.stroke=gColor(lvl);
-    needle.style.transform='rotate('+ (-90+(lvl/100)*180) +'deg)';
-
-    dPct.textContent=lvl;
-    dLiters.textContent=f(cL)+' L dans le réservoir';
-
-    rAmount.textContent=fe(cost);
-    rDetail.textContent=f(add)+' L × '+f(prc,2)+' €/L';
-    sAdd.textContent=f(add)+' L';
-    sCur.textContent=f(cL)+' L';
-    sFull.textContent=fe(full);
-
-    alertBox.classList.toggle('on',lvl<=12);
-
-    // Quick btn highlight
-    qBtnsWrap.querySelectorAll('.q-btn').forEach(b=>{
-        b.classList.toggle('on',parseInt(b.dataset.l)===lvl);
-    });
-}
-
-// ==================== STEPPER + / - ====================
-function changeTank(delta){
-    const next=tank+delta;
-    if(next<10||next>120) return;
-    tank=next;
-    updateTankUI();
-    buildQuickBtns();
-    save();
-    calc();
-}
-
-// Tap
-$('btnMinus').addEventListener('click',()=>changeTank(-1));
-$('btnPlus').addEventListener('click',()=>changeTank(1));
-
-// Hold to repeat
-function startHold(delta){
-    holdSpeed=400;
-    changeTank(delta);
-    holdTimer=setTimeout(function repeat(){
-        changeTank(delta);
-        holdSpeed=Math.max(60,holdSpeed*0.8);
-        holdTimer=setTimeout(repeat,holdSpeed);
-    },holdSpeed);
-}
-function stopHold(){
-    clearTimeout(holdTimer);
-    holdTimer=null;
-    showToast('🛢️ Réservoir : '+tank+' L');
-}
-
-['touchstart','mousedown'].forEach(evt=>{
-    $('btnMinus').addEventListener(evt,e=>{e.preventDefault();startHold(-1)},{passive:false});
-    $('btnPlus').addEventListener(evt,e=>{e.preventDefault();startHold(1)},{passive:false});
-});
-['touchend','touchcancel','mouseup','mouseleave'].forEach(evt=>{
-    $('btnMinus').addEventListener(evt,stopHold);
-    $('btnPlus').addEventListener(evt,stopHold);
-});
-
-// ==================== TANK PRESETS ====================
-tPresets.forEach(btn=>{
-    btn.addEventListener('click',()=>{
-        tank=parseInt(btn.dataset.t);
-        updateTankUI();
-        buildQuickBtns();
-        save();
-        calc();
-        showToast('🛢️ Réservoir : '+tank+' L');
-    });
-});
-
-// ==================== SLIDER ====================
-sLevel.addEventListener('input',e=>{
-    lvl=+e.target.value;save();calc();
-});
-
-// ==================== PRICE ====================
-iPrice.addEventListener('input',()=>{
-    prc=parseFloat(iPrice.value)||0;
-    pills.forEach(p=>p.classList.remove('on'));
-    save();calc();
-});
-iPrice.addEventListener('keydown',e=>{if(e.key==='Enter')iPrice.blur()});
-
-// ==================== FUEL PILLS ====================
-pills.forEach(p=>{
-    p.addEventListener('click',()=>{
-        prc=+p.dataset.p;iPrice.value=prc.toFixed(2);
-        pills.forEach(x=>x.classList.remove('on'));
-        p.classList.add('on');save();calc();
-    });
-});
-
-// ==================== FOCUS SCROLL ====================
-document.querySelectorAll('input[type=number]').forEach(inp=>{
-    inp.addEventListener('focus',()=>{
-        setTimeout(()=>inp.scrollIntoView({behavior:'smooth',block:'center'}),300);
-    });
-});
-
-// ==================== GO ====================
 window.addEventListener('load',init);
 </script>
-
 </body>
 </html>
