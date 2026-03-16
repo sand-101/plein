@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+    <!-- === PWA iOS === -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Plein ⛽">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0a0a0f">
+
+    <!-- Icône pour l'écran d'accueil (emoji en SVG encodé) -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMWMxYzFlIi8+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTAwIj7im708L3RleHQ+PC9zdmc+">
+
+    <title>Plein ⛽</title>
+
+    <style>
+        /* ==================== RESET ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            min-height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-overflow-scrolling: touch;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        /* ==================== APP LAYOUT ==================== */
+        .app {
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 12px 18px 50px;
+        }
+
+        /* ==================== HEADER ==================== */
+        .header {
+            text-align: center;
+            padding: 24px 0 6px;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header .sub {
+            font-size: 14px;
+            color: #8e8e93;
+            margin-top: 3px;
+        }
+
+        /* ==================== CARD ==================== */
+        .card {
+            background: #1c1c1e;
+            border-radius: 16px;
+            margin-bottom: 14px;
+            padding: 20px;
+            animation: cardIn 0.45s cubic-bezier(.21,1.02,.73,1) both;
+        }
+        .card:nth-child(2) { animation-delay: .04s }
+        .card:nth-child(3) { animation-delay: .08s }
+        .card:nth-child(4) { animation-delay: .12s }
+        .card:nth-child(5) { animation-delay: .16s }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(18px) }
+            to { opacity: 1; transform: translateY(0) }
+        }
+
+        .card-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8e8e93;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            margin-bottom: 14px;
+        }
+
+        /* ==================== JAUGE ==================== */
+        .gauge-card { padding: 22px 18px 16px; background: linear-gradient(180deg,#1c1c1e,#17171a) }
+
+        .gauge-wrap { display: flex; flex-direction: column; align-items: center }
+
+        .gauge-box { position: relative; width: 240px; height: 145px }
+
+        .gauge-svg { width: 100%; height: 100%; overflow: visible }
+
+        .g-bg   { fill:none; stroke:#2c2c2e; stroke-width:15; stroke-linecap:round }
+        .g-fill { fill:none; stroke-width:15; stroke-linecap:round;
+                   transition: stroke-dashoffset .4s cubic-bezier(.25,.46,.45,.94), stroke .4s ease;
+                   filter: drop-shadow(0 0 6px rgba(255,149,0,.25)) }
+
+        .g-tick       { stroke:#48484a; stroke-width:1.5 }
+        .g-tick-major { stroke:#636366; stroke-width:2.5 }
+
+        .g-lbl { fill:#8e8e93; font-size:11px; font-family:-apple-system,sans-serif; font-weight:500 }
+
+        .g-needle {
+            transition: transform .4s cubic-bezier(.25,.46,.45,.94);
+            transform-origin: 120px 120px;
+        }
+        .g-needle-bar  { fill:#ff3b30; filter: drop-shadow(0 0 3px rgba(255,59,48,.5)) }
+        .g-needle-cap1 { fill:#3a3a3c }
+        .g-needle-cap2 { fill:#636366 }
+
+        /* Value display */
+        .g-val { display:flex; align-items:baseline; justify-content:center; gap:4px; margin-top:12px }
+        .g-pct { font-size:42px; font-weight:700; letter-spacing:-2px; font-variant-numeric:tabular-nums }
+        .g-pct-sign { font-size:20px; font-weight:600; color:#8e8e93 }
+        .g-liters { font-size:14px; color:#8e8e93; text-align:center; margin-top:2px }
+
+        /* ==================== QUICK BUTTONS ==================== */
+        .q-btns { display:flex; gap:6px; margin-top:18px; width:100% }
+
+        .q-btn {
+            flex: 1;
+            padding: 10px 2px;
+            border-radius: 10px;
+            border: none;
+            background: #2c2c2e;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: -apple-system,sans-serif;
+            cursor: pointer;
+            transition: all .15s ease;
+        }
+        .q-btn:active { transform: scale(.94); background: #3a3a3c }
+        .q-btn.on { background: #ff9500; color: #000 }
+        .q-btn small { display:block; font-size:10px; font-weight:400; opacity:.55; margin-top:1px }
+
+        /* ==================== SLIDER ==================== */
+        .slider-sec { margin-top: 18px }
+
+        input[type=range] {
+            -webkit-appearance: none; appearance: none;
+            width: 100%; height: 6px;
+            border-radius: 3px;
+            background: #2c2c2e;
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.06);
+        }
+
+        .slider-marks { display:flex; justify-content:space-between; margin-top:7px }
+        .slider-marks span { font-size:10px; color:#636366; font-weight:500 }
+
+        /* ==================== ALERT ==================== */
+        .alert {
+            display:none; align-items:center; gap:10px;
+            background: rgba(255,59,48,.1);
+            border: 1px solid rgba(255,59,48,.18);
+            border-radius: 14px;
+            padding: 13px 15px;
+            margin-bottom: 14px;
+            animation: fadeIn .3s ease;
+        }
+        .alert.on { display:flex }
+        .alert-dot { width:10px; height:10px; border-radius:50%; background:#ff3b30; flex-shrink:0;
+                     animation: blink 1.8s infinite }
+        .alert-txt { font-size:13px; color:#ff6961; font-weight:500; line-height:1.35 }
+
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+
+        /* ==================== PRIX ==================== */
+        .price-card { padding: 16px 18px }
+
+        .price-row {
+            display: flex; align-items: center;
+            background: #2c2c2e; border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: border-color .2s;
+        }
+        .price-row:focus-within { border-color: #ff9500 }
+
+        .price-row .sym {
+            padding: 13px 13px; font-size:19px; font-weight:700;
+            color: #ff9500; background: rgba(255,149,0,.08);
+            min-width:48px; text-align:center;
+        }
+        .price-row input[type=number] {
+            flex:1; background:transparent; border:none;
+            color:#fff; font-size:21px; font-weight:600;
+            padding:13px 10px; outline:none;
+            font-family:-apple-system,sans-serif;
+            min-width:0;
+            -webkit-user-select:text; user-select:text;
+        }
+        .price-row input::placeholder { color:#48484a }
+        .price-row .unit { padding:13px; font-size:13px; color:#636366; font-weight:500; white-space:nowrap }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0 }
+        input[type=number] { -moz-appearance:textfield }
+
+        /* PILLS */
+        .pills { display:flex; gap:6px; margin-top:12px; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:2px; scrollbar-width:none }
+        .pills::-webkit-scrollbar { display:none }
+
+        .pill {
+            flex-shrink:0; padding:8px 13px;
+            border-radius:20px; border:1.5px solid #3a3a3c;
+            background:transparent; color:#e5e5ea;
+            font-size:12.5px; font-weight:500;
+            font-family:-apple-system,sans-serif;
+            cursor:pointer; transition:all .15s;
+            white-space:nowrap;
+        }
+        .pill:active { transform:scale(.94) }
+        .pill.on { background:#ff9500; border-color:#ff9500; color:#000; font-weight:600 }
+
+        /* ==================== RÉSULTAT ==================== */
+        .res-card {
+            background: linear-gradient(145deg,#1c1c1e,#19191d);
+            border: 1px solid #2c2c2e;
+            padding: 26px 20px 22px;
+        }
+
+        .res-top {
+            text-align: center;
+            padding-bottom: 22px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid rgba(255,255,255,.05);
+        }
+
+        .res-lbl {
+            font-size: 12px; font-weight:600;
+            color:#8e8e93; text-transform:uppercase;
+            letter-spacing:1px; margin-bottom:8px;
+        }
+
+        .res-amount {
+            font-size: 52px; font-weight: 800;
+            letter-spacing: -2.5px;
+            background: linear-gradient(135deg,#ff9f0a,#ff6723);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            background-clip:text;
+            line-height: 1.1;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .res-detail { font-size:13px; color:#8e8e93; margin-top:6px }
+
+        /* STATS */
+        .stats { display:grid; grid-template-columns:1fr 1fr; gap:10px }
+
+        .stat {
+            background:#2c2c2e; border-radius:13px;
+            padding:14px; text-align:center;
+        }
+        .stat-v { font-size:20px; font-weight:700; font-variant-numeric:tabular-nums }
+        .stat-l { font-size:10px; color:#8e8e93; font-weight:500; text-transform:uppercase; letter-spacing:.3px; margin-top:3px; line-height:1.3 }
+
+        /* ==================== KEYBOARD OPEN ==================== */
+        @media (max-height:480px) {
+            .gauge-card { display:none }
+            .header { padding:10px 0 4px }
+            .header h1 { font-size:20px }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+
+    <div class="header">
+        <h1>⛽ Plein d'Essence</h1>
+        <p class="sub">Réservoir 42 L</p>
+    </div>
+
+    <!-- ===== JAUGE ===== -->
+    <div class="card gauge-card">
+        <div class="gauge-wrap">
+            <div class="gauge-box">
+                <svg class="gauge-svg" viewBox="0 0 240 148">
+                    <path class="g-bg" d="M 22 130 A 100 100 0 0 1 218 130" id="gBg"/>
+                    <path class="g-fill" d="M 22 130 A 100 100 0 0 1 218 130" id="gFill" stroke="#ff3b30"/>
+
+                    <line x1="30" y1="123" x2="40" y2="115" class="g-tick-major"/>
+                    <line x1="42" y1="58" x2="54" y2="64" class="g-tick"/>
+                    <line x1="120" y1="25" x2="120" y2="39" class="g-tick-major"/>
+                    <line x1="195" y1="58" x2="183" y2="64" class="g-tick"/>
+                    <line x1="210" y1="123" x2="200" y2="115" class="g-tick-major"/>
+
+                    <line x1="32" y1="89" x2="43" y2="87" class="g-tick" style="stroke:#3a3a3c"/>
+                    <line x1="74" y1="40" x2="80" y2="50" class="g-tick" style="stroke:#3a3a3c"/>
+                    <line x1="160" y1="40" x2="154" y2="50" class="g-tick" style="stroke:#3a3a3c"/>
+                    <line x1="207" y1="89" x2="196" y2="87" class="g-tick" style="stroke:#3a3a3c"/>
+
+                    <text x="14" y="142" class="g-lbl" text-anchor="middle">0</text>
+                    <text x="120" y="19" class="g-lbl" text-anchor="middle">½</text>
+                    <text x="228" y="142" class="g-lbl" text-anchor="middle">1</text>
+                    <text x="203" y="108" style="font-size:12px;fill:#636366">⛽</text>
+
+                    <g class="g-needle" id="needle">
+                        <polygon class="g-needle-bar" points="120,42 117,118 120,123 123,118"/>
+                        <circle class="g-needle-cap1" cx="120" cy="120" r="8"/>
+                        <circle class="g-needle-cap2" cx="120" cy="120" r="4.5"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="g-val">
+                <span class="g-pct" id="dPct">12</span>
+                <span class="g-pct-sign">%</span>
+            </div>
+            <div class="g-liters" id="dLiters">5,0 L dans le réservoir</div>
+
+            <div class="q-btns">
+                <button class="q-btn" data-l="0">Vide<small>0 L</small></button>
+                <button class="q-btn" data-l="12">Réserve<small>5 L</small></button>
+                <button class="q-btn" data-l="25">¼<small>10,5 L</small></button>
+                <button class="q-btn" data-l="50">½<small>21 L</small></button>
+                <button class="q-btn" data-l="75">¾<small>31,5 L</small></button>
+            </div>
+        </div>
+
+        <div class="slider-sec">
+            <input type="range" id="sLevel" min="0" max="100" value="12" step="1">
+            <div class="slider-marks">
+                <span>Vide</span><span>¼</span><span>½</span><span>¾</span><span>Plein</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ALERT -->
+    <div class="alert" id="alertBox">
+        <div class="alert-dot"></div>
+        <span class="alert-txt">Niveau très bas — faites le plein rapidement !</span>
+    </div>
+
+    <!-- ===== PRIX ===== -->
+    <div class="card price-card">
+        <div class="card-label">Prix à la pompe</div>
+        <div class="price-row">
+            <span class="sym">€</span>
+            <input type="number" id="iPrice" value="1.72" step="0.01" min="0"
+                   placeholder="1.72" inputmode="decimal" enterkeyhint="done">
+            <span class="unit">/ litre</span>
+        </div>
+        <div class="pills" id="pills">
+            <button class="pill" data-p="1.58">E10 · 1,58</button>
+            <button class="pill" data-p="1.65">SP95 · 1,65</button>
+            <button class="pill on" data-p="1.72">SP98 · 1,72</button>
+            <button class="pill" data-p="1.55">Diesel · 1,55</button>
+            <button class="pill" data-p="0.85">E85 · 0,85</button>
+        </div>
+    </div>
+
+    <!-- ===== RÉSULTAT ===== -->
+    <div class="card res-card">
+        <div class="res-top">
+            <div class="res-lbl">Montant à mettre</div>
+            <div class="res-amount" id="rAmount">63,58 €</div>
+            <div class="res-detail" id="rDetail">37,0 L × 1,72 €/L</div>
+        </div>
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-v" id="sAdd">37,0 L</div>
+                <div class="stat-l">Litres à ajouter</div>
+            </div>
+            <div class="stat">
+                <div class="stat-v" id="sCur">5,0 L</div>
+                <div class="stat-l">Litres actuels</div>
+            </div>
+            <div class="stat">
+                <div class="stat-v" id="sFull">72,24 €</div>
+                <div class="stat-l">Prix plein complet</div>
+            </div>
+            <div class="stat">
+                <div class="stat-v">42 L</div>
+                <div class="stat-l">Capacité réservoir</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const T = 42;
+let lvl = 12, prc = 1.72;
+
+const $ = id => document.getElementById(id);
+const f = (n,d=1) => n.toFixed(d).replace('.',',');
+const fe = n => f(n,2) + ' €';
+
+// Elements
+const sLevel = $('sLevel'), iPrice = $('iPrice');
+const gFill = $('gFill'), needle = $('needle'), gBg = $('gBg');
+const dPct = $('dPct'), dLiters = $('dLiters');
+const rAmount = $('rAmount'), rDetail = $('rDetail');
+const sAdd = $('sAdd'), sCur = $('sCur'), sFull = $('sFull');
+const alertBox = $('alertBox');
+const qBtns = document.querySelectorAll('.q-btn');
+const pills = document.querySelectorAll('.pill');
+
+let arcLen;
+
+function init() {
+    arcLen = gBg.getTotalLength();
+    gFill.style.strokeDasharray = arcLen;
+    calc();
+}
+
+function gColor(p) {
+    if(p<=12) return '#ff3b30';
+    if(p<=25) return '#ff6723';
+    if(p<=40) return '#ff9f0a';
+    if(p<=65) return '#ffd60a';
+    return '#30d158';
+}
+
+function calc() {
+    const cL = (lvl/100)*T, add = T-cL, cost = add*prc, full = T*prc;
+
+    // Gauge
+    gFill.style.strokeDashoffset = arcLen - (arcLen*lvl/100);
+    gFill.style.stroke = gColor(lvl);
+    needle.style.transform = `rotate(${-90+(lvl/100)*180}deg)`;
+
+    dPct.textContent = lvl;
+    dLiters.textContent = `${f(cL)} L dans le réservoir`;
+
+    rAmount.textContent = fe(cost);
+    rDetail.textContent = `${f(add)} L × ${f(prc,2)} €/L`;
+    sAdd.textContent = `${f(add)} L`;
+    sCur.textContent = `${f(cL)} L`;
+    sFull.textContent = fe(full);
+
+    alertBox.classList.toggle('on', lvl <= 12);
+    qBtns.forEach(b => b.classList.toggle('on', parseInt(b.dataset.l)===lvl));
+}
+
+// Slider
+sLevel.addEventListener('input', e => { lvl = +e.target.value; calc() });
+
+// Price
+iPrice.addEventListener('input', () => {
+    prc = parseFloat(iPrice.value)||0;
+    pills.forEach(p => p.classList.remove('on'));
+    calc();
+});
+iPrice.addEventListener('keydown', e => { if(e.key==='Enter') iPrice.blur() });
+
+// Quick buttons
+qBtns.forEach(b => b.addEventListener('click', () => {
+    lvl = +b.dataset.l; sLevel.value = lvl; calc();
+}));
+
+// Fuel pills
+pills.forEach(p => p.addEventListener('click', () => {
+    prc = +p.dataset.p; iPrice.value = prc.toFixed(2);
+    pills.forEach(x => x.classList.remove('on'));
+    p.classList.add('on'); calc();
+}));
+
+// Focus scroll
+document.querySelectorAll('input[type=number]').forEach(inp => {
+    inp.addEventListener('focus', () => {
+        setTimeout(() => inp.scrollIntoView({behavior:'smooth',block:'center'}), 300);
+    });
+});
+
+window.addEventListener('load', init);
+</script>
+
+</body>
+</html>
