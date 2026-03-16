@@ -1,2 +1,2 @@
 # plein
-tool for checking refuel trarif
+tool for checking refuel cost in €
