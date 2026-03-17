@@ -9,35 +9,26 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0a0a0f">
     <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMWMxYzFlIi8+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTAwIj7im708L3RleHQ+PC9zdmc+">
-    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <title>Plein ⛽</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
         html{height:100%}
-        body{min-height:100%;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text',system-ui,sans-serif;background:#0a0a0f;color:#fff;-webkit-user-select:none;user-select:none;-webkit-overflow-scrolling:touch;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+        body{min-height:100%;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',system-ui,sans-serif;background:#0a0a0f;color:#fff;-webkit-user-select:none;user-select:none;-webkit-overflow-scrolling:touch;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
         .app{max-width:420px;margin:0 auto;padding:12px 18px 50px}
-
         .lang-bar{display:flex;justify-content:center;gap:4px;padding:14px 0 2px;flex-wrap:wrap}
         .lang-btn{width:40px;height:32px;border-radius:8px;border:2px solid transparent;background:#1c1c1e;font-size:18px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
-        .lang-btn:active{transform:scale(.92)}
-        .lang-btn.on{border-color:#ff9500;background:#2c2c2e}
-
+        .lang-btn:active{transform:scale(.92)}.lang-btn.on{border-color:#ff9500;background:#2c2c2e}
         .currency-bar{display:flex;justify-content:center;gap:6px;padding:8px 0 4px;flex-wrap:wrap}
         .cur-pill{padding:5px 12px;border-radius:14px;border:1.5px solid #3a3a3c;background:transparent;color:#aaa;font-size:12px;font-weight:600;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s}
-        .cur-pill:active{transform:scale(.94)}
-        .cur-pill.on{background:#ff9500;border-color:#ff9500;color:#000}
-
+        .cur-pill:active{transform:scale(.94)}.cur-pill.on{background:#ff9500;border-color:#ff9500;color:#000}
         .header{text-align:center;padding:10px 0 6px}
         .header h1{font-size:26px;font-weight:700;letter-spacing:-.5px}
         .header .sub{font-size:14px;color:#8e8e93;margin-top:3px}
-
         .card{background:#1c1c1e;border-radius:16px;margin-bottom:14px;padding:20px;animation:cardIn .45s cubic-bezier(.21,1.02,.73,1) both}
         .card:nth-child(2){animation-delay:.03s}.card:nth-child(3){animation-delay:.06s}.card:nth-child(4){animation-delay:.09s}.card:nth-child(5){animation-delay:.12s}.card:nth-child(6){animation-delay:.15s}.card:nth-child(7){animation-delay:.18s}.card:nth-child(8){animation-delay:.21s}
         @keyframes cardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
         .card-label{font-size:12px;font-weight:600;color:#8e8e93;text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px}
-
-        /* TANK */
         .tank-card{padding:18px}
         .tank-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
         .tank-visual{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
@@ -48,8 +39,7 @@
         .tank-sub{font-size:12px;color:#636366;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .stepper{display:flex;align-items:center;background:#2c2c2e;border-radius:10px;overflow:hidden;flex-shrink:0;border:1px solid #3a3a3c}
         .stepper button{width:44px;height:40px;border:none;background:transparent;color:#ff9500;font-size:22px;font-weight:500;font-family:-apple-system,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .1s}
-        .stepper button:active{background:rgba(255,149,0,.15)}
-        .stepper .sep{width:1px;height:22px;background:#48484a}
+        .stepper button:active{background:rgba(255,149,0,.15)}.stepper .sep{width:1px;height:22px;background:#48484a}
         .tank-bar-wrap{margin-top:12px;height:6px;background:#2c2c2e;border-radius:3px;overflow:hidden}
         .tank-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,#ff9f0a,#ff6723);transition:width .3s ease;min-width:2px}
         .tank-bar-labels{display:flex;justify-content:space-between;margin-top:5px}
@@ -57,10 +47,7 @@
         .tank-presets{display:flex;gap:6px;margin-top:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
         .tank-presets::-webkit-scrollbar{display:none}
         .tp{flex-shrink:0;padding:7px 12px;border-radius:18px;border:1.5px solid #3a3a3c;background:transparent;color:#e5e5ea;font-size:11.5px;font-weight:500;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
-        .tp:active{transform:scale(.94)}
-        .tp.on{background:#ff9500;border-color:#ff9500;color:#000;font-weight:600}
-
-        /* GAUGE */
+        .tp:active{transform:scale(.94)}.tp.on{background:#ff9500;border-color:#ff9500;color:#000;font-weight:600}
         .gauge-card{padding:22px 18px 16px;background:linear-gradient(180deg,#1c1c1e,#17171a)}
         .gauge-wrap{display:flex;flex-direction:column;align-items:center}
         .gauge-box{position:relative;width:240px;height:145px}
@@ -78,23 +65,18 @@
         .g-liters{font-size:14px;color:#8e8e93;text-align:center;margin-top:2px}
         .q-btns{display:flex;gap:6px;margin-top:18px;width:100%}
         .q-btn{flex:1;padding:10px 2px;border-radius:10px;border:none;background:#2c2c2e;color:#fff;font-size:13px;font-weight:600;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s}
-        .q-btn:active{transform:scale(.94);background:#3a3a3c}
-        .q-btn.on{background:#ff9500;color:#000}
+        .q-btn:active{transform:scale(.94);background:#3a3a3c}.q-btn.on{background:#ff9500;color:#000}
         .q-btn small{display:block;font-size:10px;font-weight:400;opacity:.55;margin-top:1px}
         .slider-sec{margin-top:18px}
         input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:#2c2c2e;outline:none}
         input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:30px;height:30px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.06)}
         .slider-marks{display:flex;justify-content:space-between;margin-top:7px}
         .slider-marks span{font-size:10px;color:#636366;font-weight:500}
-
-        .alert{display:none;align-items:center;gap:10px;background:rgba(255,59,48,.1);border:1px solid rgba(255,59,48,.18);border-radius:14px;padding:13px 15px;margin-bottom:14px;animation:fadeIn .3s ease}
+        .alert{display:none;align-items:center;gap:10px;background:rgba(255,59,48,.1);border:1px solid rgba(255,59,48,.18);border-radius:14px;padding:13px 15px;margin-bottom:14px}
         .alert.on{display:flex}
         .alert-dot{width:10px;height:10px;border-radius:50%;background:#ff3b30;flex-shrink:0;animation:blink 1.8s infinite}
         .alert-txt{font-size:13px;color:#ff6961;font-weight:500;line-height:1.35}
         @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-
-        /* PRICE */
         .price-card{padding:16px 18px}
         .price-row{display:flex;align-items:center;background:#2c2c2e;border-radius:12px;overflow:hidden;border:2px solid transparent;transition:border-color .2s}
         .price-row:focus-within{border-color:#ff9500}
@@ -107,10 +89,7 @@
         .pills{display:flex;gap:6px;margin-top:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
         .pills::-webkit-scrollbar{display:none}
         .pill{flex-shrink:0;padding:8px 13px;border-radius:20px;border:1.5px solid #3a3a3c;background:transparent;color:#e5e5ea;font-size:12.5px;font-weight:500;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
-        .pill:active{transform:scale(.94)}
-        .pill.on{background:#ff9500;border-color:#ff9500;color:#000;font-weight:600}
-
-        /* RESULT */
+        .pill:active{transform:scale(.94)}.pill.on{background:#ff9500;border-color:#ff9500;color:#000;font-weight:600}
         .res-card{background:linear-gradient(145deg,#1c1c1e,#19191d);border:1px solid #2c2c2e;padding:26px 20px 22px}
         .res-top{text-align:center;padding-bottom:22px;margin-bottom:18px;border-bottom:1px solid rgba(255,255,255,.05)}
         .res-lbl{font-size:12px;font-weight:600;color:#8e8e93;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
@@ -120,131 +99,79 @@
         .stat{background:#2c2c2e;border-radius:13px;padding:14px;text-align:center}
         .stat-v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
         .stat-l{font-size:10px;color:#8e8e93;font-weight:500;text-transform:uppercase;letter-spacing:.3px;margin-top:3px;line-height:1.3}
-
-        /* ===== STATIONS CARD ===== */
         .stations-card{padding:18px;overflow:hidden}
-
-        .locate-btn{
-            width:100%;padding:14px;border:none;border-radius:12px;
-            background:linear-gradient(135deg,#007aff,#5856d6);
-            color:#fff;font-size:15px;font-weight:600;
-            font-family:-apple-system,sans-serif;
-            cursor:pointer;transition:all .15s;
-            display:flex;align-items:center;justify-content:center;gap:8px;
-        }
+        .locate-btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#007aff,#5856d6);color:#fff;font-size:15px;font-weight:600;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}
         .locate-btn:active{transform:scale(.97);opacity:.85}
-        .locate-btn:disabled{opacity:.5;transform:none}
+        .locate-btn:disabled{opacity:.5}
         .locate-btn .spinner{display:none;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
         .locate-btn.loading .spinner{display:block}
         .locate-btn.loading .btn-icon{display:none}
         @keyframes spin{to{transform:rotate(360deg)}}
-
-        /* Radius selector */
         .radius-row{display:flex;align-items:center;gap:10px;margin-top:14px}
         .radius-row label{font-size:12px;color:#8e8e93;white-space:nowrap}
-        .radius-row input[type=range]{flex:1}
         .radius-val{font-size:13px;font-weight:600;color:#ff9500;min-width:45px;text-align:right}
-
-        /* Fuel type filter */
         .fuel-filter{display:flex;gap:6px;margin-top:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
         .fuel-filter::-webkit-scrollbar{display:none}
         .ff-btn{flex-shrink:0;padding:7px 13px;border-radius:18px;border:1.5px solid #3a3a3c;background:transparent;color:#e5e5ea;font-size:12px;font-weight:500;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
-        .ff-btn:active{transform:scale(.94)}
-        .ff-btn.on{background:#007aff;border-color:#007aff;color:#fff;font-weight:600}
-
-        /* Map */
+        .ff-btn:active{transform:scale(.94)}.ff-btn.on{background:#007aff;border-color:#007aff;color:#fff;font-weight:600}
         .map-wrap{margin-top:14px;border-radius:14px;overflow:hidden;height:260px;background:#2c2c2e;position:relative}
         .map-wrap.hidden{display:none}
         #map{width:100%;height:100%}
         .leaflet-control-attribution{display:none!important}
         .leaflet-tile-pane{filter:brightness(.8) contrast(1.1) saturate(.8)}
-
-        /* Station list */
-        .station-list{margin-top:14px}
-        .station-list.hidden{display:none}
-
-        .station-item{
-            display:flex;align-items:center;gap:12px;
-            padding:14px;background:#2c2c2e;border-radius:13px;
-            margin-bottom:8px;cursor:pointer;transition:all .15s;
-            position:relative;overflow:hidden;
-        }
+        .station-list{margin-top:14px}.station-list.hidden{display:none}
+        .station-item{display:flex;align-items:center;gap:12px;padding:14px;background:#2c2c2e;border-radius:13px;margin-bottom:8px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
         .station-item:active{transform:scale(.98);background:#3a3a3c}
         .station-item.cheapest{border:1.5px solid rgba(48,209,88,.3);background:rgba(48,209,88,.06)}
-
-        .station-rank{
-            width:32px;height:32px;border-radius:50%;
-            display:flex;align-items:center;justify-content:center;
-            font-size:14px;font-weight:700;flex-shrink:0;
-            background:#3a3a3c;color:#fff;
-        }
+        .station-rank{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;background:#3a3a3c;color:#fff}
         .station-item.cheapest .station-rank{background:#30d158;color:#000}
-
         .station-info{flex:1;min-width:0}
         .station-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .station-addr{font-size:11px;color:#8e8e93;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .station-dist{font-size:11px;color:#636366;margin-top:1px}
-
         .station-price-box{text-align:right;flex-shrink:0}
         .station-price{font-size:20px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
         .station-item.cheapest .station-price{color:#30d158}
         .station-price-unit{font-size:10px;color:#636366}
         .station-savings{font-size:11px;color:#30d158;font-weight:600;margin-top:2px}
-
         .station-empty{text-align:center;padding:30px 20px;color:#636366;font-size:13px;line-height:1.5}
-        .station-empty .empty-icon{font-size:36px;margin-bottom:10px}
-
-        /* Use price button */
-        .use-price-tag{
-            display:inline-block;margin-top:6px;padding:4px 10px;
-            border-radius:8px;background:rgba(255,149,0,.12);
-            color:#ff9500;font-size:10px;font-weight:600;
-            text-transform:uppercase;letter-spacing:.3px;
-        }
-
+        .use-price-tag{display:inline-block;margin-top:6px;padding:4px 10px;border-radius:8px;background:rgba(255,149,0,.12);color:#ff9500;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+        .country-badge{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:10px;background:#2c2c2e;font-size:12px;color:#aaa;margin-top:12px}
+        .country-badge .cb-flag{font-size:16px}
+        .country-badge .cb-name{font-weight:600;color:#fff}
+        .osm-note{margin-top:10px;padding:10px 14px;background:rgba(0,122,255,.08);border-radius:10px;font-size:12px;color:#8e8e93;line-height:1.4}
         .save-toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-80px);background:#2c2c2e;color:#fff;padding:10px 20px;border-radius:22px;font-size:13px;font-weight:500;box-shadow:0 8px 30px rgba(0,0,0,.4);transition:transform .35s cubic-bezier(.21,1.02,.73,1),opacity .35s;opacity:0;z-index:1000;pointer-events:none}
         .save-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-
         @media(max-height:480px){.gauge-card{display:none}.header{padding:10px 0 4px}.header h1{font-size:20px}.map-wrap{height:180px}}
     </style>
 </head>
 <body>
 <div class="save-toast" id="toast">💾</div>
 <div class="app">
-
     <div class="lang-bar" id="langBar"></div>
     <div class="currency-bar" id="curBar"></div>
-
     <div class="header">
         <h1 id="hTitle">⛽ Plein d'Essence</h1>
         <p class="sub" id="hSub">Réservoir 42 L</p>
     </div>
-
     <!-- STATIONS -->
     <div class="card stations-card">
         <div class="card-label" id="lStations">📍 Stations à proximité</div>
-
         <button class="locate-btn" id="locateBtn">
-            <span class="btn-icon">📍</span>
-            <span class="spinner"></span>
+            <span class="btn-icon">📍</span><span class="spinner"></span>
             <span id="locateTxt">Trouver les stations proches</span>
         </button>
-
         <div class="radius-row">
             <label id="lRadius">Rayon :</label>
             <input type="range" id="radiusSlider" min="1" max="30" value="5" step="1">
             <span class="radius-val" id="radiusVal">5 km</span>
         </div>
-
+        <div id="countryBadge"></div>
         <div class="fuel-filter" id="fuelFilter"></div>
-
-        <div class="map-wrap hidden" id="mapWrap">
-            <div id="map"></div>
-        </div>
-
+        <div class="map-wrap hidden" id="mapWrap"><div id="map"></div></div>
+        <div id="osmNote" class="osm-note" style="display:none"></div>
         <div class="station-list hidden" id="stationList"></div>
     </div>
-
     <!-- TANK -->
     <div class="card tank-card">
         <div class="card-label" id="lTank"></div>
@@ -262,7 +189,6 @@
         <div class="tank-bar-labels"><span>10 L</span><span>50 L</span><span>100 L</span></div>
         <div class="tank-presets" id="tankPresets"></div>
     </div>
-
     <!-- GAUGE -->
     <div class="card gauge-card">
         <div class="card-label" id="lLevel"></div>
@@ -271,24 +197,11 @@
                 <svg class="gauge-svg" viewBox="0 0 240 148">
                     <path class="g-bg" d="M 22 130 A 100 100 0 0 1 218 130" id="gBg"/>
                     <path class="g-fill" d="M 22 130 A 100 100 0 0 1 218 130" id="gFill" stroke="#ff3b30"/>
-                    <line x1="30" y1="123" x2="40" y2="115" class="g-tick-major"/>
-                    <line x1="42" y1="58" x2="54" y2="64" class="g-tick"/>
-                    <line x1="120" y1="25" x2="120" y2="39" class="g-tick-major"/>
-                    <line x1="195" y1="58" x2="183" y2="64" class="g-tick"/>
-                    <line x1="210" y1="123" x2="200" y2="115" class="g-tick-major"/>
-                    <line x1="32" y1="89" x2="43" y2="87" class="g-tick" style="stroke:#3a3a3c"/>
-                    <line x1="74" y1="40" x2="80" y2="50" class="g-tick" style="stroke:#3a3a3c"/>
-                    <line x1="160" y1="40" x2="154" y2="50" class="g-tick" style="stroke:#3a3a3c"/>
-                    <line x1="207" y1="89" x2="196" y2="87" class="g-tick" style="stroke:#3a3a3c"/>
-                    <text x="14" y="142" class="g-lbl" text-anchor="middle">0</text>
-                    <text x="120" y="19" class="g-lbl" text-anchor="middle">½</text>
-                    <text x="228" y="142" class="g-lbl" text-anchor="middle">1</text>
+                    <line x1="30" y1="123" x2="40" y2="115" class="g-tick-major"/><line x1="42" y1="58" x2="54" y2="64" class="g-tick"/><line x1="120" y1="25" x2="120" y2="39" class="g-tick-major"/><line x1="195" y1="58" x2="183" y2="64" class="g-tick"/><line x1="210" y1="123" x2="200" y2="115" class="g-tick-major"/>
+                    <line x1="32" y1="89" x2="43" y2="87" class="g-tick" style="stroke:#3a3a3c"/><line x1="74" y1="40" x2="80" y2="50" class="g-tick" style="stroke:#3a3a3c"/><line x1="160" y1="40" x2="154" y2="50" class="g-tick" style="stroke:#3a3a3c"/><line x1="207" y1="89" x2="196" y2="87" class="g-tick" style="stroke:#3a3a3c"/>
+                    <text x="14" y="142" class="g-lbl" text-anchor="middle">0</text><text x="120" y="19" class="g-lbl" text-anchor="middle">½</text><text x="228" y="142" class="g-lbl" text-anchor="middle">1</text>
                     <text x="203" y="108" style="font-size:12px;fill:#636366">⛽</text>
-                    <g class="g-needle" id="needle">
-                        <polygon class="g-needle-bar" points="120,42 117,118 120,123 123,118"/>
-                        <circle class="g-needle-cap1" cx="120" cy="120" r="8"/>
-                        <circle class="g-needle-cap2" cx="120" cy="120" r="4.5"/>
-                    </g>
+                    <g class="g-needle" id="needle"><polygon class="g-needle-bar" points="120,42 117,118 120,123 123,118"/><circle class="g-needle-cap1" cx="120" cy="120" r="8"/><circle class="g-needle-cap2" cx="120" cy="120" r="4.5"/></g>
                 </svg>
             </div>
             <div class="g-val"><span class="g-pct" id="dPct">12</span><span class="g-pct-sign">%</span></div>
@@ -300,9 +213,7 @@
             <div class="slider-marks" id="sliderMarks"></div>
         </div>
     </div>
-
     <div class="alert" id="alertBox"><div class="alert-dot"></div><span class="alert-txt" id="alertTxt"></span></div>
-
     <!-- PRICE -->
     <div class="card price-card">
         <div class="card-label" id="lPrice"></div>
@@ -313,7 +224,6 @@
         </div>
         <div class="pills" id="pillsWrap"></div>
     </div>
-
     <!-- RESULT -->
     <div class="card res-card">
         <div class="res-top">
@@ -329,10 +239,7 @@
         </div>
     </div>
 </div>
-
-<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script>
 // ==================== CURRENCIES ====================
 const CURRENCIES={
@@ -343,373 +250,930 @@ const CURRENCIES={
     CNY:{symbol:'¥',code:'CNY',decSep:'.',thousSep:',',after:false,flag:'🇨🇳'},
     JPY:{symbol:'¥',code:'JPY',decSep:'.',thousSep:',',after:false,flag:'🇯🇵'},
     BRL:{symbol:'R$',code:'BRL',decSep:',',thousSep:'.',after:false,flag:'🇧🇷'},
-    CHF:{symbol:'CHF',code:'CHF',decSep:'.',thousSep:"'",after:true,flag:'🇨🇭'},
+    CHF:{symbol:'CHF',code:'CHF',decSep:'.',thousSep:"'",after:true,flag:'🇨🇭'}
 };
 
 const FUEL_PRICES={
-    EUR:[{p:1.58,names:{fr:'E10',en:'E10',es:'E10',it:'E10',pt:'E10',ru:'E10',zh:'E10',ja:'E10'}},{p:1.65,names:{fr:'SP95',en:'SP95',es:'SP95',it:'SP95',pt:'SP95',ru:'АИ-95',zh:'95号',ja:'レギュラー'}},{p:1.72,names:{fr:'SP98',en:'SP98',es:'SP98',it:'SP98',pt:'SP98',ru:'АИ-98',zh:'98号',ja:'ハイオク'}},{p:1.55,names:{fr:'Diesel',en:'Diesel',es:'Diésel',it:'Diesel',pt:'Gasóleo',ru:'ДТ',zh:'柴油',ja:'軽油'}},{p:0.85,names:{fr:'E85',en:'E85',es:'E85',it:'E85',pt:'E85',ru:'E85',zh:'E85',ja:'E85'}}],
-    GBP:[{p:1.35,names:{en:'E10',fr:'E10'}},{p:1.40,names:{en:'Unleaded',fr:'SP95'}},{p:1.48,names:{en:'Super',fr:'SP98'}},{p:1.42,names:{en:'Diesel',fr:'Diesel'}},{p:0.75,names:{en:'E85',fr:'E85'}}],
-    USD:[{p:0.92,names:{en:'Regular 87',fr:'Regular'}},{p:1.02,names:{en:'Mid-Grade 89',fr:'Mid-Grade'}},{p:1.12,names:{en:'Premium 93',fr:'Premium'}},{p:1.05,names:{en:'Diesel',fr:'Diesel'}},{p:0.65,names:{en:'E85',fr:'E85'}}],
-    RUB:[{p:54,names:{ru:'АИ-92',en:'AI-92'}},{p:58,names:{ru:'АИ-95',en:'AI-95'}},{p:65,names:{ru:'АИ-98',en:'AI-98'}},{p:60,names:{ru:'ДТ',en:'Diesel'}}],
-    CNY:[{p:8.20,names:{zh:'92号',en:'RON 92'}},{p:8.80,names:{zh:'95号',en:'RON 95'}},{p:9.90,names:{zh:'98号',en:'RON 98'}},{p:8.10,names:{zh:'柴油',en:'Diesel'}}],
-    JPY:[{p:175,names:{ja:'レギュラー',en:'Regular'}},{p:186,names:{ja:'ハイオク',en:'Premium'}},{p:155,names:{ja:'軽油',en:'Diesel'}}],
-    BRL:[{p:5.80,names:{pt:'Gasolina',en:'Gasoline'}},{p:6.20,names:{pt:'Aditivada',en:'Premium'}},{p:5.90,names:{pt:'Diesel S-10',en:'Diesel'}},{p:3.60,names:{pt:'Etanol',en:'Ethanol'}}],
-    CHF:[{p:1.72,names:{fr:'SP95',en:'SP95'}},{p:1.80,names:{fr:'SP98',en:'SP98'}},{p:1.85,names:{fr:'Diesel',en:'Diesel'}}],
+    EUR:[
+        {p:1.58,names:{fr:'E10',en:'E10',es:'E10',it:'E10',pt:'E10',ru:'E10',zh:'E10',ja:'E10'}},
+        {p:1.65,names:{fr:'SP95',en:'SP95',es:'SP95',it:'SP95',pt:'SP95',ru:'АИ-95',zh:'95号',ja:'レギュラー'}},
+        {p:1.72,names:{fr:'SP98',en:'SP98',es:'SP98',it:'SP98',pt:'SP98',ru:'АИ-98',zh:'98号',ja:'ハイオク'}},
+        {p:1.55,names:{fr:'Diesel',en:'Diesel',es:'Diésel',it:'Diesel',pt:'Gasóleo',ru:'ДТ',zh:'柴油',ja:'軽油'}},
+        {p:0.85,names:{fr:'E85',en:'E85',es:'E85',it:'E85',pt:'E85',ru:'E85',zh:'E85',ja:'E85'}}
+    ],
+    GBP:[{p:1.35,names:{en:'E10'}},{p:1.40,names:{en:'Unleaded'}},{p:1.48,names:{en:'Super'}},{p:1.42,names:{en:'Diesel'}}],
+    USD:[{p:0.92,names:{en:'Regular 87'}},{p:1.02,names:{en:'Mid-Grade'}},{p:1.12,names:{en:'Premium'}},{p:1.05,names:{en:'Diesel'}}],
+    RUB:[{p:54,names:{ru:'АИ-92'}},{p:58,names:{ru:'АИ-95'}},{p:65,names:{ru:'АИ-98'}},{p:60,names:{ru:'ДТ'}}],
+    CNY:[{p:8.20,names:{zh:'92号'}},{p:8.80,names:{zh:'95号'}},{p:9.90,names:{zh:'98号'}},{p:8.10,names:{zh:'柴油'}}],
+    JPY:[{p:175,names:{ja:'レギュラー'}},{p:186,names:{ja:'ハイオク'}},{p:155,names:{ja:'軽油'}}],
+    BRL:[{p:5.80,names:{pt:'Gasolina'}},{p:6.20,names:{pt:'Aditivada'}},{p:5.90,names:{pt:'Diesel'}},{p:3.60,names:{pt:'Etanol'}}],
+    CHF:[{p:1.72,names:{fr:'SP95'}},{p:1.80,names:{fr:'SP98'}},{p:1.85,names:{fr:'Diesel'}}]
 };
-
-// Fuel types for station filter (French gov API codes)
-const FUEL_TYPES_FR=['Gazole','SP95','SP98','E10','E85','GPLc'];
 
 // ==================== i18n ====================
 const LANGS={
-    fr:{flag:'🇫🇷',name:'Français',defaultCur:'EUR',title:'⛽ Plein d\'Essence',tankLabel:'Capacité du réservoir',levelLabel:'Niveau actuel',priceLabel:'Prix à la pompe',resultLabel:'Montant à mettre',addLabel:'Litres à ajouter',curLabel:'Litres actuels',fullLabel:'Prix plein complet',capLabel:'Capacité réservoir',perLiter:'/ litre',inTank:'{n} L dans le réservoir',sub:'Réservoir {n} L',alert:'Niveau très bas — faites le plein rapidement !',toastTank:'🛢️ Réservoir : {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',empty:'Vide',reserve:'Réserve',full:'Plein',cat:{xs:'Petite citadine',s:'Citadine',m:'Compacte / Berline',l:'Berline / Break',xl:'SUV',xxl:'Grand SUV / Utilitaire',xxxl:'Grand véhicule'},vehicles:{35:'Citadine · 35L',42:'Compacte · 42L',50:'Berline · 50L',55:'Break · 55L',60:'SUV · 60L',70:'Grand SUV · 70L',80:'Utilitaire · 80L'},sliderMarks:['Vide','¼','½','¾','Plein'],stationsLabel:'📍 Stations à proximité',locateBtn:'Trouver les stations proches',locating:'Recherche en cours...',radiusLabel:'Rayon :',noStations:'Aucune station trouvée dans ce rayon. Essayez d\'augmenter la distance.',stationError:'Impossible de récupérer les stations. Vérifiez votre connexion.',geoError:'Géolocalisation refusée. Activez-la dans Réglages > Confidentialité.',usePrice:'Utiliser ce prix',savings:'Économie : {n}',cheapest:'Moins cher !',perLiterLabel:'/L',updated:'Mis à jour : {n}',navigate:'Itinéraire',allFuels:'Tous'},
-    en:{flag:'🇬🇧',name:'English',defaultCur:'GBP',title:'⛽ Fuel Calculator',tankLabel:'Tank capacity',levelLabel:'Current level',priceLabel:'Price at pump',resultLabel:'Amount to pay',addLabel:'Liters to add',curLabel:'Current liters',fullLabel:'Full tank price',capLabel:'Tank capacity',perLiter:'/ liter',inTank:'{n} L in the tank',sub:'Tank {n} L',alert:'Very low — fill up soon!',toastTank:'🛢️ Tank: {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',empty:'Empty',reserve:'Reserve',full:'Full',cat:{xs:'Small city car',s:'City car',m:'Compact / Sedan',l:'Sedan / Wagon',xl:'SUV',xxl:'Large SUV / Van',xxxl:'Large vehicle'},vehicles:{35:'City car · 35L',42:'Compact · 42L',50:'Sedan · 50L',55:'Wagon · 55L',60:'SUV · 60L',70:'Large SUV · 70L',80:'Van · 80L'},sliderMarks:['Empty','¼','½','¾','Full'],stationsLabel:'📍 Nearby stations',locateBtn:'Find nearby stations',locating:'Searching...',radiusLabel:'Radius:',noStations:'No stations found. Try increasing the radius.',stationError:'Could not fetch stations. Check your connection.',geoError:'Location denied. Enable it in Settings > Privacy.',usePrice:'Use this price',savings:'Save: {n}',cheapest:'Cheapest!',perLiterLabel:'/L',updated:'Updated: {n}',navigate:'Directions',allFuels:'All'},
-    es:{flag:'🇪🇸',name:'Español',defaultCur:'EUR',title:'⛽ Calculadora',tankLabel:'Capacidad del depósito',levelLabel:'Nivel actual',priceLabel:'Precio en surtidor',resultLabel:'Importe a poner',addLabel:'Litros a añadir',curLabel:'Litros actuales',fullLabel:'Depósito lleno',capLabel:'Capacidad',perLiter:'/ litro',inTank:'{n} L en el depósito',sub:'Depósito {n} L',alert:'Nivel muy bajo — ¡reposta!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',empty:'Vacío',reserve:'Reserva',full:'Lleno',cat:{xs:'Utilitario',s:'Utilitario',m:'Compacto',l:'Berlina',xl:'SUV',xxl:'SUV grande',xxxl:'Grande'},vehicles:{35:'Utilitario · 35L',42:'Compacto · 42L',50:'Berlina · 50L',55:'Familiar · 55L',60:'SUV · 60L',70:'SUV grande · 70L',80:'Furgoneta · 80L'},sliderMarks:['Vacío','¼','½','¾','Lleno'],stationsLabel:'📍 Gasolineras cercanas',locateBtn:'Buscar gasolineras',locating:'Buscando...',radiusLabel:'Radio:',noStations:'No se encontraron gasolineras.',stationError:'Error de conexión.',geoError:'Ubicación denegada.',usePrice:'Usar precio',savings:'Ahorro: {n}',cheapest:'¡Más barato!',perLiterLabel:'/L',updated:'Actualizado: {n}',navigate:'Ruta',allFuels:'Todos'},
-    it:{flag:'🇮🇹',name:'Italiano',defaultCur:'EUR',title:'⛽ Calcolatore',tankLabel:'Capacità serbatoio',levelLabel:'Livello attuale',priceLabel:'Prezzo al distributore',resultLabel:'Importo da mettere',addLabel:'Litri da aggiungere',curLabel:'Litri attuali',fullLabel:'Pieno completo',capLabel:'Capacità',perLiter:'/ litro',inTank:'{n} L nel serbatoio',sub:'Serbatoio {n} L',alert:'Livello molto basso!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',empty:'Vuoto',reserve:'Riserva',full:'Pieno',cat:{xs:'Utilitaria',s:'Utilitaria',m:'Compatta',l:'Berlina',xl:'SUV',xxl:'SUV grande',xxxl:'Grande'},vehicles:{35:'Utilitaria · 35L',42:'Compatta · 42L',50:'Berlina · 50L',55:'SW · 55L',60:'SUV · 60L',70:'SUV grande · 70L',80:'Furgone · 80L'},sliderMarks:['Vuoto','¼','½','¾','Pieno'],stationsLabel:'📍 Distributori vicini',locateBtn:'Cerca distributori',locating:'Ricerca...',radiusLabel:'Raggio:',noStations:'Nessun distributore trovato.',stationError:'Errore di connessione.',geoError:'Posizione negata.',usePrice:'Usa prezzo',savings:'Risparmio: {n}',cheapest:'Più economico!',perLiterLabel:'/L',updated:'Aggiornato: {n}',navigate:'Percorso',allFuels:'Tutti'},
-    pt:{flag:'🇵🇹',name:'Português',defaultCur:'EUR',title:'⛽ Calculadora',tankLabel:'Capacidade do depósito',levelLabel:'Nível atual',priceLabel:'Preço na bomba',resultLabel:'Valor a abastecer',addLabel:'Litros a adicionar',curLabel:'Litros atuais',fullLabel:'Depósito cheio',capLabel:'Capacidade',perLiter:'/ litro',inTank:'{n} L no depósito',sub:'Depósito {n} L',alert:'Nível muito baixo!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',empty:'Vazio',reserve:'Reserva',full:'Cheio',cat:{xs:'Citadino',s:'Citadino',m:'Compacto',l:'Sedan',xl:'SUV',xxl:'SUV grande',xxxl:'Grande'},vehicles:{35:'Citadino · 35L',42:'Compacto · 42L',50:'Sedan · 50L',55:'Carrinha · 55L',60:'SUV · 60L',70:'SUV grande · 70L',80:'Furgão · 80L'},sliderMarks:['Vazio','¼','½','¾','Cheio'],stationsLabel:'📍 Postos próximos',locateBtn:'Encontrar postos',locating:'A procurar...',radiusLabel:'Raio:',noStations:'Nenhum posto encontrado.',stationError:'Erro de ligação.',geoError:'Localização negada.',usePrice:'Usar preço',savings:'Economia: {n}',cheapest:'Mais barato!',perLiterLabel:'/L',updated:'Atualizado: {n}',navigate:'Rota',allFuels:'Todos'},
-    ru:{flag:'🇷🇺',name:'Русский',defaultCur:'RUB',title:'⛽ Калькулятор',tankLabel:'Объём бака',levelLabel:'Уровень',priceLabel:'Цена на заправке',resultLabel:'Сумма к оплате',addLabel:'Долить литров',curLabel:'Сейчас литров',fullLabel:'Полный бак',capLabel:'Объём бака',perLiter:'/ литр',inTank:'{n} л в баке',sub:'Бак {n} л',alert:'Очень низкий уровень!',toastTank:'🛢️ {n} л',toastLang:'🌐 {n}',toastCur:'💱 {n}',empty:'Пусто',reserve:'Резерв',full:'Полный',cat:{xs:'Малолитражка',s:'Городской',m:'Седан',l:'Универсал',xl:'Кроссовер',xxl:'Большой SUV',xxxl:'Большое'},vehicles:{35:'Малолитражка · 35л',42:'Компакт · 42л',50:'Седан · 50л',55:'Универсал · 55л',60:'Кроссовер · 60л',70:'Большой SUV · 70л',80:'Фургон · 80л'},sliderMarks:['Пусто','¼','½','¾','Полный'],stationsLabel:'📍 АЗС рядом',locateBtn:'Найти АЗС',locating:'Поиск...',radiusLabel:'Радиус:',noStations:'АЗС не найдены.',stationError:'Ошибка соединения.',geoError:'Геолокация запрещена.',usePrice:'Применить цену',savings:'Экономия: {n}',cheapest:'Дешевле всех!',perLiterLabel:'/л',updated:'Обновлено: {n}',navigate:'Маршрут',allFuels:'Все'},
-    zh:{flag:'🇨🇳',name:'中文',defaultCur:'CNY',title:'⛽ 加油计算器',tankLabel:'油箱容量',levelLabel:'当前油量',priceLabel:'油价',resultLabel:'需要支付',addLabel:'需加升数',curLabel:'当前升数',fullLabel:'加满价格',capLabel:'油箱容量',perLiter:'/ 升',inTank:'油箱 {n} 升',sub:'油箱 {n} 升',alert:'油量极低！',toastTank:'🛢️ {n} 升',toastLang:'🌐 {n}',toastCur:'💱 {n}',empty:'空',reserve:'储备',full:'满',cat:{xs:'微型车',s:'小型车',m:'紧凑型',l:'轿车',xl:'SUV',xxl:'大型SUV',xxxl:'大型'},vehicles:{35:'小型车 · 35L',42:'紧凑型 · 42L',50:'轿车 · 50L',55:'旅行车 · 55L',60:'SUV · 60L',70:'大型SUV · 70L',80:'面包车 · 80L'},sliderMarks:['空','¼','½','¾','满'],stationsLabel:'📍 附近加油站',locateBtn:'查找加油站',locating:'搜索中...',radiusLabel:'半径:',noStations:'未找到加油站。',stationError:'连接错误。',geoError:'定位被拒绝。',usePrice:'使用此价格',savings:'节省: {n}',cheapest:'最便宜!',perLiterLabel:'/L',updated:'更新: {n}',navigate:'导航',allFuels:'全部'},
-    ja:{flag:'🇯🇵',name:'日本語',defaultCur:'JPY',title:'⛽ 給油計算機',tankLabel:'タンク容量',levelLabel:'現在の残量',priceLabel:'ガソリン価格',resultLabel:'給油金額',addLabel:'追加L',curLabel:'現在L',fullLabel:'満タン価格',capLabel:'タンク',perLiter:'/ L',inTank:'タンク {n} L',sub:'タンク {n} L',alert:'残量が少ない！',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',empty:'空',reserve:'予備',full:'満タン',cat:{xs:'軽自動車',s:'コンパクト',m:'セダン',l:'ワゴン',xl:'SUV',xxl:'大型SUV',xxxl:'大型'},vehicles:{35:'軽 · 35L',42:'コンパクト · 42L',50:'セダン · 50L',55:'ワゴン · 55L',60:'SUV · 60L',70:'大型SUV · 70L',80:'バン · 80L'},sliderMarks:['空','¼','½','¾','満タン'],stationsLabel:'📍 近くのGS',locateBtn:'GSを検索',locating:'検索中...',radiusLabel:'半径:',noStations:'GSが見つかりません。',stationError:'接続エラー。',geoError:'位置情報が拒否されました。',usePrice:'この価格を使用',savings:'節約: {n}',cheapest:'最安!',perLiterLabel:'/L',updated:'更新: {n}',navigate:'ナビ',allFuels:'全て'}
+    fr:{
+        flag:'🇫🇷',name:'Français',defaultCur:'EUR',
+        title:'⛽ Plein d\'Essence',tankLabel:'Capacité du réservoir',levelLabel:'Niveau actuel',
+        priceLabel:'Prix à la pompe',resultLabel:'Montant à mettre',
+        addLabel:'Litres à ajouter',curLabel:'Litres actuels',
+        fullLabel:'Prix plein complet',capLabel:'Capacité réservoir',
+        perLiter:'/ litre',inTank:'{n} L dans le réservoir',sub:'Réservoir {n} L',
+        alert:'Niveau très bas !',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'Vide',reserve:'Réserve',full:'Plein',
+        cat:{xs:'Petite citadine',s:'Citadine',m:'Compacte',l:'Berline',xl:'SUV',xxl:'Grand SUV',xxxl:'Grand'},
+        vehicles:{35:'Citadine · 35L',42:'Compacte · 42L',50:'Berline · 50L',55:'Break · 55L',60:'SUV · 60L',70:'Grand SUV · 70L',80:'Utilitaire · 80L'},
+        sliderMarks:['Vide','¼','½','¾','Plein'],
+        stationsLabel:'📍 Stations à proximité',locateBtn:'Trouver les stations proches',
+        locating:'Recherche en cours...',radiusLabel:'Rayon :',
+        noStations:'Aucune station trouvée. Augmentez le rayon.',
+        stationError:'Erreur de connexion.',geoError:'Géolocalisation refusée.',
+        usePrice:'Prix appliqué',cheapest:'🏆 Moins cher !',perLiterLabel:'/L',
+        navigate:'Y aller',allFuels:'Tous',detectedCountry:'Pays détecté :',
+        osmNote:'💡 Les prix ne sont pas disponibles via API dans ce pays. Stations localisées via OpenStreetMap.',
+        noPriceAvail:'Prix indisponible'
+    },
+    en:{
+        flag:'🇬🇧',name:'English',defaultCur:'GBP',
+        title:'⛽ Fuel Calculator',tankLabel:'Tank capacity',levelLabel:'Current level',
+        priceLabel:'Price at pump',resultLabel:'Amount to pay',
+        addLabel:'Liters to add',curLabel:'Current liters',
+        fullLabel:'Full tank price',capLabel:'Tank capacity',
+        perLiter:'/ liter',inTank:'{n} L in the tank',sub:'Tank {n} L',
+        alert:'Very low!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'Empty',reserve:'Reserve',full:'Full',
+        cat:{xs:'Small',s:'City car',m:'Compact',l:'Sedan',xl:'SUV',xxl:'Large SUV',xxxl:'Large'},
+        vehicles:{35:'City · 35L',42:'Compact · 42L',50:'Sedan · 50L',55:'Wagon · 55L',60:'SUV · 60L',70:'Large SUV · 70L',80:'Van · 80L'},
+        sliderMarks:['Empty','¼','½','¾','Full'],
+        stationsLabel:'📍 Nearby stations',locateBtn:'Find nearby stations',
+        locating:'Searching...',radiusLabel:'Radius:',
+        noStations:'No stations found. Try increasing radius.',
+        stationError:'Connection error.',geoError:'Location denied.',
+        usePrice:'Price applied',cheapest:'🏆 Cheapest!',perLiterLabel:'/L',
+        navigate:'Go',allFuels:'All',detectedCountry:'Detected:',
+        osmNote:'💡 Prices unavailable via API in this country. Stations located via OpenStreetMap.',
+        noPriceAvail:'Price unavailable'
+    },
+    es:{
+        flag:'🇪🇸',name:'Español',defaultCur:'EUR',
+        title:'⛽ Calculadora',tankLabel:'Capacidad depósito',levelLabel:'Nivel actual',
+        priceLabel:'Precio surtidor',resultLabel:'Importe',
+        addLabel:'Litros a añadir',curLabel:'Litros actuales',
+        fullLabel:'Depósito lleno',capLabel:'Capacidad',
+        perLiter:'/ litro',inTank:'{n} L en depósito',sub:'Depósito {n} L',
+        alert:'¡Nivel muy bajo!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'Vacío',reserve:'Reserva',full:'Lleno',
+        cat:{xs:'Utilitario',s:'Utilitario',m:'Compacto',l:'Berlina',xl:'SUV',xxl:'SUV grande',xxxl:'Grande'},
+        vehicles:{35:'Utilitario · 35L',42:'Compacto · 42L',50:'Berlina · 50L',55:'Familiar · 55L',60:'SUV · 60L',70:'SUV grande · 70L',80:'Furgoneta · 80L'},
+        sliderMarks:['Vacío','¼','½','¾','Lleno'],
+        stationsLabel:'📍 Gasolineras cercanas',locateBtn:'Buscar gasolineras',
+        locating:'Buscando...',radiusLabel:'Radio:',
+        noStations:'No se encontraron gasolineras.',
+        stationError:'Error de conexión.',geoError:'Ubicación denegada.',
+        usePrice:'Precio aplicado',cheapest:'🏆 ¡Más barato!',perLiterLabel:'/L',
+        navigate:'Ir',allFuels:'Todos',detectedCountry:'País:',
+        osmNote:'💡 Precios no disponibles. Estaciones vía OpenStreetMap.',
+        noPriceAvail:'Precio no disponible'
+    },
+    it:{
+        flag:'🇮🇹',name:'Italiano',defaultCur:'EUR',
+        title:'⛽ Calcolatore',tankLabel:'Capacità serbatoio',levelLabel:'Livello',
+        priceLabel:'Prezzo',resultLabel:'Importo',
+        addLabel:'Litri da aggiungere',curLabel:'Litri attuali',
+        fullLabel:'Pieno completo',capLabel:'Capacità',
+        perLiter:'/ litro',inTank:'{n} L nel serbatoio',sub:'Serbatoio {n} L',
+        alert:'Molto basso!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'Vuoto',reserve:'Riserva',full:'Pieno',
+        cat:{xs:'Utilitaria',s:'Utilitaria',m:'Compatta',l:'Berlina',xl:'SUV',xxl:'SUV grande',xxxl:'Grande'},
+        vehicles:{35:'Utilitaria · 35L',42:'Compatta · 42L',50:'Berlina · 50L',55:'SW · 55L',60:'SUV · 60L',70:'SUV grande · 70L',80:'Furgone · 80L'},
+        sliderMarks:['Vuoto','¼','½','¾','Pieno'],
+        stationsLabel:'📍 Distributori vicini',locateBtn:'Cerca distributori',
+        locating:'Ricerca...',radiusLabel:'Raggio:',
+        noStations:'Nessuno trovato.',stationError:'Errore.',geoError:'Posizione negata.',
+        usePrice:'Prezzo applicato',cheapest:'🏆 Più economico!',perLiterLabel:'/L',
+        navigate:'Vai',allFuels:'Tutti',detectedCountry:'Paese:',
+        osmNote:'💡 Prezzi non disponibili. Stazioni via OpenStreetMap.',
+        noPriceAvail:'Prezzo non disponibile'
+    },
+    pt:{
+        flag:'🇵🇹',name:'Português',defaultCur:'EUR',
+        title:'⛽ Calculadora',tankLabel:'Capacidade',levelLabel:'Nível',
+        priceLabel:'Preço',resultLabel:'Valor',
+        addLabel:'Litros a adicionar',curLabel:'Litros atuais',
+        fullLabel:'Depósito cheio',capLabel:'Capacidade',
+        perLiter:'/ litro',inTank:'{n} L no depósito',sub:'Depósito {n} L',
+        alert:'Muito baixo!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'Vazio',reserve:'Reserva',full:'Cheio',
+        cat:{xs:'Citadino',s:'Citadino',m:'Compacto',l:'Sedan',xl:'SUV',xxl:'SUV grande',xxxl:'Grande'},
+        vehicles:{35:'Citadino · 35L',42:'Compacto · 42L',50:'Sedan · 50L',55:'Carrinha · 55L',60:'SUV · 60L',70:'SUV grande · 70L',80:'Furgão · 80L'},
+        sliderMarks:['Vazio','¼','½','¾','Cheio'],
+        stationsLabel:'📍 Postos próximos',locateBtn:'Encontrar postos',
+        locating:'A procurar...',radiusLabel:'Raio:',
+        noStations:'Nenhum encontrado.',stationError:'Erro.',geoError:'Localização negada.',
+        usePrice:'Preço aplicado',cheapest:'🏆 Mais barato!',perLiterLabel:'/L',
+        navigate:'Ir',allFuels:'Todos',detectedCountry:'País:',
+        osmNote:'💡 Preços indisponíveis. Postos via OpenStreetMap.',
+        noPriceAvail:'Preço indisponível'
+    },
+    ru:{
+        flag:'🇷🇺',name:'Русский',defaultCur:'RUB',
+        title:'⛽ Калькулятор',tankLabel:'Объём бака',levelLabel:'Уровень',
+        priceLabel:'Цена',resultLabel:'Сумма',
+        addLabel:'Долить',curLabel:'Сейчас',fullLabel:'Полный бак',capLabel:'Объём',
+        perLiter:'/ л',inTank:'{n} л в баке',sub:'Бак {n} л',
+        alert:'Низкий!',toastTank:'🛢️ {n} л',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'Пусто',reserve:'Резерв',full:'Полный',
+        cat:{xs:'Малолитражка',s:'Городской',m:'Седан',l:'Универсал',xl:'Кроссовер',xxl:'Большой SUV',xxxl:'Большое'},
+        vehicles:{35:'Малолитражка · 35л',42:'Компакт · 42л',50:'Седан · 50л',55:'Универсал · 55л',60:'Кроссовер · 60л',70:'Большой SUV · 70л',80:'Фургон · 80л'},
+        sliderMarks:['Пусто','¼','½','¾','Полный'],
+        stationsLabel:'📍 АЗС рядом',locateBtn:'Найти АЗС',
+        locating:'Поиск...',radiusLabel:'Радиус:',
+        noStations:'Не найдено.',stationError:'Ошибка.',geoError:'Геолокация запрещена.',
+        usePrice:'Цена применена',cheapest:'🏆 Дешевле!',perLiterLabel:'/л',
+        navigate:'Маршрут',allFuels:'Все',detectedCountry:'Страна:',
+        osmNote:'💡 Цены недоступны. АЗС через OpenStreetMap.',
+        noPriceAvail:'Цена недоступна'
+    },
+    zh:{
+        flag:'🇨🇳',name:'中文',defaultCur:'CNY',
+        title:'⛽ 加油计算器',tankLabel:'油箱容量',levelLabel:'油量',
+        priceLabel:'油价',resultLabel:'金额',
+        addLabel:'需加升数',curLabel:'当前升数',fullLabel:'加满价格',capLabel:'油箱',
+        perLiter:'/ 升',inTank:'油箱 {n} 升',sub:'油箱 {n} 升',
+        alert:'极低!',toastTank:'🛢️ {n} 升',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'空',reserve:'储备',full:'满',
+        cat:{xs:'微型',s:'小型',m:'紧凑',l:'轿车',xl:'SUV',xxl:'大型SUV',xxxl:'大型'},
+        vehicles:{35:'小型 · 35L',42:'紧凑 · 42L',50:'轿车 · 50L',55:'旅行 · 55L',60:'SUV · 60L',70:'大SUV · 70L',80:'面包 · 80L'},
+        sliderMarks:['空','¼','½','¾','满'],
+        stationsLabel:'📍 附近加油站',locateBtn:'查找加油站',
+        locating:'搜索...',radiusLabel:'半径:',
+        noStations:'未找到。',stationError:'连接错误。',geoError:'定位被拒。',
+        usePrice:'已应用',cheapest:'🏆 最便宜!',perLiterLabel:'/L',
+        navigate:'导航',allFuels:'全部',detectedCountry:'国家:',
+        osmNote:'💡 价格不可用。通过OSM定位。',
+        noPriceAvail:'价格不可用'
+    },
+    ja:{
+        flag:'🇯🇵',name:'日本語',defaultCur:'JPY',
+        title:'⛽ 給油計算機',tankLabel:'タンク',levelLabel:'残量',
+        priceLabel:'価格',resultLabel:'金額',
+        addLabel:'追加L',curLabel:'現在L',fullLabel:'満タン',capLabel:'タンク',
+        perLiter:'/ L',inTank:'タンク {n} L',sub:'タンク {n} L',
+        alert:'少ない!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'空',reserve:'予備',full:'満タン',
+        cat:{xs:'軽',s:'コンパクト',m:'セダン',l:'ワゴン',xl:'SUV',xxl:'大型SUV',xxxl:'大型'},
+        vehicles:{35:'軽 · 35L',42:'コンパクト · 42L',50:'セダン · 50L',55:'ワゴン · 55L',60:'SUV · 60L',70:'大型SUV · 70L',80:'バン · 80L'},
+        sliderMarks:['空','¼','½','¾','満タン'],
+        stationsLabel:'📍 近くのGS',locateBtn:'GSを検索',
+        locating:'検索中...',radiusLabel:'半径:',
+        noStations:'見つかりません。',stationError:'接続エラー。',geoError:'位置拒否。',
+        usePrice:'価格適用',cheapest:'🏆 最安!',perLiterLabel:'/L',
+        navigate:'ナビ',allFuels:'全て',detectedCountry:'国:',
+        osmNote:'💡 価格は利用不可。OSM経由。',
+        noPriceAvail:'価格なし'
+    }
 };
 
-// ==================== STATE ====================
-let tank=parseInt(localStorage.getItem('tank'))||42;
-let lvl=parseInt(localStorage.getItem('lvl'))||12;
-let prc=parseFloat(localStorage.getItem('prc'))||1.72;
-let lang=localStorage.getItem('lang')||'fr';
-let cur=localStorage.getItem('cur')||LANGS[lang].defaultCur;
-let selectedFuelFilter='all';
-let userLat=null,userLon=null;
-let stationsData=[];
-let leafletMap=null,markersLayer=null;
+// ==================== STATION PROVIDERS BY COUNTRY ====================
+// Each has: flag, name, api label, fuelTypes array, fetch(lat,lon,radiusKm) → [{id,name,addr,city,cp,lat,lon,fuels:{TypeName:{price:number}}}]
 
-let L_,C;
-function loadLC(){L_=LANGS[lang];C=CURRENCIES[cur]}
+const PROVIDERS = {
+    // ===== FRANCE =====
+    FR: {
+        flag:'🇫🇷', name:'France', api:'gouv.fr',
+        fuelTypes:['Gazole','SP95','SP98','E10','E85','GPLc'],
+        async fetch(lat, lon, radiusKm) {
+            const r = radiusKm * 1000;
+            const url = `https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?where=within_distance(geom,geom'POINT(${lon} ${lat})',${r}m)&limit=60&select=id,adresse,ville,cp,geom,prix_nom,prix_valeur,marque`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            const map = {};
+            (data.results || []).forEach(r => {
+                const id = r.id;
+                if (!map[id]) map[id] = {id, name:r.marque||r.ville||'Station', addr:r.adresse||'', city:r.ville||'', cp:r.cp||'', lat:r.geom?.lat||0, lon:r.geom?.lon||0, fuels:{}};
+                if (r.prix_nom && r.prix_valeur) map[id].fuels[r.prix_nom] = {price: parseFloat(r.prix_valeur)};
+            });
+            return Object.values(map);
+        }
+    },
+
+    // ===== ESPAGNE =====
+    ES: {
+        flag:'🇪🇸', name:'España', api:'minetur.gob.es',
+        fuelTypes:['Gasóleo A','Gasolina 95','Gasolina 98','GLP'],
+        async fetch(lat, lon, radiusKm) {
+            const url = 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/';
+            const resp = await fetch(url);
+            const data = await resp.json();
+            const stations = [];
+            (data.ListaEESSPrecio || []).forEach(s => {
+                const sLat = parseFloat((s.Latitud||'').replace(',','.'));
+                const sLon = parseFloat((s['Longitud (WGS84)']||'').replace(',','.'));
+                if (!sLat || !sLon) return;
+                const dist = haversine(lat, lon, sLat, sLon);
+                if (dist > radiusKm) return;
+                const fuels = {};
+                const pairs = [
+                    ['Precio Gasoleo A','Gasóleo A'],
+                    ['Precio Gasolina 95 E5','Gasolina 95'],
+                    ['Precio Gasolina 98 E5','Gasolina 98'],
+                    ['Precio Gases licuados del petróleo','GLP']
+                ];
+                pairs.forEach(([key, label]) => {
+                    const v = parseFloat((s[key]||'').replace(',','.'));
+                    if (v > 0) fuels[label] = {price: v};
+                });
+                if (!Object.keys(fuels).length) return;
+                stations.push({
+                    id: s['IDEESS'] || Math.random().toString(),
+                    name: s['Rótulo'] || 'Estación',
+                    addr: s['Dirección'] || '',
+                    city: s['Municipio'] || '',
+                    cp: s['C.P.'] || '',
+                    lat: sLat, lon: sLon, fuels
+                });
+            });
+            return stations;
+        }
+    },
+
+    // ===== ALLEMAGNE =====
+    DE: {
+        flag:'🇩🇪', name:'Deutschland', api:'tankerkoenig.de',
+        fuelTypes:['diesel','e5','e10'],
+        async fetch(lat, lon, radiusKm) {
+            const r = Math.min(radiusKm, 25);
+            const apiKey = '00000000-0000-0000-0000-000000000002'; // demo key
+            const url = `https://creativecommons.tankerkoenig.de/json/list.php?lat=${lat}&lng=${lon}&rad=${r}&sort=price&type=all&apikey=${apiKey}`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (!data.ok) throw new Error(data.message);
+            return (data.stations || []).map(s => {
+                const fuels = {};
+                if (s.diesel) fuels['diesel'] = {price: s.diesel};
+                if (s.e5) fuels['e5'] = {price: s.e5};
+                if (s.e10) fuels['e10'] = {price: s.e10};
+                return {id:s.id, name:s.brand||s.name||'Tankstelle', addr:(s.street||'')+' '+(s.houseNumber||''), city:s.place||'', cp:s.postCode||'', lat:s.lat, lon:s.lng, fuels};
+            });
+        }
+    },
+
+    // ===== ITALIE (Overpass fallback) =====
+    IT: {
+        flag:'🇮🇹', name:'Italia', api:'OpenStreetMap',
+        fuelTypes:['fuel'],
+        hasPrices: false,
+        async fetch(lat, lon, radiusKm) {
+            return await fetchOverpass(lat, lon, radiusKm);
+        }
+    },
+
+    // ===== PORTUGAL (Overpass fallback) =====
+    PT: {
+        flag:'🇵🇹', name:'Portugal', api:'OpenStreetMap',
+        fuelTypes:['fuel'],
+        hasPrices: false,
+        async fetch(lat, lon, radiusKm) {
+            return await fetchOverpass(lat, lon, radiusKm);
+        }
+    }
+};
+
+// ===== FALLBACK for all other countries =====
+const FALLBACK_PROVIDER = {
+    flag:'🌍', name:'OpenStreetMap', api:'overpass-api.de',
+    fuelTypes:['fuel'],
+    hasPrices: false,
+    async fetch(lat, lon, radiusKm) {
+        return await fetchOverpass(lat, lon, radiusKm);
+    }
+};
+
+// ===== OpenStreetMap Overpass query =====
+async function fetchOverpass(lat, lon, radiusKm) {
+    const r = radiusKm * 1000;
+    const query = `[out:json][timeout:12];node["amenity"="fuel"](around:${r},${lat},${lon});out body 50;`;
+    const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
+    const resp = await fetch(url);
+    const data = await resp.json();
+    return (data.elements || []).map(e => ({
+        id: e.id.toString(),
+        name: e.tags?.brand || e.tags?.name || e.tags?.operator || 'Station',
+        addr: e.tags?.['addr:street'] || '',
+        city: e.tags?.['addr:city'] || '',
+        cp: e.tags?.['addr:postcode'] || '',
+        lat: e.lat, lon: e.lon,
+        fuels: {fuel: {price: null}}
+    }));
+}
+
+// ===== Detect country from coords =====
+async function detectCountry(lat, lon) {
+    try {
+        const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&zoom=3&accept-language=en`;
+        const resp = await fetch(url, {headers: {'User-Agent': 'FuelCalcApp/1.0'}});
+        const data = await resp.json();
+        return data.address?.country_code?.toUpperCase() || null;
+    } catch(e) { return null; }
+}
+
+function getProvider(cc) {
+    return PROVIDERS[cc] || FALLBACK_PROVIDER;
+}
+
+// ===== Haversine =====
+function haversine(a, b, c, d) {
+    const R=6371, dL=(c-a)*Math.PI/180, dN=(d-b)*Math.PI/180;
+    const x=Math.sin(dL/2)**2 + Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dN/2)**2;
+    return R*2*Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
+}
+</script>
+<script>
+// ==================== STATE ====================
+let tank = parseInt(localStorage.getItem('tank')) || 42;
+let lvl = parseInt(localStorage.getItem('lvl')) || 12;
+let prc = parseFloat(localStorage.getItem('prc')) || 1.72;
+let lang = localStorage.getItem('lang') || 'fr';
+let cur = localStorage.getItem('cur') || LANGS[lang].defaultCur;
+let selectedFuelFilter = 'all';
+let userLat = null, userLon = null;
+let stationsData = [];
+let leafletMap = null, markersLayer = null;
+let detectedCountryCode = null, currentProvider = null;
+
+let TL, C;
+function loadLC() { TL = LANGS[lang]; C = CURRENCIES[cur]; }
 loadLC();
 
-const $=id=>document.getElementById(id);
+// ==================== HELPERS ====================
+const $ = id => document.getElementById(id);
+function fmt(n, d=1) { return n.toFixed(d).replace('.', C.decSep); }
+function fmtCur(n) {
+    const j = cur==='JPY', d = j?0:2;
+    let v = n.toFixed(d);
+    const p = v.split('.');
+    p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, C.thousSep);
+    v = p.join(C.decSep);
+    return C.after ? v+' '+C.symbol : C.symbol+' '+v;
+}
+function fmtPS(n) { return cur==='JPY' ? n.toFixed(0) : n.toFixed(2).replace('.', C.decSep); }
+function escH(s) { const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+function save() { localStorage.setItem('tank',tank); localStorage.setItem('lvl',lvl); localStorage.setItem('prc',prc); }
 
-function fmt(n,d=1){return n.toFixed(d).replace('.',C.decSep)}
-function fmtCur(n){const isJ=cur==='JPY',d=isJ?0:2;let v=n.toFixed(d);const p=v.split('.');p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,C.thousSep);v=p.join(C.decSep);return C.after?v+' '+C.symbol:C.symbol+' '+v}
-function fmtPS(n){return cur==='JPY'?n.toFixed(0):n.toFixed(2).replace('.',C.decSep)}
+let toastT;
+function showToast(m) {
+    clearTimeout(toastT);
+    $('toast').textContent = m;
+    $('toast').classList.add('show');
+    toastT = setTimeout(() => $('toast').classList.remove('show'), 1800);
+}
 
-const sLevel=$('sLevel'),iPrice=$('iPrice');
-const gFill=$('gFill'),needleEl=$('needle'),gBg=$('gBg');
+// ==================== DOM REFS ====================
+const sLevel = $('sLevel'), iPrice = $('iPrice');
+const gFill = $('gFill'), needleEl = $('needle'), gBg = $('gBg');
 let arcLen;
 
-// ==================== LANG/CUR BAR ====================
-function buildLangBar(){const b=$('langBar');b.innerHTML='';Object.entries(LANGS).forEach(([c,d])=>{const e=document.createElement('button');e.className='lang-btn'+(c===lang?' on':'');e.textContent=d.flag;e.addEventListener('click',()=>setLang(c));b.appendChild(e)})}
-function buildCurBar(){const b=$('curBar');b.innerHTML='';Object.entries(CURRENCIES).forEach(([c,d])=>{const e=document.createElement('button');e.className='cur-pill'+(c===cur?' on':'');e.textContent=d.flag+' '+d.symbol;e.addEventListener('click',()=>setCurrency(c));b.appendChild(e)})}
+// ==================== LANG / CUR BARS ====================
+function buildLangBar() {
+    const b = $('langBar'); b.innerHTML = '';
+    Object.entries(LANGS).forEach(([c, d]) => {
+        const e = document.createElement('button');
+        e.className = 'lang-btn' + (c===lang?' on':'');
+        e.textContent = d.flag;
+        e.addEventListener('click', () => setLang(c));
+        b.appendChild(e);
+    });
+}
 
-function setLang(code){lang=code;loadLC();cur=L_.defaultCur;loadLC();localStorage.setItem('lang',lang);localStorage.setItem('cur',cur);document.documentElement.lang=lang;const f=FUEL_PRICES[cur];if(f&&f.length>=2)prc=f[1].p;iPrice.value=cur==='JPY'?prc.toFixed(0):prc.toFixed(2);save();document.querySelectorAll('.lang-btn').forEach((b,i)=>b.classList.toggle('on',Object.keys(LANGS)[i]===lang));buildCurBar();rebuildAll();showToast(L_.toastLang.replace('{n}',L_.name))}
-function setCurrency(code){cur=code;loadLC();localStorage.setItem('cur',cur);const f=FUEL_PRICES[cur];if(f&&f.length>=2)prc=f[1].p;else if(f&&f.length>=1)prc=f[0].p;iPrice.value=cur==='JPY'?prc.toFixed(0):prc.toFixed(2);iPrice.step=cur==='JPY'?'1':'0.01';save();document.querySelectorAll('.cur-pill').forEach((b,i)=>b.classList.toggle('on',Object.keys(CURRENCIES)[i]===cur));rebuildAll();showToast(L_.toastCur.replace('{n}',C.symbol+' '+C.code))}
+function buildCurBar() {
+    const b = $('curBar'); b.innerHTML = '';
+    Object.entries(CURRENCIES).forEach(([c, d]) => {
+        const e = document.createElement('button');
+        e.className = 'cur-pill' + (c===cur?' on':'');
+        e.textContent = d.flag+' '+d.symbol;
+        e.addEventListener('click', () => setCurrency(c));
+        b.appendChild(e);
+    });
+}
 
-function rebuildAll(){applyTexts();buildTankPresets();buildQuickBtns();buildFuelPills();buildSliderMarks();buildFuelFilter();updateTankUI();calc();if(stationsData.length)renderStations()}
+function setLang(code) {
+    lang = code; loadLC();
+    cur = TL.defaultCur; loadLC();
+    localStorage.setItem('lang', lang);
+    localStorage.setItem('cur', cur);
+    document.documentElement.lang = lang;
+    const f = FUEL_PRICES[cur];
+    if (f && f.length >= 2) prc = f[1].p;
+    iPrice.value = cur==='JPY' ? prc.toFixed(0) : prc.toFixed(2);
+    save();
+    document.querySelectorAll('.lang-btn').forEach((b, i) =>
+        b.classList.toggle('on', Object.keys(LANGS)[i] === lang));
+    buildCurBar();
+    rebuildAll();
+    showToast(TL.toastLang.replace('{n}', TL.name));
+}
 
-function applyTexts(){$('hTitle').textContent=L_.title;$('lTank').textContent=L_.tankLabel;$('lLevel').textContent=L_.levelLabel;$('lPrice').textContent=L_.priceLabel;$('lResult').textContent=L_.resultLabel;$('lAdd').textContent=L_.addLabel;$('lCur').textContent=L_.curLabel;$('lFull').textContent=L_.fullLabel;$('lCap').textContent=L_.capLabel;$('pUnit').textContent=L_.perLiter;$('pSym').textContent=C.symbol;$('alertTxt').textContent=L_.alert;$('lStations').textContent=L_.stationsLabel;$('locateTxt').textContent=L_.locateBtn;$('lRadius').textContent=L_.radiusLabel}
+function setCurrency(code) {
+    cur = code; loadLC();
+    localStorage.setItem('cur', cur);
+    const f = FUEL_PRICES[cur];
+    if (f && f.length >= 2) prc = f[1].p;
+    else if (f && f.length >= 1) prc = f[0].p;
+    iPrice.value = cur==='JPY' ? prc.toFixed(0) : prc.toFixed(2);
+    iPrice.step = cur==='JPY' ? '1' : '0.01';
+    save();
+    document.querySelectorAll('.cur-pill').forEach((b, i) =>
+        b.classList.toggle('on', Object.keys(CURRENCIES)[i] === cur));
+    rebuildAll();
+    showToast(TL.toastCur.replace('{n}', C.symbol+' '+C.code));
+}
+
+// ==================== REBUILD ALL ====================
+function rebuildAll() {
+    applyTexts();
+    buildTankPresets();
+    buildQuickBtns();
+    buildFuelPills();
+    buildSliderMarks();
+    buildFuelFilter();
+    updateTankUI();
+    calc();
+    if (stationsData.length) renderStations();
+}
+
+function applyTexts() {
+    $('hTitle').textContent = TL.title;
+    $('lTank').textContent = TL.tankLabel;
+    $('lLevel').textContent = TL.levelLabel;
+    $('lPrice').textContent = TL.priceLabel;
+    $('lResult').textContent = TL.resultLabel;
+    $('lAdd').textContent = TL.addLabel;
+    $('lCur').textContent = TL.curLabel;
+    $('lFull').textContent = TL.fullLabel;
+    $('lCap').textContent = TL.capLabel;
+    $('pUnit').textContent = TL.perLiter;
+    $('pSym').textContent = C.symbol;
+    $('alertTxt').textContent = TL.alert;
+    $('lStations').textContent = TL.stationsLabel;
+    $('locateTxt').textContent = TL.locateBtn;
+    $('lRadius').textContent = TL.radiusLabel;
+}
 
 // ==================== TANK ====================
-function tankCat(t){const c=L_.cat;if(t<=30)return c.xs;if(t<=40)return c.s;if(t<=47)return c.m;if(t<=55)return c.l;if(t<=65)return c.xl;if(t<=80)return c.xxl;return c.xxxl}
-function updateTankUI(){$('tankVal').innerHTML=tank+'<span>L</span>';$('tankSub').textContent=tankCat(tank);$('hSub').textContent=L_.sub.replace('{n}',tank);$('sCap').textContent=tank+' L';$('tankBar').style.width=Math.max(0,Math.min(100,((tank-10)/90)*100))+'%';document.querySelectorAll('.tp').forEach(p=>p.classList.toggle('on',parseInt(p.dataset.t)===tank))}
-function buildTankPresets(){const w=$('tankPresets');w.innerHTML='';Object.entries(L_.vehicles).forEach(([v,l])=>{const b=document.createElement('button');b.className='tp'+(parseInt(v)===tank?' on':'');b.dataset.t=v;b.textContent=l;b.addEventListener('click',()=>{tank=parseInt(v);updateTankUI();buildQuickBtns();save();calc();showToast(L_.toastTank.replace('{n}',tank))});w.appendChild(b)})}
-function buildQuickBtns(){const w=$('qBtnsWrap');w.innerHTML='';[{l:0,label:L_.empty},{l:12,label:L_.reserve},{l:25,label:'¼'},{l:50,label:'½'},{l:75,label:'¾'}].forEach(({l,label})=>{const b=document.createElement('button');b.className='q-btn';b.dataset.l=l;b.innerHTML=label+'<small>'+fmt((l/100)*tank)+' L</small>';b.addEventListener('click',()=>{lvl=l;sLevel.value=lvl;save();calc()});w.appendChild(b)})}
-function buildSliderMarks(){const w=$('sliderMarks');w.innerHTML='';L_.sliderMarks.forEach(t=>{const s=document.createElement('span');s.textContent=t;w.appendChild(s)})}
-function buildFuelPills(){const w=$('pillsWrap');w.innerHTML='';(FUEL_PRICES[cur]||FUEL_PRICES.EUR).forEach(fuel=>{const n=fuel.names[lang]||fuel.names.en||'';const b=document.createElement('button');b.className='pill'+(Math.abs(fuel.p-prc)<0.005?' on':'');b.dataset.p=fuel.p;b.textContent=n+' · '+fmtPS(fuel.p);b.addEventListener('click',()=>{prc=fuel.p;iPrice.value=cur==='JPY'?prc.toFixed(0):prc.toFixed(2);document.querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));b.classList.add('on');save();calc()});w.appendChild(b)})}
+function tankCat(t) {
+    const c = TL.cat;
+    if (t<=30) return c.xs; if (t<=40) return c.s; if (t<=47) return c.m;
+    if (t<=55) return c.l; if (t<=65) return c.xl; if (t<=80) return c.xxl;
+    return c.xxxl;
+}
 
-function gColor(p){if(p<=12)return'#ff3b30';if(p<=25)return'#ff6723';if(p<=40)return'#ff9f0a';if(p<=65)return'#ffd60a';return'#30d158'}
-function calc(){const cL=(lvl/100)*tank,add=tank-cL,cost=add*prc,full=tank*prc;gFill.style.strokeDashoffset=arcLen-(arcLen*lvl/100);gFill.style.stroke=gColor(lvl);needleEl.style.transform='rotate('+(-90+(lvl/100)*180)+'deg)';$('dPct').textContent=lvl;$('dLiters').textContent=L_.inTank.replace('{n}',fmt(cL));$('rAmount').textContent=fmtCur(cost);$('rDetail').textContent=fmt(add)+' L × '+fmtPS(prc)+' '+C.symbol+'/L';$('sAdd').textContent=fmt(add)+' L';$('sCur').textContent=fmt(cL)+' L';$('sFull').textContent=fmtCur(full);$('alertBox').classList.toggle('on',lvl<=12);$('qBtnsWrap').querySelectorAll('.q-btn').forEach(b=>b.classList.toggle('on',parseInt(b.dataset.l)===lvl))}
-function save(){localStorage.setItem('tank',tank);localStorage.setItem('lvl',lvl);localStorage.setItem('prc',prc)}
+function updateTankUI() {
+    $('tankVal').innerHTML = tank+'<span>L</span>';
+    $('tankSub').textContent = tankCat(tank);
+    $('hSub').textContent = TL.sub.replace('{n}', tank);
+    $('sCap').textContent = tank+' L';
+    $('tankBar').style.width = Math.max(0, Math.min(100, ((tank-10)/90)*100))+'%';
+    document.querySelectorAll('.tp').forEach(p =>
+        p.classList.toggle('on', parseInt(p.dataset.t) === tank));
+}
 
-let toastT;function showToast(m){clearTimeout(toastT);$('toast').textContent=m;$('toast').classList.add('show');toastT=setTimeout(()=>$('toast').classList.remove('show'),1800)}
-
-// Stepper
-function changeTank(d){const n=tank+d;if(n<10||n>120)return;tank=n;updateTankUI();buildQuickBtns();save();calc()}
-$('btnMinus').addEventListener('click',()=>changeTank(-1));$('btnPlus').addEventListener('click',()=>changeTank(1));
-let holdTimer=null,holdSpeed=500;
-function startHold(d){holdSpeed=400;changeTank(d);holdTimer=setTimeout(function r(){changeTank(d);holdSpeed=Math.max(60,holdSpeed*.8);holdTimer=setTimeout(r,holdSpeed)},holdSpeed)}
-function stopHold(){clearTimeout(holdTimer);holdTimer=null;showToast(L_.toastTank.replace('{n}',tank))}
-['touchstart','mousedown'].forEach(e=>{$('btnMinus').addEventListener(e,ev=>{ev.preventDefault();startHold(-1)},{passive:false});$('btnPlus').addEventListener(e,ev=>{ev.preventDefault();startHold(1)},{passive:false})});
-['touchend','touchcancel','mouseup','mouseleave'].forEach(e=>{$('btnMinus').addEventListener(e,stopHold);$('btnPlus').addEventListener(e,stopHold)});
-
-sLevel.addEventListener('input',e=>{lvl=+e.target.value;save();calc()});
-iPrice.addEventListener('input',()=>{prc=parseFloat(iPrice.value)||0;document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));save();calc()});
-iPrice.addEventListener('keydown',e=>{if(e.key==='Enter')iPrice.blur()});
-document.querySelectorAll('input[type=number]').forEach(inp=>{inp.addEventListener('focus',()=>{setTimeout(()=>inp.scrollIntoView({behavior:'smooth',block:'center'}),300)})});
-
-// ==================== STATIONS ====================
-const radiusSlider=$('radiusSlider');
-const radiusVal=$('radiusVal');
-radiusSlider.addEventListener('input',()=>{
-    radiusVal.textContent=radiusSlider.value+' km';
-    if(userLat&&stationsData.length) renderStations();
-});
-
-// Fuel filter
-function buildFuelFilter(){
-    const w=$('fuelFilter');w.innerHTML='';
-    // "All" button
-    const allBtn=document.createElement('button');
-    allBtn.className='ff-btn'+(selectedFuelFilter==='all'?' on':'');
-    allBtn.textContent=L_.allFuels;
-    allBtn.addEventListener('click',()=>{selectedFuelFilter='all';buildFuelFilter();renderStations()});
-    w.appendChild(allBtn);
-    FUEL_TYPES_FR.forEach(ft=>{
-        const b=document.createElement('button');
-        b.className='ff-btn'+(selectedFuelFilter===ft?' on':'');
-        b.textContent=ft;
-        b.addEventListener('click',()=>{selectedFuelFilter=ft;buildFuelFilter();renderStations()});
+function buildTankPresets() {
+    const w = $('tankPresets'); w.innerHTML = '';
+    Object.entries(TL.vehicles).forEach(([v, l]) => {
+        const b = document.createElement('button');
+        b.className = 'tp' + (parseInt(v)===tank?' on':'');
+        b.dataset.t = v; b.textContent = l;
+        b.addEventListener('click', () => {
+            tank = parseInt(v); updateTankUI(); buildQuickBtns();
+            save(); calc();
+            showToast(TL.toastTank.replace('{n}', tank));
+        });
         w.appendChild(b);
     });
 }
 
-// Locate button
-$('locateBtn').addEventListener('click',locateAndFetch);
+function buildQuickBtns() {
+    const w = $('qBtnsWrap'); w.innerHTML = '';
+    [{l:0, label:TL.empty}, {l:12, label:TL.reserve},
+     {l:25, label:'¼'}, {l:50, label:'½'}, {l:75, label:'¾'}
+    ].forEach(({l, label}) => {
+        const b = document.createElement('button');
+        b.className = 'q-btn'; b.dataset.l = l;
+        b.innerHTML = label + '<small>' + fmt((l/100)*tank) + ' L</small>';
+        b.addEventListener('click', () => { lvl=l; sLevel.value=lvl; save(); calc(); });
+        w.appendChild(b);
+    });
+}
 
-function locateAndFetch(){
-    const btn=$('locateBtn');
-    btn.classList.add('loading');btn.disabled=true;
-    $('locateTxt').textContent=L_.locating;
+function buildSliderMarks() {
+    const w = $('sliderMarks'); w.innerHTML = '';
+    TL.sliderMarks.forEach(t => {
+        const s = document.createElement('span');
+        s.textContent = t; w.appendChild(s);
+    });
+}
 
-    if(!navigator.geolocation){
-        btn.classList.remove('loading');btn.disabled=false;
-        $('locateTxt').textContent=L_.locateBtn;
-        showToast('❌ '+L_.geoError);return;
+function buildFuelPills() {
+    const w = $('pillsWrap'); w.innerHTML = '';
+    (FUEL_PRICES[cur] || FUEL_PRICES.EUR).forEach(f => {
+        const n = f.names[lang] || f.names.en || '';
+        const b = document.createElement('button');
+        b.className = 'pill' + (Math.abs(f.p - prc) < 0.005 ? ' on' : '');
+        b.dataset.p = f.p;
+        b.textContent = n + ' · ' + fmtPS(f.p);
+        b.addEventListener('click', () => {
+            prc = f.p;
+            iPrice.value = cur==='JPY' ? prc.toFixed(0) : prc.toFixed(2);
+            document.querySelectorAll('.pill').forEach(x => x.classList.remove('on'));
+            b.classList.add('on');
+            save(); calc();
+        });
+        w.appendChild(b);
+    });
+}
+
+// ==================== GAUGE ====================
+function gColor(p) {
+    if (p<=12) return '#ff3b30'; if (p<=25) return '#ff6723';
+    if (p<=40) return '#ff9f0a'; if (p<=65) return '#ffd60a';
+    return '#30d158';
+}
+
+function calc() {
+    const cL = (lvl/100)*tank, add = tank-cL, cost = add*prc, full = tank*prc;
+    gFill.style.strokeDashoffset = arcLen - (arcLen*lvl/100);
+    gFill.style.stroke = gColor(lvl);
+    needleEl.style.transform = 'rotate(' + (-90 + (lvl/100)*180) + 'deg)';
+    $('dPct').textContent = lvl;
+    $('dLiters').textContent = TL.inTank.replace('{n}', fmt(cL));
+    $('rAmount').textContent = fmtCur(cost);
+    $('rDetail').textContent = fmt(add)+' L × '+fmtPS(prc)+' '+C.symbol+'/L';
+    $('sAdd').textContent = fmt(add)+' L';
+    $('sCur').textContent = fmt(cL)+' L';
+    $('sFull').textContent = fmtCur(full);
+    $('alertBox').classList.toggle('on', lvl <= 12);
+    $('qBtnsWrap').querySelectorAll('.q-btn').forEach(b =>
+        b.classList.toggle('on', parseInt(b.dataset.l) === lvl));
+}
+
+// ==================== STEPPER ====================
+function changeTank(d) {
+    const n = tank + d;
+    if (n < 10 || n > 120) return;
+    tank = n; updateTankUI(); buildQuickBtns(); save(); calc();
+}
+
+$('btnMinus').addEventListener('click', () => changeTank(-1));
+$('btnPlus').addEventListener('click', () => changeTank(1));
+
+let holdTimer = null, holdSpeed = 500;
+function startHold(d) {
+    holdSpeed = 400; changeTank(d);
+    holdTimer = setTimeout(function r() {
+        changeTank(d);
+        holdSpeed = Math.max(60, holdSpeed * 0.8);
+        holdTimer = setTimeout(r, holdSpeed);
+    }, holdSpeed);
+}
+function stopHold() {
+    clearTimeout(holdTimer); holdTimer = null;
+    showToast(TL.toastTank.replace('{n}', tank));
+}
+
+['touchstart','mousedown'].forEach(e => {
+    $('btnMinus').addEventListener(e, ev => { ev.preventDefault(); startHold(-1); }, {passive:false});
+    $('btnPlus').addEventListener(e, ev => { ev.preventDefault(); startHold(1); }, {passive:false});
+});
+['touchend','touchcancel','mouseup','mouseleave'].forEach(e => {
+    $('btnMinus').addEventListener(e, stopHold);
+    $('btnPlus').addEventListener(e, stopHold);
+});
+
+// ==================== SLIDER + PRICE INPUT ====================
+sLevel.addEventListener('input', e => { lvl = +e.target.value; save(); calc(); });
+
+iPrice.addEventListener('input', () => {
+    prc = parseFloat(iPrice.value) || 0;
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
+    save(); calc();
+});
+iPrice.addEventListener('keydown', e => { if (e.key === 'Enter') iPrice.blur(); });
+
+document.querySelectorAll('input[type=number]').forEach(inp => {
+    inp.addEventListener('focus', () => {
+        setTimeout(() => inp.scrollIntoView({behavior:'smooth', block:'center'}), 300);
+    });
+});
+
+// ==================== STATIONS ====================
+const radiusSlider = $('radiusSlider'), radiusVal = $('radiusVal');
+
+radiusSlider.addEventListener('input', () => {
+    radiusVal.textContent = radiusSlider.value + ' km';
+    if (userLat && stationsData.length) {
+        // Re-filter existing data for FR/ES/DE (no re-fetch needed for client-side filtered)
+        renderStations();
+    }
+});
+
+function buildFuelFilter() {
+    const w = $('fuelFilter'); w.innerHTML = '';
+    const types = currentProvider ? currentProvider.fuelTypes : ['fuel'];
+
+    const allB = document.createElement('button');
+    allB.className = 'ff-btn' + (selectedFuelFilter==='all'?' on':'');
+    allB.textContent = TL.allFuels;
+    allB.addEventListener('click', () => {
+        selectedFuelFilter = 'all'; buildFuelFilter(); renderStations();
+    });
+    w.appendChild(allB);
+
+    types.forEach(ft => {
+        const b = document.createElement('button');
+        b.className = 'ff-btn' + (selectedFuelFilter===ft?' on':'');
+        b.textContent = ft;
+        b.addEventListener('click', () => {
+            selectedFuelFilter = ft; buildFuelFilter(); renderStations();
+        });
+        w.appendChild(b);
+    });
+}
+
+// ==================== LOCATE BUTTON ====================
+$('locateBtn').addEventListener('click', locateAndFetch);
+
+function locateAndFetch() {
+    const btn = $('locateBtn');
+    btn.classList.add('loading'); btn.disabled = true;
+    $('locateTxt').textContent = TL.locating;
+
+    if (!navigator.geolocation) {
+        btn.classList.remove('loading'); btn.disabled = false;
+        $('locateTxt').textContent = TL.locateBtn;
+        showToast('❌ ' + TL.geoError);
+        return;
     }
 
     navigator.geolocation.getCurrentPosition(
-        pos=>{
-            userLat=pos.coords.latitude;
-            userLon=pos.coords.longitude;
-            fetchStations().then(()=>{
-                btn.classList.remove('loading');btn.disabled=false;
-                $('locateTxt').textContent=L_.locateBtn;
-            });
+        async pos => {
+            userLat = pos.coords.latitude;
+            userLon = pos.coords.longitude;
+            try {
+                // Detect country
+                detectedCountryCode = await detectCountry(userLat, userLon);
+                currentProvider = getProvider(detectedCountryCode);
+
+                // Show country badge
+                $('countryBadge').innerHTML =
+                    `<div class="country-badge">
+                        <span class="cb-flag">${currentProvider.flag}</span>
+                        <span>${TL.detectedCountry}</span>
+                        <span class="cb-name">${currentProvider.name}</span>
+                        <span style="color:#636366;font-size:11px">via ${currentProvider.api}</span>
+                    </div>`;
+
+                // Show OSM note if no prices
+                if (currentProvider.hasPrices === false) {
+                    $('osmNote').textContent = TL.osmNote;
+                    $('osmNote').style.display = 'block';
+                } else {
+                    $('osmNote').style.display = 'none';
+                }
+
+                selectedFuelFilter = 'all';
+                buildFuelFilter();
+
+                await fetchStations();
+            } catch(e) {
+                console.error(e);
+                showToast('❌ ' + TL.stationError);
+            }
+            btn.classList.remove('loading'); btn.disabled = false;
+            $('locateTxt').textContent = TL.locateBtn;
         },
-        err=>{
-            btn.classList.remove('loading');btn.disabled=false;
-            $('locateTxt').textContent=L_.locateBtn;
-            showToast('❌ '+L_.geoError);
+        () => {
+            btn.classList.remove('loading'); btn.disabled = false;
+            $('locateTxt').textContent = TL.locateBtn;
+            showToast('❌ ' + TL.geoError);
         },
-        {enableHighAccuracy:true,timeout:10000,maximumAge:60000}
+        {enableHighAccuracy: true, timeout: 15000, maximumAge: 60000}
     );
 }
 
-async function fetchStations(){
-    try{
-        // French government open data API
-        const radius=parseInt(radiusSlider.value)*1000; // km to m
-        const url=`https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?`+
-            `where=within_distance(geom,geom'POINT(${userLon} ${userLat})',${radius}m)&`+
-            `limit=60&`+
-            `select=id,adresse,ville,cp,geom,prix_maj,prix_nom,prix_valeur,horaires,services_service,marque`;
+// ==================== FETCH STATIONS ====================
+async function fetchStations() {
+    try {
+        const radiusKm = parseInt(radiusSlider.value);
+        const raw = await currentProvider.fetch(userLat, userLon, radiusKm);
 
-        const resp=await fetch(url);
-        if(!resp.ok) throw new Error('API error');
-        const data=await resp.json();
-
-        // Group by station
-        const stationMap={};
-        (data.results||[]).forEach(r=>{
-            const id=r.id;
-            if(!stationMap[id]){
-                stationMap[id]={
-                    id,
-                    name:r.marque||r.ville||'Station',
-                    addr:r.adresse||'',
-                    city:r.ville||'',
-                    cp:r.cp||'',
-                    lat:r.geom?.lat||0,
-                    lon:r.geom?.lon||0,
-                    fuels:{},
-                    services:r.services_service||''
-                };
-            }
-            if(r.prix_nom&&r.prix_valeur){
-                stationMap[id].fuels[r.prix_nom]={
-                    price:parseFloat(r.prix_valeur),
-                    updated:r.prix_maj||''
-                };
-            }
-        });
-
-        // To array + calc distance
-        stationsData=Object.values(stationMap).map(s=>{
-            s.dist=haversine(userLat,userLon,s.lat,s.lon);
+        // Calc distance for each
+        stationsData = raw.map(s => {
+            s.dist = haversine(userLat, userLon, s.lat, s.lon);
             return s;
         });
 
         renderStations();
         initMap();
-    }catch(e){
+    } catch(e) {
         console.error(e);
-        showToast('❌ '+L_.stationError);
-        $('stationList').innerHTML='<div class="station-empty"><div class="empty-icon">📡</div>'+L_.stationError+'</div>';
+        $('stationList').innerHTML =
+            '<div class="station-empty"><div class="empty-icon">📡</div>' +
+            TL.stationError + '</div>';
         $('stationList').classList.remove('hidden');
+        showToast('❌ ' + TL.stationError);
     }
 }
 
-function haversine(lat1,lon1,lat2,lon2){
-    const R=6371;
-    const dLat=(lat2-lat1)*Math.PI/180;
-    const dLon=(lon2-lon1)*Math.PI/180;
-    const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
-    return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+// ==================== RENDER STATIONS LIST ====================
+function getBestPrice(station) {
+    if (selectedFuelFilter !== 'all') {
+        return station.fuels[selectedFuelFilter]?.price || null;
+    }
+    const prices = Object.values(station.fuels).map(f => f.price).filter(p => p && p > 0);
+    return prices.length ? Math.min(...prices) : null;
 }
 
-function renderStations(){
-    const list=$('stationList');
-    const radius=parseInt(radiusSlider.value);
+function getMainFuelName(station) {
+    if (selectedFuelFilter !== 'all') return selectedFuelFilter;
+    let min = Infinity, name = '';
+    Object.entries(station.fuels).forEach(([k, v]) => {
+        if (v.price && v.price < min) { min = v.price; name = k; }
+    });
+    return name;
+}
 
-    // Filter by fuel type + radius
-    let filtered=stationsData.filter(s=>s.dist<=radius);
-    if(selectedFuelFilter!=='all'){
-        filtered=filtered.filter(s=>s.fuels[selectedFuelFilter]);
+function renderStations() {
+    const list = $('stationList');
+    const radius = parseInt(radiusSlider.value);
+
+    // Filter
+    let filtered = stationsData.filter(s => s.dist <= radius);
+    if (selectedFuelFilter !== 'all') {
+        filtered = filtered.filter(s => s.fuels[selectedFuelFilter]);
     }
 
-    // Sort by cheapest selected fuel (or first available)
-    filtered.sort((a,b)=>{
-        const pa=getBestPrice(a);
-        const pb=getBestPrice(b);
-        if(pa===null&&pb===null)return a.dist-b.dist;
-        if(pa===null)return 1;
-        if(pb===null)return -1;
-        return pa-pb;
+    // Sort by price (cheapest first), fallback by distance
+    filtered.sort((a, b) => {
+        const pa = getBestPrice(a), pb = getBestPrice(b);
+        if (pa === null && pb === null) return a.dist - b.dist;
+        if (pa === null) return 1;
+        if (pb === null) return -1;
+        return pa - pb;
     });
 
-    if(!filtered.length){
-        list.innerHTML='<div class="station-empty"><div class="empty-icon">🔍</div>'+L_.noStations+'</div>';
+    if (!filtered.length) {
+        list.innerHTML =
+            '<div class="station-empty"><div class="empty-icon">🔍</div>' +
+            TL.noStations + '</div>';
         list.classList.remove('hidden');
         updateMapMarkers(filtered);
         return;
     }
 
-    const cheapestPrice=getBestPrice(filtered[0]);
+    const cheapestPrice = getBestPrice(filtered[0]);
+    const litersToAdd = tank - (lvl/100) * tank;
 
-    list.innerHTML=filtered.slice(0,20).map((s,i)=>{
-        const price=getBestPrice(s);
-        const isCheapest=i===0&&price!==null;
-        const savings=price&&cheapestPrice&&!isCheapest?(price-cheapestPrice)*(tank-(lvl/100)*tank):0;
-        const fuelLabel=selectedFuelFilter!=='all'?selectedFuelFilter:getMainFuelName(s);
+    list.innerHTML = filtered.slice(0, 20).map((s, i) => {
+        const price = getBestPrice(s);
+        const isCheapest = i === 0 && price !== null;
+        const extraCost = (price && cheapestPrice && !isCheapest)
+            ? (price - cheapestPrice) * litersToAdd : 0;
+        const fuelLabel = getMainFuelName(s);
+        const distTxt = s.dist < 1
+            ? (s.dist * 1000).toFixed(0) + ' m'
+            : s.dist.toFixed(1) + ' km';
 
         return `
-        <div class="station-item${isCheapest?' cheapest':''}" onclick="useStationPrice(${price})" data-lat="${s.lat}" data-lon="${s.lon}">
-            <div class="station-rank">${i+1}</div>
+        <div class="station-item${isCheapest?' cheapest':''}"
+             onclick="useStationPrice(${price})">
+            <div class="station-rank">${i + 1}</div>
             <div class="station-info">
-                <div class="station-name">${escHtml(s.name)}</div>
-                <div class="station-addr">${escHtml(s.addr)}, ${escHtml(s.cp)} ${escHtml(s.city)}</div>
-                <div class="station-dist">📍 ${s.dist<1?(s.dist*1000).toFixed(0)+' m':s.dist.toFixed(1)+' km'}${fuelLabel?' — '+fuelLabel:''}</div>
-                ${isCheapest?'<span class="use-price-tag">🏆 '+L_.cheapest+'</span>':''}
+                <div class="station-name">${escH(s.name)}</div>
+                <div class="station-addr">${escH(s.addr)}${s.cp?', '+escH(s.cp):''}${s.city?' '+escH(s.city):''}</div>
+                <div class="station-dist">📍 ${distTxt}${fuelLabel?' — '+fuelLabel:''}</div>
+                ${isCheapest ? '<span class="use-price-tag">'+TL.cheapest+'</span>' : ''}
             </div>
             <div class="station-price-box">
-                ${price!==null?`<div class="station-price">${fmtPS(price)}</div><div class="station-price-unit">${C.symbol}${L_.perLiterLabel}</div>`:'<div class="station-price" style="font-size:14px;color:#636366">—</div>'}
-                ${savings>0.01?'<div class="station-savings">+'+fmtCur(savings)+'</div>':''}
+                ${price !== null
+                    ? `<div class="station-price">${fmtPS(price)}</div>
+                       <div class="station-price-unit">${C.symbol}${TL.perLiterLabel}</div>`
+                    : `<div class="station-price" style="font-size:12px;color:#636366">${TL.noPriceAvail}</div>`
+                }
+                ${extraCost > 0.01
+                    ? '<div class="station-savings" style="color:#ff6961">+ '+fmtCur(extraCost)+'</div>'
+                    : ''
+                }
             </div>
-            <div style="position:absolute;bottom:8px;right:14px;">
-                <a href="https://maps.apple.com/?daddr=${s.lat},${s.lon}&dirflg=d" 
-                   onclick="event.stopPropagation()" 
-                   style="font-size:11px;color:#007aff;text-decoration:none;font-weight:600">
-                   ${L_.navigate} →
-                </a>
-            </div>
+            <a href="https://maps.apple.com/?daddr=${s.lat},${s.lon}&dirflg=d"
+               onclick="event.stopPropagation()"
+               style="position:absolute;bottom:8px;right:14px;font-size:11px;color:#007aff;text-decoration:none;font-weight:600">
+               ${TL.navigate} →
+            </a>
         </div>`;
     }).join('');
 
     list.classList.remove('hidden');
-    updateMapMarkers(filtered.slice(0,20));
+    updateMapMarkers(filtered.slice(0, 20));
 }
 
-function getBestPrice(station){
-    if(selectedFuelFilter!=='all'){
-        return station.fuels[selectedFuelFilter]?.price||null;
-    }
-    const prices=Object.values(station.fuels).map(f=>f.price).filter(p=>p>0);
-    return prices.length?Math.min(...prices):null;
-}
-
-function getMainFuelName(station){
-    if(selectedFuelFilter!=='all')return selectedFuelFilter;
-    let min=Infinity,name='';
-    Object.entries(station.fuels).forEach(([k,v])=>{if(v.price<min){min=v.price;name=k}});
-    return name;
-}
-
-function escHtml(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
-
-function useStationPrice(price){
-    if(price===null)return;
-    prc=price;
-    iPrice.value=cur==='JPY'?prc.toFixed(0):prc.toFixed(2);
-    document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
-    save();calc();
-    showToast('✅ '+L_.usePrice+' : '+fmtPS(price)+' '+C.symbol);
-    // Scroll to result
-    document.querySelector('.res-card').scrollIntoView({behavior:'smooth',block:'center'});
-}
+// ==================== USE STATION PRICE ====================
+window.useStationPrice = function(price) {
+    if (price === null || price === undefined) return;
+    prc = price;
+    iPrice.value = cur === 'JPY' ? prc.toFixed(0) : prc.toFixed(2);
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
+    save(); calc();
+    showToast('✅ ' + TL.usePrice + ' : ' + fmtPS(price) + ' ' + C.symbol);
+    document.querySelector('.res-card').scrollIntoView({behavior:'smooth', block:'center'});
+};
 
 // ==================== MAP ====================
-function initMap(){
-    const wrap=$('mapWrap');
+function initMap() {
+    const wrap = $('mapWrap');
     wrap.classList.remove('hidden');
 
-    if(!leafletMap){
-        leafletMap=L.map('map',{
-            zoomControl:false,
-            attributionControl:false
-        }).setView([userLat,userLon],13);
+    if (!leafletMap) {
+        leafletMap = L.map('map', {
+            zoomControl: false,
+            attributionControl: false
+        }).setView([userLat, userLon], 13);
 
-        // Dark tile layer
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
-            maxZoom:19
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19
         }).addTo(leafletMap);
 
-        markersLayer=L.layerGroup().addTo(leafletMap);
-    }else{
-        leafletMap.setView([userLat,userLon],13);
+        markersLayer = L.layerGroup().addTo(leafletMap);
+    } else {
+        leafletMap.setView([userLat, userLon], 13);
     }
 
-    // Fix map size after display
-    setTimeout(()=>leafletMap.invalidateSize(),100);
+    setTimeout(() => leafletMap.invalidateSize(), 150);
 }
 
-function updateMapMarkers(stations){
-    if(!markersLayer)return;
+function updateMapMarkers(stations) {
+    if (!markersLayer) return;
     markersLayer.clearLayers();
 
-    // User marker
-    const userIcon=L.divIcon({
-        html:'<div style="width:14px;height:14px;background:#007aff;border:3px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(0,122,255,.5)"></div>',
-        className:'',iconSize:[14,14],iconAnchor:[7,7]
+    // User position
+    const userIcon = L.divIcon({
+        html: '<div style="width:14px;height:14px;background:#007aff;border:3px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(0,122,255,.5)"></div>',
+        className: '', iconSize: [14,14], iconAnchor: [7,7]
     });
-    L.marker([userLat,userLon],{icon:userIcon}).addTo(markersLayer);
+    L.marker([userLat, userLon], {icon: userIcon}).addTo(markersLayer);
 
-    stations.forEach((s,i)=>{
-        const price=getBestPrice(s);
-        const color=i===0?'#30d158':'#ff9500';
-        const icon=L.divIcon({
-            html:`<div style="background:${color};color:#000;padding:3px 7px;border-radius:10px;font-size:11px;font-weight:700;font-family:-apple-system,sans-serif;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.3)">${price!==null?fmtPS(price):'⛽'}</div>`,
-            className:'',iconAnchor:[25,12]
+    // Station markers
+    stations.forEach((s, i) => {
+        const price = getBestPrice(s);
+        const color = i === 0 ? '#30d158' : '#ff9500';
+        const label = price !== null ? fmtPS(price) : '⛽';
+
+        const icon = L.divIcon({
+            html: `<div style="background:${color};color:#000;padding:3px 7px;border-radius:10px;font-size:11px;font-weight:700;font-family:-apple-system,sans-serif;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.3)">${label}</div>`,
+            className: '', iconAnchor: [25, 12]
         });
-        const marker=L.marker([s.lat,s.lon],{icon}).addTo(markersLayer);
-        marker.on('click',()=>useStationPrice(price));
+
+        const marker = L.marker([s.lat, s.lon], {icon}).addTo(markersLayer);
+        marker.on('click', () => useStationPrice(price));
+
+        // Popup
+        marker.bindPopup(
+            `<div style="font-family:-apple-system,sans-serif;font-size:13px;min-width:140px">
+                <strong>${escH(s.name)}</strong><br>
+                <span style="color:#666">${escH(s.addr)}</span><br>
+                ${price !== null
+                    ? '<span style="font-size:18px;font-weight:700;color:#30d158">'+fmtPS(price)+' '+C.symbol+'</span>'
+                    : '<span style="color:#999">'+TL.noPriceAvail+'</span>'
+                }<br>
+                <a href="https://maps.apple.com/?daddr=${s.lat},${s.lon}&dirflg=d"
+                   style="color:#007aff;font-weight:600">${TL.navigate} →</a>
+            </div>`,
+            {closeButton: false, className: ''}
+        );
     });
 
     // Fit bounds
-    if(stations.length){
-        const bounds=L.latLngBounds([[userLat,userLon],...stations.map(s=>[s.lat,s.lon])]);
-        leafletMap.fitBounds(bounds,{padding:[30,30],maxZoom:14});
+    if (stations.length) {
+        const allPts = [[userLat, userLon], ...stations.map(s => [s.lat, s.lon])];
+        const bounds = L.latLngBounds(allPts);
+        leafletMap.fitBounds(bounds, {padding: [30, 30], maxZoom: 14});
     }
 }
 
 // ==================== INIT ====================
-function init(){
-    arcLen=gBg.getTotalLength();
-    gFill.style.strokeDasharray=arcLen;
-    iPrice.value=cur==='JPY'?prc.toFixed(0):prc.toFixed(2);
-    iPrice.step=cur==='JPY'?'1':'0.01';
-    sLevel.value=lvl;
-    buildLangBar();buildCurBar();rebuildAll();
+function init() {
+    arcLen = gBg.getTotalLength();
+    gFill.style.strokeDasharray = arcLen;
+
+    iPrice.value = cur === 'JPY' ? prc.toFixed(0) : prc.toFixed(2);
+    iPrice.step = cur === 'JPY' ? '1' : '0.01';
+    sLevel.value = lvl;
+
+    buildLangBar();
+    buildCurBar();
+    rebuildAll();
 }
-window.addEventListener('load',init);
+
+window.addEventListener('load', init);
 </script>
 </body>
 </html>
