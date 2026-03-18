@@ -156,6 +156,41 @@
         .save-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
         @media(max-height:480px){.gauge-card{display:none}.header{padding:10px 0 4px}.header h1{font-size:20px}.map-wrap{height:180px}}
     </style>
+	/* ===== PREMIUM ===== */
+.premium-card{padding:20px;background:linear-gradient(145deg,#1c1c1e,#2c2c1e);border:1px solid rgba(255,204,0,.15)}
+.premium-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;font-size:11px;font-weight:700;letter-spacing:.3px}
+.premium-title{font-size:20px;font-weight:700;margin-top:12px}
+.premium-features{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.premium-feat{display:flex;align-items:center;gap:8px;font-size:13px;color:#ccc}
+.premium-feat .check{color:#30d158;font-size:16px;flex-shrink:0}
+.premium-plans{display:flex;gap:10px;margin-top:18px}
+.plan-btn{flex:1;padding:14px 10px;border-radius:14px;border:2px solid #3a3a3c;background:#2c2c2e;cursor:pointer;transition:all .15s;text-align:center;text-decoration:none;display:block}
+.plan-btn:active{transform:scale(.97)}
+.plan-btn.popular{border-color:#ffd700;background:rgba(255,215,0,.08)}
+.plan-price{font-size:22px;font-weight:800;color:#fff}
+.plan-period{font-size:11px;color:#8e8e93;margin-top:2px}
+.plan-save{font-size:10px;color:#30d158;font-weight:600;margin-top:4px}
+.plan-cta{display:inline-block;margin-top:10px;padding:8px 20px;border-radius:20px;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;font-size:13px;font-weight:700;font-family:-apple-system,sans-serif}
+.premium-manage{text-align:center;margin-top:12px}
+.premium-manage a{color:#8e8e93;font-size:12px;text-decoration:underline}
+.premium-active{text-align:center;padding:20px}
+.premium-active .big-check{font-size:48px;margin-bottom:10px}
+.premium-active .active-text{font-size:16px;font-weight:600;color:#30d158}
+.premium-active .active-until{font-size:12px;color:#8e8e93;margin-top:4px}
+
+/* Limite gratuite modal */
+.limit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9998;align-items:center;justify-content:center;padding:20px}
+.limit-overlay.on{display:flex}
+.limit-modal{background:#1c1c1e;border-radius:20px;padding:28px 24px;max-width:340px;width:100%;text-align:center;animation:cardIn .3s ease}
+.limit-modal h3{font-size:18px;margin-bottom:8px}
+.limit-modal p{font-size:13px;color:#8e8e93;line-height:1.5;margin-bottom:18px}
+.limit-modal .modal-btns{display:flex;flex-direction:column;gap:8px}
+.limit-modal .modal-btn{padding:14px;border-radius:12px;border:none;font-size:15px;font-weight:600;font-family:-apple-system,sans-serif;cursor:pointer;text-decoration:none;text-align:center;display:block}
+.limit-modal .btn-premium{background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000}
+.limit-modal .btn-close{background:#2c2c2e;color:#8e8e93}
+
+body.is-premium .ad-slot{display:none!important}
+body.is-premium .premium-card .free-only{display:none}
 </head>
 <body>
 <div class="save-toast" id="toast">💾</div>
