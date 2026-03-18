@@ -155,8 +155,7 @@
         .save-toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-80px);background:#2c2c2e;color:#fff;padding:10px 20px;border-radius:22px;font-size:13px;font-weight:500;box-shadow:0 8px 30px rgba(0,0,0,.4);transition:transform .35s cubic-bezier(.21,1.02,.73,1),opacity .35s;opacity:0;z-index:1000;pointer-events:none}
         .save-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
         @media(max-height:480px){.gauge-card{display:none}.header{padding:10px 0 4px}.header h1{font-size:20px}.map-wrap{height:180px}}
-    </style>
-	/* ===== PREMIUM ===== */
+		/* ===== PREMIUM ===== */
 .premium-card{padding:20px;background:linear-gradient(145deg,#1c1c1e,#2c2c1e);border:1px solid rgba(255,204,0,.15)}
 .premium-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;font-size:11px;font-weight:700;letter-spacing:.3px}
 .premium-title{font-size:20px;font-weight:700;margin-top:12px}
@@ -191,6 +190,8 @@
 
 body.is-premium .ad-slot{display:none!important}
 body.is-premium .premium-card .free-only{display:none}
+    </style>
+
 </head>
 <body>
 <div class="save-toast" id="toast">💾</div>
@@ -219,6 +220,68 @@ body.is-premium .premium-card .free-only{display:none}
         <div id="osmNote" class="osm-note" style="display:none"></div>
         <div class="station-list hidden" id="stationList"></div>
     </div>
+	<!-- PREMIUM CARD -->
+<div class="card premium-card" id="premiumCard">
+    <!-- Shown when NOT premium -->
+    <div id="premiumOffer">
+        <div class="premium-badge">⭐ PREMIUM</div>
+        <div class="premium-title" id="premTitle">Passez à Premium</div>
+        <div class="premium-features">
+            <div class="premium-feat"><span class="check">✓</span><span id="pf1">Recherches de stations illimitées</span></div>
+            <div class="premium-feat"><span class="check">✓</span><span id="pf2">Rayon de recherche jusqu'à 50 km</span></div>
+            <div class="premium-feat"><span class="check">✓</span><span id="pf3">Aucune publicité</span></div>
+            <div class="premium-feat"><span class="check">✓</span><span id="pf4">Soutenez le développement</span></div>
+        </div>
+        <div class="premium-plans">
+            <a class="plan-btn" id="planMonthly" href="#" target="_blank">
+                <div class="plan-price" id="pmPrice">2,99€</div>
+                <div class="plan-period" id="pmPeriod">/ mois</div>
+                <div class="plan-cta" id="pmCta">Choisir</div>
+            </a>
+            <a class="plan-btn popular" id="planAnnual" href="#" target="_blank">
+                <div class="plan-price" id="paPrice">19,99€</div>
+                <div class="plan-period" id="paPeriod">/ an</div>
+                <div class="plan-save" id="paSave">Économisez 33%</div>
+                <div class="plan-cta" id="paCta">Choisir</div>
+            </a>
+        </div>
+        <div class="premium-manage">
+            <a href="https://billing.stripe.com/p/login/4gMaEX2Bz4YheYD3lo2go00" target="_blank" id="manageLink">
+                Déjà Premium ? Gérer mon abonnement
+            </a>
+        </div>
+    </div>
+
+    <!-- Shown when IS premium -->
+    <div id="premiumActive" style="display:none">
+        <div class="premium-active">
+            <div class="big-check">⭐</div>
+            <div class="active-text" id="activeText">Premium actif !</div>
+            <div class="active-until" id="activeUntil"></div>
+            <div class="premium-manage" style="margin-top:14px">
+                <a href="https://billing.stripe.com/p/login/4gMaEX2Bz4YheYD3lo2go00" target="_blank" id="manageLinkActive">
+                    Gérer mon abonnement
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- LIMIT MODAL -->
+<div class="limit-overlay" id="limitOverlay">
+    <div class="limit-modal">
+        <h3 id="limitTitle">🔒 Limite atteinte</h3>
+        <p id="limitText">Vous avez utilisé vos 3 recherches gratuites du jour. Passez à Premium pour des recherches illimitées !</p>
+        <div class="modal-btns">
+            <a class="modal-btn btn-premium" id="limitUpgrade" href="#" target="_blank">
+                ⭐ Passer à Premium — 2,99€/mois
+            </a>
+            <button class="modal-btn btn-close" onclick="closeLimitModal()">
+                Revenir demain
+            </button>
+        </div>
+    </div>
+</div>
     <!-- TANK -->
     <div class="card tank-card">
         <div class="card-label" id="lTank"></div>
