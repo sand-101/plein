@@ -807,6 +807,7 @@ function rebuildAll() {
     buildSliderMarks();
     buildFuelFilter();
     updateTankUI();
+	updatePremiumUI();
     calc();
     if (stationsData.length) renderStations();
 }
@@ -1010,7 +1011,10 @@ function buildFuelFilter() {
 }
 
 // ==================== LOCATE BUTTON ====================
-$('locateBtn').addEventListener('click', locateAndFetch);
+$('locateBtn').addEventListener('click', function() {
+    if (!checkSearchLimit()) return;
+    locateAndFetch();
+});
 
 function locateAndFetch() {
     const btn = $('locateBtn');
@@ -1278,11 +1282,157 @@ function init() {
     iPrice.step = cur === 'JPY' ? '1' : '0.01';
     sLevel.value = lvl;
 
+    // Premium
+    checkStripeReturn();
+    updatePremiumUI();
+
     buildLangBar();
     buildCurBar();
     rebuildAll();
 }
+// ==================== PREMIUM SYSTEM ====================
 
+// ⚠️ REMPLACE CES LIENS PAR LES TIENS (Stripe Payment Links)
+const STRIPE_MONTHLY = 'https://buy.stripe.com/4gMaEX2Bz4YheYD3lo2go00';
+const STRIPE_ANNUAL  = 'https://buy.stripe.com/3cI5kD5NL3Ud4jZ5tw2go01';
+const STRIPE_PORTAL  = 'https://billing.stripe.com/p/login/4gMaEX2Bz4YheYD3lo2go00';
+
+// Premium translations
+const PREM_I18N = {
+    fr:{title:'Passez à Premium',f1:'Recherches de stations illimitées',f2:'Rayon jusqu\'à 50 km',f3:'Aucune publicité',f4:'Soutenez le développement',month:'/mois',year:'/an',save:'Économisez 33%',cta:'Choisir',active:'Premium actif !',until:'Valide jusqu\'au {d}',manage:'Gérer mon abonnement',already:'Déjà Premium ? Gérer mon abonnement',limitTitle:'🔒 Limite atteinte',limitText:'Vous avez utilisé vos 3 recherches gratuites du jour. Passez à Premium pour des recherches illimitées !',limitCta:'⭐ Passer à Premium — 2,99€/mois',limitClose:'Revenir demain'},
+    en:{title:'Go Premium',f1:'Unlimited station searches',f2:'Search radius up to 50 km',f3:'No advertisements',f4:'Support development',month:'/month',year:'/year',save:'Save 33%',cta:'Choose',active:'Premium active!',until:'Valid until {d}',manage:'Manage subscription',already:'Already Premium? Manage subscription',limitTitle:'🔒 Limit reached',limitText:'You\'ve used your 3 free searches today. Go Premium for unlimited searches!',limitCta:'⭐ Go Premium — €2.99/mo',limitClose:'Come back tomorrow'},
+    es:{title:'Hazte Premium',f1:'Búsquedas ilimitadas',f2:'Radio hasta 50 km',f3:'Sin publicidad',f4:'Apoya el desarrollo',month:'/mes',year:'/año',save:'Ahorra 33%',cta:'Elegir',active:'¡Premium activo!',until:'Válido hasta {d}',manage:'Gestionar suscripción',already:'¿Ya Premium? Gestionar suscripción',limitTitle:'🔒 Límite alcanzado',limitText:'Has usado tus 3 búsquedas gratuitas hoy. ¡Hazte Premium!',limitCta:'⭐ Premium — 2,99€/mes',limitClose:'Volver mañana'},
+    it:{title:'Passa a Premium',f1:'Ricerche illimitate',f2:'Raggio fino a 50 km',f3:'Nessuna pubblicità',f4:'Supporta lo sviluppo',month:'/mese',year:'/anno',save:'Risparmi 33%',cta:'Scegli',active:'Premium attivo!',until:'Valido fino al {d}',manage:'Gestisci abbonamento',already:'Già Premium? Gestisci',limitTitle:'🔒 Limite raggiunto',limitText:'Hai usato le 3 ricerche gratuite oggi. Passa a Premium!',limitCta:'⭐ Premium — 2,99€/mese',limitClose:'Torna domani'},
+    pt:{title:'Seja Premium',f1:'Pesquisas ilimitadas',f2:'Raio até 50 km',f3:'Sem anúncios',f4:'Apoie o desenvolvimento',month:'/mês',year:'/ano',save:'Economize 33%',cta:'Escolher',active:'Premium ativo!',until:'Válido até {d}',manage:'Gerenciar assinatura',already:'Já Premium? Gerenciar',limitTitle:'🔒 Limite atingido',limitText:'Você usou suas 3 buscas gratuitas hoje. Seja Premium!',limitCta:'⭐ Premium — 2,99€/mês',limitClose:'Voltar amanhã'},
+    ru:{title:'Премиум',f1:'Безлимитный поиск',f2:'Радиус до 50 км',f3:'Без рекламы',f4:'Поддержка разработки',month:'/мес',year:'/год',save:'Экономия 33%',cta:'Выбрать',active:'Премиум активен!',until:'Действует до {d}',manage:'Управление подпиской',already:'Уже Премиум? Управление',limitTitle:'🔒 Лимит',limitText:'3 бесплатных поиска использованы. Премиум = безлимит!',limitCta:'⭐ Премиум — 2,99€/мес',limitClose:'Завтра'},
+    zh:{title:'升级Premium',f1:'无限搜索',f2:'半径50公里',f3:'无广告',f4:'支持开发',month:'/月',year:'/年',save:'节省33%',cta:'选择',active:'Premium已激活!',until:'有效期至 {d}',manage:'管理订阅',already:'已是Premium? 管理',limitTitle:'🔒 已达上限',limitText:'今日3次免费搜索已用完。升级Premium!',limitCta:'⭐ Premium — 2.99€/月',limitClose:'明天再来'},
+    ja:{title:'Premiumへ',f1:'無制限検索',f2:'半径50km',f3:'広告なし',f4:'開発を支援',month:'/月',year:'/年',save:'33%お得',cta:'選択',active:'Premium有効!',until:'{d}まで有効',manage:'サブスク管理',already:'Premium? 管理',limitTitle:'🔒 制限',limitText:'本日の無料検索3回を使用済み。Premiumへ!',limitCta:'⭐ Premium — 2.99€/月',limitClose:'明日また'}
+};
+
+// Check premium status
+function isPremium() {
+    const until = localStorage.getItem('premium_until');
+    if (!until) return false;
+    return new Date(until) > new Date();
+}
+
+// Check for Stripe return
+function checkStripeReturn() {
+    const params = new URLSearchParams(window.location.search);
+    const premiumType = params.get('premium');
+    const sessionId = params.get('session');
+
+    if (premiumType && sessionId) {
+        // Set premium expiry
+        let days = premiumType === 'annual' ? 365 : 31;
+        const until = new Date(Date.now() + days * 86400000);
+        localStorage.setItem('premium_until', until.toISOString());
+        localStorage.setItem('premium_type', premiumType);
+        localStorage.setItem('stripe_session', sessionId);
+
+        // Clean URL
+        window.history.replaceState({}, '', window.location.pathname);
+
+        showToast('🎉 Premium activé !');
+    }
+}
+
+// Search limit for free users
+function checkSearchLimit() {
+    if (isPremium()) return true;
+
+    const today = new Date().toDateString();
+    let data = JSON.parse(localStorage.getItem('search_limit') || '{}');
+
+    if (data.date !== today) {
+        data = {date: today, count: 0};
+    }
+
+    if (data.count >= 3) {
+        showLimitModal();
+        return false;
+    }
+
+    data.count++;
+    localStorage.setItem('search_limit', JSON.stringify(data));
+    return true;
+}
+
+// Get max radius based on premium
+function getMaxRadius() {
+    return isPremium() ? 50 : 5;
+}
+
+// Show/hide premium UI
+function updatePremiumUI() {
+    const premium = isPremium();
+    const pi = PREM_I18N[lang] || PREM_I18N.en;
+
+    // Toggle body class
+    document.body.classList.toggle('is-premium', premium);
+
+    // Premium card content
+    $('premiumOffer').style.display = premium ? 'none' : 'block';
+    $('premiumActive').style.display = premium ? 'block' : 'none';
+
+    // Texts
+    $('premTitle').textContent = pi.title;
+    $('pf1').textContent = pi.f1;
+    $('pf2').textContent = pi.f2;
+    $('pf3').textContent = pi.f3;
+    $('pf4').textContent = pi.f4;
+    $('pmPeriod').textContent = pi.month;
+    $('paPeriod').textContent = pi.year;
+    $('paSave').textContent = pi.save;
+    $('pmCta').textContent = pi.cta;
+    $('paCta').textContent = pi.cta;
+    $('activeText').textContent = pi.active;
+    $('manageLink').textContent = pi.already;
+    $('manageLinkActive').textContent = pi.manage;
+
+    // Stripe links
+    $('planMonthly').href = STRIPE_MONTHLY;
+    $('planAnnual').href = STRIPE_ANNUAL;
+    $('manageLink').href = STRIPE_PORTAL;
+    $('manageLinkActive').href = STRIPE_PORTAL;
+
+    // Active until date
+    if (premium) {
+        const until = new Date(localStorage.getItem('premium_until'));
+        const dateStr = until.toLocaleDateString(lang === 'fr' ? 'fr-FR' : lang);
+        $('activeUntil').textContent = pi.until.replace('{d}', dateStr);
+    }
+
+    // Radius slider max
+    const maxR = getMaxRadius();
+    radiusSlider.max = maxR;
+    if (parseInt(radiusSlider.value) > maxR) {
+        radiusSlider.value = maxR;
+        radiusVal.textContent = maxR + ' km';
+    }
+
+    // Limit modal texts
+    $('limitTitle').textContent = pi.limitTitle;
+    $('limitText').textContent = pi.limitText;
+    $('limitUpgrade').textContent = pi.limitCta;
+    $('limitUpgrade').href = STRIPE_MONTHLY;
+    const closeBtn = $('limitOverlay').querySelector('.btn-close');
+    if (closeBtn) closeBtn.textContent = pi.limitClose;
+}
+
+// Limit modal
+function showLimitModal() {
+    $('limitOverlay').classList.add('on');
+}
+
+window.closeLimitModal = function() {
+    $('limitOverlay').classList.remove('on');
+};
+
+// Close modal on overlay click
+$('limitOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeLimitModal();
+});
 window.addEventListener('load', init);
 </script>
 </body>
