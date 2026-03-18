@@ -23,6 +23,7 @@
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3529050815950024"
         crossorigin="anonymous">
     </script>
+	<link rel="manifest" href="manifest.json">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
         html{height:100%}
@@ -1434,6 +1435,10 @@ $('limitOverlay').addEventListener('click', function(e) {
     if (e.target === this) closeLimitModal();
 });
 window.addEventListener('load', init);
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
 </script>
 </body>
 </html>
