@@ -186,6 +186,26 @@
 
 body.is-premium .ad-slot{display:none!important}
 body.is-premium .premium-card .free-only{display:none}
+
+/* ===== CONTENU ÉDITORIAL ===== */
+.content-card{padding:20px}
+.article-content h2{font-size:18px;font-weight:700;margin-bottom:14px;color:#fff;line-height:1.3}
+.article-content h3{font-size:15px;font-weight:600;margin-top:18px;margin-bottom:8px;color:#e5e5ea}
+.article-content p{font-size:13px;color:#aaa;line-height:1.7;margin-bottom:10px}
+.article-content ul{margin:8px 0 10px 20px;font-size:13px;color:#aaa;line-height:1.8}
+.article-content li{margin-bottom:4px}
+.article-content strong{color:#e5e5ea}
+.faq-list{display:flex;flex-direction:column;gap:8px}
+.faq-item{background:#2c2c2e;border-radius:12px;overflow:hidden}
+.faq-q{padding:14px 16px;font-size:14px;font-weight:600;color:#e5e5ea;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between}
+.faq-q::after{content:'＋';font-size:16px;color:#8e8e93;transition:transform .2s}
+details[open] .faq-q::after{content:'−'}
+.faq-a{padding:0 16px 14px;font-size:13px;color:#aaa;line-height:1.6}
+.about-content p,.legal-content p{font-size:13px;color:#aaa;line-height:1.6}
+.about-content strong,.legal-content strong{color:#e5e5ea}
+.legal-content{font-size:12px}
+.ad-slot{min-height:100px;text-align:center;padding:12px}
+body.is-premium .ad-slot{display:none!important}
     </style>
 
 </head>
@@ -344,6 +364,201 @@ body.is-premium .premium-card .free-only{display:none}
             <div class="stat"><div class="stat-v" id="sCap"></div><div class="stat-l" id="lCap"></div></div>
         </div>
     </div>
+	<!-- ===== CONTENU ÉDITORIAL (pour AdSense) ===== -->
+
+<!-- EMPLACEMENT PUB A -->
+<div class="card ad-slot" style="padding:12px;text-align:center;min-height:100px">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-3529050815950024"
+         data-ad-slot="AAAAAAAAAA"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<!-- GUIDE SECTION -->
+<div class="card content-card" id="guideCard">
+    <div class="card-label" id="cgLabel">📖 Guide</div>
+    
+    <article class="article-content" id="articleContent">
+        <h2 id="art1Title">Comment économiser sur son plein d'essence ?</h2>
+        
+        <p id="art1P1">Le prix du carburant représente une part importante du budget automobile. 
+        En France, un automobiliste dépense en moyenne <strong>1 500 à 2 000€ par an</strong> 
+        en carburant. Voici nos conseils pour réduire cette facture.</p>
+
+        <h3 id="art2Title">🔍 1. Comparer les prix entre stations</h3>
+        <p id="art2P1">Les écarts de prix entre deux stations peuvent atteindre 
+        <strong>15 à 20 centimes par litre</strong>. Sur un plein de 50 litres, 
+        cela représente jusqu'à <strong>10€ d'économie</strong>. 
+        Les stations de grandes surfaces (Leclerc, Carrefour, Intermarché) 
+        sont généralement 5 à 8% moins chères que les stations d'autoroute.</p>
+
+        <h3 id="art3Title">⛽ 2. Choisir le bon carburant</h3>
+        <p id="art3P1">Le <strong>E10</strong> (Sans Plomb 95-E10) est aujourd'hui 
+        le carburant le plus vendu en France. Il est compatible avec 98% des véhicules 
+        essence et coûte en moyenne <strong>4 à 6 centimes de moins</strong> par litre 
+        que le SP98. Le <strong>E85</strong> (Superéthanol) est encore moins cher 
+        (~0,85€/L) mais nécessite un véhicule compatible ou un boîtier de conversion.</p>
+
+        <h3 id="art4Title">🚗 3. Adopter l'éco-conduite</h3>
+        <p id="art4P1">L'éco-conduite peut réduire votre consommation de 
+        <strong>15 à 20%</strong>. Les règles de base :</p>
+        <ul id="art4List">
+            <li>Anticiper les freinages et accélérations</li>
+            <li>Rouler à vitesse constante (utilisez le régulateur)</li>
+            <li>Couper le moteur à l'arrêt (plus de 30 secondes)</li>
+            <li>Vérifier la pression des pneus chaque mois</li>
+            <li>Éviter la climatisation quand possible (-10% de conso)</li>
+            <li>Retirer les charges inutiles (coffre de toit, etc.)</li>
+        </ul>
+
+        <h3 id="art5Title">📊 4. Connaître les meilleurs moments pour faire le plein</h3>
+        <p id="art5P1">Les prix des carburants varient selon les jours de la semaine. 
+        En général, les <strong>lundis et mardis</strong> offrent les prix les plus bas, 
+        tandis que les <strong>vendredis et week-ends</strong> sont plus chers en raison 
+        de la demande accrue. Évitez les stations d'autoroute où les prix sont 
+        <strong>15 à 20% plus élevés</strong>.</p>
+
+        <h3 id="art6Title">💰 5. Utiliser les programmes de fidélité</h3>
+        <p id="art6P1">De nombreuses enseignes proposent des programmes de fidélité 
+        avantageux : cartes de fidélité supermarché avec remise sur le carburant, 
+        applications mobiles avec cashback, ou opérations "carburant à prix coûtant". 
+        Ces économies cumulées peuvent représenter <strong>100 à 200€ par an</strong>.</p>
+    </article>
+</div>
+
+<!-- EMPLACEMENT PUB B -->
+<div class="card ad-slot" style="padding:12px;text-align:center;min-height:100px">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-3529050815950024"
+         data-ad-slot="BBBBBBBBBB"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<!-- FAQ SECTION -->
+<div class="card content-card" id="faqCard">
+    <div class="card-label" id="cfLabel">❓ Questions fréquentes</div>
+    
+    <div class="faq-list">
+        <details class="faq-item">
+            <summary class="faq-q" id="fq1">Comment fonctionne Easy Refuel ?</summary>
+            <p class="faq-a" id="fa1">Easy Refuel utilise les données officielles des gouvernements 
+            (France : data.economie.gouv.fr, Espagne : minetur.gob.es, Allemagne : tankerkoenig.de) 
+            pour vous afficher les prix en temps réel des stations-service autour de vous. 
+            Indiquez votre niveau de réservoir et le prix au litre, et l'application calcule 
+            instantanément le montant à mettre à la pompe.</p>
+        </details>
+
+        <details class="faq-item">
+            <summary class="faq-q" id="fq2">Les prix affichés sont-ils fiables ?</summary>
+            <p class="faq-a" id="fa2">Oui. En France, les prix proviennent de la base officielle 
+            du Ministère de l'Économie, mise à jour par les stations elles-mêmes 
+            (obligation légale). En Espagne, les données viennent du Ministère de la 
+            Transition Écologique. En Allemagne, de l'API Tankerkönig. 
+            Les prix sont généralement à jour à quelques heures près.</p>
+        </details>
+
+        <details class="faq-item">
+            <summary class="faq-q" id="fq3">Quels types de carburant sont supportés ?</summary>
+            <p class="faq-a" id="fa3">Easy Refuel supporte tous les carburants courants : 
+            Gazole (Diesel), Sans Plomb 95 (SP95), Sans Plomb 98 (SP98), E10, E85 (Superéthanol), 
+            GPL et GNV. Vous pouvez filtrer par type de carburant pour trouver la station 
+            la moins chère pour votre véhicule.</p>
+        </details>
+
+        <details class="faq-item">
+            <summary class="faq-q" id="fq4">L'application fonctionne-t-elle hors-ligne ?</summary>
+            <p class="faq-a" id="fa4">Le calculateur de plein fonctionne entièrement hors-ligne. 
+            Vos préférences (taille du réservoir, langue, devise) sont sauvegardées 
+            localement sur votre appareil. Seule la recherche de stations nécessite 
+            une connexion internet pour récupérer les prix en temps réel.</p>
+        </details>
+
+        <details class="faq-item">
+            <summary class="faq-q" id="fq5">Dans quels pays fonctionne Easy Refuel ?</summary>
+            <p class="faq-a" id="fa5">Les prix en temps réel sont disponibles en 
+            <strong>France, Espagne et Allemagne</strong> grâce aux API gouvernementales. 
+            Dans les autres pays (Italie, Portugal, Royaume-Uni, etc.), l'application 
+            localise les stations via OpenStreetMap mais les prix ne sont pas disponibles. 
+            Le calculateur de plein fonctionne partout dans le monde avec 8 langues 
+            et 8 devises supportées.</p>
+        </details>
+
+        <details class="faq-item">
+            <summary class="faq-q" id="fq6">Comment installer Easy Refuel sur mon téléphone ?</summary>
+            <p class="faq-a" id="fa6">Easy Refuel est une Progressive Web App (PWA). 
+            <strong>Sur iPhone :</strong> ouvrez le site dans Safari, appuyez sur le bouton 
+            Partage (⬆️), puis "Sur l'écran d'accueil". 
+            <strong>Sur Android :</strong> ouvrez le site dans Chrome, appuyez sur les 3 points 
+            en haut à droite, puis "Installer l'application". 
+            L'app s'installe comme une application native, sans passer par un store.</p>
+        </details>
+
+        <details class="faq-item">
+            <summary class="faq-q" id="fq7">Mes données personnelles sont-elles collectées ?</summary>
+            <p class="faq-a" id="fa7">Non. Easy Refuel ne collecte aucune donnée personnelle. 
+            La géolocalisation est utilisée uniquement côté navigateur pour trouver 
+            les stations proches et n'est jamais envoyée à un serveur. 
+            Toutes vos préférences sont stockées localement sur votre appareil (localStorage). 
+            Aucun compte n'est nécessaire.</p>
+        </details>
+    </div>
+</div>
+
+<!-- ABOUT SECTION -->
+<div class="card content-card" id="aboutCard">
+    <div class="card-label" id="caLabel">ℹ️ À propos</div>
+    
+    <div class="about-content">
+        <p id="about1">
+            <strong>Easy Refuel</strong> est un outil gratuit et indépendant 
+            qui aide les automobilistes à trouver les stations-service les moins chères 
+            et à calculer le montant exact de leur plein d'essence.
+        </p>
+        <p id="about2" style="margin-top:10px">
+            Les données de prix proviennent exclusivement de <strong>sources officielles</strong> :
+        </p>
+        <ul id="aboutSources" style="margin-top:8px;margin-left:16px;font-size:13px;color:#aaa;line-height:2">
+            <li>🇫🇷 <strong>France</strong> — Ministère de l'Économie (data.economie.gouv.fr)</li>
+            <li>🇪🇸 <strong>Espagne</strong> — Ministerio para la Transición Ecológica (minetur.gob.es)</li>
+            <li>🇩🇪 <strong>Allemagne</strong> — Tankerkönig (creativecommons.tankerkoenig.de)</li>
+            <li>🌍 <strong>Autres pays</strong> — OpenStreetMap (localisation uniquement)</li>
+        </ul>
+        <p id="about3" style="margin-top:12px">
+            Application disponible en 8 langues (français, anglais, espagnol, italien, 
+            portugais, russe, chinois, japonais) et supportant 8 devises (€, £, $, ₽, ¥, R$, CHF).
+        </p>
+    </div>
+</div>
+
+<!-- LEGAL SECTION -->
+<div class="card content-card" id="legalCard">
+    <div class="card-label">📋 Mentions légales & Confidentialité</div>
+    <div class="legal-content">
+        <p><strong>Éditeur :</strong> Easy Refuel</p>
+        <p><strong>Contact :</strong> contact@easy-refuel.eu</p>
+        <p style="margin-top:10px"><strong>Politique de confidentialité :</strong></p>
+        <p>Cette application utilise la géolocalisation uniquement pour trouver les 
+        stations à proximité. Aucune donnée personnelle n'est collectée, stockée 
+        ni transmise à des tiers.</p>
+        <p style="margin-top:8px">Des cookies publicitaires (Google AdSense) peuvent être 
+        utilisés pour afficher des annonces pertinentes et financer le service gratuit. 
+        Vous pouvez gérer vos préférences publicitaires sur 
+        <a href="https://adssettings.google.com" style="color:#007aff" 
+           target="_blank">adssettings.google.com</a>.</p>
+        <p style="margin-top:8px">Les données de réservoir, langue et préférences sont 
+        stockées localement sur votre appareil (localStorage) et ne sont jamais 
+        envoyées à un serveur externe.</p>
+        <p style="margin-top:8px"><strong>Données ouvertes :</strong> Les prix des carburants 
+        proviennent d'API gouvernementales sous licence ouverte. Easy Refuel n'est affilié 
+        à aucun distributeur de carburant.</p>
+    </div>
+</div>
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
