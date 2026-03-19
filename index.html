@@ -1459,8 +1459,8 @@ const PREM_I18N = {
     pt:{title:'Seja Premium',f1:'Pesquisas ilimitadas',f2:'Raio até 50 km',f3:'Sem anúncios',f4:'Apoie o desenvolvimento',month:'/mês',year:'/ano',save:'Economize 33%',cta:'Escolher',active:'Premium ativo!',until:'Válido até {d}',manage:'Gerenciar assinatura',already:'Já Premium? Gerenciar',limitTitle:'🔒 Limite atingido',limitText:'Você usou suas 3 buscas gratuitas hoje. Seja Premium!',limitCta:'⭐ Premium — 2,99€/mês',limitClose:'Voltar amanhã'},
     ru:{title:'Премиум',f1:'Безлимитный поиск',f2:'Радиус до 50 км',f3:'Без рекламы',f4:'Поддержка разработки',month:'/мес',year:'/год',save:'Экономия 33%',cta:'Выбрать',active:'Премиум активен!',until:'Действует до {d}',manage:'Управление подпиской',already:'Уже Премиум? Управление',limitTitle:'🔒 Лимит',limitText:'3 бесплатных поиска использованы. Премиум = безлимит!',limitCta:'⭐ Премиум — 2,99€/мес',limitClose:'Завтра'},
     zh:{title:'升级Premium',f1:'无限搜索',f2:'半径50公里',f3:'无广告',f4:'支持开发',month:'/月',year:'/年',save:'节省33%',cta:'选择',active:'Premium已激活!',until:'有效期至 {d}',manage:'管理订阅',already:'已是Premium? 管理',limitTitle:'🔒 已达上限',limitText:'今日3次免费搜索已用完。升级Premium!',limitCta:'⭐ Premium — 2.99€/月',limitClose:'明天再来'},
-    ja:{title:'Premiumへ',f1:'無制限検索',f2:'半径50km',f3:'広告なし',f4:'開発を支援',month:'/月',year:'/年',save:'33%お得',cta:'選択',active:'Premium有効!',until:'{d}まで有効',manage:'サブスク管理',already:'Premium? 管理',limitTitle:'🔒 制限',limitText:'本日の無料検索3回を使用済み。Premiumへ!',limitCta:'⭐ Premium — 2.99€/月',limitClose:'明日また'}
-	,de:{title:'Premium werden',f1:'Unbegrenzte Tankstellensuche',f2:'Radius bis 50 km',f3:'Keine Werbung',f4:'Entwicklung unterstützen',mo:'/Monat',yr:'/Jahr',sv:'33% sparen',ct:'Wählen',ac:'Premium aktiv!',un:'Gültig bis {d}',mg:'Abo verwalten',al:'Bereits Premium? Verwalten',lt:'🔒 Limit erreicht',lp:'Sie haben heute Ihre 3 kostenlosen Suchen verbraucht.',lb:'⭐ Premium — 2,99€/Monat',lc:'Morgen wiederkommen'}
+    ja:{title:'Premiumへ',f1:'無制限検索',f2:'半径50km',f3:'広告なし',f4:'開発を支援',month:'/月',year:'/年',save:'33%お得',cta:'選択',active:'Premium有効!',until:'{d}まで有効',manage:'サブスク管理',already:'Premium? 管理',limitTitle:'🔒 制限',limitText:'本日の無料検索3回を使用済み。Premiumへ!',limitCta:'⭐ Premium — 2.99€/月',limitClose:'明日また'},
+	de:{title:'Premium werden',f1:'Unbegrenzte Tankstellensuche',f2:'Radius bis 50 km',f3:'Keine Werbung',f4:'Entwicklung unterstützen',mo:'/Monat',yr:'/Jahr',sv:'33% sparen',ct:'Wählen',ac:'Premium aktiv!',un:'Gültig bis {d}',mg:'Abo verwalten',al:'Bereits Premium? Verwalten',lt:'🔒 Limit erreicht',lp:'Sie haben heute Ihre 3 kostenlosen Suchen verbraucht.',lb:'⭐ Premium — 2,99€/Monat',lc:'Morgen wiederkommen'}
 };
 
 // Check premium status
@@ -1519,43 +1519,87 @@ function getMaxRadius() {
 
 // Show/hide premium UI
 function updatePremiumUI() {
-    const premium = isPremium();
-    const pi = PREM_I18N[lang] || PREM_I18N.en;
+    const prem = isPremium();
+    const pi = PI18N[lang] || PI18N.en;
 
-    // Toggle body class
-    document.body.classList.toggle('is-premium', premium);
+    document.body.classList.toggle('is-premium', prem);
 
-    // Premium card content
-    $('premiumOffer').style.display = premium ? 'none' : 'block';
-    $('premiumActive').style.display = premium ? 'block' : 'none';
+    // Toggle cards
+    $('premOffer').style.display = prem ? 'none' : 'block';
+    $('premActive').style.display = prem ? 'block' : 'none';
 
-    // Texts
-    $('premTitle').textContent = pi.title;
+    // Title + features
+    $('prT').textContent = pi.t;
     $('pf1').textContent = pi.f1;
     $('pf2').textContent = pi.f2;
     $('pf3').textContent = pi.f3;
     $('pf4').textContent = pi.f4;
-    $('pmPeriod').textContent = pi.month;
-    $('paPeriod').textContent = pi.year;
-    $('paSave').textContent = pi.save;
-    $('pmCta').textContent = pi.cta;
-    $('paCta').textContent = pi.cta;
-    $('activeText').textContent = pi.active;
-    $('manageLink').textContent = pi.already;
-    $('manageLinkActive').textContent = pi.manage;
 
-    // Stripe links
-    $('planMonthly').href = STRIPE_MONTHLY;
-    $('planAnnual').href = STRIPE_ANNUAL;
-    $('manageLink').href = STRIPE_PORTAL;
-    $('manageLinkActive').href = STRIPE_PORTAL;
+    // Monthly plan
+    const plM = $('plM');
+    plM.href = STRIPE_M;
+    plM.innerHTML = `
+        <div class="premium-plans">
+    <a class="plan-btn" id="plM"
+       href="https://buy.stripe.com/4gMaEX2Bz4YheYD3lo2go00"
+       target="_blank">
+    </a>
+    <a class="plan-btn pop" id="plA"
+       href="https://buy.stripe.com/3cI5kD5NL3Ud4jZ5tw2go01"
+       target="_blank">
+    </a>
+</div>
+    `;
 
-    // Active until date
-    if (premium) {
+    // Annual plan
+    const plA = $('plA');
+    plA.href = STRIPE_A;
+    plA.innerHTML = `
+        <div class="premium-plans">
+    <a class="plan-btn" id="plM"
+       href="https://buy.stripe.com/4gMaEX2Bz4YheYD3lo2go00"
+       target="_blank">
+    </a>
+    <a class="plan-btn pop" id="plA"
+       href="https://buy.stripe.com/3cI5kD5NL3Ud4jZ5tw2go01"
+       target="_blank">
+    </a>
+</div>
+    `;
+
+    // Active state
+    $('actTxt').textContent = pi.ac;
+    $('mngLink').textContent = pi.al;
+    $('mngLink').href = STRIPE_P;
+    $('mngLink2').textContent = pi.mg;
+    $('mngLink2').href = STRIPE_P;
+
+    // Active date
+    if (prem) {
         const until = new Date(localStorage.getItem('premium_until'));
-        const dateStr = until.toLocaleDateString(lang === 'fr' ? 'fr-FR' : lang);
-        $('activeUntil').textContent = pi.until.replace('{d}', dateStr);
+        const loc = {
+            fr:'fr-FR', en:'en-GB', es:'es-ES', it:'it-IT',
+            pt:'pt-PT', ru:'ru-RU', zh:'zh-CN', ja:'ja-JP', de:'de-DE'
+        }[lang] || 'en-GB';
+        $('actUntil').textContent = pi.un.replace('{d}', until.toLocaleDateString(loc));
     }
+
+    // Radius limit
+    const maxR = getMaxRadius();
+    radiusSlider.max = maxR;
+    if (parseInt(radiusSlider.value) > maxR) {
+        radiusSlider.value = maxR;
+        radiusVal.textContent = maxR + ' km';
+    }
+
+    // Limit modal
+    $('limT').textContent = pi.lt;
+    $('limP').textContent = pi.lp;
+    $('limBtn').textContent = pi.lb;
+    $('limBtn').href = STRIPE_M;
+    const cb = $('limOv').querySelector('.btn-c');
+    if (cb) cb.textContent = pi.lc;
+}
 
     // Radius slider max
     const maxR = getMaxRadius();
