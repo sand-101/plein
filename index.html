@@ -1446,9 +1446,9 @@ function init() {
 // ==================== PREMIUM SYSTEM ====================
 
 // ⚠️ REMPLACE CES LIENS PAR LES TIENS (Stripe Payment Links)
-const STRIPE_MONTHLY = 'https://buy.stripe.com/4gMaEX2Bz4YheYD3lo2go00';
-const STRIPE_ANNUAL  = 'https://buy.stripe.com/3cI5kD5NL3Ud4jZ5tw2go01';
-const STRIPE_PORTAL  = 'https://billing.stripe.com/p/login/4gMaEX2Bz4YheYD3lo2go00';
+const STRIPE_M = 'https://buy.stripe.com/4gMaEX2Bz4YheYD3lo2go00';
+const STRIPE_A = 'https://buy.stripe.com/3cI5kD5NL3Ud4jZ5tw2go01';
+const STRIPE_P = 'https://billing.stripe.com/p/login/4gMaEX2Bz4YheYD3lo2go00';
 
 // Premium translations
 const PI18N = {
@@ -1521,57 +1521,80 @@ function getMaxRadius() {
 function updatePremiumUI() {
     var prem = isPremium();
     var pi = PI18N[lang] || PI18N.en;
+    if (!pi) return;
 
     document.body.classList.toggle('is-premium', prem);
 
-    $('premOffer').style.display = prem ? 'none' : 'block';
-    $('premActive').style.display = prem ? 'block' : 'none';
+    var premOffer = document.getElementById('premOffer');
+    var premActive = document.getElementById('premActive');
+    if (premOffer) premOffer.style.display = prem ? 'none' : 'block';
+    if (premActive) premActive.style.display = prem ? 'block' : 'none';
 
-    $('prT').textContent = pi.t;
-    $('pf1').textContent = pi.f1;
-    $('pf2').textContent = pi.f2;
-    $('pf3').textContent = pi.f3;
-    $('pf4').textContent = pi.f4;
+    var prT = document.getElementById('prT');
+    if (prT) prT.textContent = pi.t;
+    var pf1 = document.getElementById('pf1');
+    if (pf1) pf1.textContent = pi.f1;
+    var pf2 = document.getElementById('pf2');
+    if (pf2) pf2.textContent = pi.f2;
+    var pf3 = document.getElementById('pf3');
+    if (pf3) pf3.textContent = pi.f3;
+    var pf4 = document.getElementById('pf4');
+    if (pf4) pf4.textContent = pi.f4;
 
-    var plM = $('plM');
-    plM.href = STRIPE_M;
-    plM.innerHTML = '<div class="plan-price">2,99€</div>' +
-        '<div class="plan-period">' + pi.mo + '</div>' +
-        '<div class="plan-cta">' + pi.ct + '</div>';
+    var plM = document.getElementById('plM');
+    if (plM) {
+        plM.href = STRIPE_M;
+        plM.innerHTML = '<div class="plan-price">2,99€</div>' +
+            '<div class="plan-period">' + (pi.mo || '') + '</div>' +
+            '<div class="plan-cta">' + (pi.ct || '') + '</div>';
+    }
 
-    var plA = $('plA');
-    plA.href = STRIPE_A;
-    plA.innerHTML = '<div class="plan-price">19,99€</div>' +
-        '<div class="plan-period">' + pi.yr + '</div>' +
-        '<div class="plan-save">' + pi.sv + '</div>' +
-        '<div class="plan-cta">' + pi.ct + '</div>';
+    var plA = document.getElementById('plA');
+    if (plA) {
+        plA.href = STRIPE_A;
+        plA.innerHTML = '<div class="plan-price">19,99€</div>' +
+            '<div class="plan-period">' + (pi.yr || '') + '</div>' +
+            '<div class="plan-save">' + (pi.sv || '') + '</div>' +
+            '<div class="plan-cta">' + (pi.ct || '') + '</div>';
+    }
 
-    $('actTxt').textContent = pi.ac;
-    $('mngLink').textContent = pi.al;
-    $('mngLink').href = STRIPE_P;
-    $('mngLink2').textContent = pi.mg;
-    $('mngLink2').href = STRIPE_P;
+    var actTxt = document.getElementById('actTxt');
+    if (actTxt) actTxt.textContent = pi.ac || '';
+    var mngLink = document.getElementById('mngLink');
+    if (mngLink) { mngLink.textContent = pi.al || ''; mngLink.href = STRIPE_P; }
+    var mngLink2 = document.getElementById('mngLink2');
+    if (mngLink2) { mngLink2.textContent = pi.mg || ''; mngLink2.href = STRIPE_P; }
 
     if (prem) {
-        var until = new Date(localStorage.getItem('premium_until'));
-        var locales = {fr:'fr-FR',en:'en-GB',es:'es-ES',it:'it-IT',pt:'pt-PT',ru:'ru-RU',zh:'zh-CN',ja:'ja-JP',de:'de-DE'};
-        var loc = locales[lang] || 'en-GB';
-        $('actUntil').textContent = pi.un.replace('{d}', until.toLocaleDateString(loc));
+        try {
+            var until = new Date(localStorage.getItem('premium_until'));
+            var locales = {fr:'fr-FR',en:'en-GB',es:'es-ES',it:'it-IT',pt:'pt-PT',ru:'ru-RU',zh:'zh-CN',ja:'ja-JP',de:'de-DE'};
+            var loc = locales[lang] || 'en-GB';
+            var actUntil = document.getElementById('actUntil');
+            if (actUntil) actUntil.textContent = (pi.un || '').replace('{d}', until.toLocaleDateString(loc));
+        } catch(e) {}
     }
 
-    var maxR = getMaxRadius();
-    radiusSlider.max = maxR;
-    if (parseInt(radiusSlider.value) > maxR) {
-        radiusSlider.value = maxR;
-        radiusVal.textContent = maxR + ' km';
-    }
+    try {
+        var maxR = getMaxRadius();
+        radiusSlider.max = maxR;
+        if (parseInt(radiusSlider.value) > maxR) {
+            radiusSlider.value = maxR;
+            radiusVal.textContent = maxR + ' km';
+        }
+    } catch(e) {}
 
-    $('limT').textContent = pi.lt;
-    $('limP').textContent = pi.lp;
-    $('limBtn').textContent = pi.lb;
-    $('limBtn').href = STRIPE_M;
-    var cb = $('limOv').querySelector('.btn-c');
-    if (cb) cb.textContent = pi.lc;
+    var limT = document.getElementById('limT');
+    if (limT) limT.textContent = pi.lt || '';
+    var limP = document.getElementById('limP');
+    if (limP) limP.textContent = pi.lp || '';
+    var limBtn = document.getElementById('limBtn');
+    if (limBtn) { limBtn.textContent = pi.lb || ''; limBtn.href = STRIPE_M; }
+    var limOv = document.getElementById('limOv');
+    if (limOv) {
+        var closeBtn = limOv.querySelector('.btn-c');
+        if (closeBtn) closeBtn.textContent = pi.lc || '';
+    }
 }
 
     // Radius slider max
