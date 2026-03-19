@@ -230,7 +230,8 @@ details[open] .faq-q::after{content:'−'}
 .about-content p,.legal-content p{font-size:13px;color:#aaa;line-height:1.6}
 .about-content strong,.legal-content strong{color:#e5e5ea}
 .legal-content{font-size:12px}
-.ad-slot{min-height:100px;text-align:center;padding:12px}
+.ad-slot{text-align:center;padding:0;min-height:0;overflow:hidden;max-height:0;opacity:0;transition:max-height .3s,opacity .3s,padding .3s}
+.ad-slot.has-ad{max-height:400px;opacity:1;padding:12px;min-height:100px}
 body.is-premium .ad-slot{display:none!important}
     </style>
 
@@ -1440,6 +1441,7 @@ function init() {
     buildLangBar();
     buildCurBar();
     rebuildAll();
+	checkAdSlots();
 }
 // ==================== PREMIUM SYSTEM ====================
 
@@ -1768,6 +1770,34 @@ function updateEditorialContent() {
 
     // Legal
     $('legalContent').innerHTML = ed.legal;
+}
+// ==================== AUTO-HIDE EMPTY ADS ====================
+function checkAdSlots() {
+    document.querySelectorAll('.ad-slot').forEach(slot => {
+        const ins = slot.querySelector('ins.adsbygoogle');
+        if (!ins) return;
+
+        // Check if ad loaded (has content/height)
+        const observer = new MutationObserver(() => {
+            if (ins.dataset.adStatus === 'filled' || ins.offsetHeight > 0) {
+                slot.classList.add('has-ad');
+            }
+        });
+
+        observer.observe(ins, {
+            attributes: true,
+            attributeFilter: ['data-ad-status'],
+            childList: true,
+            subtree: true
+        });
+
+        // Also check after a delay
+        setTimeout(() => {
+            if (ins.offsetHeight > 0 && ins.innerHTML.trim() !== '') {
+                slot.classList.add('has-ad');
+            }
+        }, 3000);
+    });
 }
 window.addEventListener('load', init);
 // Register Service Worker
