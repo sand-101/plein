@@ -1605,19 +1605,7 @@ function updatePremiumUI() {
         radiusVal.textContent = maxR + ' km';
     }
 
-    // Limit modal texts
-    $('limitTitle').textContent = pi.limitTitle;
-    $('limitText').textContent = pi.limitText;
-    $('limitUpgrade').textContent = pi.limitCta;
-    $('limitUpgrade').href = STRIPE_MONTHLY;
-    const closeBtn = $('limitOverlay').querySelector('.btn-close');
-    if (closeBtn) closeBtn.textContent = pi.limitClose;
-}
 
-// Limit modal
-function showLimitModal() {
-    $('limitOverlay').classList.add('on');
-}
 
 window.closeLimitModal = function() {
     $('limitOverlay').classList.remove('on');
