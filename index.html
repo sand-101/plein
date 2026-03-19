@@ -264,64 +264,45 @@ body.is-premium .ad-slot{display:none!important}
         <div class="station-list hidden" id="stationList"></div>
     </div>
 	<!-- PREMIUM CARD -->
+<!-- ===== PREMIUM ===== -->
 <div class="card premium-card" id="premiumCard">
-    <!-- Shown when NOT premium -->
-    <div id="premiumOffer">
+    <div id="premOffer">
         <div class="premium-badge">⭐ PREMIUM</div>
-        <div class="premium-title" id="premTitle">Passez à Premium</div>
+        <div class="premium-title" id="prT"></div>
         <div class="premium-features">
-            <div class="premium-feat"><span class="check">✓</span><span id="pf1">Recherches de stations illimitées</span></div>
-            <div class="premium-feat"><span class="check">✓</span><span id="pf2">Rayon de recherche jusqu'à 50 km</span></div>
-            <div class="premium-feat"><span class="check">✓</span><span id="pf3">Aucune publicité</span></div>
-            <div class="premium-feat"><span class="check">✓</span><span id="pf4">Soutenez le développement</span></div>
+            <div class="premium-feat"><span class="ck">✓</span><span id="pf1"></span></div>
+            <div class="premium-feat"><span class="ck">✓</span><span id="pf2"></span></div>
+            <div class="premium-feat"><span class="ck">✓</span><span id="pf3"></span></div>
+            <div class="premium-feat"><span class="ck">✓</span><span id="pf4"></span></div>
         </div>
         <div class="premium-plans">
-            <a class="plan-btn" id="planMonthly" href="#" target="_blank">
-                <div class="plan-price" id="pmPrice">2,99€</div>
-                <div class="plan-period" id="pmPeriod">/ mois</div>
-                <div class="plan-cta" id="pmCta">Choisir</div>
-            </a>
-            <a class="plan-btn popular" id="planAnnual" href="#" target="_blank">
-                <div class="plan-price" id="paPrice">19,99€</div>
-                <div class="plan-period" id="paPeriod">/ an</div>
-                <div class="plan-save" id="paSave">Économisez 33%</div>
-                <div class="plan-cta" id="paCta">Choisir</div>
-            </a>
+            <a class="plan-btn" id="plM" href="#" target="_blank"></a>
+            <a class="plan-btn pop" id="plA" href="#" target="_blank"></a>
         </div>
-        <div class="premium-manage">
-            <a href="https://billing.stripe.com/p/login/4gMaEX2Bz4YheYD3lo2go00" target="_blank" id="manageLink">
-                Déjà Premium ? Gérer mon abonnement
-            </a>
+        <div class="prem-manage">
+            <a href="#" target="_blank" id="mngLink"></a>
         </div>
     </div>
-
-    <!-- Shown when IS premium -->
-    <div id="premiumActive" style="display:none">
-        <div class="premium-active">
-            <div class="big-check">⭐</div>
-            <div class="active-text" id="activeText">Premium actif !</div>
-            <div class="active-until" id="activeUntil"></div>
-            <div class="premium-manage" style="margin-top:14px">
-                <a href="https://billing.stripe.com/p/login/4gMaEX2Bz4YheYD3lo2go00" target="_blank" id="manageLinkActive">
-                    Gérer mon abonnement
-                </a>
+    <div id="premActive" style="display:none">
+        <div class="prem-active">
+            <div class="big-icon">⭐</div>
+            <div class="act-text" id="actTxt"></div>
+            <div class="act-until" id="actUntil"></div>
+            <div class="prem-manage" style="margin-top:14px">
+                <a href="#" target="_blank" id="mngLink2"></a>
             </div>
         </div>
     </div>
 </div>
 
 <!-- LIMIT MODAL -->
-<div class="limit-overlay" id="limitOverlay">
+<div class="limit-overlay" id="limOv">
     <div class="limit-modal">
-        <h3 id="limitTitle">🔒 Limite atteinte</h3>
-        <p id="limitText">Vous avez utilisé vos 3 recherches gratuites du jour. Passez à Premium pour des recherches illimitées !</p>
-        <div class="modal-btns">
-            <a class="modal-btn btn-premium" id="limitUpgrade" href="#" target="_blank">
-                ⭐ Passer à Premium — 2,99€/mois
-            </a>
-            <button class="modal-btn btn-close" onclick="closeLimitModal()">
-                Revenir demain
-            </button>
+        <h3 id="limT"></h3>
+        <p id="limP"></p>
+        <div class="mb">
+            <a class="btn-p" id="limBtn" href="#" target="_blank"></a>
+            <button class="btn-c" onclick="closeLim()"></button>
         </div>
     </div>
 </div>
@@ -958,8 +939,8 @@ function rebuildAll() {
     buildSliderMarks();
     buildFuelFilter();
     updateTankUI();
-	updatePremiumUI();
-	updateEditorialContent();
+    updatePremiumUI();
+    updateEditorialContent();
     calc();
     if (stationsData.length) renderStations();
 }
@@ -1530,8 +1511,11 @@ function updatePremiumUI() {
     if (premOffer) premOffer.style.display = prem ? 'none' : 'block';
     if (premActive) premActive.style.display = prem ? 'block' : 'none';
 
+    // Titre "Passez à Premium" / "Go Premium" / "Premium werden"
     var prT = document.getElementById('prT');
     if (prT) prT.textContent = pi.t;
+
+    // Features
     var pf1 = document.getElementById('pf1');
     if (pf1) pf1.textContent = pi.f1;
     var pf2 = document.getElementById('pf2');
@@ -1541,6 +1525,7 @@ function updatePremiumUI() {
     var pf4 = document.getElementById('pf4');
     if (pf4) pf4.textContent = pi.f4;
 
+    // Bouton mensuel
     var plM = document.getElementById('plM');
     if (plM) {
         plM.href = STRIPE_M;
@@ -1549,6 +1534,7 @@ function updatePremiumUI() {
             '<div class="plan-cta">' + (pi.ct || '') + '</div>';
     }
 
+    // Bouton annuel
     var plA = document.getElementById('plA');
     if (plA) {
         plA.href = STRIPE_A;
@@ -1558,10 +1544,13 @@ function updatePremiumUI() {
             '<div class="plan-cta">' + (pi.ct || '') + '</div>';
     }
 
-    var actTxt = document.getElementById('actTxt');
-    if (actTxt) actTxt.textContent = pi.ac || '';
+    // "Déjà Premium ?" / "Already Premium?"
     var mngLink = document.getElementById('mngLink');
     if (mngLink) { mngLink.textContent = pi.al || ''; mngLink.href = STRIPE_P; }
+
+    // Premium actif
+    var actTxt = document.getElementById('actTxt');
+    if (actTxt) actTxt.textContent = pi.ac || '';
     var mngLink2 = document.getElementById('mngLink2');
     if (mngLink2) { mngLink2.textContent = pi.mg || ''; mngLink2.href = STRIPE_P; }
 
@@ -1575,6 +1564,7 @@ function updatePremiumUI() {
         } catch(e) {}
     }
 
+    // Radius
     try {
         var maxR = getMaxRadius();
         radiusSlider.max = maxR;
@@ -1584,6 +1574,7 @@ function updatePremiumUI() {
         }
     } catch(e) {}
 
+    // Modal limite
     var limT = document.getElementById('limT');
     if (limT) limT.textContent = pi.lt || '';
     var limP = document.getElementById('limP');
@@ -1596,16 +1587,6 @@ function updatePremiumUI() {
         if (closeBtn) closeBtn.textContent = pi.lc || '';
     }
 }
-
-    // Radius slider max
-    const maxR = getMaxRadius();
-    radiusSlider.max = maxR;
-    if (parseInt(radiusSlider.value) > maxR) {
-        radiusSlider.value = maxR;
-        radiusVal.textContent = maxR + ' km';
-    }
-
-
 
 window.closeLimitModal = function() {
     $('limitOverlay').classList.remove('on');
