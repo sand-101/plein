@@ -12,6 +12,1821 @@
     <meta name="theme-color" content="#0a0a0f">
     <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMWMxYzFlIi8+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTAwIj7im708L3RleHQ+PC9zdmc+">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <title>Easy Refuel EU ⛽</title>
+	    <!-- Google AdSense -->
+    <script async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3529050815950024"
+        crossorigin="anonymous">
+    </script>
+	<link rel="manifest" href="manifest.json">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+        html{height:100%}
+        body{min-height:100%;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',system-ui,sans-serif;background:#0a0a0f;color:#fff;-webkit-user-select:none;user-select:none;-webkit-overflow-scrolling:touch;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+        .app{max-width:420px;margin:0 auto;padding:12px 18px 50px}
+        .lang-bar{display:flex;justify-content:center;gap:4px;padding:14px 0 2px;flex-wrap:wrap}
+        .lang-btn{width:40px;height:32px;border-radius:8px;border:2px solid transparent;background:#1c1c1e;font-size:18px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
+        .lang-btn:active{transform:scale(.92)}.lang-btn.on{border-color:#ff9500;background:#2c2c2e}
+        .currency-bar{display:flex;justify-content:center;gap:6px;padding:8px 0 4px;flex-wrap:wrap}
+        .cur-pill{padding:5px 12px;border-radius:14px;border:1.5px solid #3a3a3c;background:transparent;color:#aaa;font-size:12px;font-weight:600;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s}
+        .cur-pill:active{transform:scale(.94)}.cur-pill.on{background:#ff9500;border-color:#ff9500;color:#000}
+        .header{text-align:center;padding:10px 0 6px}
+        .header h1{font-size:26px;font-weight:700;letter-spacing:-.5px}
+        .header .sub{font-size:14px;color:#8e8e93;margin-top:3px}
+        .card{background:#1c1c1e;border-radius:16px;margin-bottom:14px;padding:20px;animation:cardIn .45s cubic-bezier(.21,1.02,.73,1) both}
+        .card:nth-child(2){animation-delay:.03s}.card:nth-child(3){animation-delay:.06s}.card:nth-child(4){animation-delay:.09s}.card:nth-child(5){animation-delay:.12s}.card:nth-child(6){animation-delay:.15s}.card:nth-child(7){animation-delay:.18s}.card:nth-child(8){animation-delay:.21s}
+        @keyframes cardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+        .card-label{font-size:12px;font-weight:600;color:#8e8e93;text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px}
+        .tank-card{padding:18px}
+        .tank-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+        .tank-visual{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+        .tank-icon-box{width:48px;height:48px;border-radius:12px;background:rgba(255,149,0,.1);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+        .tank-info{flex:1;min-width:0}
+        .tank-val{font-size:28px;font-weight:700;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+        .tank-val span{font-size:16px;font-weight:500;color:#8e8e93;margin-left:2px}
+        .tank-sub{font-size:12px;color:#636366;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .stepper{display:flex;align-items:center;background:#2c2c2e;border-radius:10px;overflow:hidden;flex-shrink:0;border:1px solid #3a3a3c}
+        .stepper button{width:44px;height:40px;border:none;background:transparent;color:#ff9500;font-size:22px;font-weight:500;font-family:-apple-system,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .1s}
+        .stepper button:active{background:rgba(255,149,0,.15)}.stepper .sep{width:1px;height:22px;background:#48484a}
+        .tank-bar-wrap{margin-top:12px;height:6px;background:#2c2c2e;border-radius:3px;overflow:hidden}
+        .tank-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,#ff9f0a,#ff6723);transition:width .3s ease;min-width:2px}
+        .tank-bar-labels{display:flex;justify-content:space-between;margin-top:5px}
+        .tank-bar-labels span{font-size:10px;color:#636366}
+        .tank-presets{display:flex;gap:6px;margin-top:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
+        .tank-presets::-webkit-scrollbar{display:none}
+        .tp{flex-shrink:0;padding:7px 12px;border-radius:18px;border:1.5px solid #3a3a3c;background:transparent;color:#e5e5ea;font-size:11.5px;font-weight:500;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
+        .tp:active{transform:scale(.94)}.tp.on{background:#ff9500;border-color:#ff9500;color:#000;font-weight:600}
+        .gauge-card{padding:22px 18px 16px;background:linear-gradient(180deg,#1c1c1e,#17171a)}
+        .gauge-wrap{display:flex;flex-direction:column;align-items:center}
+        .gauge-box{position:relative;width:240px;height:145px}
+        .gauge-svg{width:100%;height:100%;overflow:visible}
+        .g-bg{fill:none;stroke:#2c2c2e;stroke-width:15;stroke-linecap:round}
+        .g-fill{fill:none;stroke-width:15;stroke-linecap:round;transition:stroke-dashoffset .4s cubic-bezier(.25,.46,.45,.94),stroke .4s ease;filter:drop-shadow(0 0 6px rgba(255,149,0,.25))}
+        .g-tick{stroke:#48484a;stroke-width:1.5}.g-tick-major{stroke:#636366;stroke-width:2.5}
+        .g-lbl{fill:#8e8e93;font-size:11px;font-family:-apple-system,sans-serif;font-weight:500}
+        .g-needle{transition:transform .4s cubic-bezier(.25,.46,.45,.94);transform-origin:120px 120px}
+        .g-needle-bar{fill:#ff3b30;filter:drop-shadow(0 0 3px rgba(255,59,48,.5))}
+        .g-needle-cap1{fill:#3a3a3c}.g-needle-cap2{fill:#636366}
+        .g-val{display:flex;align-items:baseline;justify-content:center;gap:4px;margin-top:12px}
+        .g-pct{font-size:42px;font-weight:700;letter-spacing:-2px;font-variant-numeric:tabular-nums}
+        .g-pct-sign{font-size:20px;font-weight:600;color:#8e8e93}
+        .g-liters{font-size:14px;color:#8e8e93;text-align:center;margin-top:2px}
+        .q-btns{display:flex;gap:6px;margin-top:18px;width:100%}
+        .q-btn{flex:1;padding:10px 2px;border-radius:10px;border:none;background:#2c2c2e;color:#fff;font-size:13px;font-weight:600;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s}
+        .q-btn:active{transform:scale(.94);background:#3a3a3c}.q-btn.on{background:#ff9500;color:#000}
+        .q-btn small{display:block;font-size:10px;font-weight:400;opacity:.55;margin-top:1px}
+        .slider-sec{margin-top:18px}
+        input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:#2c2c2e;outline:none}
+        input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:30px;height:30px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.06)}
+        .slider-marks{display:flex;justify-content:space-between;margin-top:7px}
+        .slider-marks span{font-size:10px;color:#636366;font-weight:500}
+        .alert{display:none;align-items:center;gap:10px;background:rgba(255,59,48,.1);border:1px solid rgba(255,59,48,.18);border-radius:14px;padding:13px 15px;margin-bottom:14px}
+        .alert.on{display:flex}
+        .alert-dot{width:10px;height:10px;border-radius:50%;background:#ff3b30;flex-shrink:0;animation:blink 1.8s infinite}
+        .alert-txt{font-size:13px;color:#ff6961;font-weight:500;line-height:1.35}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+        .price-card{padding:16px 18px}
+        .price-row{display:flex;align-items:center;background:#2c2c2e;border-radius:12px;overflow:hidden;border:2px solid transparent;transition:border-color .2s}
+        .price-row:focus-within{border-color:#ff9500}
+        .price-row .sym{padding:13px;font-size:19px;font-weight:700;color:#ff9500;background:rgba(255,149,0,.08);min-width:48px;text-align:center}
+        .price-row input[type=number]{flex:1;background:transparent;border:none;color:#fff;font-size:21px;font-weight:600;padding:13px 10px;outline:none;font-family:-apple-system,sans-serif;min-width:0;-webkit-user-select:text;user-select:text}
+        .price-row input::placeholder{color:#48484a}
+        .price-row .unit{padding:13px;font-size:13px;color:#636366;font-weight:500;white-space:nowrap}
+        input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+        input[type=number]{-moz-appearance:textfield}
+        .pills{display:flex;gap:6px;margin-top:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
+        .pills::-webkit-scrollbar{display:none}
+        .pill{flex-shrink:0;padding:8px 13px;border-radius:20px;border:1.5px solid #3a3a3c;background:transparent;color:#e5e5ea;font-size:12.5px;font-weight:500;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
+        .pill:active{transform:scale(.94)}.pill.on{background:#ff9500;border-color:#ff9500;color:#000;font-weight:600}
+        .res-card{background:linear-gradient(145deg,#1c1c1e,#19191d);border:1px solid #2c2c2e;padding:26px 20px 22px}
+        .res-top{text-align:center;padding-bottom:22px;margin-bottom:18px;border-bottom:1px solid rgba(255,255,255,.05)}
+        .res-lbl{font-size:12px;font-weight:600;color:#8e8e93;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+        .res-amount{font-size:48px;font-weight:800;letter-spacing:-2px;background:linear-gradient(135deg,#ff9f0a,#ff6723);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;font-variant-numeric:tabular-nums;word-break:break-all}
+        .res-detail{font-size:13px;color:#8e8e93;margin-top:6px}
+        .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .stat{background:#2c2c2e;border-radius:13px;padding:14px;text-align:center}
+        .stat-v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+        .stat-l{font-size:10px;color:#8e8e93;font-weight:500;text-transform:uppercase;letter-spacing:.3px;margin-top:3px;line-height:1.3}
+        .stations-card{padding:18px;overflow:hidden}
+        .locate-btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#007aff,#5856d6);color:#fff;font-size:15px;font-weight:600;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+        .locate-btn:active{transform:scale(.97);opacity:.85}
+        .locate-btn:disabled{opacity:.5}
+        .locate-btn .spinner{display:none;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+        .locate-btn.loading .spinner{display:block}
+        .locate-btn.loading .btn-icon{display:none}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .radius-row{display:flex;align-items:center;gap:10px;margin-top:14px}
+        .radius-row label{font-size:12px;color:#8e8e93;white-space:nowrap}
+        .radius-val{font-size:13px;font-weight:600;color:#ff9500;min-width:45px;text-align:right}
+        .fuel-filter{display:flex;gap:6px;margin-top:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
+        .fuel-filter::-webkit-scrollbar{display:none}
+        .ff-btn{flex-shrink:0;padding:7px 13px;border-radius:18px;border:1.5px solid #3a3a3c;background:transparent;color:#e5e5ea;font-size:12px;font-weight:500;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
+        .ff-btn:active{transform:scale(.94)}.ff-btn.on{background:#007aff;border-color:#007aff;color:#fff;font-weight:600}
+        .map-wrap{margin-top:14px;border-radius:14px;overflow:hidden;height:260px;background:#2c2c2e;position:relative}
+        .map-wrap.hidden{display:none}
+        #map{width:100%;height:100%}
+        .leaflet-control-attribution{display:none!important}
+        .leaflet-tile-pane{filter:brightness(.8) contrast(1.1) saturate(.8)}
+        .station-list{margin-top:14px}.station-list.hidden{display:none}
+        .station-item{display:flex;align-items:center;gap:12px;padding:14px;background:#2c2c2e;border-radius:13px;margin-bottom:8px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+        .station-item:active{transform:scale(.98);background:#3a3a3c}
+        .station-item.cheapest{border:1.5px solid rgba(48,209,88,.3);background:rgba(48,209,88,.06)}
+        .station-rank{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;background:#3a3a3c;color:#fff}
+        .station-item.cheapest .station-rank{background:#30d158;color:#000}
+        .station-info{flex:1;min-width:0}
+        .station-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .station-addr{font-size:11px;color:#8e8e93;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .station-dist{font-size:11px;color:#636366;margin-top:1px}
+        .station-price-box{text-align:right;flex-shrink:0}
+        .station-price{font-size:20px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+        .station-item.cheapest .station-price{color:#30d158}
+        .station-price-unit{font-size:10px;color:#636366}
+        .station-savings{font-size:11px;color:#30d158;font-weight:600;margin-top:2px}
+        .station-empty{text-align:center;padding:30px 20px;color:#636366;font-size:13px;line-height:1.5}
+        .use-price-tag{display:inline-block;margin-top:6px;padding:4px 10px;border-radius:8px;background:rgba(255,149,0,.12);color:#ff9500;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+        .country-badge{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:10px;background:#2c2c2e;font-size:12px;color:#aaa;margin-top:12px}
+        .country-badge .cb-flag{font-size:16px}
+        .country-badge .cb-name{font-weight:600;color:#fff}
+        .osm-note{margin-top:10px;padding:10px 14px;background:rgba(0,122,255,.08);border-radius:10px;font-size:12px;color:#8e8e93;line-height:1.4}
+        .save-toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-80px);background:#2c2c2e;color:#fff;padding:10px 20px;border-radius:22px;font-size:13px;font-weight:500;box-shadow:0 8px 30px rgba(0,0,0,.4);transition:transform .35s cubic-bezier(.21,1.02,.73,1),opacity .35s;opacity:0;z-index:1000;pointer-events:none}
+        .save-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+        @media(max-height:480px){.gauge-card{display:none}.header{padding:10px 0 4px}.header h1{font-size:20px}.map-wrap{height:180px}}
+		/* ===== PREMIUM ===== */
+.premium-card{padding:20px;background:linear-gradient(145deg,#1c1c1e,#2c2c1e);border:1px solid rgba(255,204,0,.15)}
+.premium-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;font-size:11px;font-weight:700;letter-spacing:.3px}
+.premium-title{font-size:20px;font-weight:700;margin-top:12px}
+.premium-features{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.premium-feat{display:flex;align-items:center;gap:8px;font-size:13px;color:#ccc}
+.premium-feat .check{color:#30d158;font-size:16px;flex-shrink:0}
+.premium-plans{display:flex;gap:10px;margin-top:18px}
+.plan-btn{flex:1;padding:14px 10px;border-radius:14px;border:2px solid #3a3a3c;background:#2c2c2e;cursor:pointer;transition:all .15s;text-align:center;text-decoration:none;display:block}
+.plan-btn:active{transform:scale(.97)}
+.plan-btn.popular{border-color:#ffd700;background:rgba(255,215,0,.08)}
+.plan-price{font-size:22px;font-weight:800;color:#fff}
+.plan-period{font-size:11px;color:#8e8e93;margin-top:2px}
+.plan-save{font-size:10px;color:#30d158;font-weight:600;margin-top:4px}
+.plan-cta{display:inline-block;margin-top:10px;padding:8px 20px;border-radius:20px;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;font-size:13px;font-weight:700;font-family:-apple-system,sans-serif}
+.premium-manage{text-align:center;margin-top:12px}
+.premium-manage a{color:#8e8e93;font-size:12px;text-decoration:underline}
+.premium-active{text-align:center;padding:20px}
+.premium-active .big-check{font-size:48px;margin-bottom:10px}
+.premium-active .active-text{font-size:16px;font-weight:600;color:#30d158}
+.premium-active .active-until{font-size:12px;color:#8e8e93;margin-top:4px}
+
+/* Limite gratuite modal */
+.limit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9998;align-items:center;justify-content:center;padding:20px}
+.limit-overlay.on{display:flex}
+.limit-modal{background:#1c1c1e;border-radius:20px;padding:28px 24px;max-width:340px;width:100%;text-align:center;animation:cardIn .3s ease}
+.limit-modal h3{font-size:18px;margin-bottom:8px}
+.limit-modal p{font-size:13px;color:#8e8e93;line-height:1.5;margin-bottom:18px}
+.limit-modal .modal-btns{display:flex;flex-direction:column;gap:8px}
+.limit-modal .modal-btn{padding:14px;border-radius:12px;border:none;font-size:15px;font-weight:600;font-family:-apple-system,sans-serif;cursor:pointer;text-decoration:none;text-align:center;display:block}
+.limit-modal .btn-premium{background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000}
+.limit-modal .btn-close{background:#2c2c2e;color:#8e8e93}
+
+body.is-premium .ad-slot{display:none!important}
+body.is-premium .premium-card .free-only{display:none}
+
+/* ===== CONTENU ÉDITORIAL DÉPLIABLE ===== */
+.content-card{padding:0;overflow:hidden}
+.content-toggle{
+    width:100%;padding:18px 20px;
+    display:flex;align-items:center;justify-content:space-between;
+    background:#1c1c1e;border:none;color:#fff;
+    font-size:15px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:background .15s;
+    text-align:left;gap:10px;
+}
+.content-toggle:active{background:#2c2c2e}
+.content-toggle .ct-left{display:flex;align-items:center;gap:10px}
+.content-toggle .ct-icon{font-size:20px}
+.content-toggle .ct-arrow{
+    font-size:14px;color:#8e8e93;
+    transition:transform .3s ease;flex-shrink:0;
+}
+.content-card.open .ct-arrow{transform:rotate(180deg)}
+.content-body{
+    max-height:0;overflow:hidden;
+    transition:max-height .4s cubic-bezier(.25,.46,.45,.94);
+}
+.content-card.open .content-body{max-height:5000px}
+.content-inner{padding:0 20px 20px}
+
+.article-content h2{font-size:18px;font-weight:700;margin-bottom:14px;color:#fff;line-height:1.3}
+.article-content h3{font-size:15px;font-weight:600;margin-top:18px;margin-bottom:8px;color:#e5e5ea}
+.article-content p{font-size:13px;color:#aaa;line-height:1.7;margin-bottom:10px}
+.article-content ul{margin:8px 0 10px 20px;font-size:13px;color:#aaa;line-height:1.8}
+.article-content li{margin-bottom:4px}
+.article-content strong{color:#e5e5ea}
+
+.faq-list{display:flex;flex-direction:column;gap:8px}
+.faq-item{background:#2c2c2e;border-radius:12px;overflow:hidden}
+.faq-q{padding:14px 16px;font-size:14px;font-weight:600;color:#e5e5ea;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between}
+.faq-q::after{content:'＋';font-size:16px;color:#8e8e93;transition:transform .2s}
+details[open] .faq-q::after{content:'−'}
+.faq-a{padding:0 16px 14px;font-size:13px;color:#aaa;line-height:1.6}
+
+.about-content p,.legal-content p{font-size:13px;color:#aaa;line-height:1.6}
+.about-content strong,.legal-content strong{color:#e5e5ea}
+.legal-content{font-size:12px}
+.ad-slot{text-align:center;padding:0;min-height:0;overflow:hidden;max-height:0;opacity:0;transition:max-height .3s,opacity .3s,padding .3s}
+.ad-slot.has-ad{max-height:400px;opacity:1;padding:12px;min-height:100px}
+body.is-premium .ad-slot{display:none!important}
+    </style>
+
+</head>
+<body>
+<div class="save-toast" id="toast">💾</div>
+<div class="app">
+    <div class="lang-bar" id="langBar"></div>
+    <div class="currency-bar" id="curBar"></div>
+    <div class="header">
+        <h1 id="hTitle">⛽ Plein d'Essence</h1>
+        <p class="sub" id="hSub">Réservoir 42 L</p>
+    </div>
+    <!-- STATIONS -->
+    <div class="card stations-card">
+        <div class="card-label" id="lStations">📍 Stations à proximité</div>
+        <button class="locate-btn" id="locateBtn">
+            <span class="btn-icon">📍</span><span class="spinner"></span>
+            <span id="locateTxt">Trouver les stations proches</span>
+        </button>
+        <div class="radius-row">
+            <label id="lRadius">Rayon :</label>
+            <input type="range" id="radiusSlider" min="1" max="30" value="5" step="1">
+            <span class="radius-val" id="radiusVal">5 km</span>
+        </div>
+        <div id="countryBadge"></div>
+        <div class="fuel-filter" id="fuelFilter"></div>
+        <div class="map-wrap hidden" id="mapWrap"><div id="map"></div></div>
+        <div id="osmNote" class="osm-note" style="display:none"></div>
+        <div class="station-list hidden" id="stationList"></div>
+    </div>
+	<!-- PREMIUM CARD -->
+<!-- ===== PREMIUM ===== -->
+<div class="card premium-card" id="premiumCard">
+    <div id="premOffer">
+        <div class="premium-badge">⭐ PREMIUM</div>
+        <div class="premium-title" id="prT"></div>
+        <div class="premium-features">
+            <div class="premium-feat"><span class="ck">✓</span><span id="pf1"></span></div>
+            <div class="premium-feat"><span class="ck">✓</span><span id="pf2"></span></div>
+            <div class="premium-feat"><span class="ck">✓</span><span id="pf3"></span></div>
+            <div class="premium-feat"><span class="ck">✓</span><span id="pf4"></span></div>
+        </div>
+        <div class="premium-plans">
+            <a class="plan-btn" id="plM" href="#" target="_blank"></a>
+            <a class="plan-btn pop" id="plA" href="#" target="_blank"></a>
+        </div>
+        <div class="prem-manage">
+            <a href="#" target="_blank" id="mngLink"></a>
+        </div>
+    </div>
+    <div id="premActive" style="display:none">
+        <div class="prem-active">
+            <div class="big-icon">⭐</div>
+            <div class="act-text" id="actTxt"></div>
+            <div class="act-until" id="actUntil"></div>
+            <div class="prem-manage" style="margin-top:14px">
+                <a href="#" target="_blank" id="mngLink2"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- LIMIT MODAL -->
+<div class="limit-overlay" id="limOv">
+    <div class="limit-modal">
+        <h3 id="limT"></h3>
+        <p id="limP"></p>
+        <div class="mb">
+            <a class="btn-p" id="limBtn" href="#" target="_blank"></a>
+            <button class="btn-c" onclick="closeLim()"></button>
+        </div>
+    </div>
+</div>
+    <!-- TANK -->
+    <div class="card tank-card">
+        <div class="card-label" id="lTank"></div>
+        <div class="tank-row">
+            <div class="tank-visual">
+                <div class="tank-icon-box">🛢️</div>
+                <div class="tank-info">
+                    <div class="tank-val" id="tankVal">42<span>L</span></div>
+                    <div class="tank-sub" id="tankSub"></div>
+                </div>
+            </div>
+            <div class="stepper"><button id="btnMinus">−</button><div class="sep"></div><button id="btnPlus">+</button></div>
+        </div>
+        <div class="tank-bar-wrap"><div class="tank-bar" id="tankBar"></div></div>
+        <div class="tank-bar-labels"><span>10 L</span><span>50 L</span><span>100 L</span></div>
+        <div class="tank-presets" id="tankPresets"></div>
+    </div>
+    <!-- GAUGE -->
+    <div class="card gauge-card">
+        <div class="card-label" id="lLevel"></div>
+        <div class="gauge-wrap">
+            <div class="gauge-box">
+                <svg class="gauge-svg" viewBox="0 0 240 148">
+                    <path class="g-bg" d="M 22 130 A 100 100 0 0 1 218 130" id="gBg"/>
+                    <path class="g-fill" d="M 22 130 A 100 100 0 0 1 218 130" id="gFill" stroke="#ff3b30"/>
+                    <line x1="30" y1="123" x2="40" y2="115" class="g-tick-major"/><line x1="42" y1="58" x2="54" y2="64" class="g-tick"/><line x1="120" y1="25" x2="120" y2="39" class="g-tick-major"/><line x1="195" y1="58" x2="183" y2="64" class="g-tick"/><line x1="210" y1="123" x2="200" y2="115" class="g-tick-major"/>
+                    <line x1="32" y1="89" x2="43" y2="87" class="g-tick" style="stroke:#3a3a3c"/><line x1="74" y1="40" x2="80" y2="50" class="g-tick" style="stroke:#3a3a3c"/><line x1="160" y1="40" x2="154" y2="50" class="g-tick" style="stroke:#3a3a3c"/><line x1="207" y1="89" x2="196" y2="87" class="g-tick" style="stroke:#3a3a3c"/>
+                    <text x="14" y="142" class="g-lbl" text-anchor="middle">0</text><text x="120" y="19" class="g-lbl" text-anchor="middle">½</text><text x="228" y="142" class="g-lbl" text-anchor="middle">1</text>
+                    <text x="203" y="108" style="font-size:12px;fill:#636366">⛽</text>
+                    <g class="g-needle" id="needle"><polygon class="g-needle-bar" points="120,42 117,118 120,123 123,118"/><circle class="g-needle-cap1" cx="120" cy="120" r="8"/><circle class="g-needle-cap2" cx="120" cy="120" r="4.5"/></g>
+                </svg>
+            </div>
+            <div class="g-val"><span class="g-pct" id="dPct">12</span><span class="g-pct-sign">%</span></div>
+            <div class="g-liters" id="dLiters"></div>
+            <div class="q-btns" id="qBtnsWrap"></div>
+        </div>
+        <div class="slider-sec">
+            <input type="range" id="sLevel" min="0" max="100" value="12" step="1">
+            <div class="slider-marks" id="sliderMarks"></div>
+        </div>
+    </div>
+    <div class="alert" id="alertBox"><div class="alert-dot"></div><span class="alert-txt" id="alertTxt"></span></div>
+    <!-- PRICE -->
+    <div class="card price-card">
+        <div class="card-label" id="lPrice"></div>
+        <div class="price-row">
+            <span class="sym" id="pSym">€</span>
+            <input type="number" id="iPrice" value="1.72" step="0.01" min="0" placeholder="1.72" inputmode="decimal" enterkeyhint="done">
+            <span class="unit" id="pUnit">/ litre</span>
+        </div>
+        <div class="pills" id="pillsWrap"></div>
+    </div>
+    <!-- RESULT -->
+    <div class="card res-card">
+        <div class="res-top">
+            <div class="res-lbl" id="lResult"></div>
+            <div class="res-amount" id="rAmount"></div>
+            <div class="res-detail" id="rDetail"></div>
+        </div>
+        <div class="stats">
+            <div class="stat"><div class="stat-v" id="sAdd"></div><div class="stat-l" id="lAdd"></div></div>
+            <div class="stat"><div class="stat-v" id="sCur"></div><div class="stat-l" id="lCur"></div></div>
+            <div class="stat"><div class="stat-v" id="sFull"></div><div class="stat-l" id="lFull"></div></div>
+            <div class="stat"><div class="stat-v" id="sCap"></div><div class="stat-l" id="lCap"></div></div>
+        </div>
+    </div>
+	<!-- ===== CONTENU ÉDITORIAL (pour AdSense) ===== -->
+
+<!-- ===== PUB A ===== -->
+<div class="card ad-slot">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-3529050815950024"
+         data-ad-slot="AAAAAAAAAA"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<!-- ===== GUIDE (dépliable) ===== -->
+<div class="card content-card" id="guideCard">
+    <button class="content-toggle" onclick="toggleContent('guideCard')">
+        <span class="ct-left">
+            <span class="ct-icon">📖</span>
+            <span id="guideToggleText">Guide : économiser sur son plein</span>
+        </span>
+        <span class="ct-arrow">▼</span>
+    </button>
+    <div class="content-body">
+        <div class="content-inner">
+            <article class="article-content" id="guideContent"></article>
+        </div>
+    </div>
+</div>
+
+<!-- ===== PUB B ===== -->
+<div class="card ad-slot">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-3529050815950024"
+         data-ad-slot="BBBBBBBBBB"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<!-- ===== FAQ (dépliable) ===== -->
+<div class="card content-card" id="faqCard">
+    <button class="content-toggle" onclick="toggleContent('faqCard')">
+        <span class="ct-left">
+            <span class="ct-icon">❓</span>
+            <span id="faqToggleText">Questions fréquentes</span>
+        </span>
+        <span class="ct-arrow">▼</span>
+    </button>
+    <div class="content-body">
+        <div class="content-inner">
+            <div class="faq-list" id="faqContent"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== À PROPOS (dépliable) ===== -->
+<div class="card content-card" id="aboutCard">
+    <button class="content-toggle" onclick="toggleContent('aboutCard')">
+        <span class="ct-left">
+            <span class="ct-icon">ℹ️</span>
+            <span id="aboutToggleText">À propos d'Easy Refuel</span>
+        </span>
+        <span class="ct-arrow">▼</span>
+    </button>
+    <div class="content-body">
+        <div class="content-inner">
+            <div class="about-content" id="aboutContent"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MENTIONS LÉGALES (dépliable) ===== -->
+<div class="card content-card" id="legalCard">
+    <button class="content-toggle" onclick="toggleContent('legalCard')">
+        <span class="ct-left">
+            <span class="ct-icon">📋</span>
+            <span id="legalToggleText">Mentions légales & Confidentialité</span>
+        </span>
+        <span class="ct-arrow">▼</span>
+    </button>
+    <div class="content-body">
+        <div class="content-inner">
+            <div class="legal-content" id="legalContent"></div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// ==================== CURRENCIES ====================
+const CURRENCIES={
+    EUR:{symbol:'€',code:'EUR',decSep:',',thousSep:' ',after:true,flag:'🇪🇺'},
+    GBP:{symbol:'£',code:'GBP',decSep:'.',thousSep:',',after:false,flag:'🇬🇧'},
+    USD:{symbol:'$',code:'USD',decSep:'.',thousSep:',',after:false,flag:'🇺🇸'},
+    RUB:{symbol:'₽',code:'RUB',decSep:',',thousSep:' ',after:true,flag:'🇷🇺'},
+    CNY:{symbol:'¥',code:'CNY',decSep:'.',thousSep:',',after:false,flag:'🇨🇳'},
+    JPY:{symbol:'¥',code:'JPY',decSep:'.',thousSep:',',after:false,flag:'🇯🇵'},
+    BRL:{symbol:'R$',code:'BRL',decSep:',',thousSep:'.',after:false,flag:'🇧🇷'},
+    CHF:{symbol:'CHF',code:'CHF',decSep:'.',thousSep:"'",after:true,flag:'🇨🇭'}
+};
+
+const FUEL_PRICES={
+    EUR:[
+        {p:1.58,names:{fr:'E10',en:'E10',es:'E10',it:'E10',pt:'E10',ru:'E10',zh:'E10',ja:'E10',de:'E10'}},
+        {p:1.65,names:{fr:'SP95',en:'SP95',es:'SP95',it:'SP95',pt:'SP95',ru:'АИ-95',zh:'95号',ja:'レギュラー',de:'Super E5'}},
+        {p:1.72,names:{fr:'SP98',en:'SP98',es:'SP98',it:'SP98',pt:'SP98',ru:'АИ-98',zh:'98号',ja:'ハイオク',de:'Super Plus'}},
+        {p:1.55,names:{fr:'Diesel',en:'Diesel',es:'Diésel',it:'Diesel',pt:'Gasóleo',ru:'ДТ',zh:'柴油',ja:'軽油',de:'Diesel'}},
+        {p:0.85,names:{fr:'E85',en:'E85',es:'E85',it:'E85',pt:'E85',ru:'E85',zh:'E85',ja:'E85',de:'E85'}}
+    ],
+    GBP:[{p:1.35,names:{en:'E10'}},{p:1.40,names:{en:'Unleaded'}},{p:1.48,names:{en:'Super'}},{p:1.42,names:{en:'Diesel'}}],
+    USD:[{p:0.92,names:{en:'Regular 87'}},{p:1.02,names:{en:'Mid-Grade'}},{p:1.12,names:{en:'Premium'}},{p:1.05,names:{en:'Diesel'}}],
+    RUB:[{p:54,names:{ru:'АИ-92'}},{p:58,names:{ru:'АИ-95'}},{p:65,names:{ru:'АИ-98'}},{p:60,names:{ru:'ДТ'}}],
+    CNY:[{p:8.20,names:{zh:'92号'}},{p:8.80,names:{zh:'95号'}},{p:9.90,names:{zh:'98号'}},{p:8.10,names:{zh:'柴油'}}],
+    JPY:[{p:175,names:{ja:'レギュラー'}},{p:186,names:{ja:'ハイオク'}},{p:155,names:{ja:'軽油'}}],
+    BRL:[{p:5.80,names:{pt:'Gasolina'}},{p:6.20,names:{pt:'Aditivada'}},{p:5.90,names:{pt:'Diesel'}},{p:3.60,names:{pt:'Etanol'}}],
+    CHF:[{p:1.72,names:{fr:'SP95'}},{p:1.80,names:{fr:'SP98'}},{p:1.85,names:{fr:'Diesel'}}]
+};
+
+// ==================== i18n ====================
+const LANGS={
+    fr:{
+        flag:'🇫🇷',name:'Français',defaultCur:'EUR',
+        title:'⛽ Plein d\'Essence',tankLabel:'Capacité du réservoir',levelLabel:'Niveau actuel',
+        priceLabel:'Prix à la pompe',resultLabel:'Montant à mettre',
+        addLabel:'Litres à ajouter',curLabel:'Litres actuels',
+        fullLabel:'Prix plein complet',capLabel:'Capacité réservoir',
+        perLiter:'/ litre',inTank:'{n} L dans le réservoir',sub:'Réservoir {n} L',
+        alert:'Niveau très bas !',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'Vide',reserve:'Réserve',full:'Plein',
+        cat:{xs:'Petite citadine',s:'Citadine',m:'Compacte',l:'Berline',xl:'SUV',xxl:'Grand SUV',xxxl:'Grand'},
+        vehicles:{35:'Citadine · 35L',42:'Compacte · 42L',50:'Berline · 50L',55:'Break · 55L',60:'SUV · 60L',70:'Grand SUV · 70L',80:'Utilitaire · 80L'},
+        sliderMarks:['Vide','¼','½','¾','Plein'],
+        stationsLabel:'📍 Stations à proximité',locateBtn:'Trouver les stations proches',
+        locating:'Recherche en cours...',radiusLabel:'Rayon :',
+        noStations:'Aucune station trouvée. Augmentez le rayon.',
+        stationError:'Erreur de connexion.',geoError:'Géolocalisation refusée.',
+        usePrice:'Prix appliqué',cheapest:'🏆 Moins cher !',perLiterLabel:'/L',
+        navigate:'Y aller',allFuels:'Tous',detectedCountry:'Pays détecté :',
+        osmNote:'💡 Les prix ne sont pas disponibles via API dans ce pays. Stations localisées via OpenStreetMap.',
+        noPriceAvail:'Prix indisponible'
+    },
+    en:{
+        flag:'🇬🇧',name:'English',defaultCur:'GBP',
+        title:'⛽ Fuel Calculator',tankLabel:'Tank capacity',levelLabel:'Current level',
+        priceLabel:'Price at pump',resultLabel:'Amount to pay',
+        addLabel:'Liters to add',curLabel:'Current liters',
+        fullLabel:'Full tank price',capLabel:'Tank capacity',
+        perLiter:'/ liter',inTank:'{n} L in the tank',sub:'Tank {n} L',
+        alert:'Very low!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'Empty',reserve:'Reserve',full:'Full',
+        cat:{xs:'Small',s:'City car',m:'Compact',l:'Sedan',xl:'SUV',xxl:'Large SUV',xxxl:'Large'},
+        vehicles:{35:'City · 35L',42:'Compact · 42L',50:'Sedan · 50L',55:'Wagon · 55L',60:'SUV · 60L',70:'Large SUV · 70L',80:'Van · 80L'},
+        sliderMarks:['Empty','¼','½','¾','Full'],
+        stationsLabel:'📍 Nearby stations',locateBtn:'Find nearby stations',
+        locating:'Searching...',radiusLabel:'Radius:',
+        noStations:'No stations found. Try increasing radius.',
+        stationError:'Connection error.',geoError:'Location denied.',
+        usePrice:'Price applied',cheapest:'🏆 Cheapest!',perLiterLabel:'/L',
+        navigate:'Go',allFuels:'All',detectedCountry:'Detected:',
+        osmNote:'💡 Prices unavailable via API in this country. Stations located via OpenStreetMap.',
+        noPriceAvail:'Price unavailable'
+    },
+    es:{
+        flag:'🇪🇸',name:'Español',defaultCur:'EUR',
+        title:'⛽ Calculadora',tankLabel:'Capacidad depósito',levelLabel:'Nivel actual',
+        priceLabel:'Precio surtidor',resultLabel:'Importe',
+        addLabel:'Litros a añadir',curLabel:'Litros actuales',
+        fullLabel:'Depósito lleno',capLabel:'Capacidad',
+        perLiter:'/ litro',inTank:'{n} L en depósito',sub:'Depósito {n} L',
+        alert:'¡Nivel muy bajo!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'Vacío',reserve:'Reserva',full:'Lleno',
+        cat:{xs:'Utilitario',s:'Utilitario',m:'Compacto',l:'Berlina',xl:'SUV',xxl:'SUV grande',xxxl:'Grande'},
+        vehicles:{35:'Utilitario · 35L',42:'Compacto · 42L',50:'Berlina · 50L',55:'Familiar · 55L',60:'SUV · 60L',70:'SUV grande · 70L',80:'Furgoneta · 80L'},
+        sliderMarks:['Vacío','¼','½','¾','Lleno'],
+        stationsLabel:'📍 Gasolineras cercanas',locateBtn:'Buscar gasolineras',
+        locating:'Buscando...',radiusLabel:'Radio:',
+        noStations:'No se encontraron gasolineras.',
+        stationError:'Error de conexión.',geoError:'Ubicación denegada.',
+        usePrice:'Precio aplicado',cheapest:'🏆 ¡Más barato!',perLiterLabel:'/L',
+        navigate:'Ir',allFuels:'Todos',detectedCountry:'País:',
+        osmNote:'💡 Precios no disponibles. Estaciones vía OpenStreetMap.',
+        noPriceAvail:'Precio no disponible'
+    },
+	de:{
+        flag:'🇩🇪',name:'Deutsch',defaultCur:'EUR',
+        title:'⛽ Tankrechner',tankLabel:'Tankvolumen',levelLabel:'Aktueller Stand',
+        priceLabel:'Preis an der Zapfsäule',resultLabel:'Zu zahlender Betrag',
+        addLabel:'Liter nachfüllen',curLabel:'Aktuelle Liter',
+        fullLabel:'Volltanken Preis',capLabel:'Tankvolumen',
+        perLiter:'/ Liter',inTank:'{n} L im Tank',sub:'Tank {n} L',
+        alert:'Sehr niedrig!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'Leer',reserve:'Reserve',full:'Voll',
+        cat:{xs:'Kleinwagen',s:'Stadtauto',m:'Kompakt',l:'Limousine',xl:'SUV',xxl:'Großer SUV',xxxl:'Groß'},
+        vehicles:{35:'Kleinwagen · 35L',42:'Kompakt · 42L',50:'Limousine · 50L',55:'Kombi · 55L',60:'SUV · 60L',70:'Großer SUV · 70L',80:'Transporter · 80L'},
+        sliderMarks:['Leer','¼','½','¾','Voll'],
+        stationsLabel:'📍 Tankstellen in der Nähe',locateBtn:'Tankstellen finden',
+        locating:'Suche...',radiusLabel:'Radius:',
+        noStations:'Keine Tankstellen gefunden.',
+        stationError:'Verbindungsfehler.',geoError:'Standort verweigert.',
+        usePrice:'Preis angewendet',cheapest:'🏆 Am günstigsten!',perLiterLabel:'/L',
+        navigate:'Route',allFuels:'Alle',detectedCountry:'Land:',
+        osmNote:'💡 Preise nicht verfügbar. Tankstellen via OpenStreetMap.',
+        noPriceAvail:'Preis nicht verfügbar'
+    },
+    it:{
+        flag:'🇮🇹',name:'Italiano',defaultCur:'EUR',
+        title:'⛽ Calcolatore',tankLabel:'Capacità serbatoio',levelLabel:'Livello',
+        priceLabel:'Prezzo',resultLabel:'Importo',
+        addLabel:'Litri da aggiungere',curLabel:'Litri attuali',
+        fullLabel:'Pieno completo',capLabel:'Capacità',
+        perLiter:'/ litro',inTank:'{n} L nel serbatoio',sub:'Serbatoio {n} L',
+        alert:'Molto basso!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'Vuoto',reserve:'Riserva',full:'Pieno',
+        cat:{xs:'Utilitaria',s:'Utilitaria',m:'Compatta',l:'Berlina',xl:'SUV',xxl:'SUV grande',xxxl:'Grande'},
+        vehicles:{35:'Utilitaria · 35L',42:'Compatta · 42L',50:'Berlina · 50L',55:'SW · 55L',60:'SUV · 60L',70:'SUV grande · 70L',80:'Furgone · 80L'},
+        sliderMarks:['Vuoto','¼','½','¾','Pieno'],
+        stationsLabel:'📍 Distributori vicini',locateBtn:'Cerca distributori',
+        locating:'Ricerca...',radiusLabel:'Raggio:',
+        noStations:'Nessuno trovato.',stationError:'Errore.',geoError:'Posizione negata.',
+        usePrice:'Prezzo applicato',cheapest:'🏆 Più economico!',perLiterLabel:'/L',
+        navigate:'Vai',allFuels:'Tutti',detectedCountry:'Paese:',
+        osmNote:'💡 Prezzi non disponibili. Stazioni via OpenStreetMap.',
+        noPriceAvail:'Prezzo non disponibile'
+    },
+    pt:{
+        flag:'🇵🇹',name:'Português',defaultCur:'EUR',
+        title:'⛽ Calculadora',tankLabel:'Capacidade',levelLabel:'Nível',
+        priceLabel:'Preço',resultLabel:'Valor',
+        addLabel:'Litros a adicionar',curLabel:'Litros atuais',
+        fullLabel:'Depósito cheio',capLabel:'Capacidade',
+        perLiter:'/ litro',inTank:'{n} L no depósito',sub:'Depósito {n} L',
+        alert:'Muito baixo!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'Vazio',reserve:'Reserva',full:'Cheio',
+        cat:{xs:'Citadino',s:'Citadino',m:'Compacto',l:'Sedan',xl:'SUV',xxl:'SUV grande',xxxl:'Grande'},
+        vehicles:{35:'Citadino · 35L',42:'Compacto · 42L',50:'Sedan · 50L',55:'Carrinha · 55L',60:'SUV · 60L',70:'SUV grande · 70L',80:'Furgão · 80L'},
+        sliderMarks:['Vazio','¼','½','¾','Cheio'],
+        stationsLabel:'📍 Postos próximos',locateBtn:'Encontrar postos',
+        locating:'A procurar...',radiusLabel:'Raio:',
+        noStations:'Nenhum encontrado.',stationError:'Erro.',geoError:'Localização negada.',
+        usePrice:'Preço aplicado',cheapest:'🏆 Mais barato!',perLiterLabel:'/L',
+        navigate:'Ir',allFuels:'Todos',detectedCountry:'País:',
+        osmNote:'💡 Preços indisponíveis. Postos via OpenStreetMap.',
+        noPriceAvail:'Preço indisponível'
+    },
+    ru:{
+        flag:'🇷🇺',name:'Русский',defaultCur:'RUB',
+        title:'⛽ Калькулятор',tankLabel:'Объём бака',levelLabel:'Уровень',
+        priceLabel:'Цена',resultLabel:'Сумма',
+        addLabel:'Долить',curLabel:'Сейчас',fullLabel:'Полный бак',capLabel:'Объём',
+        perLiter:'/ л',inTank:'{n} л в баке',sub:'Бак {n} л',
+        alert:'Низкий!',toastTank:'🛢️ {n} л',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'Пусто',reserve:'Резерв',full:'Полный',
+        cat:{xs:'Малолитражка',s:'Городской',m:'Седан',l:'Универсал',xl:'Кроссовер',xxl:'Большой SUV',xxxl:'Большое'},
+        vehicles:{35:'Малолитражка · 35л',42:'Компакт · 42л',50:'Седан · 50л',55:'Универсал · 55л',60:'Кроссовер · 60л',70:'Большой SUV · 70л',80:'Фургон · 80л'},
+        sliderMarks:['Пусто','¼','½','¾','Полный'],
+        stationsLabel:'📍 АЗС рядом',locateBtn:'Найти АЗС',
+        locating:'Поиск...',radiusLabel:'Радиус:',
+        noStations:'Не найдено.',stationError:'Ошибка.',geoError:'Геолокация запрещена.',
+        usePrice:'Цена применена',cheapest:'🏆 Дешевле!',perLiterLabel:'/л',
+        navigate:'Маршрут',allFuels:'Все',detectedCountry:'Страна:',
+        osmNote:'💡 Цены недоступны. АЗС через OpenStreetMap.',
+        noPriceAvail:'Цена недоступна'
+    },
+    zh:{
+        flag:'🇨🇳',name:'中文',defaultCur:'CNY',
+        title:'⛽ 加油计算器',tankLabel:'油箱容量',levelLabel:'油量',
+        priceLabel:'油价',resultLabel:'金额',
+        addLabel:'需加升数',curLabel:'当前升数',fullLabel:'加满价格',capLabel:'油箱',
+        perLiter:'/ 升',inTank:'油箱 {n} 升',sub:'油箱 {n} 升',
+        alert:'极低!',toastTank:'🛢️ {n} 升',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'空',reserve:'储备',full:'满',
+        cat:{xs:'微型',s:'小型',m:'紧凑',l:'轿车',xl:'SUV',xxl:'大型SUV',xxxl:'大型'},
+        vehicles:{35:'小型 · 35L',42:'紧凑 · 42L',50:'轿车 · 50L',55:'旅行 · 55L',60:'SUV · 60L',70:'大SUV · 70L',80:'面包 · 80L'},
+        sliderMarks:['空','¼','½','¾','满'],
+        stationsLabel:'📍 附近加油站',locateBtn:'查找加油站',
+        locating:'搜索...',radiusLabel:'半径:',
+        noStations:'未找到。',stationError:'连接错误。',geoError:'定位被拒。',
+        usePrice:'已应用',cheapest:'🏆 最便宜!',perLiterLabel:'/L',
+        navigate:'导航',allFuels:'全部',detectedCountry:'国家:',
+        osmNote:'💡 价格不可用。通过OSM定位。',
+        noPriceAvail:'价格不可用'
+    },
+    ja:{
+        flag:'🇯🇵',name:'日本語',defaultCur:'JPY',
+        title:'⛽ 給油計算機',tankLabel:'タンク',levelLabel:'残量',
+        priceLabel:'価格',resultLabel:'金額',
+        addLabel:'追加L',curLabel:'現在L',fullLabel:'満タン',capLabel:'タンク',
+        perLiter:'/ L',inTank:'タンク {n} L',sub:'タンク {n} L',
+        alert:'少ない!',toastTank:'🛢️ {n} L',toastLang:'🌐 {n}',toastCur:'💱 {n}',
+        empty:'空',reserve:'予備',full:'満タン',
+        cat:{xs:'軽',s:'コンパクト',m:'セダン',l:'ワゴン',xl:'SUV',xxl:'大型SUV',xxxl:'大型'},
+        vehicles:{35:'軽 · 35L',42:'コンパクト · 42L',50:'セダン · 50L',55:'ワゴン · 55L',60:'SUV · 60L',70:'大型SUV · 70L',80:'バン · 80L'},
+        sliderMarks:['空','¼','½','¾','満タン'],
+        stationsLabel:'📍 近くのGS',locateBtn:'GSを検索',
+        locating:'検索中...',radiusLabel:'半径:',
+        noStations:'見つかりません。',stationError:'接続エラー。',geoError:'位置拒否。',
+        usePrice:'価格適用',cheapest:'🏆 最安!',perLiterLabel:'/L',
+        navigate:'ナビ',allFuels:'全て',detectedCountry:'国:',
+        osmNote:'💡 価格は利用不可。OSM経由。',
+        noPriceAvail:'価格なし'
+    }
+};
+
+// ==================== STATION PROVIDERS BY COUNTRY ====================
+// Each has: flag, name, api label, fuelTypes array, fetch(lat,lon,radiusKm) → [{id,name,addr,city,cp,lat,lon,fuels:{TypeName:{price:number}}}]
+
+const PROVIDERS = {
+    // ===== FRANCE =====
+    FR: {
+        flag:'🇫🇷', name:'France', api:'gouv.fr',
+        fuelTypes:['Gazole','SP95','SP98','E10','E85','GPLc'],
+        async fetch(lat, lon, radiusKm) {
+            const r = radiusKm * 1000;
+            const url = `https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?where=within_distance(geom,geom'POINT(${lon} ${lat})',${r}m)&limit=60&select=id,adresse,ville,cp,geom,prix_nom,prix_valeur,marque`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            const map = {};
+            (data.results || []).forEach(r => {
+                const id = r.id;
+                if (!map[id]) map[id] = {id, name:r.marque||r.ville||'Station', addr:r.adresse||'', city:r.ville||'', cp:r.cp||'', lat:r.geom?.lat||0, lon:r.geom?.lon||0, fuels:{}};
+                if (r.prix_nom && r.prix_valeur) map[id].fuels[r.prix_nom] = {price: parseFloat(r.prix_valeur)};
+            });
+            return Object.values(map);
+        }
+    },
+
+    // ===== ESPAGNE =====
+    ES: {
+        flag:'🇪🇸', name:'España', api:'minetur.gob.es',
+        fuelTypes:['Gasóleo A','Gasolina 95','Gasolina 98','GLP'],
+        async fetch(lat, lon, radiusKm) {
+            const url = 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/';
+            const resp = await fetch(url);
+            const data = await resp.json();
+            const stations = [];
+            (data.ListaEESSPrecio || []).forEach(s => {
+                const sLat = parseFloat((s.Latitud||'').replace(',','.'));
+                const sLon = parseFloat((s['Longitud (WGS84)']||'').replace(',','.'));
+                if (!sLat || !sLon) return;
+                const dist = haversine(lat, lon, sLat, sLon);
+                if (dist > radiusKm) return;
+                const fuels = {};
+                const pairs = [
+                    ['Precio Gasoleo A','Gasóleo A'],
+                    ['Precio Gasolina 95 E5','Gasolina 95'],
+                    ['Precio Gasolina 98 E5','Gasolina 98'],
+                    ['Precio Gases licuados del petróleo','GLP']
+                ];
+                pairs.forEach(([key, label]) => {
+                    const v = parseFloat((s[key]||'').replace(',','.'));
+                    if (v > 0) fuels[label] = {price: v};
+                });
+                if (!Object.keys(fuels).length) return;
+                stations.push({
+                    id: s['IDEESS'] || Math.random().toString(),
+                    name: s['Rótulo'] || 'Estación',
+                    addr: s['Dirección'] || '',
+                    city: s['Municipio'] || '',
+                    cp: s['C.P.'] || '',
+                    lat: sLat, lon: sLon, fuels
+                });
+            });
+            return stations;
+        }
+    },
+
+    // ===== ALLEMAGNE =====
+    DE: {
+        flag:'🇩🇪', name:'Deutschland', api:'tankerkoenig.de',
+        fuelTypes:['diesel','e5','e10'],
+        async fetch(lat, lon, radiusKm) {
+            const r = Math.min(radiusKm, 25);
+            const apiKey = '00000000-0000-0000-0000-000000000002'; // demo key
+            const url = `https://creativecommons.tankerkoenig.de/json/list.php?lat=${lat}&lng=${lon}&rad=${r}&sort=price&type=all&apikey=${apiKey}`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (!data.ok) throw new Error(data.message);
+            return (data.stations || []).map(s => {
+                const fuels = {};
+                if (s.diesel) fuels['diesel'] = {price: s.diesel};
+                if (s.e5) fuels['e5'] = {price: s.e5};
+                if (s.e10) fuels['e10'] = {price: s.e10};
+                return {id:s.id, name:s.brand||s.name||'Tankstelle', addr:(s.street||'')+' '+(s.houseNumber||''), city:s.place||'', cp:s.postCode||'', lat:s.lat, lon:s.lng, fuels};
+            });
+        }
+    },
+
+    // ===== ITALIE (Overpass fallback) =====
+    IT: {
+        flag:'🇮🇹', name:'Italia', api:'OpenStreetMap',
+        fuelTypes:['fuel'],
+        hasPrices: false,
+        async fetch(lat, lon, radiusKm) {
+            return await fetchOverpass(lat, lon, radiusKm);
+        }
+    },
+
+    // ===== PORTUGAL (Overpass fallback) =====
+    PT: {
+        flag:'🇵🇹', name:'Portugal', api:'OpenStreetMap',
+        fuelTypes:['fuel'],
+        hasPrices: false,
+        async fetch(lat, lon, radiusKm) {
+            return await fetchOverpass(lat, lon, radiusKm);
+        }
+    }
+};
+
+// ===== FALLBACK for all other countries =====
+const FALLBACK_PROVIDER = {
+    flag:'🌍', name:'OpenStreetMap', api:'overpass-api.de',
+    fuelTypes:['fuel'],
+    hasPrices: false,
+    async fetch(lat, lon, radiusKm) {
+        return await fetchOverpass(lat, lon, radiusKm);
+    }
+};
+
+// ===== OpenStreetMap Overpass query =====
+async function fetchOverpass(lat, lon, radiusKm) {
+    const r = radiusKm * 1000;
+    const query = `[out:json][timeout:12];node["amenity"="fuel"](around:${r},${lat},${lon});out body 50;`;
+    const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
+    const resp = await fetch(url);
+    const data = await resp.json();
+    return (data.elements || []).map(e => ({
+        id: e.id.toString(),
+        name: e.tags?.brand || e.tags?.name || e.tags?.operator || 'Station',
+        addr: e.tags?.['addr:street'] || '',
+        city: e.tags?.['addr:city'] || '',
+        cp: e.tags?.['addr:postcode'] || '',
+        lat: e.lat, lon: e.lon,
+        fuels: {fuel: {price: null}}
+    }));
+}
+
+// ===== Detect country from coords =====
+async function detectCountry(lat, lon) {
+    try {
+        const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&zoom=3&accept-language=en`;
+        const resp = await fetch(url, {headers: {'User-Agent': 'FuelCalcApp/1.0'}});
+        const data = await resp.json();
+        return data.address?.country_code?.toUpperCase() || null;
+    } catch(e) { return null; }
+}
+
+function getProvider(cc) {
+    return PROVIDERS[cc] || FALLBACK_PROVIDER;
+}
+
+// ===== Haversine =====
+function haversine(a, b, c, d) {
+    const R=6371, dL=(c-a)*Math.PI/180, dN=(d-b)*Math.PI/180;
+    const x=Math.sin(dL/2)**2 + Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dN/2)**2;
+    return R*2*Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
+}
+</script>
+<script>
+// ==================== STATE ====================
+let tank = parseInt(localStorage.getItem('tank')) || 42;
+let lvl = parseInt(localStorage.getItem('lvl')) || 12;
+let prc = parseFloat(localStorage.getItem('prc')) || 1.72;
+let lang = localStorage.getItem('lang') || 'fr';
+let cur = localStorage.getItem('cur') || LANGS[lang].defaultCur;
+let selectedFuelFilter = 'all';
+let userLat = null, userLon = null;
+let stationsData = [];
+let leafletMap = null, markersLayer = null;
+let detectedCountryCode = null, currentProvider = null;
+
+let TL, C;
+function loadLC() { TL = LANGS[lang]; C = CURRENCIES[cur]; }
+loadLC();
+
+// ==================== HELPERS ====================
+const $ = id => document.getElementById(id);
+function fmt(n, d=1) { return n.toFixed(d).replace('.', C.decSep); }
+function fmtCur(n) {
+    const j = cur==='JPY', d = j?0:2;
+    let v = n.toFixed(d);
+    const p = v.split('.');
+    p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, C.thousSep);
+    v = p.join(C.decSep);
+    return C.after ? v+' '+C.symbol : C.symbol+' '+v;
+}
+function fmtPS(n) { return cur==='JPY' ? n.toFixed(0) : n.toFixed(2).replace('.', C.decSep); }
+function escH(s) { const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+function save() { localStorage.setItem('tank',tank); localStorage.setItem('lvl',lvl); localStorage.setItem('prc',prc); }
+
+let toastT;
+function showToast(m) {
+    clearTimeout(toastT);
+    $('toast').textContent = m;
+    $('toast').classList.add('show');
+    toastT = setTimeout(() => $('toast').classList.remove('show'), 1800);
+}
+
+// ==================== DOM REFS ====================
+const sLevel = $('sLevel'), iPrice = $('iPrice');
+const gFill = $('gFill'), needleEl = $('needle'), gBg = $('gBg');
+let arcLen;
+
+// ==================== LANG / CUR BARS ====================
+function buildLangBar() {
+    const b = $('langBar'); b.innerHTML = '';
+    Object.entries(LANGS).forEach(([c, d]) => {
+        const e = document.createElement('button');
+        e.className = 'lang-btn' + (c===lang?' on':'');
+        e.textContent = d.flag;
+        e.addEventListener('click', () => setLang(c));
+        b.appendChild(e);
+    });
+}
+
+function buildCurBar() {
+    const b = $('curBar'); b.innerHTML = '';
+    Object.entries(CURRENCIES).forEach(([c, d]) => {
+        const e = document.createElement('button');
+        e.className = 'cur-pill' + (c===cur?' on':'');
+        e.textContent = d.flag+' '+d.symbol;
+        e.addEventListener('click', () => setCurrency(c));
+        b.appendChild(e);
+    });
+}
+
+function setLang(code) {
+    lang = code; loadLC();
+    cur = TL.defaultCur; loadLC();
+    localStorage.setItem('lang', lang);
+    localStorage.setItem('cur', cur);
+    document.documentElement.lang = lang;
+    const f = FUEL_PRICES[cur];
+    if (f && f.length >= 2) prc = f[1].p;
+    iPrice.value = cur==='JPY' ? prc.toFixed(0) : prc.toFixed(2);
+    save();
+    document.querySelectorAll('.lang-btn').forEach((b, i) =>
+        b.classList.toggle('on', Object.keys(LANGS)[i] === lang));
+    buildCurBar();
+    rebuildAll();
+    showToast(TL.toastLang.replace('{n}', TL.name));
+}
+
+function setCurrency(code) {
+    cur = code; loadLC();
+    localStorage.setItem('cur', cur);
+    const f = FUEL_PRICES[cur];
+    if (f && f.length >= 2) prc = f[1].p;
+    else if (f && f.length >= 1) prc = f[0].p;
+    iPrice.value = cur==='JPY' ? prc.toFixed(0) : prc.toFixed(2);
+    iPrice.step = cur==='JPY' ? '1' : '0.01';
+    save();
+    document.querySelectorAll('.cur-pill').forEach((b, i) =>
+        b.classList.toggle('on', Object.keys(CURRENCIES)[i] === cur));
+    rebuildAll();
+    showToast(TL.toastCur.replace('{n}', C.symbol+' '+C.code));
+}
+
+// ==================== REBUILD ALL ====================
+function rebuildAll() {
+    applyTexts();
+    buildTankPresets();
+    buildQuickBtns();
+    buildFuelPills();
+    buildSliderMarks();
+    buildFuelFilter();
+    updateTankUI();
+    updatePremiumUI();
+    updateEditorialContent();
+    calc();
+    if (stationsData.length) renderStations();
+}
+
+function applyTexts() {
+    $('hTitle').textContent = TL.title;
+    $('lTank').textContent = TL.tankLabel;
+    $('lLevel').textContent = TL.levelLabel;
+    $('lPrice').textContent = TL.priceLabel;
+    $('lResult').textContent = TL.resultLabel;
+    $('lAdd').textContent = TL.addLabel;
+    $('lCur').textContent = TL.curLabel;
+    $('lFull').textContent = TL.fullLabel;
+    $('lCap').textContent = TL.capLabel;
+    $('pUnit').textContent = TL.perLiter;
+    $('pSym').textContent = C.symbol;
+    $('alertTxt').textContent = TL.alert;
+    $('lStations').textContent = TL.stationsLabel;
+    $('locateTxt').textContent = TL.locateBtn;
+    $('lRadius').textContent = TL.radiusLabel;
+}
+
+// ==================== TANK ====================
+function tankCat(t) {
+    const c = TL.cat;
+    if (t<=30) return c.xs; if (t<=40) return c.s; if (t<=47) return c.m;
+    if (t<=55) return c.l; if (t<=65) return c.xl; if (t<=80) return c.xxl;
+    return c.xxxl;
+}
+
+function updateTankUI() {
+    $('tankVal').innerHTML = tank+'<span>L</span>';
+    $('tankSub').textContent = tankCat(tank);
+    $('hSub').textContent = TL.sub.replace('{n}', tank);
+    $('sCap').textContent = tank+' L';
+    $('tankBar').style.width = Math.max(0, Math.min(100, ((tank-10)/90)*100))+'%';
+    document.querySelectorAll('.tp').forEach(p =>
+        p.classList.toggle('on', parseInt(p.dataset.t) === tank));
+}
+
+function buildTankPresets() {
+    const w = $('tankPresets'); w.innerHTML = '';
+    Object.entries(TL.vehicles).forEach(([v, l]) => {
+        const b = document.createElement('button');
+        b.className = 'tp' + (parseInt(v)===tank?' on':'');
+        b.dataset.t = v; b.textContent = l;
+        b.addEventListener('click', () => {
+            tank = parseInt(v); updateTankUI(); buildQuickBtns();
+            save(); calc();
+            showToast(TL.toastTank.replace('{n}', tank));
+        });
+        w.appendChild(b);
+    });
+}
+
+function buildQuickBtns() {
+    const w = $('qBtnsWrap'); w.innerHTML = '';
+    [{l:0, label:TL.empty}, {l:12, label:TL.reserve},
+     {l:25, label:'¼'}, {l:50, label:'½'}, {l:75, label:'¾'}
+    ].forEach(({l, label}) => {
+        const b = document.createElement('button');
+        b.className = 'q-btn'; b.dataset.l = l;
+        b.innerHTML = label + '<small>' + fmt((l/100)*tank) + ' L</small>';
+        b.addEventListener('click', () => { lvl=l; sLevel.value=lvl; save(); calc(); });
+        w.appendChild(b);
+    });
+}
+
+function buildSliderMarks() {
+    const w = $('sliderMarks'); w.innerHTML = '';
+    TL.sliderMarks.forEach(t => {
+        const s = document.createElement('span');
+        s.textContent = t; w.appendChild(s);
+    });
+}
+
+function buildFuelPills() {
+    const w = $('pillsWrap'); w.innerHTML = '';
+    (FUEL_PRICES[cur] || FUEL_PRICES.EUR).forEach(f => {
+        const n = f.names[lang] || f.names.en || '';
+        const b = document.createElement('button');
+        b.className = 'pill' + (Math.abs(f.p - prc) < 0.005 ? ' on' : '');
+        b.dataset.p = f.p;
+        b.textContent = n + ' · ' + fmtPS(f.p);
+        b.addEventListener('click', () => {
+            prc = f.p;
+            iPrice.value = cur==='JPY' ? prc.toFixed(0) : prc.toFixed(2);
+            document.querySelectorAll('.pill').forEach(x => x.classList.remove('on'));
+            b.classList.add('on');
+            save(); calc();
+        });
+        w.appendChild(b);
+    });
+}
+
+// ==================== GAUGE ====================
+function gColor(p) {
+    if (p<=12) return '#ff3b30'; if (p<=25) return '#ff6723';
+    if (p<=40) return '#ff9f0a'; if (p<=65) return '#ffd60a';
+    return '#30d158';
+}
+
+function calc() {
+    const cL = (lvl/100)*tank, add = tank-cL, cost = add*prc, full = tank*prc;
+    gFill.style.strokeDashoffset = arcLen - (arcLen*lvl/100);
+    gFill.style.stroke = gColor(lvl);
+    needleEl.style.transform = 'rotate(' + (-90 + (lvl/100)*180) + 'deg)';
+    $('dPct').textContent = lvl;
+    $('dLiters').textContent = TL.inTank.replace('{n}', fmt(cL));
+    $('rAmount').textContent = fmtCur(cost);
+    $('rDetail').textContent = fmt(add)+' L × '+fmtPS(prc)+' '+C.symbol+'/L';
+    $('sAdd').textContent = fmt(add)+' L';
+    $('sCur').textContent = fmt(cL)+' L';
+    $('sFull').textContent = fmtCur(full);
+    $('alertBox').classList.toggle('on', lvl <= 12);
+    $('qBtnsWrap').querySelectorAll('.q-btn').forEach(b =>
+        b.classList.toggle('on', parseInt(b.dataset.l) === lvl));
+}
+
+// ==================== STEPPER ====================
+function changeTank(d) {
+    const n = tank + d;
+    if (n < 10 || n > 120) return;
+    tank = n; updateTankUI(); buildQuickBtns(); save(); calc();
+}
+
+$('btnMinus').addEventListener('click', () => changeTank(-1));
+$('btnPlus').addEventListener('click', () => changeTank(1));
+
+let holdTimer = null, holdSpeed = 500;
+function startHold(d) {
+    holdSpeed = 400; changeTank(d);
+    holdTimer = setTimeout(function r() {
+        changeTank(d);
+        holdSpeed = Math.max(60, holdSpeed * 0.8);
+        holdTimer = setTimeout(r, holdSpeed);
+    }, holdSpeed);
+}
+function stopHold() {
+    clearTimeout(holdTimer); holdTimer = null;
+    showToast(TL.toastTank.replace('{n}', tank));
+}
+
+['touchstart','mousedown'].forEach(e => {
+    $('btnMinus').addEventListener(e, ev => { ev.preventDefault(); startHold(-1); }, {passive:false});
+    $('btnPlus').addEventListener(e, ev => { ev.preventDefault(); startHold(1); }, {passive:false});
+});
+['touchend','touchcancel','mouseup','mouseleave'].forEach(e => {
+    $('btnMinus').addEventListener(e, stopHold);
+    $('btnPlus').addEventListener(e, stopHold);
+});
+
+// ==================== SLIDER + PRICE INPUT ====================
+sLevel.addEventListener('input', e => { lvl = +e.target.value; save(); calc(); });
+
+iPrice.addEventListener('input', () => {
+    prc = parseFloat(iPrice.value) || 0;
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
+    save(); calc();
+});
+iPrice.addEventListener('keydown', e => { if (e.key === 'Enter') iPrice.blur(); });
+
+document.querySelectorAll('input[type=number]').forEach(inp => {
+    inp.addEventListener('focus', () => {
+        setTimeout(() => inp.scrollIntoView({behavior:'smooth', block:'center'}), 300);
+    });
+});
+
+// ==================== STATIONS ====================
+const radiusSlider = $('radiusSlider'), radiusVal = $('radiusVal');
+
+radiusSlider.addEventListener('input', () => {
+    radiusVal.textContent = radiusSlider.value + ' km';
+    if (userLat && stationsData.length) {
+        // Re-filter existing data for FR/ES/DE (no re-fetch needed for client-side filtered)
+        renderStations();
+    }
+});
+
+function buildFuelFilter() {
+    const w = $('fuelFilter'); w.innerHTML = '';
+    const types = currentProvider ? currentProvider.fuelTypes : ['fuel'];
+
+    const allB = document.createElement('button');
+    allB.className = 'ff-btn' + (selectedFuelFilter==='all'?' on':'');
+    allB.textContent = TL.allFuels;
+    allB.addEventListener('click', () => {
+        selectedFuelFilter = 'all'; buildFuelFilter(); renderStations();
+    });
+    w.appendChild(allB);
+
+    types.forEach(ft => {
+        const b = document.createElement('button');
+        b.className = 'ff-btn' + (selectedFuelFilter===ft?' on':'');
+        b.textContent = ft;
+        b.addEventListener('click', () => {
+            selectedFuelFilter = ft; buildFuelFilter(); renderStations();
+        });
+        w.appendChild(b);
+    });
+}
+
+// ==================== LOCATE BUTTON ====================
+$('locateBtn').addEventListener('click', function() {
+    if (!checkSearchLimit()) return;
+    locateAndFetch();
+});
+
+function locateAndFetch() {
+    const btn = $('locateBtn');
+    btn.classList.add('loading'); btn.disabled = true;
+    $('locateTxt').textContent = TL.locating;
+
+    if (!navigator.geolocation) {
+        btn.classList.remove('loading'); btn.disabled = false;
+        $('locateTxt').textContent = TL.locateBtn;
+        showToast('❌ ' + TL.geoError);
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        async pos => {
+            userLat = pos.coords.latitude;
+            userLon = pos.coords.longitude;
+            try {
+                // Detect country
+                detectedCountryCode = await detectCountry(userLat, userLon);
+                currentProvider = getProvider(detectedCountryCode);
+
+                // Show country badge
+                $('countryBadge').innerHTML =
+                    `<div class="country-badge">
+                        <span class="cb-flag">${currentProvider.flag}</span>
+                        <span>${TL.detectedCountry}</span>
+                        <span class="cb-name">${currentProvider.name}</span>
+                        <span style="color:#636366;font-size:11px">via ${currentProvider.api}</span>
+                    </div>`;
+
+                // Show OSM note if no prices
+                if (currentProvider.hasPrices === false) {
+                    $('osmNote').textContent = TL.osmNote;
+                    $('osmNote').style.display = 'block';
+                } else {
+                    $('osmNote').style.display = 'none';
+                }
+
+                selectedFuelFilter = 'all';
+                buildFuelFilter();
+
+                await fetchStations();
+            } catch(e) {
+                console.error(e);
+                showToast('❌ ' + TL.stationError);
+            }
+            btn.classList.remove('loading'); btn.disabled = false;
+            $('locateTxt').textContent = TL.locateBtn;
+        },
+        () => {
+            btn.classList.remove('loading'); btn.disabled = false;
+            $('locateTxt').textContent = TL.locateBtn;
+            showToast('❌ ' + TL.geoError);
+        },
+        {enableHighAccuracy: true, timeout: 15000, maximumAge: 60000}
+    );
+}
+
+// ==================== FETCH STATIONS ====================
+async function fetchStations() {
+    try {
+        const radiusKm = parseInt(radiusSlider.value);
+        const raw = await currentProvider.fetch(userLat, userLon, radiusKm);
+
+        // Calc distance for each
+        stationsData = raw.map(s => {
+            s.dist = haversine(userLat, userLon, s.lat, s.lon);
+            return s;
+        });
+
+        renderStations();
+        initMap();
+    } catch(e) {
+        console.error(e);
+        $('stationList').innerHTML =
+            '<div class="station-empty"><div class="empty-icon">📡</div>' +
+            TL.stationError + '</div>';
+        $('stationList').classList.remove('hidden');
+        showToast('❌ ' + TL.stationError);
+    }
+}
+
+// ==================== RENDER STATIONS LIST ====================
+function getBestPrice(station) {
+    if (selectedFuelFilter !== 'all') {
+        return station.fuels[selectedFuelFilter]?.price || null;
+    }
+    const prices = Object.values(station.fuels).map(f => f.price).filter(p => p && p > 0);
+    return prices.length ? Math.min(...prices) : null;
+}
+
+function getMainFuelName(station) {
+    if (selectedFuelFilter !== 'all') return selectedFuelFilter;
+    let min = Infinity, name = '';
+    Object.entries(station.fuels).forEach(([k, v]) => {
+        if (v.price && v.price < min) { min = v.price; name = k; }
+    });
+    return name;
+}
+
+function renderStations() {
+    const list = $('stationList');
+    const radius = parseInt(radiusSlider.value);
+
+    // Filter
+    let filtered = stationsData.filter(s => s.dist <= radius);
+    if (selectedFuelFilter !== 'all') {
+        filtered = filtered.filter(s => s.fuels[selectedFuelFilter]);
+    }
+
+    // Sort by price (cheapest first), fallback by distance
+    filtered.sort((a, b) => {
+        const pa = getBestPrice(a), pb = getBestPrice(b);
+        if (pa === null && pb === null) return a.dist - b.dist;
+        if (pa === null) return 1;
+        if (pb === null) return -1;
+        return pa - pb;
+    });
+
+    if (!filtered.length) {
+        list.innerHTML =
+            '<div class="station-empty"><div class="empty-icon">🔍</div>' +
+            TL.noStations + '</div>';
+        list.classList.remove('hidden');
+        updateMapMarkers(filtered);
+        return;
+    }
+
+    const cheapestPrice = getBestPrice(filtered[0]);
+    const litersToAdd = tank - (lvl/100) * tank;
+
+    list.innerHTML = filtered.slice(0, 20).map((s, i) => {
+        const price = getBestPrice(s);
+        const isCheapest = i === 0 && price !== null;
+        const extraCost = (price && cheapestPrice && !isCheapest)
+            ? (price - cheapestPrice) * litersToAdd : 0;
+        const fuelLabel = getMainFuelName(s);
+        const distTxt = s.dist < 1
+            ? (s.dist * 1000).toFixed(0) + ' m'
+            : s.dist.toFixed(1) + ' km';
+
+        return `
+        <div class="station-item${isCheapest?' cheapest':''}"
+             onclick="useStationPrice(${price})">
+            <div class="station-rank">${i + 1}</div>
+            <div class="station-info">
+                <div class="station-name">${escH(s.name)}</div>
+                <div class="station-addr">${escH(s.addr)}${s.cp?', '+escH(s.cp):''}${s.city?' '+escH(s.city):''}</div>
+                <div class="station-dist">📍 ${distTxt}${fuelLabel?' — '+fuelLabel:''}</div>
+                ${isCheapest ? '<span class="use-price-tag">'+TL.cheapest+'</span>' : ''}
+            </div>
+            <div class="station-price-box">
+                ${price !== null
+                    ? `<div class="station-price">${fmtPS(price)}</div>
+                       <div class="station-price-unit">${C.symbol}${TL.perLiterLabel}</div>`
+                    : `<div class="station-price" style="font-size:12px;color:#636366">${TL.noPriceAvail}</div>`
+                }
+                ${extraCost > 0.01
+                    ? '<div class="station-savings" style="color:#ff6961">+ '+fmtCur(extraCost)+'</div>'
+                    : ''
+                }
+            </div>
+            <a href="https://maps.apple.com/?daddr=${s.lat},${s.lon}&dirflg=d"
+               onclick="event.stopPropagation()"
+               style="position:absolute;bottom:8px;right:14px;font-size:11px;color:#007aff;text-decoration:none;font-weight:600">
+               ${TL.navigate} →
+            </a>
+        </div>`;
+    }).join('');
+
+    list.classList.remove('hidden');
+    updateMapMarkers(filtered.slice(0, 20));
+}
+
+// ==================== USE STATION PRICE ====================
+window.useStationPrice = function(price) {
+    if (price === null || price === undefined) return;
+    prc = price;
+    iPrice.value = cur === 'JPY' ? prc.toFixed(0) : prc.toFixed(2);
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
+    save(); calc();
+    showToast('✅ ' + TL.usePrice + ' : ' + fmtPS(price) + ' ' + C.symbol);
+    document.querySelector('.res-card').scrollIntoView({behavior:'smooth', block:'center'});
+};
+
+// ==================== MAP ====================
+function initMap() {
+    const wrap = $('mapWrap');
+    wrap.classList.remove('hidden');
+
+    if (!leafletMap) {
+        leafletMap = L.map('map', {
+            zoomControl: false,
+            attributionControl: false
+        }).setView([userLat, userLon], 13);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19
+        }).addTo(leafletMap);
+
+        markersLayer = L.layerGroup().addTo(leafletMap);
+    } else {
+        leafletMap.setView([userLat, userLon], 13);
+    }
+
+    setTimeout(() => leafletMap.invalidateSize(), 150);
+}
+
+function updateMapMarkers(stations) {
+    if (!markersLayer) return;
+    markersLayer.clearLayers();
+
+    // User position
+    const userIcon = L.divIcon({
+        html: '<div style="width:14px;height:14px;background:#007aff;border:3px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(0,122,255,.5)"></div>',
+        className: '', iconSize: [14,14], iconAnchor: [7,7]
+    });
+    L.marker([userLat, userLon], {icon: userIcon}).addTo(markersLayer);
+
+    // Station markers
+    stations.forEach((s, i) => {
+        const price = getBestPrice(s);
+        const color = i === 0 ? '#30d158' : '#ff9500';
+        const label = price !== null ? fmtPS(price) : '⛽';
+
+        const icon = L.divIcon({
+            html: `<div style="background:${color};color:#000;padding:3px 7px;border-radius:10px;font-size:11px;font-weight:700;font-family:-apple-system,sans-serif;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.3)">${label}</div>`,
+            className: '', iconAnchor: [25, 12]
+        });
+
+        const marker = L.marker([s.lat, s.lon], {icon}).addTo(markersLayer);
+        marker.on('click', () => useStationPrice(price));
+
+        // Popup
+        marker.bindPopup(
+            `<div style="font-family:-apple-system,sans-serif;font-size:13px;min-width:140px">
+                <strong>${escH(s.name)}</strong><br>
+                <span style="color:#666">${escH(s.addr)}</span><br>
+                ${price !== null
+                    ? '<span style="font-size:18px;font-weight:700;color:#30d158">'+fmtPS(price)+' '+C.symbol+'</span>'
+                    : '<span style="color:#999">'+TL.noPriceAvail+'</span>'
+                }<br>
+                <a href="https://maps.apple.com/?daddr=${s.lat},${s.lon}&dirflg=d"
+                   style="color:#007aff;font-weight:600">${TL.navigate} →</a>
+            </div>`,
+            {closeButton: false, className: ''}
+        );
+    });
+
+    // Fit bounds
+    if (stations.length) {
+        const allPts = [[userLat, userLon], ...stations.map(s => [s.lat, s.lon])];
+        const bounds = L.latLngBounds(allPts);
+        leafletMap.fitBounds(bounds, {padding: [30, 30], maxZoom: 14});
+    }
+}
+
+// ==================== INIT ====================
+function init() {
+    arcLen = gBg.getTotalLength();
+    gFill.style.strokeDasharray = arcLen;
+
+    iPrice.value = cur === 'JPY' ? prc.toFixed(0) : prc.toFixed(2);
+    iPrice.step = cur === 'JPY' ? '1' : '0.01';
+    sLevel.value = lvl;
+
+    // Premium
+    checkStripeReturn();
+    updatePremiumUI();
+
+    buildLangBar();
+    buildCurBar();
+    rebuildAll();
+	checkAdSlots();
+}
+// ==================== PREMIUM SYSTEM ====================
+
+// ⚠️ REMPLACE CES LIENS PAR LES TIENS (Stripe Payment Links)
+const STRIPE_M = 'https://buy.stripe.com/4gMaEX2Bz4YheYD3lo2go00';
+const STRIPE_A = 'https://buy.stripe.com/3cI5kD5NL3Ud4jZ5tw2go01';
+const STRIPE_P = 'https://billing.stripe.com/p/login/4gMaEX2Bz4YheYD3lo2go00';
+
+// Premium translations
+const PI18N = {
+    fr:{t:'Passez à Premium',f1:'Recherches de stations illimitées',f2:'Rayon jusqu\'à 50 km',f3:'Aucune publicité',f4:'Soutenez le développement',mo:'/mois',yr:'/an',sv:'Économisez 33%',ct:'Choisir',ac:'Premium actif !',un:'Valide jusqu\'au {d}',mg:'Gérer mon abonnement',al:'Déjà Premium ? Gérer mon abonnement',lt:'🔒 Limite atteinte',lp:'Vous avez utilisé vos 3 recherches gratuites du jour. Passez à Premium pour des recherches illimitées !',lb:'⭐ Premium — 2,99€/mois',lc:'Revenir demain'},
+    en:{t:'Go Premium',f1:'Unlimited station searches',f2:'Search radius up to 50 km',f3:'No advertisements',f4:'Support development',mo:'/month',yr:'/year',sv:'Save 33%',ct:'Choose',ac:'Premium active!',un:'Valid until {d}',mg:'Manage subscription',al:'Already Premium? Manage',lt:'🔒 Limit reached',lp:'You\'ve used your 3 free searches today. Go Premium for unlimited!',lb:'⭐ Premium — €2.99/mo',lc:'Come back tomorrow'},
+    es:{t:'Hazte Premium',f1:'Búsquedas ilimitadas',f2:'Radio hasta 50 km',f3:'Sin publicidad',f4:'Apoya el desarrollo',mo:'/mes',yr:'/año',sv:'Ahorra 33%',ct:'Elegir',ac:'¡Premium activo!',un:'Válido hasta {d}',mg:'Gestionar suscripción',al:'¿Ya Premium? Gestionar',lt:'🔒 Límite alcanzado',lp:'Has usado tus 3 búsquedas gratuitas hoy. ¡Hazte Premium!',lb:'⭐ Premium — 2,99€/mes',lc:'Volver mañana'},
+    it:{t:'Passa a Premium',f1:'Ricerche illimitate',f2:'Raggio fino a 50 km',f3:'Nessuna pubblicità',f4:'Supporta lo sviluppo',mo:'/mese',yr:'/anno',sv:'Risparmi 33%',ct:'Scegli',ac:'Premium attivo!',un:'Valido fino al {d}',mg:'Gestisci abbonamento',al:'Già Premium? Gestisci',lt:'🔒 Limite raggiunto',lp:'Hai usato le 3 ricerche gratuite oggi.',lb:'⭐ Premium — 2,99€/mese',lc:'Torna domani'},
+    pt:{t:'Seja Premium',f1:'Pesquisas ilimitadas',f2:'Raio até 50 km',f3:'Sem anúncios',f4:'Apoie o desenvolvimento',mo:'/mês',yr:'/ano',sv:'Economize 33%',ct:'Escolher',ac:'Premium ativo!',un:'Válido até {d}',mg:'Gerenciar',al:'Já Premium? Gerenciar',lt:'🔒 Limite atingido',lp:'Você usou suas 3 buscas gratuitas hoje.',lb:'⭐ Premium — 2,99€/mês',lc:'Voltar amanhã'},
+    ru:{t:'Премиум',f1:'Безлимитный поиск',f2:'Радиус до 50 км',f3:'Без рекламы',f4:'Поддержка разработки',mo:'/мес',yr:'/год',sv:'Экономия 33%',ct:'Выбрать',ac:'Премиум активен!',un:'До {d}',mg:'Управление',al:'Уже Премиум?',lt:'🔒 Лимит',lp:'3 бесплатных поиска использованы.',lb:'⭐ Премиум — 2,99€/мес',lc:'Завтра'},
+    zh:{t:'升级Premium',f1:'无限搜索',f2:'半径50公里',f3:'无广告',f4:'支持开发',mo:'/月',yr:'/年',sv:'节省33%',ct:'选择',ac:'Premium已激活!',un:'有效期至{d}',mg:'管理订阅',al:'已是Premium?',lt:'🔒 已达上限',lp:'今日3次免费搜索已用完。',lb:'⭐ Premium — 2.99€/月',lc:'明天再来'},
+    ja:{t:'Premiumへ',f1:'無制限検索',f2:'半径50km',f3:'広告なし',f4:'開発支援',mo:'/月',yr:'/年',sv:'33%お得',ct:'選択',ac:'Premium有効!',un:'{d}まで',mg:'管理',al:'Premium会員?',lt:'🔒 制限',lp:'本日の無料検索3回を使用済み。',lb:'⭐ Premium — 2.99€/月',lc:'明日また'},
+    de:{t:'Premium werden',f1:'Unbegrenzte Tankstellensuche',f2:'Radius bis 50 km',f3:'Keine Werbung',f4:'Entwicklung unterstützen',mo:'/Monat',yr:'/Jahr',sv:'33% sparen',ct:'Wählen',ac:'Premium aktiv!',un:'Gültig bis {d}',mg:'Abo verwalten',al:'Bereits Premium? Verwalten',lt:'🔒 Limit erreicht',lp:'Sie haben heute Ihre 3 kostenlosen Suchen verbraucht.',lb:'⭐ Premium — 2,99€/Monat',lc:'Morgen wiederkommen'}
+};
+
+// Check premium status
+function isPremium() {
+    const until = localStorage.getItem('premium_until');
+    if (!until) return false;
+    return new Date(until) > new Date();
+}
+
+// Check for Stripe return
+function checkStripeReturn() {
+    const params = new URLSearchParams(window.location.search);
+    const premiumType = params.get('premium');
+    const sessionId = params.get('session');
+
+    if (premiumType && sessionId) {
+        // Set premium expiry
+        let days = premiumType === 'annual' ? 365 : 31;
+        const until = new Date(Date.now() + days * 86400000);
+        localStorage.setItem('premium_until', until.toISOString());
+        localStorage.setItem('premium_type', premiumType);
+        localStorage.setItem('stripe_session', sessionId);
+
+        // Clean URL
+        window.history.replaceState({}, '', window.location.pathname);
+
+        showToast('🎉 Premium activé !');
+    }
+}
+
+// Search limit for free users
+function checkSearchLimit() {
+    if (isPremium()) return true;
+
+    const today = new Date().toDateString();
+    let data = JSON.parse(localStorage.getItem('search_limit') || '{}');
+
+    if (data.date !== today) {
+        data = {date: today, count: 0};
+    }
+
+    if (data.count >= 3) {
+        showLimModal();
+        return false;
+    }
+
+    data.count++;
+    localStorage.setItem('search_limit', JSON.stringify(data));
+    return true;
+}
+
+// Get max radius based on premium
+function getMaxRadius() {
+    return isPremium() ? 50 : 5;
+}
+
+// Show/hide premium UI
+function updatePremiumUI() {
+    var prem = isPremium();
+    var pi = PI18N[lang] || PI18N.en;
+    if (!pi) return;
+
+    document.body.classList.toggle('is-premium', prem);
+
+    var premOffer = document.getElementById('premOffer');
+    var premActive = document.getElementById('premActive');
+    if (premOffer) premOffer.style.display = prem ? 'none' : 'block';
+    if (premActive) premActive.style.display = prem ? 'block' : 'none';
+
+    // Titre "Passez à Premium" / "Go Premium" / "Premium werden"
+    var prT = document.getElementById('prT');
+    if (prT) prT.textContent = pi.t;
+
+    // Features
+    var pf1 = document.getElementById('pf1');
+    if (pf1) pf1.textContent = pi.f1;
+    var pf2 = document.getElementById('pf2');
+    if (pf2) pf2.textContent = pi.f2;
+    var pf3 = document.getElementById('pf3');
+    if (pf3) pf3.textContent = pi.f3;
+    var pf4 = document.getElementById('pf4');
+    if (pf4) pf4.textContent = pi.f4;
+
+    // Bouton mensuel
+    var plM = document.getElementById('plM');
+    if (plM) {
+        plM.href = STRIPE_M;
+        plM.innerHTML = '<div class="plan-price">2,99€</div>' +
+            '<div class="plan-period">' + (pi.mo || '') + '</div>' +
+            '<div class="plan-cta">' + (pi.ct || '') + '</div>';
+    }
+
+    // Bouton annuel
+    var plA = document.getElementById('plA');
+    if (plA) {
+        plA.href = STRIPE_A;
+        plA.innerHTML = '<div class="plan-price">19,99€</div>' +
+            '<div class="plan-period">' + (pi.yr || '') + '</div>' +
+            '<div class="plan-save">' + (pi.sv || '') + '</div>' +
+            '<div class="plan-cta">' + (pi.ct || '') + '</div>';
+    }
+
+    // "Déjà Premium ?" / "Already Premium?"
+    var mngLink = document.getElementById('mngLink');
+    if (mngLink) { mngLink.textContent = pi.al || ''; mngLink.href = STRIPE_P; }
+
+    // Premium actif
+    var actTxt = document.getElementById('actTxt');
+    if (actTxt) actTxt.textContent = pi.ac || '';
+    var mngLink2 = document.getElementById('mngLink2');
+    if (mngLink2) { mngLink2.textContent = pi.mg || ''; mngLink2.href = STRIPE_P; }
+
+    if (prem) {
+        try {
+            var until = new Date(localStorage.getItem('premium_until'));
+            var locales = {fr:'fr-FR',en:'en-GB',es:'es-ES',it:'it-IT',pt:'pt-PT',ru:'ru-RU',zh:'zh-CN',ja:'ja-JP',de:'de-DE'};
+            var loc = locales[lang] || 'en-GB';
+            var actUntil = document.getElementById('actUntil');
+            if (actUntil) actUntil.textContent = (pi.un || '').replace('{d}', until.toLocaleDateString(loc));
+        } catch(e) {}
+    }
+
+    // Radius
+    try {
+        var maxR = getMaxRadius();
+        radiusSlider.max = maxR;
+        if (parseInt(radiusSlider.value) > maxR) {
+            radiusSlider.value = maxR;
+            radiusVal.textContent = maxR + ' km';
+        }
+    } catch(e) {}
+
+    // Modal limite
+    var limT = document.getElementById('limT');
+    if (limT) limT.textContent = pi.lt || '';
+    var limP = document.getElementById('limP');
+    if (limP) limP.textContent = pi.lp || '';
+    var limBtn = document.getElementById('limBtn');
+    if (limBtn) { limBtn.textContent = pi.lb || ''; limBtn.href = STRIPE_M; }
+    var limOv = document.getElementById('limOv');
+    if (limOv) {
+        var closeBtn = limOv.querySelector('.btn-c');
+        if (closeBtn) closeBtn.textContent = pi.lc || '';
+    }
+}
+
+window.closeLim = function() {
+    var el = document.getElementById('limOv');
+    if (el) el.classList.remove('on');
+};
+
+
+// ==================== CONTENU ÉDITORIAL TRADUIT ====================
+
+const EDITORIAL = {
+    fr: {
+        guideToggle: 'Guide : économiser sur son plein',
+        faqToggle: 'Questions fréquentes',
+        aboutToggle: 'À propos d\'Easy Refuel',
+        legalToggle: 'Mentions légales & Confidentialité',
+        guide: `
+            <h2>Comment économiser sur son plein d'essence ?</h2>
+            <p>Le prix du carburant représente une part importante du budget automobile. En France, un automobiliste dépense en moyenne <strong>1 500 à 2 000€ par an</strong> en carburant. Voici nos conseils pour réduire cette facture.</p>
+            <h3>🔍 1. Comparer les prix entre stations</h3>
+            <p>Les écarts de prix entre deux stations peuvent atteindre <strong>15 à 20 centimes par litre</strong>. Sur un plein de 50 litres, cela représente jusqu'à <strong>10€ d'économie</strong>. Les stations de grandes surfaces (Leclerc, Carrefour, Intermarché) sont généralement 5 à 8% moins chères que les stations d'autoroute.</p>
+            <h3>⛽ 2. Choisir le bon carburant</h3>
+            <p>Le <strong>E10</strong> est le carburant le plus vendu en France, compatible avec 98% des véhicules essence et <strong>4 à 6 centimes moins cher</strong> que le SP98. Le <strong>E85</strong> (~0,85€/L) nécessite un véhicule compatible ou un boîtier de conversion.</p>
+            <h3>🚗 3. Adopter l'éco-conduite</h3>
+            <p>L'éco-conduite peut réduire votre consommation de <strong>15 à 20%</strong> :</p>
+            <ul><li>Anticiper les freinages et accélérations</li><li>Rouler à vitesse constante</li><li>Couper le moteur à l'arrêt (+30s)</li><li>Vérifier la pression des pneus chaque mois</li><li>Éviter la climatisation quand possible</li><li>Retirer les charges inutiles</li></ul>
+            <h3>📊 4. Les meilleurs moments pour faire le plein</h3>
+            <p>Les <strong>lundis et mardis</strong> offrent les prix les plus bas. Les <strong>vendredis et week-ends</strong> sont plus chers. Évitez les stations d'autoroute (<strong>15 à 20% plus cher</strong>).</p>
+            <h3>💰 5. Programmes de fidélité</h3>
+            <p>Cartes de fidélité supermarché, cashback, opérations "prix coûtant" : ces économies cumulées représentent <strong>100 à 200€ par an</strong>.</p>
+            <h3>🌍 6. Prix en Europe</h3>
+            <p>Le <strong>Luxembourg</strong> et l'<strong>Espagne</strong> sont parmi les moins chers, les <strong>Pays-Bas</strong> et la <strong>Finlande</strong> parmi les plus chers. Planifiez vos pleins lors de longs trajets.</p>
+            <h3>🔋 7. Alternatives</h3>
+            <p><strong>GPL</strong> (~0,90€/L), <strong>GNV</strong> pour utilitaires, <strong>électrique</strong> (~0,30€/L équivalent), <strong>hydrogène</strong> (encore expérimental ~15€/kg).</p>`,
+        faq: [
+            {q:'Comment fonctionne Easy Refuel ?', a:'Easy Refuel utilise les données officielles des gouvernements (France : data.economie.gouv.fr, Espagne : minetur.gob.es, Allemagne : tankerkoenig.de) pour afficher les prix en temps réel. Indiquez votre niveau de réservoir et le prix au litre, l\'application calcule le montant à mettre à la pompe.'},
+            {q:'Les prix affichés sont-ils fiables ?', a:'Oui. En France, les prix proviennent du Ministère de l\'Économie (obligation légale). En Espagne, du Ministère de la Transition Écologique. En Allemagne, de Tankerkönig (Creative Commons). Prix à jour à quelques heures près.'},
+            {q:'Quels carburants sont supportés ?', a:'Gazole, SP95, SP98, E10, E85, GPL et GNV. Filtrez par type pour trouver la station la moins chère pour votre véhicule.'},
+            {q:'Fonctionne hors-ligne ?', a:'Le calculateur fonctionne hors-ligne. Vos préférences sont sauvegardées localement. Seule la recherche de stations nécessite internet.'},
+            {q:'Quels pays ?', a:'Prix temps réel : France, Espagne, Allemagne. Autres pays : localisation via OpenStreetMap. Le calculateur fonctionne partout avec 8 langues et 8 devises.'},
+            {q:'Comment installer sur téléphone ?', a:'iPhone : Safari → Partage (⬆️) → "Sur l\'écran d\'accueil". Android : Chrome → 3 points → "Installer l\'application".'},
+            {q:'Données personnelles ?', a:'Aucune collecte. Géolocalisation côté navigateur uniquement. Préférences en localStorage. Aucun compte nécessaire.'},
+            {q:'Gratuit vs Premium ?', a:'Gratuit : calculateur + 3 recherches/jour (5 km). Premium (2,99€/mois ou 19,99€/an) : recherches illimitées, 50 km, sans pub.'}
+        ],
+        about: `<p><strong>Easy Refuel</strong> est un outil gratuit et indépendant pour trouver les stations les moins chères et calculer son plein.</p><p style="margin-top:12px">Conçu pour être <strong>simple, rapide et respectueux de votre vie privée</strong>. Aucune inscription, aucune donnée collectée.</p><p style="margin-top:12px">Sources officielles :</p><ul style="margin:8px 0 0 16px;line-height:2.2"><li>🇫🇷 France — data.economie.gouv.fr</li><li>🇪🇸 Espagne — minetur.gob.es</li><li>🇩🇪 Allemagne — tankerkoenig.de</li><li>🌍 Autres — OpenStreetMap</li></ul><p style="margin-top:12px">8 langues · 8 devises · PWA installable · 100% gratuit</p>`,
+        legal: `<p><strong>Éditeur :</strong> Easy Refuel</p><p><strong>Site :</strong> https://easy-refuel.eu</p><p><strong>Hébergement :</strong> GitHub Pages (GitHub, Inc.)</p><p style="margin-top:14px"><strong>POLITIQUE DE CONFIDENTIALITÉ</strong></p><p style="margin-top:8px"><strong>Données personnelles :</strong> Aucune collecte. Géolocalisation côté client uniquement.</p><p style="margin-top:8px"><strong>Stockage :</strong> localStorage sur votre appareil. Jamais transmis.</p><p style="margin-top:8px"><strong>Cookies :</strong> Google AdSense peut utiliser des cookies. Gérez vos préférences sur <a href="https://adssettings.google.com" style="color:#007aff" target="_blank">adssettings.google.com</a>.</p><p style="margin-top:8px"><strong>Paiements :</strong> Via Stripe (PCI-DSS niveau 1). Aucun accès à vos données bancaires.</p><p style="margin-top:8px"><strong>APIs :</strong> data.economie.gouv.fr, minetur.gob.es, tankerkoenig.de, OpenStreetMap, Nominatim, Leaflet.js</p><p style="margin-top:8px"><strong>RGPD :</strong> Droit d'accès, rectification, suppression : contact@easy-refuel.eu</p><p style="margin-top:8px;color:#636366;font-size:11px">Mise à jour : Mars 2025</p>`
+    },
+    en: {
+        guideToggle: 'Guide: save on fuel',
+        faqToggle: 'Frequently asked questions',
+        aboutToggle: 'About Easy Refuel',
+        legalToggle: 'Legal notice & Privacy',
+        guide: `
+            <h2>How to save money on fuel?</h2>
+            <p>Fuel costs represent a significant part of the car budget. On average, a driver spends <strong>€1,500 to €2,000 per year</strong> on fuel. Here are our tips to reduce this expense.</p>
+            <h3>🔍 1. Compare prices between stations</h3>
+            <p>Price differences can reach <strong>15 to 20 cents per liter</strong>. On a 50-liter fill-up, that's up to <strong>€10 saved</strong>. Supermarket stations are generally 5-8% cheaper than motorway stations.</p>
+            <h3>⛽ 2. Choose the right fuel</h3>
+            <p><strong>E10</strong> is the most popular fuel, compatible with 98% of petrol vehicles and <strong>4-6 cents cheaper</strong> per liter than SP98. <strong>E85</strong> (~€0.85/L) requires a compatible vehicle or conversion kit.</p>
+            <h3>🚗 3. Eco-driving</h3>
+            <p>Eco-driving can reduce consumption by <strong>15-20%</strong>:</p>
+            <ul><li>Anticipate braking and acceleration</li><li>Maintain constant speed</li><li>Turn off engine when stopped (30s+)</li><li>Check tyre pressure monthly</li><li>Avoid AC when possible</li><li>Remove unnecessary loads</li></ul>
+            <h3>📊 4. Best times to fill up</h3>
+            <p><strong>Mondays and Tuesdays</strong> offer the lowest prices. <strong>Fridays and weekends</strong> are more expensive. Avoid motorway stations (<strong>15-20% pricier</strong>).</p>
+            <h3>💰 5. Loyalty programmes</h3>
+            <p>Supermarket loyalty cards, cashback apps, "at cost" promotions: combined savings of <strong>€100-200 per year</strong>.</p>
+            <h3>🌍 6. Prices across Europe</h3>
+            <p><strong>Luxembourg</strong> and <strong>Spain</strong> are among the cheapest; <strong>Netherlands</strong> and <strong>Finland</strong> among the most expensive. Plan your fill-ups on long trips.</p>
+            <h3>🔋 7. Alternatives</h3>
+            <p><strong>LPG</strong> (~€0.90/L), <strong>CNG</strong> for vans, <strong>electric</strong> (~€0.30/L equivalent), <strong>hydrogen</strong> (still experimental ~€15/kg).</p>`,
+        faq: [
+            {q:'How does Easy Refuel work?', a:'Easy Refuel uses official government data (France: data.economie.gouv.fr, Spain: minetur.gob.es, Germany: tankerkoenig.de) to show real-time prices. Enter your tank level and price per liter to calculate the fill-up cost.'},
+            {q:'Are the prices reliable?', a:'Yes. French prices come from the Ministry of Economy (legal obligation). Spanish from the Ministry of Ecological Transition. German from Tankerkönig (Creative Commons). Updated every few hours.'},
+            {q:'Which fuel types are supported?', a:'Diesel, SP95, SP98, E10, E85, LPG and CNG. Filter by type to find the cheapest station for your vehicle.'},
+            {q:'Does it work offline?', a:'The calculator works fully offline. Preferences are saved locally. Only station search requires internet.'},
+            {q:'Which countries?', a:'Real-time prices: France, Spain, Germany. Other countries: location via OpenStreetMap. Calculator works worldwide with 8 languages and 8 currencies.'},
+            {q:'How to install on phone?', a:'iPhone: Safari → Share (⬆️) → "Add to Home Screen". Android: Chrome → 3 dots → "Install app".'},
+            {q:'Personal data?', a:'No data collected. Geolocation browser-side only. Preferences in localStorage. No account needed.'},
+            {q:'Free vs Premium?', a:'Free: calculator + 3 searches/day (5 km). Premium (€2.99/mo or €19.99/yr): unlimited searches, 50 km, no ads.'}
+        ],
+        about: `<p><strong>Easy Refuel</strong> is a free, independent tool to find the cheapest fuel stations and calculate your fill-up cost.</p><p style="margin-top:12px">Designed to be <strong>simple, fast and privacy-friendly</strong>. No registration, no data collected.</p><p style="margin-top:12px">Official sources:</p><ul style="margin:8px 0 0 16px;line-height:2.2"><li>🇫🇷 France — data.economie.gouv.fr</li><li>🇪🇸 Spain — minetur.gob.es</li><li>🇩🇪 Germany — tankerkoenig.de</li><li>🌍 Others — OpenStreetMap</li></ul><p style="margin-top:12px">8 languages · 8 currencies · installable PWA · 100% free</p>`,
+        legal: `<p><strong>Publisher:</strong> Easy Refuel</p><p><strong>Website:</strong> https://easy-refuel.eu</p><p><strong>Hosting:</strong> GitHub Pages (GitHub, Inc.)</p><p style="margin-top:14px"><strong>PRIVACY POLICY</strong></p><p style="margin-top:8px"><strong>Personal data:</strong> No collection. Geolocation client-side only.</p><p style="margin-top:8px"><strong>Storage:</strong> localStorage on your device. Never transmitted.</p><p style="margin-top:8px"><strong>Cookies:</strong> Google AdSense may use cookies. Manage at <a href="https://adssettings.google.com" style="color:#007aff" target="_blank">adssettings.google.com</a>.</p><p style="margin-top:8px"><strong>Payments:</strong> Via Stripe (PCI-DSS Level 1). No access to your bank details.</p><p style="margin-top:8px"><strong>APIs:</strong> data.economie.gouv.fr, minetur.gob.es, tankerkoenig.de, OpenStreetMap, Nominatim, Leaflet.js</p><p style="margin-top:8px"><strong>GDPR:</strong> Access, rectification, deletion: contact@easy-refuel.eu</p><p style="margin-top:8px;color:#636366;font-size:11px">Updated: March 2025</p>`
+    },
+    es: {
+        guideToggle: 'Guía: ahorrar en combustible',
+        faqToggle: 'Preguntas frecuentes',
+        aboutToggle: 'Acerca de Easy Refuel',
+        legalToggle: 'Aviso legal y Privacidad',
+        guide: `
+            <h2>¿Cómo ahorrar en combustible?</h2>
+            <p>El coste del carburante supone una parte importante del presupuesto del automóvil. De media, un conductor gasta entre <strong>1.500 y 2.000€ al año</strong>. Estos son nuestros consejos.</p>
+            <h3>🔍 1. Comparar precios entre gasolineras</h3>
+            <p>Las diferencias pueden alcanzar <strong>15-20 céntimos por litro</strong>. En un depósito de 50 litros, eso supone hasta <strong>10€ de ahorro</strong>. Las gasolineras de supermercados suelen ser 5-8% más baratas.</p>
+            <h3>⛽ 2. Elegir el carburante adecuado</h3>
+            <p>La <strong>Gasolina 95</strong> es la más vendida y <strong>4-6 céntimos más barata</strong> que la 98. El <strong>E85</strong> (~0,85€/L) necesita vehículo compatible.</p>
+            <h3>🚗 3. Conducción eficiente</h3>
+            <p>Reduce el consumo <strong>15-20%</strong>:</p>
+            <ul><li>Anticipar frenadas y aceleraciones</li><li>Velocidad constante</li><li>Apagar motor en paradas (+30s)</li><li>Revisar presión de neumáticos</li><li>Evitar aire acondicionado</li><li>Eliminar cargas innecesarias</li></ul>
+            <h3>📊 4. Mejores momentos para repostar</h3>
+            <p><strong>Lunes y martes</strong> precios más bajos. <strong>Viernes y fines de semana</strong> más caros. Evitar estaciones de autopista (<strong>15-20% más caro</strong>).</p>
+            <h3>💰 5. Programas de fidelidad</h3>
+            <p>Tarjetas de supermercado, cashback, promociones: ahorro acumulado de <strong>100-200€/año</strong>.</p>
+            <h3>🌍 6. Precios en Europa</h3>
+            <p><strong>Luxemburgo</strong> y <strong>España</strong> entre los más baratos. <strong>Países Bajos</strong> y <strong>Finlandia</strong> entre los más caros.</p>
+            <h3>🔋 7. Alternativas</h3>
+            <p><strong>GLP</strong> (~0,90€/L), <strong>GNC</strong>, <strong>eléctrico</strong> (~0,30€/L equivalente), <strong>hidrógeno</strong> (experimental ~15€/kg).</p>`,
+        faq: [
+            {q:'¿Cómo funciona Easy Refuel?', a:'Usa datos oficiales de gobiernos (Francia: data.economie.gouv.fr, España: minetur.gob.es, Alemania: tankerkoenig.de) para mostrar precios en tiempo real. Indica tu nivel de depósito y el precio por litro.'},
+            {q:'¿Son fiables los precios?', a:'Sí. Provienen de fuentes oficiales gubernamentales con actualización obligatoria. Datos actualizados cada pocas horas.'},
+            {q:'¿Qué carburantes soporta?', a:'Gasóleo, Gasolina 95, Gasolina 98, E10, E85, GLP y GNC.'},
+            {q:'¿Funciona sin conexión?', a:'La calculadora funciona offline. Solo la búsqueda de gasolineras necesita internet.'},
+            {q:'¿En qué países funciona?', a:'Precios en tiempo real: Francia, España, Alemania. Otros países: localización vía OpenStreetMap. Calculadora funciona en todo el mundo.'},
+            {q:'¿Cómo instalar en el móvil?', a:'iPhone: Safari → Compartir → "Añadir a pantalla de inicio". Android: Chrome → 3 puntos → "Instalar aplicación".'},
+            {q:'¿Datos personales?', a:'No se recopilan datos. Geolocalización solo en el navegador. Sin cuenta necesaria.'},
+            {q:'¿Gratis vs Premium?', a:'Gratis: calculadora + 3 búsquedas/día (5 km). Premium (2,99€/mes o 19,99€/año): búsquedas ilimitadas, 50 km, sin anuncios.'}
+        ],
+        about: `<p><strong>Easy Refuel</strong> es una herramienta gratuita e independiente para encontrar las gasolineras más baratas y calcular el coste del depósito.</p><p style="margin-top:12px"><strong>Simple, rápido y respetuoso con tu privacidad.</strong> Sin registro, sin datos recopilados.</p><p style="margin-top:12px">Fuentes oficiales:</p><ul style="margin:8px 0 0 16px;line-height:2.2"><li>🇫🇷 Francia — data.economie.gouv.fr</li><li>🇪🇸 España — minetur.gob.es</li><li>🇩🇪 Alemania — tankerkoenig.de</li><li>🌍 Otros — OpenStreetMap</li></ul><p style="margin-top:12px">8 idiomas · 8 monedas · PWA instalable · 100% gratuito</p>`,
+        legal: `<p><strong>Editor:</strong> Easy Refuel</p><p><strong>Web:</strong> https://easy-refuel.eu</p><p><strong>Alojamiento:</strong> GitHub Pages (GitHub, Inc.)</p><p style="margin-top:14px"><strong>POLÍTICA DE PRIVACIDAD</strong></p><p style="margin-top:8px"><strong>Datos personales:</strong> Sin recopilación. Geolocalización solo en el navegador.</p><p style="margin-top:8px"><strong>Almacenamiento:</strong> localStorage en su dispositivo.</p><p style="margin-top:8px"><strong>Cookies:</strong> Google AdSense puede usar cookies. Gestione en <a href="https://adssettings.google.com" style="color:#007aff" target="_blank">adssettings.google.com</a>.</p><p style="margin-top:8px"><strong>Pagos:</strong> Vía Stripe (PCI-DSS). Sin acceso a datos bancarios.</p><p style="margin-top:8px"><strong>RGPD:</strong> Acceso, rectificación, supresión: contact@easy-refuel.eu</p><p style="margin-top:8px;color:#636366;font-size:11px">Actualizado: Marzo 2025</p>`
+    },
+    de: {
+        guideToggle: 'Ratgeber: Sprit sparen',
+        faqToggle: 'Häufige Fragen',
+        aboutToggle: 'Über Easy Refuel',
+        legalToggle: 'Impressum & Datenschutz',
+        guide: `
+            <h2>Wie kann man beim Tanken sparen?</h2>
+            <p>Kraftstoffkosten machen einen erheblichen Teil des Autobudgets aus. Durchschnittlich gibt ein Fahrer <strong>1.500–2.000€ pro Jahr</strong> für Kraftstoff aus. Hier sind unsere Tipps.</p>
+            <h3>🔍 1. Preise vergleichen</h3>
+            <p>Preisunterschiede von <strong>15–20 Cent pro Liter</strong> sind üblich. Bei 50 Litern sind das bis zu <strong>10€ Ersparnis</strong>. Supermarkt-Tankstellen sind meist 5–8% günstiger als Autobahn-Tankstellen.</p>
+            <h3>⛽ 2. Den richtigen Kraftstoff wählen</h3>
+            <p><strong>E10</strong> ist der meistverkaufte Kraftstoff, kompatibel mit 98% der Benziner und <strong>4–6 Cent günstiger</strong> als Super Plus. <strong>E85</strong> (~0,85€/L) erfordert ein kompatibles Fahrzeug.</p>
+            <h3>🚗 3. Spritsparend fahren</h3>
+            <p>Eco-Driving reduziert den Verbrauch um <strong>15–20%</strong>:</p>
+            <ul><li>Vorausschauend bremsen und beschleunigen</li><li>Konstante Geschwindigkeit halten</li><li>Motor bei Stopps ausschalten (+30s)</li><li>Reifendruck monatlich prüfen</li><li>Klimaanlage sparsam nutzen</li><li>Unnötiges Gewicht entfernen</li></ul>
+            <h3>📊 4. Beste Tankzeiten</h3>
+            <p><strong>Montag und Dienstag</strong> bieten die niedrigsten Preise. <strong>Freitag und Wochenende</strong> sind teurer. Autobahn-Tankstellen meiden (<strong>15–20% teurer</strong>).</p>
+            <h3>💰 5. Treueprogramme</h3>
+            <p>Kundenkarten, Cashback-Apps, Sonderaktionen: zusammen <strong>100–200€ Ersparnis pro Jahr</strong>.</p>
+            <h3>🌍 6. Preise in Europa</h3>
+            <p><strong>Luxemburg</strong> und <strong>Spanien</strong> gehören zu den günstigsten. <strong>Niederlande</strong> und <strong>Finnland</strong> zu den teuersten.</p>
+            <h3>🔋 7. Alternativen</h3>
+            <p><strong>LPG</strong> (~0,90€/L), <strong>CNG</strong> für Transporter, <strong>Elektro</strong> (~0,30€/L Äquivalent), <strong>Wasserstoff</strong> (experimentell ~15€/kg).</p>`,
+        faq: [
+            {q:'Wie funktioniert Easy Refuel?', a:'Easy Refuel nutzt offizielle Regierungsdaten (Frankreich: data.economie.gouv.fr, Spanien: minetur.gob.es, Deutschland: tankerkoenig.de) für Echtzeit-Preise. Geben Sie Tankstand und Literpreis ein.'},
+            {q:'Sind die Preise zuverlässig?', a:'Ja. Die Daten stammen aus offiziellen Regierungsquellen mit gesetzlicher Meldepflicht. Aktualisierung alle paar Stunden.'},
+            {q:'Welche Kraftstoffe werden unterstützt?', a:'Diesel, Super E5, Super E10, Super Plus, E85, LPG und CNG.'},
+            {q:'Funktioniert es offline?', a:'Der Rechner funktioniert offline. Nur die Tankstellensuche braucht Internet.'},
+            {q:'In welchen Ländern?', a:'Echtzeitpreise: Frankreich, Spanien, Deutschland. Andere Länder: Standort via OpenStreetMap. Rechner weltweit mit 8 Sprachen und 8 Währungen.'},
+            {q:'Wie auf dem Handy installieren?', a:'iPhone: Safari → Teilen → "Zum Home-Bildschirm". Android: Chrome → 3 Punkte → "App installieren".'},
+            {q:'Persönliche Daten?', a:'Keine Datenerfassung. Geolokalisierung nur im Browser. Einstellungen in localStorage. Kein Konto nötig.'},
+            {q:'Kostenlos vs Premium?', a:'Kostenlos: Rechner + 3 Suchen/Tag (5 km). Premium (2,99€/Monat oder 19,99€/Jahr): unbegrenzte Suchen, 50 km, keine Werbung.'}
+        ],
+        about: `<p><strong>Easy Refuel</strong> ist ein kostenloses, unabhängiges Tool zum Finden der günstigsten Tankstellen und Berechnen der Tankkosten.</p><p style="margin-top:12px"><strong>Einfach, schnell und datenschutzfreundlich.</strong> Keine Registrierung, keine Datenerfassung.</p><p style="margin-top:12px">Offizielle Quellen:</p><ul style="margin:8px 0 0 16px;line-height:2.2"><li>🇫🇷 Frankreich — data.economie.gouv.fr</li><li>🇪🇸 Spanien — minetur.gob.es</li><li>🇩🇪 Deutschland — tankerkoenig.de</li><li>🌍 Andere — OpenStreetMap</li></ul><p style="margin-top:12px">8 Sprachen · 8 Währungen · installierbare PWA · 100% kostenlos</p>`,
+        legal: `<p><strong>Herausgeber:</strong> Easy Refuel</p><p><strong>Website:</strong> https://easy-refuel.eu</p><p><strong>Hosting:</strong> GitHub Pages (GitHub, Inc.)</p><p style="margin-top:14px"><strong>DATENSCHUTZERKLÄRUNG</strong></p><p style="margin-top:8px"><strong>Personenbezogene Daten:</strong> Keine Erfassung. Geolokalisierung nur clientseitig.</p><p style="margin-top:8px"><strong>Speicherung:</strong> localStorage auf Ihrem Gerät. Wird nie übertragen.</p><p style="margin-top:8px"><strong>Cookies:</strong> Google AdSense kann Cookies verwenden. Verwalten Sie unter <a href="https://adssettings.google.com" style="color:#007aff" target="_blank">adssettings.google.com</a>.</p><p style="margin-top:8px"><strong>Zahlungen:</strong> Über Stripe (PCI-DSS Level 1). Kein Zugriff auf Bankdaten.</p><p style="margin-top:8px"><strong>DSGVO:</strong> Auskunft, Berichtigung, Löschung: contact@easy-refuel.eu</p><p style="margin-top:8px;color:#636366;font-size:11px">Aktualisiert: März 2025</p>`
+    }
+};
+
+// Fallback: other languages use English
+['it','pt','ru','zh','ja'].forEach(l => { EDITORIAL[l] = EDITORIAL.en; });
+
+// Toggle content card
+window.toggleContent = function(id) {
+    document.getElementById(id).classList.toggle('open');
+};
+
+// Render editorial content
+function updateEditorialContent() {
+    const ed = EDITORIAL[lang] || EDITORIAL.en;
+
+    // Toggle texts
+    $('guideToggleText').textContent = ed.guideToggle;
+    $('faqToggleText').textContent = ed.faqToggle;
+    $('aboutToggleText').textContent = ed.aboutToggle;
+    $('legalToggleText').textContent = ed.legalToggle;
+
+    // Guide
+    $('guideContent').innerHTML = ed.guide;
+
+    // FAQ
+    $('faqContent').innerHTML = ed.faq.map(f =>
+        `<details class="faq-item">
+            <summary class="faq-q">${f.q}</summary>
+            <p class="faq-a">${f.a}</p>
+        </details>`
+    ).join('');
+
+    // About
+    $('aboutContent').innerHTML = ed.about;
+
+    // Legal
+    $('legalContent').innerHTML = ed.legal;
+}
+// ==================== AUTO-HIDE EMPTY ADS ====================
+function checkAdSlots() {
+    document.querySelectorAll('.ad-slot').forEach(slot => {
+        const ins = slot.querySelector('ins.adsbygoogle');
+        if (!ins) return;
+
+        // Check if ad loaded (has content/height)
+        const observer = new MutationObserver(() => {
+            if (ins.dataset.adStatus === 'filled' || ins.offsetHeight > 0) {
+                slot.classList.add('has-ad');
+            }
+        });
+
+        observer.observe(ins, {
+            attributes: true,
+            attributeFilter: ['data-ad-status'],
+            childList: true,
+            subtree: true
+        });
+
+        // Also check after a delay
+        setTimeout(() => {
+            if (ins.offsetHeight > 0 && ins.innerHTML.trim() !== '') {
+                slot.classList.add('has-ad');
+            }
+        }, 3000);
+    });
+}
+window.addEventListener('load', init);
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="fr">
+<head>
+    </script>
+	 <meta name="google-adsense-account" content="ca-pub-3529050815950024">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Plein ⛽">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0a0a0f">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMWMxYzFlIi8+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTAwIj7im708L3RleHQ+PC9zdmc+">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <title>Plein ⛽</title>
 	    <!-- Google AdSense -->
     <script async
