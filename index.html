@@ -295,19 +295,64 @@ body.ev-mode .ev-only{display:block}
 .station-power{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;margin-top:4px}
 .station-power.fast{background:rgba(48,209,88,.15);color:#30d158}
 .station-power.slow{background:rgba(255,149,0,.15);color:#ff9500}
-/* ===== DESKTOP FIX ===== */
+/* ===== DESKTOP FIX — Force mobile layout ===== */
 @media (min-width: 500px) {
-    body {
-        display: flex;
-        justify-content: center;
+    html {
         background: #000;
+    }
+    body {
+        background: #0a0a0f;
+        max-width: 420px;
+        margin: 0 auto;
+        min-height: 100vh;
+        box-shadow: 0 0 60px rgba(0,0,0,.5);
+        position: relative;
     }
     .app {
         max-width: 420px;
         width: 100%;
+        padding: 12px 18px 50px;
     }
     .mode-toggle {
-        max-width: 420px;
+        max-width: 100%;
+    }
+    .card {
+        max-width: 100%;
+    }
+    .lang-bar {
+        max-width: 100%;
+    }
+    .currency-bar {
+        max-width: 100%;
+    }
+    .locate-btn {
+        max-width: 100%;
+    }
+    .premium-plans {
+        max-width: 100%;
+    }
+    .stats {
+        grid-template-columns: 1fr 1fr;
+    }
+    .station-item {
+        max-width: 100%;
+    }
+    /* Empêcher le flex horizontal */
+    .tank-row,
+    .price-row,
+    .radius-row {
+        max-width: 100%;
+    }
+}
+
+/* ===== Très grand écran — fond noir autour ===== */
+@media (min-width: 800px) {
+    html {
+        background: #000;
+    }
+    body {
+        border-left: 1px solid #1c1c1e;
+        border-right: 1px solid #1c1c1e;
     }
 }
     </style>
