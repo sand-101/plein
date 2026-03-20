@@ -1538,24 +1538,47 @@ function tankCat(t) {
 }
 
 function updateTankUI() {
-    $('tankVal').innerHTML = tank+'<span>L</span>';
-    $('tankSub').textContent = tankCat(tank);
-    $('hSub').textContent = TL.sub.replace('{n}', tank);
-    $('sCap').textContent = tank+' L';
-    $('tankBar').style.width = Math.max(0, Math.min(100, ((tank-10)/90)*100))+'%';
-    document.querySelectorAll('.tp').forEach(p =>
-        p.classList.toggle('on', parseInt(p.dataset.t) === tank));
+    var el = document.getElementById('tankVal');
+    if (el) el.innerHTML = tank + '<span>L</span>';
+
+    var sub = document.getElementById('tankSub');
+    if (sub) sub.textContent = tankCat(tank);
+
+    var hSub = document.getElementById('hSub');
+    if (hSub && appMode !== 'ev') hSub.textContent = TL.sub.replace('{n}', tank);
+
+    var cap = document.getElementById('sCap');
+    if (cap) cap.textContent = tank + ' L';
+
+    var bar = document.getElementById('tankBar');
+    if (bar) {
+        var pct = Math.max(0, Math.min(100, ((tank - 10) / 90) * 100));
+        bar.style.width = pct + '%';
+    }
+
+    document.querySelectorAll('.tp').forEach(function(p) {
+        p.classList.toggle('on', parseInt(p.dataset.t) === tank);
+    });
 }
 
 function buildTankPresets() {
-    const w = $('tankPresets'); w.innerHTML = '';
-    Object.entries(TL.vehicles).forEach(([v, l]) => {
-        const b = document.createElement('button');
-        b.className = 'tp' + (parseInt(v)===tank?' on':'');
-        b.dataset.t = v; b.textContent = l;
-        b.addEventListener('click', () => {
-            tank = parseInt(v); updateTankUI(); buildQuickBtns();
-            save(); calc();
+    var w = document.getElementById('tankPresets');
+    if (!w) return;
+    w.innerHTML = '';
+    Object.entries(TL.vehicles).forEach(function(entry) {
+        var v = entry[0];
+        var l = entry[1];
+        var b = document.createElement('button');
+        b.className = 'tp' + (parseInt(v) === tank ? ' on' : '');
+        b.dataset.t = v;
+        b.textContent = l;
+        b.addEventListener('click', function() {
+            tank = parseInt(v);
+            updateTankUI();
+            buildQuickBtns();
+            save();
+            calc();
+            try { updateFuelSliderColor(); } catch(e) {}
             showToast(TL.toastTank.replace('{n}', tank));
         });
         w.appendChild(b);
