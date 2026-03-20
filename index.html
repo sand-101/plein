@@ -627,85 +627,7 @@ body.ev-mode ::selection {
         🔋 <span id="modeEVText">🔋 Électrique</span>
     </button>
 </div>
-<!-- ===== EV : BATTERIE (remplace le réservoir) ===== -->
-<div class="card ev-battery-card ev-only">
-    <div class="card-label" id="lBattery">🔋 Capacité de la batterie</div>
-    <div class="tank-row">
-        <div class="tank-visual">
-            <div class="tank-icon-box" style="background:rgba(48,209,88,.1)">🔋</div>
-            <div class="tank-info">
-                <div class="tank-val" id="evBattVal">60<span>kWh</span></div>
-                <div class="tank-sub" id="evBattSub">Tesla Model 3</div>
-            </div>
-        </div>
-        <div class="stepper">
-            <button id="evBtnMinus">−</button>
-            <div class="sep"></div>
-            <button id="evBtnPlus">+</button>
-        </div>
-    </div>
-    <div class="tank-bar-wrap"><div class="tank-bar" id="evBattBar" style="background:linear-gradient(90deg,#30d158,#00c853)"></div></div>
-    <div class="tank-bar-labels"><span>10 kWh</span><span>50 kWh</span><span>100 kWh</span></div>
-    <div class="ev-presets" id="evPresets"></div>
-</div>
-
-<!-- ===== EV : NIVEAU BATTERIE (remplace la jauge) ===== -->
-<div class="card ev-gauge-card ev-only">
-    <div class="card-label" id="lEvLevel">📊 Niveau actuel de la batterie</div>
-    <div class="gauge-wrap">
-        <div class="gauge-box">
-            <svg class="gauge-svg" viewBox="0 0 240 148">
-                <path class="g-bg" d="M 22 130 A 100 100 0 0 1 218 130" id="evGBg"/>
-                <path class="g-fill" d="M 22 130 A 100 100 0 0 1 218 130" id="evGFill" stroke="#30d158"/>
-                <line x1="30" y1="123" x2="40" y2="115" class="g-tick-major"/><line x1="42" y1="58" x2="54" y2="64" class="g-tick"/><line x1="120" y1="25" x2="120" y2="39" class="g-tick-major"/><line x1="195" y1="58" x2="183" y2="64" class="g-tick"/><line x1="210" y1="123" x2="200" y2="115" class="g-tick-major"/>
-                <text x="14" y="142" class="g-lbl" text-anchor="middle">0</text><text x="120" y="19" class="g-lbl" text-anchor="middle">50%</text><text x="228" y="142" class="g-lbl" text-anchor="middle">100</text>
-                <text x="203" y="108" style="font-size:12px;fill:#636366">🔋</text>
-                <g class="g-needle" id="evNeedle"><polygon class="g-needle-bar" points="120,42 117,118 120,123 123,118" style="fill:#30d158;filter:drop-shadow(0 0 3px rgba(48,209,88,.5))"/><circle class="g-needle-cap1" cx="120" cy="120" r="8"/><circle class="g-needle-cap2" cx="120" cy="120" r="4.5"/></g>
-            </svg>
-        </div>
-        <div class="g-val"><span class="g-pct" id="evPct">20</span><span class="g-pct-sign">%</span></div>
-        <div class="g-liters" id="evKwhLabel">12,0 kWh dans la batterie</div>
-        <div class="q-btns" id="evQuickBtns"></div>
-    </div>
-    <div class="slider-sec">
-        <input type="range" id="evLevel" min="0" max="100" value="20" step="1">
-        <div class="slider-marks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
-    </div>
-</div>
-
-<!-- ===== EV : VITESSE DE CHARGE ===== -->
-<div class="card ev-only" style="padding:18px">
-    <div class="card-label" id="lChargeSpeed">⚡ Vitesse de charge</div>
-    <div class="charge-speeds" id="chargeSpeeds"></div>
-</div>
-
-<!-- ===== EV : PRIX kWh ===== -->
-<div class="card price-card ev-only">
-    <div class="card-label" id="lEvPrice">💶 Prix du kWh</div>
-    <div class="price-row">
-        <span class="sym" id="evPSym">€</span>
-        <input type="number" id="evPriceInput" value="0.35" step="0.01" min="0" placeholder="0.35" inputmode="decimal" enterkeyhint="done">
-        <span class="unit" id="evPUnit">/ kWh</span>
-    </div>
-    <div class="pills" id="evNetworkPills"></div>
-</div>
-
-<!-- ===== EV : RÉSULTAT ===== -->
-<div class="card ev-res-card ev-only">
-    <div class="res-top">
-        <div class="res-lbl" id="lEvResult">Coût de la recharge</div>
-        <div class="ev-res-amount" id="evCost">0,00 €</div>
-        <div class="res-detail" id="evDetail"></div>
-    </div>
-    <div class="stats">
-        <div class="stat"><div class="stat-v" id="evKwhAdd">0 kWh</div><div class="stat-l" id="lEvKwhAdd">kWh à charger</div></div>
-        <div class="stat"><div class="stat-v" id="evTimeStat">0 min</div><div class="stat-l" id="lEvTime">Temps estimé</div></div>
-        <div class="stat"><div class="stat-v" id="evRangeStat">0 km</div><div class="stat-l" id="lEvRange">Autonomie gagnée</div></div>
-        <div class="stat"><div class="stat-v" id="evCapStat">60 kWh</div><div class="stat-l" id="lEvCap">Capacité batterie</div></div>
-    </div>
-</div>
-    </div>
-    <!-- STATIONS -->
+<!-- STATIONS -->
     <div class="card stations-card">
         <div class="card-label" id="lStations">📍 Stations à proximité</div>
         <button class="locate-btn" id="locateBtn">
@@ -754,19 +676,7 @@ body.ev-mode ::selection {
         </div>
     </div>
 </div>
-
-<!-- LIMIT MODAL -->
-<div class="limit-overlay" id="limOv">
-    <div class="limit-modal">
-        <h3 id="limT"></h3>
-        <p id="limP"></p>
-        <div class="mb">
-            <a class="btn-p" id="limBtn" href="#" target="_blank"></a>
-            <button class="btn-c" onclick="closeLim()"></button>
-        </div>
-    </div>
-</div>
-    <!-- TANK -->
+<!-- TANK -->
     <div class="card tank-card fuel-only">
         <div class="card-label" id="lTank"></div>
         <div class="tank-row">
@@ -783,7 +693,30 @@ body.ev-mode ::selection {
         <div class="tank-bar-labels"><span>10 L</span><span>50 L</span><span>100 L</span></div>
         <div class="tank-presets" id="tankPresets"></div>
     </div>
-    <!-- GAUGE -->
+<!-- ===== EV : BATTERIE (remplace le réservoir) ===== -->
+<div class="card ev-battery-card ev-only">
+    <div class="card-label" id="lBattery">🔋 Capacité de la batterie</div>
+    <div class="tank-row">
+        <div class="tank-visual">
+            <div class="tank-icon-box" style="background:rgba(48,209,88,.1)">🔋</div>
+            <div class="tank-info">
+                <div class="tank-val" id="evBattVal">60<span>kWh</span></div>
+                <div class="tank-sub" id="evBattSub">Tesla Model 3</div>
+            </div>
+        </div>
+        <div class="stepper">
+            <button id="evBtnMinus">−</button>
+            <div class="sep"></div>
+            <button id="evBtnPlus">+</button>
+        </div>
+    </div>
+    <div class="tank-bar-wrap"><div class="tank-bar" id="evBattBar" style="background:linear-gradient(90deg,#30d158,#00c853)"></div></div>
+    <div class="tank-bar-labels"><span>10 kWh</span><span>50 kWh</span><span>100 kWh</span></div>
+    <div class="ev-presets" id="evPresets"></div>
+</div>
+
+
+<!-- GAUGE -->
     <div class="card gauge-card fuel-only">
         <div class="card-label" id="lLevel"></div>
         <div class="gauge-wrap">
@@ -807,8 +740,36 @@ body.ev-mode ::selection {
             <div class="slider-marks" id="sliderMarks"></div>
         </div>
     </div>
-    <div class="alert fuel-only" id="alertBox"><div class="alert-dot"></div><span class="alert-txt" id="alertTxt"></span></div>
-    <!-- PRICE -->
+	<!-- ===== EV : NIVEAU BATTERIE (remplace la jauge) ===== -->
+<div class="card ev-gauge-card ev-only">
+    <div class="card-label" id="lEvLevel">📊 Niveau actuel de la batterie</div>
+    <div class="gauge-wrap">
+        <div class="gauge-box">
+            <svg class="gauge-svg" viewBox="0 0 240 148">
+                <path class="g-bg" d="M 22 130 A 100 100 0 0 1 218 130" id="evGBg"/>
+                <path class="g-fill" d="M 22 130 A 100 100 0 0 1 218 130" id="evGFill" stroke="#30d158"/>
+                <line x1="30" y1="123" x2="40" y2="115" class="g-tick-major"/><line x1="42" y1="58" x2="54" y2="64" class="g-tick"/><line x1="120" y1="25" x2="120" y2="39" class="g-tick-major"/><line x1="195" y1="58" x2="183" y2="64" class="g-tick"/><line x1="210" y1="123" x2="200" y2="115" class="g-tick-major"/>
+                <text x="14" y="142" class="g-lbl" text-anchor="middle">0</text><text x="120" y="19" class="g-lbl" text-anchor="middle">50%</text><text x="228" y="142" class="g-lbl" text-anchor="middle">100</text>
+                <text x="203" y="108" style="font-size:12px;fill:#636366">🔋</text>
+                <g class="g-needle" id="evNeedle"><polygon class="g-needle-bar" points="120,42 117,118 120,123 123,118" style="fill:#30d158;filter:drop-shadow(0 0 3px rgba(48,209,88,.5))"/><circle class="g-needle-cap1" cx="120" cy="120" r="8"/><circle class="g-needle-cap2" cx="120" cy="120" r="4.5"/></g>
+            </svg>
+        </div>
+        <div class="g-val"><span class="g-pct" id="evPct">20</span><span class="g-pct-sign">%</span></div>
+        <div class="g-liters" id="evKwhLabel">12,0 kWh dans la batterie</div>
+        <div class="q-btns" id="evQuickBtns"></div>
+    </div>
+    <div class="slider-sec">
+        <input type="range" id="evLevel" min="0" max="100" value="20" step="1">
+        <div class="slider-marks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+    </div>
+</div>
+<!-- ===== EV : VITESSE DE CHARGE ===== -->
+<div class="card ev-only" style="padding:18px">
+    <div class="card-label" id="lChargeSpeed">⚡ Vitesse de charge</div>
+    <div class="charge-speeds" id="chargeSpeeds"></div>
+</div>
+<div class="alert fuel-only" id="alertBox"><div class="alert-dot"></div><span class="alert-txt" id="alertTxt"></span></div>
+<!-- PRICE -->
     <div class="card price-card fuel-only">
         <div class="card-label" id="lPrice"></div>
         <div class="price-row">
@@ -818,7 +779,17 @@ body.ev-mode ::selection {
         </div>
         <div class="pills" id="pillsWrap"></div>
     </div>
-    <!-- RESULT -->
+<!-- ===== EV : PRIX kWh ===== -->
+<div class="card price-card ev-only">
+    <div class="card-label" id="lEvPrice">💶 Prix du kWh</div>
+    <div class="price-row">
+        <span class="sym" id="evPSym">€</span>
+        <input type="number" id="evPriceInput" value="0.35" step="0.01" min="0" placeholder="0.35" inputmode="decimal" enterkeyhint="done">
+        <span class="unit" id="evPUnit">/ kWh</span>
+    </div>
+    <div class="pills" id="evNetworkPills"></div>
+</div>
+<!-- RESULT -->
     <div class="card res-card fuel-only">
         <div class="res-top">
             <div class="res-lbl" id="lResult"></div>
@@ -832,6 +803,36 @@ body.ev-mode ::selection {
             <div class="stat"><div class="stat-v" id="sCap"></div><div class="stat-l" id="lCap"></div></div>
         </div>
     </div>
+<!-- ===== EV : RÉSULTAT ===== -->
+<div class="card ev-res-card ev-only">
+    <div class="res-top">
+        <div class="res-lbl" id="lEvResult">Coût de la recharge</div>
+        <div class="ev-res-amount" id="evCost">0,00 €</div>
+        <div class="res-detail" id="evDetail"></div>
+    </div>
+    <div class="stats">
+        <div class="stat"><div class="stat-v" id="evKwhAdd">0 kWh</div><div class="stat-l" id="lEvKwhAdd">kWh à charger</div></div>
+        <div class="stat"><div class="stat-v" id="evTimeStat">0 min</div><div class="stat-l" id="lEvTime">Temps estimé</div></div>
+        <div class="stat"><div class="stat-v" id="evRangeStat">0 km</div><div class="stat-l" id="lEvRange">Autonomie gagnée</div></div>
+        <div class="stat"><div class="stat-v" id="evCapStat">60 kWh</div><div class="stat-l" id="lEvCap">Capacité batterie</div></div>
+    </div>
+</div>
+    </div>
+    
+	
+
+<!-- LIMIT MODAL -->
+<div class="limit-overlay" id="limOv">
+    <div class="limit-modal">
+        <h3 id="limT"></h3>
+        <p id="limP"></p>
+        <div class="mb">
+            <a class="btn-p" id="limBtn" href="#" target="_blank"></a>
+            <button class="btn-c" onclick="closeLim()"></button>
+        </div>
+    </div>
+</div>
+    
 	<!-- ===== CONTENU ÉDITORIAL (pour AdSense) ===== -->
 
 <!-- ===== PUB A ===== -->
