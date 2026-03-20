@@ -234,17 +234,165 @@ details[open] .faq-q::after{content:'−'}
 .ad-slot{text-align:center;padding:0;min-height:0;overflow:hidden;max-height:0;opacity:0;transition:max-height .3s,opacity .3s,padding .3s}
 .ad-slot.has-ad{max-height:400px;opacity:1;padding:12px;min-height:100px}
 body.is-premium .ad-slot{display:none!important}
+/* ===== MODE TOGGLE ⛽/🔋 ===== */
+.mode-toggle{
+    display:flex;background:#1c1c1e;border-radius:14px;
+    padding:4px;margin-bottom:14px;border:1px solid #2c2c2e;
+}
+.mode-btn{
+    flex:1;padding:12px 8px;border:none;border-radius:11px;
+    background:transparent;color:#8e8e93;
+    font-size:14px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .2s;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.mode-btn:active{transform:scale(.97)}
+.mode-btn.active{background:#2c2c2e;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.mode-btn.active.fuel{background:linear-gradient(135deg,#ff9500,#ff6723);color:#000}
+.mode-btn.active.ev{background:linear-gradient(135deg,#30d158,#00c853);color:#000}
+
+/* Hide/show sections */
+.fuel-only{display:block}
+.ev-only{display:none}
+body.ev-mode .fuel-only{display:none}
+body.ev-mode .ev-only{display:block}
+
+/* EV specific */
+.ev-battery-card{padding:22px 18px 16px;background:linear-gradient(180deg,#1c1c1e,#17171a)}
+.ev-presets{display:flex;gap:6px;margin-top:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
+.ev-presets::-webkit-scrollbar{display:none}
+.ev-preset{flex-shrink:0;padding:7px 12px;border-radius:18px;border:1.5px solid #3a3a3c;background:transparent;color:#e5e5ea;font-size:11.5px;font-weight:500;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
+.ev-preset:active{transform:scale(.94)}
+.ev-preset.on{background:#30d158;border-color:#30d158;color:#000;font-weight:600}
+
+.ev-gauge-card{padding:22px 18px 16px;background:linear-gradient(180deg,#1c1c1e,#17171a)}
+
+/* Charge speed selector */
+.charge-speeds{display:flex;gap:8px;margin-top:14px}
+.speed-btn{
+    flex:1;padding:10px 6px;border-radius:10px;border:1.5px solid #3a3a3c;
+    background:transparent;color:#e5e5ea;font-size:12px;font-weight:600;
+    font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;
+    text-align:center;
+}
+.speed-btn:active{transform:scale(.94)}
+.speed-btn.on{background:#30d158;border-color:#30d158;color:#000}
+.speed-btn small{display:block;font-size:10px;font-weight:400;opacity:.6;margin-top:2px}
+
+/* EV Results */
+.ev-res-card{background:linear-gradient(145deg,#1c1c1e,#19191d);border:1px solid #2c2c2e;padding:26px 20px 22px}
+.ev-res-amount{font-size:48px;font-weight:800;letter-spacing:-2px;background:linear-gradient(135deg,#30d158,#00c853);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;font-variant-numeric:tabular-nums}
+
+/* Connector pills */
+.connector-filter{display:flex;gap:6px;margin-top:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
+.connector-filter::-webkit-scrollbar{display:none}
+.conn-btn{flex-shrink:0;padding:7px 13px;border-radius:18px;border:1.5px solid #3a3a3c;background:transparent;color:#e5e5ea;font-size:12px;font-weight:500;font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
+.conn-btn:active{transform:scale(.94)}
+.conn-btn.on{background:#30d158;border-color:#30d158;color:#000;font-weight:600}
+
+/* Station EV badge */
+.station-power{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;margin-top:4px}
+.station-power.fast{background:rgba(48,209,88,.15);color:#30d158}
+.station-power.slow{background:rgba(255,149,0,.15);color:#ff9500}
     </style>
 
 </head>
+
 <body>
 <div class="save-toast" id="toast">💾</div>
 <div class="app">
     <div class="lang-bar" id="langBar"></div>
     <div class="currency-bar" id="curBar"></div>
-    <div class="header">
+    <!--<div class="header">
         <h1 id="hTitle">⛽ Plein d'Essence</h1>
-        <p class="sub" id="hSub">Réservoir 42 L</p>
+      <p class="sub" id="hSub">Réservoir 42 L</p> -->
+		<!-- MODE TOGGLE --> 
+<div class="mode-toggle">
+    <button class="mode-btn fuel active" id="modeFuel" onclick="setMode('fuel')">
+        ⛽ <span id="modeFuelText">⛽ Essence</span>
+    </button>
+    <button class="mode-btn ev" id="modeEV" onclick="setMode('ev')">
+        🔋 <span id="modeEVText">🔋 Électrique</span>
+    </button>
+</div>
+<!-- ===== EV : BATTERIE (remplace le réservoir) ===== -->
+<div class="card ev-battery-card ev-only">
+    <div class="card-label" id="lBattery">🔋 Capacité de la batterie</div>
+    <div class="tank-row">
+        <div class="tank-visual">
+            <div class="tank-icon-box" style="background:rgba(48,209,88,.1)">🔋</div>
+            <div class="tank-info">
+                <div class="tank-val" id="evBattVal">60<span>kWh</span></div>
+                <div class="tank-sub" id="evBattSub">Tesla Model 3</div>
+            </div>
+        </div>
+        <div class="stepper">
+            <button id="evBtnMinus">−</button>
+            <div class="sep"></div>
+            <button id="evBtnPlus">+</button>
+        </div>
+    </div>
+    <div class="tank-bar-wrap"><div class="tank-bar" id="evBattBar" style="background:linear-gradient(90deg,#30d158,#00c853)"></div></div>
+    <div class="tank-bar-labels"><span>10 kWh</span><span>50 kWh</span><span>100 kWh</span></div>
+    <div class="ev-presets" id="evPresets"></div>
+</div>
+
+<!-- ===== EV : NIVEAU BATTERIE (remplace la jauge) ===== -->
+<div class="card ev-gauge-card ev-only">
+    <div class="card-label" id="lEvLevel">📊 Niveau actuel de la batterie</div>
+    <div class="gauge-wrap">
+        <div class="gauge-box">
+            <svg class="gauge-svg" viewBox="0 0 240 148">
+                <path class="g-bg" d="M 22 130 A 100 100 0 0 1 218 130" id="evGBg"/>
+                <path class="g-fill" d="M 22 130 A 100 100 0 0 1 218 130" id="evGFill" stroke="#30d158"/>
+                <line x1="30" y1="123" x2="40" y2="115" class="g-tick-major"/><line x1="42" y1="58" x2="54" y2="64" class="g-tick"/><line x1="120" y1="25" x2="120" y2="39" class="g-tick-major"/><line x1="195" y1="58" x2="183" y2="64" class="g-tick"/><line x1="210" y1="123" x2="200" y2="115" class="g-tick-major"/>
+                <text x="14" y="142" class="g-lbl" text-anchor="middle">0</text><text x="120" y="19" class="g-lbl" text-anchor="middle">50%</text><text x="228" y="142" class="g-lbl" text-anchor="middle">100</text>
+                <text x="203" y="108" style="font-size:12px;fill:#636366">🔋</text>
+                <g class="g-needle" id="evNeedle"><polygon class="g-needle-bar" points="120,42 117,118 120,123 123,118" style="fill:#30d158;filter:drop-shadow(0 0 3px rgba(48,209,88,.5))"/><circle class="g-needle-cap1" cx="120" cy="120" r="8"/><circle class="g-needle-cap2" cx="120" cy="120" r="4.5"/></g>
+            </svg>
+        </div>
+        <div class="g-val"><span class="g-pct" id="evPct">20</span><span class="g-pct-sign">%</span></div>
+        <div class="g-liters" id="evKwhLabel">12,0 kWh dans la batterie</div>
+        <div class="q-btns" id="evQuickBtns"></div>
+    </div>
+    <div class="slider-sec">
+        <input type="range" id="evLevel" min="0" max="100" value="20" step="1">
+        <div class="slider-marks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+    </div>
+</div>
+
+<!-- ===== EV : VITESSE DE CHARGE ===== -->
+<div class="card ev-only" style="padding:18px">
+    <div class="card-label" id="lChargeSpeed">⚡ Vitesse de charge</div>
+    <div class="charge-speeds" id="chargeSpeeds"></div>
+</div>
+
+<!-- ===== EV : PRIX kWh ===== -->
+<div class="card price-card ev-only">
+    <div class="card-label" id="lEvPrice">💶 Prix du kWh</div>
+    <div class="price-row">
+        <span class="sym" id="evPSym">€</span>
+        <input type="number" id="evPriceInput" value="0.35" step="0.01" min="0" placeholder="0.35" inputmode="decimal" enterkeyhint="done">
+        <span class="unit" id="evPUnit">/ kWh</span>
+    </div>
+    <div class="pills" id="evNetworkPills"></div>
+</div>
+
+<!-- ===== EV : RÉSULTAT ===== -->
+<div class="card ev-res-card ev-only">
+    <div class="res-top">
+        <div class="res-lbl" id="lEvResult">Coût de la recharge</div>
+        <div class="ev-res-amount" id="evCost">0,00 €</div>
+        <div class="res-detail" id="evDetail"></div>
+    </div>
+    <div class="stats">
+        <div class="stat"><div class="stat-v" id="evKwhAdd">0 kWh</div><div class="stat-l" id="lEvKwhAdd">kWh à charger</div></div>
+        <div class="stat"><div class="stat-v" id="evTimeStat">0 min</div><div class="stat-l" id="lEvTime">Temps estimé</div></div>
+        <div class="stat"><div class="stat-v" id="evRangeStat">0 km</div><div class="stat-l" id="lEvRange">Autonomie gagnée</div></div>
+        <div class="stat"><div class="stat-v" id="evCapStat">60 kWh</div><div class="stat-l" id="lEvCap">Capacité batterie</div></div>
+    </div>
+</div>
     </div>
     <!-- STATIONS -->
     <div class="card stations-card">
@@ -308,7 +456,7 @@ body.is-premium .ad-slot{display:none!important}
     </div>
 </div>
     <!-- TANK -->
-    <div class="card tank-card">
+    <div class="card tank-card fuel-only">
         <div class="card-label" id="lTank"></div>
         <div class="tank-row">
             <div class="tank-visual">
@@ -325,7 +473,7 @@ body.is-premium .ad-slot{display:none!important}
         <div class="tank-presets" id="tankPresets"></div>
     </div>
     <!-- GAUGE -->
-    <div class="card gauge-card">
+    <div class="card gauge-card fuel-only">
         <div class="card-label" id="lLevel"></div>
         <div class="gauge-wrap">
             <div class="gauge-box">
@@ -348,9 +496,9 @@ body.is-premium .ad-slot{display:none!important}
             <div class="slider-marks" id="sliderMarks"></div>
         </div>
     </div>
-    <div class="alert" id="alertBox"><div class="alert-dot"></div><span class="alert-txt" id="alertTxt"></span></div>
+    <div class="alert fuel-only" id="alertBox"><div class="alert-dot"></div><span class="alert-txt" id="alertTxt"></span></div>
     <!-- PRICE -->
-    <div class="card price-card">
+    <div class="card price-card fuel-only">
         <div class="card-label" id="lPrice"></div>
         <div class="price-row">
             <span class="sym" id="pSym">€</span>
@@ -360,7 +508,7 @@ body.is-premium .ad-slot{display:none!important}
         <div class="pills" id="pillsWrap"></div>
     </div>
     <!-- RESULT -->
-    <div class="card res-card">
+    <div class="card res-card fuel-only">
         <div class="res-top">
             <div class="res-lbl" id="lResult"></div>
             <div class="res-amount" id="rAmount"></div>
@@ -791,23 +939,76 @@ const FALLBACK_PROVIDER = {
         return await fetchOverpass(lat, lon, radiusKm);
     }
 };
+const EV_PROVIDER = {
+    flag:'🔋', name:'Open Charge Map', api:'openchargemap.org',
+    fuelTypes:['All','Type 2','CCS','CHAdeMO'],
+    hasPrices: false,
+    async fetch(lat, lon, radiusKm) {
+        try {
+            var url = 'https://api.openchargemap.io/v3/poi/?output=json' +
+                '&latitude=' + lat + '&longitude=' + lon +
+                '&distance=' + radiusKm + '&distanceunit=KM' +
+                '&maxresults=50&compact=true&verbose=false' +
+                '&key=OCM_KEY';
+            var resp = await fetch(url);
+            var data = await resp.json();
+            return (data || []).map(function(s) {
+                var addr = s.AddressInfo || {};
+                var conns = s.Connections || [];
+                var power = 0;
+                var connTypes = [];
+                conns.forEach(function(c) {
+                    if (c.PowerKW && c.PowerKW > power) power = c.PowerKW;
+                    if (c.ConnectionType && c.ConnectionType.Title) {
+                        connTypes.push(c.ConnectionType.Title);
+                    }
+                });
+                return {
+                    id: (s.ID || Math.random()).toString(),
+                    name: (s.OperatorInfo && s.OperatorInfo.Title) || addr.Title || 'Borne',
+                    addr: addr.AddressLine1 || '',
+                    city: addr.Town || '',
+                    cp: addr.Postcode || '',
+                    lat: addr.Latitude || 0,
+                    lon: addr.Longitude || 0,
+                    fuels: {charging: {price: null}},
+                    power: power ? power + ' kW' : '',
+                    sockets: connTypes.join(', ')
+                };
+            });
+        } catch(e) {
+            return await fetchOverpass(lat, lon, radiusKm);
+        }
+    }
+};
 
 // ===== OpenStreetMap Overpass query =====
 async function fetchOverpass(lat, lon, radiusKm) {
-    const r = radiusKm * 1000;
-    const query = `[out:json][timeout:12];node["amenity"="fuel"](around:${r},${lat},${lon});out body 50;`;
-    const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
-    const resp = await fetch(url);
-    const data = await resp.json();
-    return (data.elements || []).map(e => ({
-        id: e.id.toString(),
-        name: e.tags?.brand || e.tags?.name || e.tags?.operator || 'Station',
-        addr: e.tags?.['addr:street'] || '',
-        city: e.tags?.['addr:city'] || '',
-        cp: e.tags?.['addr:postcode'] || '',
-        lat: e.lat, lon: e.lon,
-        fuels: {fuel: {price: null}}
-    }));
+    var r = radiusKm * 1000;
+    var amenity = appMode === 'ev' ? 'charging_station' : 'fuel';
+    var query = '[out:json][timeout:12];node["amenity"="' + amenity + '"](around:' + r + ',' + lat + ',' + lon + ');out body 50;';
+    var url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
+    var resp = await fetch(url);
+    var data = await resp.json();
+    return (data.elements || []).map(function(e) {
+        var station = {
+            id: e.id.toString(),
+            name: e.tags?.brand || e.tags?.name || e.tags?.operator || (appMode === 'ev' ? 'Borne' : 'Station'),
+            addr: e.tags?.['addr:street'] || '',
+            city: e.tags?.['addr:city'] || '',
+            cp: e.tags?.['addr:postcode'] || '',
+            lat: e.lat, lon: e.lon,
+            fuels: {}
+        };
+        if (appMode === 'ev') {
+            station.fuels['charging'] = {price: null};
+            station.power = e.tags?.['charging_station:output'] || e.tags?.['socket:type2:output'] || '';
+            station.sockets = e.tags?.['socket:type2'] || e.tags?.['socket:ccs2'] || '';
+        } else {
+            station.fuels = {fuel: {price: null}};
+        }
+        return station;
+    });
 }
 
 // ===== Detect country from coords =====
@@ -905,12 +1106,13 @@ function setLang(code) {
     localStorage.setItem('lang', lang);
     localStorage.setItem('cur', cur);
     document.documentElement.lang = lang;
-    const f = FUEL_PRICES[cur];
+    var f = FUEL_PRICES[cur];
     if (f && f.length >= 2) prc = f[1].p;
-    iPrice.value = cur==='JPY' ? prc.toFixed(0) : prc.toFixed(2);
+    iPrice.value = cur === 'JPY' ? prc.toFixed(0) : prc.toFixed(2);
     save();
-    document.querySelectorAll('.lang-btn').forEach((b, i) =>
-        b.classList.toggle('on', Object.keys(LANGS)[i] === lang));
+    document.querySelectorAll('.lang-btn').forEach(function(b, i) {
+        b.classList.toggle('on', Object.keys(LANGS)[i] === lang);
+    });
     buildCurBar();
     rebuildAll();
     showToast(TL.toastLang.replace('{n}', TL.name));
@@ -919,16 +1121,17 @@ function setLang(code) {
 function setCurrency(code) {
     cur = code; loadLC();
     localStorage.setItem('cur', cur);
-    const f = FUEL_PRICES[cur];
+    var f = FUEL_PRICES[cur];
     if (f && f.length >= 2) prc = f[1].p;
     else if (f && f.length >= 1) prc = f[0].p;
-    iPrice.value = cur==='JPY' ? prc.toFixed(0) : prc.toFixed(2);
-    iPrice.step = cur==='JPY' ? '1' : '0.01';
+    iPrice.value = cur === 'JPY' ? prc.toFixed(0) : prc.toFixed(2);
+    iPrice.step = cur === 'JPY' ? '1' : '0.01';
     save();
-    document.querySelectorAll('.cur-pill').forEach((b, i) =>
-        b.classList.toggle('on', Object.keys(CURRENCIES)[i] === cur));
+    document.querySelectorAll('.cur-pill').forEach(function(b, i) {
+        b.classList.toggle('on', Object.keys(CURRENCIES)[i] === cur);
+    });
     rebuildAll();
-    showToast(TL.toastCur.replace('{n}', C.symbol+' '+C.code));
+    showToast(TL.toastCur.replace('{n}', C.symbol + ' ' + C.code));
 }
 
 // ==================== REBUILD ALL ====================
@@ -942,6 +1145,20 @@ function rebuildAll() {
     updateTankUI();
     updatePremiumUI();
     updateEditorialContent();
+
+    // EV rebuild
+    applyEvTexts();
+    buildEvPresets();
+    buildEvQuickBtns();
+    buildChargeSpeeds();
+    buildEvNetworkPills();
+    updateEvBattUI();
+    updateEvGauge();
+    evCalc();
+
+    // Re-apply mode (update header title)
+    setMode(appMode);
+
     calc();
     if (stationsData.length) renderStations();
 }
@@ -962,7 +1179,38 @@ function applyTexts() {
     $('lStations').textContent = TL.stationsLabel;
     $('locateTxt').textContent = TL.locateBtn;
     $('lRadius').textContent = TL.radiusLabel;
+	// EV mode station label override
+    if (appMode === 'ev') {
+        var lStations = document.getElementById('lStations');
+        var ei = EV_I18N[lang] || EV_I18N.en;
+        if (lStations) lStations.textContent = '📍 ' + (
+            lang === 'fr' ? 'Bornes de recharge à proximité' :
+            lang === 'en' ? 'Charging stations nearby' :
+            lang === 'es' ? 'Puntos de carga cercanos' :
+            lang === 'de' ? 'Ladestationen in der Nähe' :
+            lang === 'it' ? 'Stazioni di ricarica vicine' :
+            lang === 'pt' ? 'Postos de carregamento próximos' :
+            lang === 'ru' ? 'Зарядные станции рядом' :
+            lang === 'zh' ? '附近充电站' :
+            lang === 'ja' ? '近くの充電スタンド' :
+            'Charging stations nearby'
+        );
+        var locateTxt = document.getElementById('locateTxt');
+        if (locateTxt) locateTxt.textContent = (
+            lang === 'fr' ? 'Trouver les bornes proches' :
+            lang === 'en' ? 'Find nearby chargers' :
+            lang === 'es' ? 'Buscar cargadores' :
+            lang === 'de' ? 'Ladestationen finden' :
+            lang === 'it' ? 'Cerca stazioni di ricarica' :
+            lang === 'pt' ? 'Encontrar carregadores' :
+            lang === 'ru' ? 'Найти зарядки' :
+            lang === 'zh' ? '查找充电站' :
+            lang === 'ja' ? '充電スタンド検索' :
+            'Find nearby chargers'
+        );
+    }
 }
+
 
 // ==================== TANK ====================
 function tankCat(t) {
@@ -1145,11 +1393,13 @@ function buildFuelFilter() {
 }
 
 // ==================== LOCATE BUTTON ====================
-$('locateBtn').addEventListener('click', function() {
-    if (!checkSearchLimit()) return;
-    locateAndFetch();
-});
-
+var locateBtn = document.getElementById('locateBtn');
+if (locateBtn) {
+    locateBtn.addEventListener('click', function() {
+        if (!checkSearchLimit()) return;
+        locateAndFetch();
+    });
+}
 function locateAndFetch() {
     const btn = $('locateBtn');
     btn.classList.add('loading'); btn.disabled = true;
@@ -1169,7 +1419,11 @@ function locateAndFetch() {
             try {
                 // Detect country
                 detectedCountryCode = await detectCountry(userLat, userLon);
-                currentProvider = getProvider(detectedCountryCode);
+                if (appMode === 'ev') {
+    currentProvider = EV_PROVIDER;
+} else {
+    currentProvider = getProvider(detectedCountryCode);
+}
 
                 // Show country badge
                 $('countryBadge').innerHTML =
@@ -1409,6 +1663,7 @@ function updateMapMarkers(stations) {
 
 // ==================== INIT ====================
 function init() {
+    // Fuel gauge
     arcLen = gBg.getTotalLength();
     gFill.style.strokeDasharray = arcLen;
 
@@ -1420,10 +1675,18 @@ function init() {
     checkStripeReturn();
     updatePremiumUI();
 
+    // Lang & Currency
     buildLangBar();
     buildCurBar();
+
+    // EV init
+    initEV();
+
+    // Rebuild all
     rebuildAll();
-	checkAdSlots();
+
+    // Ads
+    checkAdSlots();
 }
 // ==================== PREMIUM SYSTEM ====================
 
@@ -1806,6 +2069,547 @@ function checkAdSlots() {
             }
         }, 3000);
     });
+}
+// ==================== EV MODE ====================
+
+let appMode = localStorage.getItem('appMode') || 'fuel';
+let evBatt = parseInt(localStorage.getItem('evBatt')) || 60;
+let evLvl = parseInt(localStorage.getItem('evLvl')) || 20;
+let evPrice = parseFloat(localStorage.getItem('evPrice')) || 0.35;
+let evChargePower = parseInt(localStorage.getItem('evChargePower')) || 50;
+let evArcLen;
+
+// ==================== EV DATA ====================
+const EV_VEHICLES = [
+    {name:'Dacia Spring', kWh:27, range:230},
+    {name:'Fiat 500e', kWh:42, range:320},
+    {name:'Renault Zoé', kWh:52, range:390},
+    {name:'Peugeot e-208', kWh:50, range:362},
+    {name:'Renault Mégane E', kWh:60, range:450},
+    {name:'Tesla Model 3', kWh:60, range:510},
+    {name:'VW ID.3', kWh:58, range:425},
+    {name:'Hyundai Ioniq 5', kWh:73, range:480},
+    {name:'Tesla Model Y', kWh:75, range:530},
+    {name:'VW ID.4', kWh:77, range:520},
+    {name:'BMW iX3', kWh:74, range:460},
+    {name:'Kia EV6', kWh:77, range:528},
+    {name:'Mercedes EQA', kWh:67, range:430},
+    {name:'Mercedes EQS', kWh:108, range:770},
+    {name:'Tesla Model S', kWh:100, range:650}
+];
+
+const EV_CHARGE_SPEEDS = [
+    {power:7, label:'AC 7kW', sub:'Domicile'},
+    {power:22, label:'AC 22kW', sub:'Borne publique'},
+    {power:50, label:'DC 50kW', sub:'Rapide'},
+    {power:150, label:'DC 150kW', sub:'Très rapide'},
+    {power:350, label:'DC 350kW', sub:'Ultra-rapide'}
+];
+
+const EV_NETWORKS = {
+    EUR:[
+        {p:0.15, names:{fr:'Domicile HC',en:'Home off-peak',es:'Hogar valle',de:'Zuhause NT',it:'Casa',pt:'Casa'}},
+        {p:0.25, names:{fr:'Domicile HP',en:'Home peak',es:'Hogar punta',de:'Zuhause HT',it:'Casa HP',pt:'Casa HP'}},
+        {p:0.30, names:{fr:'Leclerc/Lidl',en:'Supermarket',es:'Supermercado',de:'Supermarkt',it:'Supermercato',pt:'Supermercado'}},
+        {p:0.36, names:{fr:'Tesla SC',en:'Tesla SC',es:'Tesla SC',de:'Tesla SC',it:'Tesla SC',pt:'Tesla SC'}},
+        {p:0.39, names:{fr:'Ionity',en:'Ionity',es:'Ionity',de:'Ionity',it:'Ionity',pt:'Ionity'}},
+        {p:0.40, names:{fr:'TotalEnergies',en:'TotalEnergies',es:'TotalEnergies',de:'TotalEnergies',it:'TotalEnergies',pt:'TotalEnergies'}},
+        {p:0.50, names:{fr:'Fastned',en:'Fastned',es:'Fastned',de:'Fastned',it:'Fastned',pt:'Fastned'}},
+        {p:0.59, names:{fr:'Autoroute',en:'Motorway',es:'Autopista',de:'Autobahn',it:'Autostrada',pt:'Autoestrada'}}
+    ],
+    GBP:[
+        {p:0.10, names:{en:'Home off-peak'}},
+        {p:0.28, names:{en:'Home peak'}},
+        {p:0.36, names:{en:'Tesla SC'}},
+        {p:0.69, names:{en:'Ionity'}},
+        {p:0.77, names:{en:'BP Pulse'}}
+    ]
+};
+
+// ==================== EV i18n ====================
+const EV_I18N = {
+    fr:{
+        fuel:'Essence',ev:'Électrique',
+        battLabel:'🔋 Capacité de la batterie',lvlLabel:'📊 Niveau actuel de la batterie',
+        speedLabel:'⚡ Vitesse de charge',priceLabel:'💶 Prix du kWh',
+        resultLabel:'Coût de la recharge',perKwh:'/ kWh',
+        inBatt:'{n} kWh dans la batterie',kwhAdd:'kWh à charger',
+        timeLabel:'Temps estimé',rangeLabel:'Autonomie gagnée',
+        capLabel:'Capacité batterie',
+        empty:'Vide',low:'Bas',mid:'Moyen',high:'Haut',
+        home:'Domicile',slow:'Lente',fast:'Rapide',vfast:'Très rapide',ultra:'Ultra',
+        minUnit:'min',hourUnit:'h',kmUnit:'km',
+        evSub:'Batterie {n} kWh'
+    },
+    en:{
+        fuel:'Fuel',ev:'Electric',
+        battLabel:'🔋 Battery capacity',lvlLabel:'📊 Current battery level',
+        speedLabel:'⚡ Charging speed',priceLabel:'💶 Price per kWh',
+        resultLabel:'Charging cost',perKwh:'/ kWh',
+        inBatt:'{n} kWh in the battery',kwhAdd:'kWh to charge',
+        timeLabel:'Estimated time',rangeLabel:'Range gained',
+        capLabel:'Battery capacity',
+        empty:'Empty',low:'Low',mid:'Medium',high:'High',
+        home:'Home',slow:'Slow',fast:'Fast',vfast:'Very fast',ultra:'Ultra',
+        minUnit:'min',hourUnit:'h',kmUnit:'km',
+        evSub:'Battery {n} kWh'
+    },
+    es:{
+        fuel:'Gasolina',ev:'Eléctrico',
+        battLabel:'🔋 Capacidad de la batería',lvlLabel:'📊 Nivel actual',
+        speedLabel:'⚡ Velocidad de carga',priceLabel:'💶 Precio por kWh',
+        resultLabel:'Coste de la recarga',perKwh:'/ kWh',
+        inBatt:'{n} kWh en la batería',kwhAdd:'kWh a cargar',
+        timeLabel:'Tiempo estimado',rangeLabel:'Autonomía ganada',
+        capLabel:'Capacidad batería',
+        empty:'Vacío',low:'Bajo',mid:'Medio',high:'Alto',
+        home:'Hogar',slow:'Lenta',fast:'Rápida',vfast:'Muy rápida',ultra:'Ultra',
+        minUnit:'min',hourUnit:'h',kmUnit:'km',
+        evSub:'Batería {n} kWh'
+    },
+    de:{
+        fuel:'Benzin',ev:'Elektrisch',
+        battLabel:'🔋 Batteriekapazität',lvlLabel:'📊 Aktueller Ladestand',
+        speedLabel:'⚡ Ladegeschwindigkeit',priceLabel:'💶 Preis pro kWh',
+        resultLabel:'Ladekosten',perKwh:'/ kWh',
+        inBatt:'{n} kWh in der Batterie',kwhAdd:'kWh laden',
+        timeLabel:'Geschätzte Zeit',rangeLabel:'Reichweite gewonnen',
+        capLabel:'Batteriekapazität',
+        empty:'Leer',low:'Niedrig',mid:'Mittel',high:'Hoch',
+        home:'Zuhause',slow:'Langsam',fast:'Schnell',vfast:'Sehr schnell',ultra:'Ultra',
+        minUnit:'Min',hourUnit:'Std',kmUnit:'km',
+        evSub:'Batterie {n} kWh'
+    },
+    it:{
+        fuel:'Benzina',ev:'Elettrico',
+        battLabel:'🔋 Capacità batteria',lvlLabel:'📊 Livello attuale',
+        speedLabel:'⚡ Velocità di ricarica',priceLabel:'💶 Prezzo per kWh',
+        resultLabel:'Costo ricarica',perKwh:'/ kWh',
+        inBatt:'{n} kWh nella batteria',kwhAdd:'kWh da caricare',
+        timeLabel:'Tempo stimato',rangeLabel:'Autonomia guadagnata',
+        capLabel:'Capacità batteria',
+        empty:'Vuoto',low:'Basso',mid:'Medio',high:'Alto',
+        home:'Casa',slow:'Lenta',fast:'Veloce',vfast:'Molto veloce',ultra:'Ultra',
+        minUnit:'min',hourUnit:'h',kmUnit:'km',
+        evSub:'Batteria {n} kWh'
+    },
+    pt:{
+        fuel:'Gasolina',ev:'Elétrico',
+        battLabel:'🔋 Capacidade da bateria',lvlLabel:'📊 Nível atual',
+        speedLabel:'⚡ Velocidade de carga',priceLabel:'💶 Preço por kWh',
+        resultLabel:'Custo da recarga',perKwh:'/ kWh',
+        inBatt:'{n} kWh na bateria',kwhAdd:'kWh a carregar',
+        timeLabel:'Tempo estimado',rangeLabel:'Autonomia ganha',
+        capLabel:'Capacidade bateria',
+        empty:'Vazio',low:'Baixo',mid:'Médio',high:'Alto',
+        home:'Casa',slow:'Lenta',fast:'Rápida',vfast:'Muito rápida',ultra:'Ultra',
+        minUnit:'min',hourUnit:'h',kmUnit:'km',
+        evSub:'Bateria {n} kWh'
+    },
+    ru:{
+        fuel:'Бензин',ev:'Электро',
+        battLabel:'🔋 Ёмкость батареи',lvlLabel:'📊 Текущий уровень',
+        speedLabel:'⚡ Скорость зарядки',priceLabel:'💶 Цена за кВт·ч',
+        resultLabel:'Стоимость зарядки',perKwh:'/ кВт·ч',
+        inBatt:'{n} кВт·ч в батарее',kwhAdd:'кВт·ч зарядить',
+        timeLabel:'Время',rangeLabel:'Запас хода',
+        capLabel:'Ёмкость',
+        empty:'Пусто',low:'Низкий',mid:'Средний',high:'Высокий',
+        home:'Дома',slow:'Медл.',fast:'Быстр.',vfast:'Очень быстр.',ultra:'Ультра',
+        minUnit:'мин',hourUnit:'ч',kmUnit:'км',
+        evSub:'Батарея {n} кВт·ч'
+    },
+    zh:{
+        fuel:'汽油',ev:'电动',
+        battLabel:'🔋 电池容量',lvlLabel:'📊 当前电量',
+        speedLabel:'⚡ 充电速度',priceLabel:'💶 每千瓦时价格',
+        resultLabel:'充电费用',perKwh:'/ kWh',
+        inBatt:'电池中 {n} kWh',kwhAdd:'需充电kWh',
+        timeLabel:'预计时间',rangeLabel:'增加续航',
+        capLabel:'电池容量',
+        empty:'空',low:'低',mid:'中',high:'高',
+        home:'家庭',slow:'慢充',fast:'快充',vfast:'超快',ultra:'超级快',
+        minUnit:'分钟',hourUnit:'小时',kmUnit:'公里',
+        evSub:'电池 {n} kWh'
+    },
+    ja:{
+        fuel:'ガソリン',ev:'電気',
+        battLabel:'🔋 バッテリー容量',lvlLabel:'📊 現在の残量',
+        speedLabel:'⚡ 充電速度',priceLabel:'💶 kWhあたり価格',
+        resultLabel:'充電コスト',perKwh:'/ kWh',
+        inBatt:'バッテリー {n} kWh',kwhAdd:'充電kWh',
+        timeLabel:'推定時間',rangeLabel:'航続距離増加',
+        capLabel:'バッテリー容量',
+        empty:'空',low:'低',mid:'中',high:'高',
+        home:'自宅',slow:'低速',fast:'急速',vfast:'超急速',ultra:'ウルトラ',
+        minUnit:'分',hourUnit:'時間',kmUnit:'km',
+        evSub:'バッテリー {n} kWh'
+    }
+};
+
+// ==================== MODE TOGGLE ====================
+window.setMode = function(mode) {
+    appMode = mode;
+    localStorage.setItem('appMode', mode);
+
+    document.body.classList.toggle('ev-mode', mode === 'ev');
+
+    var fuelBtn = document.getElementById('modeFuel');
+    var evBtn = document.getElementById('modeEV');
+    if (fuelBtn) { fuelBtn.classList.toggle('active', mode === 'fuel'); }
+    if (evBtn) { evBtn.classList.toggle('active', mode === 'ev'); }
+
+    // Update header
+    var hTitle = document.getElementById('hTitle');
+    var hSub = document.getElementById('hSub');
+    var ei = EV_I18N[lang] || EV_I18N.en;
+
+    if (mode === 'ev') {
+        if (hTitle) hTitle.textContent = '🔋 ' + ei.ev;
+        if (hSub) hSub.textContent = ei.evSub.replace('{n}', evBatt);
+    } else {
+        if (hTitle) hTitle.textContent = TL.title;
+        if (hSub) hSub.textContent = TL.sub.replace('{n}', tank);
+    }
+	window.setMode = function(mode) {
+    appMode = mode;
+    localStorage.setItem('appMode', mode);
+
+    document.body.classList.toggle('ev-mode', mode === 'ev');
+
+    var fuelBtn = document.getElementById('modeFuel');
+    var evBtn = document.getElementById('modeEV');
+    if (fuelBtn) fuelBtn.classList.toggle('active', mode === 'fuel');
+    if (evBtn) evBtn.classList.toggle('active', mode === 'ev');
+
+    var hTitle = document.getElementById('hTitle');
+    var hSub = document.getElementById('hSub');
+    var ei = EV_I18N[lang] || EV_I18N.en;
+
+    if (mode === 'ev') {
+        if (hTitle) hTitle.textContent = '🔋 ' + ei.ev;
+        if (hSub) hSub.textContent = ei.evSub.replace('{n}', evBatt);
+    } else {
+        if (hTitle) hTitle.textContent = TL.title;
+        if (hSub) hSub.textContent = TL.sub.replace('{n}', tank);
+    }
+
+    // Update station labels
+    applyTexts();
+};
+};
+
+// ==================== EV BATTERY ====================
+function evBattCategory(kWh) {
+    if (kWh <= 30) return 'Petite citadine';
+    if (kWh <= 45) return 'Citadine';
+    if (kWh <= 62) return 'Compacte / Berline';
+    if (kWh <= 80) return 'SUV / Berline';
+    return 'Premium / Grand SUV';
+}
+
+function updateEvBattUI() {
+    var el = document.getElementById('evBattVal');
+    if (el) el.innerHTML = evBatt + '<span>kWh</span>';
+    var sub = document.getElementById('evBattSub');
+    if (sub) {
+        var match = EV_VEHICLES.find(function(v) { return v.kWh === evBatt; });
+        sub.textContent = match ? match.name : evBattCategory(evBatt);
+    }
+    var bar = document.getElementById('evBattBar');
+    if (bar) bar.style.width = Math.max(0, Math.min(100, ((evBatt - 10) / 110) * 100)) + '%';
+    var cap = document.getElementById('evCapStat');
+    if (cap) cap.textContent = evBatt + ' kWh';
+
+    document.querySelectorAll('.ev-preset').forEach(function(p) {
+        p.classList.toggle('on', parseInt(p.dataset.kwh) === evBatt);
+    });
+}
+
+function buildEvPresets() {
+    var w = document.getElementById('evPresets');
+    if (!w) return;
+    w.innerHTML = '';
+    EV_VEHICLES.forEach(function(v) {
+        var b = document.createElement('button');
+        b.className = 'ev-preset' + (v.kWh === evBatt ? ' on' : '');
+        b.dataset.kwh = v.kWh;
+        b.textContent = v.name + ' · ' + v.kWh + 'kWh';
+        b.addEventListener('click', function() {
+            evBatt = v.kWh;
+            localStorage.setItem('evBatt', evBatt);
+            updateEvBattUI();
+            buildEvQuickBtns();
+            evCalc();
+            showToast('🔋 ' + v.name + ' — ' + v.kWh + ' kWh');
+        });
+        w.appendChild(b);
+    });
+}
+
+// EV Stepper
+var evHoldTimer = null, evHoldSpeed = 500;
+function changeEvBatt(d) {
+    var n = evBatt + d;
+    if (n < 10 || n > 150) return;
+    evBatt = n;
+    localStorage.setItem('evBatt', evBatt);
+    updateEvBattUI();
+    buildEvQuickBtns();
+    evCalc();
+}
+
+var evMinus = document.getElementById('evBtnMinus');
+var evPlus = document.getElementById('evBtnPlus');
+if (evMinus) evMinus.addEventListener('click', function() { changeEvBatt(-1); });
+if (evPlus) evPlus.addEventListener('click', function() { changeEvBatt(1); });
+
+function startEvHold(d) {
+    evHoldSpeed = 400; changeEvBatt(d);
+    evHoldTimer = setTimeout(function r() {
+        changeEvBatt(d);
+        evHoldSpeed = Math.max(60, evHoldSpeed * 0.8);
+        evHoldTimer = setTimeout(r, evHoldSpeed);
+    }, evHoldSpeed);
+}
+function stopEvHold() {
+    clearTimeout(evHoldTimer); evHoldTimer = null;
+}
+['touchstart','mousedown'].forEach(function(e) {
+    if (evMinus) evMinus.addEventListener(e, function(ev) { ev.preventDefault(); startEvHold(-1); }, {passive:false});
+    if (evPlus) evPlus.addEventListener(e, function(ev) { ev.preventDefault(); startEvHold(1); }, {passive:false});
+});
+['touchend','touchcancel','mouseup','mouseleave'].forEach(function(e) {
+    if (evMinus) evMinus.addEventListener(e, stopEvHold);
+    if (evPlus) evPlus.addEventListener(e, stopEvHold);
+});
+
+// ==================== EV LEVEL (GAUGE) ====================
+var evLevelSlider = document.getElementById('evLevel');
+
+function initEvGauge() {
+    var bg = document.getElementById('evGBg');
+    if (bg) evArcLen = bg.getTotalLength();
+    var fill = document.getElementById('evGFill');
+    if (fill && evArcLen) fill.style.strokeDasharray = evArcLen;
+}
+
+function updateEvGauge() {
+    if (!evArcLen) return;
+    var fill = document.getElementById('evGFill');
+    var needle = document.getElementById('evNeedle');
+    var pct = document.getElementById('evPct');
+    var label = document.getElementById('evKwhLabel');
+
+    if (fill) {
+        fill.style.strokeDashoffset = evArcLen - (evArcLen * evLvl / 100);
+        var color = evLvl <= 15 ? '#ff3b30' : evLvl <= 30 ? '#ff9f0a' : '#30d158';
+        fill.style.stroke = color;
+    }
+    if (needle) needle.style.transform = 'rotate(' + (-90 + (evLvl / 100) * 180) + 'deg)';
+    if (pct) pct.textContent = evLvl;
+    if (label) {
+        var ei = EV_I18N[lang] || EV_I18N.en;
+        var kwh = (evLvl / 100) * evBatt;
+        label.textContent = ei.inBatt.replace('{n}', kwh.toFixed(1));
+    }
+}
+
+function buildEvQuickBtns() {
+    var w = document.getElementById('evQuickBtns');
+    if (!w) return;
+    var ei = EV_I18N[lang] || EV_I18N.en;
+    w.innerHTML = '';
+    [
+        {l:5, label:ei.empty},
+        {l:20, label:ei.low},
+        {l:50, label:ei.mid},
+        {l:80, label:ei.high}
+    ].forEach(function(item) {
+        var b = document.createElement('button');
+        b.className = 'q-btn' + (evLvl === item.l ? ' on' : '');
+        b.dataset.l = item.l;
+        var kwh = (item.l / 100) * evBatt;
+        b.innerHTML = item.label + '<small>' + kwh.toFixed(0) + ' kWh</small>';
+        b.addEventListener('click', function() {
+            evLvl = item.l;
+            if (evLevelSlider) evLevelSlider.value = evLvl;
+            localStorage.setItem('evLvl', evLvl);
+            updateEvGauge();
+            evCalc();
+        });
+        w.appendChild(b);
+    });
+}
+
+if (evLevelSlider) {
+    evLevelSlider.addEventListener('input', function(e) {
+        evLvl = parseInt(e.target.value);
+        localStorage.setItem('evLvl', evLvl);
+        updateEvGauge();
+        evCalc();
+    });
+}
+
+// ==================== EV CHARGE SPEED ====================
+function buildChargeSpeeds() {
+    var w = document.getElementById('chargeSpeeds');
+    if (!w) return;
+    w.innerHTML = '';
+    EV_CHARGE_SPEEDS.forEach(function(s) {
+        var b = document.createElement('button');
+        b.className = 'speed-btn' + (s.power === evChargePower ? ' on' : '');
+        b.innerHTML = s.label + '<small>' + s.sub + '</small>';
+        b.addEventListener('click', function() {
+            evChargePower = s.power;
+            localStorage.setItem('evChargePower', evChargePower);
+            document.querySelectorAll('.speed-btn').forEach(function(x) { x.classList.remove('on'); });
+            b.classList.add('on');
+            evCalc();
+        });
+        w.appendChild(b);
+    });
+}
+
+// ==================== EV PRICE ====================
+var evPriceInput = document.getElementById('evPriceInput');
+
+function buildEvNetworkPills() {
+    var w = document.getElementById('evNetworkPills');
+    if (!w) return;
+    w.innerHTML = '';
+    var networks = EV_NETWORKS[cur] || EV_NETWORKS.EUR;
+    networks.forEach(function(net) {
+        var name = net.names[lang] || net.names.en || net.names.fr || '';
+        var b = document.createElement('button');
+        b.className = 'pill' + (Math.abs(net.p - evPrice) < 0.005 ? ' on' : '');
+        b.textContent = name + ' · ' + net.p.toFixed(2).replace('.', C.decSep);
+        b.addEventListener('click', function() {
+            evPrice = net.p;
+            if (evPriceInput) evPriceInput.value = net.p.toFixed(2);
+            localStorage.setItem('evPrice', evPrice);
+            document.querySelectorAll('#evNetworkPills .pill').forEach(function(x) { x.classList.remove('on'); });
+            b.classList.add('on');
+            evCalc();
+        });
+        w.appendChild(b);
+    });
+}
+
+if (evPriceInput) {
+    evPriceInput.addEventListener('input', function() {
+        evPrice = parseFloat(evPriceInput.value) || 0;
+        localStorage.setItem('evPrice', evPrice);
+        document.querySelectorAll('#evNetworkPills .pill').forEach(function(p) { p.classList.remove('on'); });
+        evCalc();
+    });
+    evPriceInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') evPriceInput.blur(); });
+    evPriceInput.addEventListener('focus', function() {
+        setTimeout(function() { evPriceInput.scrollIntoView({behavior:'smooth', block:'center'}); }, 300);
+    });
+}
+
+// ==================== EV CALC ====================
+function evCalc() {
+    var currentKwh = (evLvl / 100) * evBatt;
+    var kwhToAdd = evBatt - currentKwh;
+    var cost = kwhToAdd * evPrice;
+
+    // Time calculation (minutes)
+    var chargeMinutes = (kwhToAdd / evChargePower) * 60;
+
+    // Range calculation
+    var matchedVehicle = EV_VEHICLES.find(function(v) { return v.kWh === evBatt; });
+    var rangePerKwh = matchedVehicle ? matchedVehicle.range / matchedVehicle.kWh : 6.5;
+    var rangeGained = kwhToAdd * rangePerKwh;
+
+    var ei = EV_I18N[lang] || EV_I18N.en;
+
+    // Update results
+    var costEl = document.getElementById('evCost');
+    if (costEl) costEl.textContent = fmtCur(cost);
+
+    var detailEl = document.getElementById('evDetail');
+    if (detailEl) detailEl.textContent = kwhToAdd.toFixed(1) + ' kWh × ' + evPrice.toFixed(2).replace('.', C.decSep) + ' ' + C.symbol + '/kWh';
+
+    var kwhAddEl = document.getElementById('evKwhAdd');
+    if (kwhAddEl) kwhAddEl.textContent = kwhToAdd.toFixed(1) + ' kWh';
+
+    var timeEl = document.getElementById('evTimeStat');
+    if (timeEl) {
+        if (chargeMinutes < 60) {
+            timeEl.textContent = Math.round(chargeMinutes) + ' ' + ei.minUnit;
+        } else {
+            var h = Math.floor(chargeMinutes / 60);
+            var m = Math.round(chargeMinutes % 60);
+            timeEl.textContent = h + ei.hourUnit + ' ' + (m > 0 ? m + ei.minUnit : '');
+        }
+    }
+
+    var rangeEl = document.getElementById('evRangeStat');
+    if (rangeEl) rangeEl.textContent = Math.round(rangeGained) + ' ' + ei.kmUnit;
+
+    var capEl = document.getElementById('evCapStat');
+    if (capEl) capEl.textContent = evBatt + ' kWh';
+
+    // Update gauge
+    updateEvGauge();
+
+    // Quick btns highlight
+    var qbtns = document.getElementById('evQuickBtns');
+    if (qbtns) {
+        qbtns.querySelectorAll('.q-btn').forEach(function(b) {
+            b.classList.toggle('on', parseInt(b.dataset.l) === evLvl);
+        });
+    }
+}
+
+// ==================== EV TEXTS ====================
+function applyEvTexts() {
+    var ei = EV_I18N[lang] || EV_I18N.en;
+
+    var ids = {
+        'modeFuelText': ei.fuel,
+        'modeEVText': ei.ev,
+        'lBattery': ei.battLabel,
+        'lEvLevel': ei.lvlLabel,
+        'lChargeSpeed': ei.speedLabel,
+        'lEvPrice': ei.priceLabel,
+        'lEvResult': ei.resultLabel,
+        'lEvKwhAdd': ei.kwhAdd,
+        'lEvTime': ei.timeLabel,
+        'lEvRange': ei.rangeLabel,
+        'lEvCap': ei.capLabel
+    };
+
+    Object.keys(ids).forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = ids[id];
+    });
+
+    var evPUnit = document.getElementById('evPUnit');
+    if (evPUnit) evPUnit.textContent = ei.perKwh;
+    var evPSym = document.getElementById('evPSym');
+    if (evPSym) evPSym.textContent = C.symbol;
+}
+
+// ==================== EV INIT ====================
+function initEV() {
+    initEvGauge();
+    if (evLevelSlider) evLevelSlider.value = evLvl;
+    buildEvPresets();
+    buildEvQuickBtns();
+    buildChargeSpeeds();
+    buildEvNetworkPills();
+    updateEvBattUI();
+    updateEvGauge();
+    applyEvTexts();
+    evCalc();
+
+    // Restore mode
+    if (appMode === 'ev') {
+        setMode('ev');
+    }
 }
 window.addEventListener('load', init);
 // Register Service Worker
