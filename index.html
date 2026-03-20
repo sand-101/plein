@@ -355,6 +355,257 @@ body.ev-mode .ev-only{display:block}
         border-right: 1px solid #1c1c1e;
     }
 }
+/* ===== ESTHÉTIQUE AMÉLIORÉE ===== */
+
+/* Fond avec grain subtil */
+body {
+    background: #0a0a0f;
+    background-image: 
+        radial-gradient(ellipse at 50% 0%, rgba(255,149,0,0.03) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(48,209,88,0.02) 0%, transparent 50%);
+}
+
+/* Effet glassmorphism sur les cartes */
+.card {
+    background: rgba(28,28,30,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Ombre douce sur les cartes */
+.card:hover {
+    border-color: rgba(255,255,255,0.08);
+}
+
+/* Header avec gradient subtil */
+.header h1 {
+    background: linear-gradient(135deg, #ffffff 0%, #c0c0c0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Glow sur la jauge */
+.gauge-card, .ev-gauge-card {
+    background: linear-gradient(180deg, rgba(28,28,30,0.9), rgba(23,23,26,0.95));
+    border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Bouton localisation amélioré */
+.locate-btn {
+    background: linear-gradient(135deg, #007aff, #5856d6);
+    box-shadow: 0 4px 15px rgba(0,122,255,0.3);
+    transition: all .2s;
+}
+.locate-btn:hover {
+    box-shadow: 0 6px 25px rgba(0,122,255,0.4);
+    transform: translateY(-1px);
+}
+
+/* Toggle mode avec glow */
+.mode-btn.active.fuel {
+    box-shadow: 0 4px 15px rgba(255,149,0,0.3);
+}
+.mode-btn.active.ev {
+    box-shadow: 0 4px 15px rgba(48,209,88,0.3);
+}
+
+/* Résultat avec glow */
+.res-card, .ev-res-card {
+    border: 1px solid rgba(255,149,0,0.1);
+    box-shadow: 0 8px 30px rgba(255,149,0,0.05);
+}
+
+/* Premium card glow */
+.premium-card {
+    border: 1px solid rgba(255,204,0,0.12);
+    box-shadow: 0 8px 30px rgba(255,204,0,0.05);
+}
+
+/* Pills et boutons avec transition douce */
+.pill, .tp, .ev-preset, .ff-btn, .conn-btn {
+    transition: all .2s ease;
+}
+.pill:hover, .tp:hover, .ev-preset:hover {
+    border-color: rgba(255,255,255,0.15);
+}
+
+/* Station items avec hover */
+.station-item {
+    transition: all .2s ease;
+    border: 1px solid transparent;
+}
+.station-item:hover {
+    border-color: rgba(255,255,255,0.06);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Slider thumb glow */
+input[type=range]::-webkit-slider-thumb {
+    box-shadow: 0 2px 8px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.06), 0 0 12px rgba(255,149,0,0.15);
+}
+
+/* Stepper buttons */
+.stepper button:hover {
+    background: rgba(255,149,0,0.1);
+}
+
+/* Content toggle hover */
+.content-toggle:hover {
+    background: #232325;
+}
+
+/* Séparateurs dans les stats */
+.stat {
+    border: 1px solid rgba(255,255,255,0.03);
+    transition: all .2s;
+}
+.stat:hover {
+    border-color: rgba(255,255,255,0.06);
+}
+
+/* Scrollbar custom */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+}
+
+/* Animation d'entrée améliorée */
+@keyframes cardIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(24px) scale(0.98);
+        filter: blur(4px);
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+/* Loading shimmer sur les éléments vides */
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Ligne décorative en haut */
+.app::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, #ff9500, #ff6723, #30d158, #007aff, #5856d6);
+    border-radius: 2px;
+    margin-bottom: 8px;
+    opacity: 0.7;
+}
+
+/* Badge mode EV — teinte verte globale */
+body.ev-mode .app::before {
+    background: linear-gradient(90deg, #30d158, #00c853, #007aff, #5856d6, #30d158);
+}
+
+/* Fuel result glow orange */
+.res-amount {
+    filter: drop-shadow(0 0 20px rgba(255,149,0,0.15));
+}
+
+/* EV result glow vert */
+.ev-res-amount {
+    filter: drop-shadow(0 0 20px rgba(48,209,88,0.15));
+}
+
+/* Carte stations — badge cheapest amélioré */
+.station-item.cheapest {
+    border: 1.5px solid rgba(48,209,88,0.3);
+    background: rgba(48,209,88,0.04);
+    box-shadow: 0 4px 20px rgba(48,209,88,0.08);
+}
+
+/* Lang btn sélectionné */
+.lang-btn.on {
+    box-shadow: 0 0 10px rgba(255,149,0,0.2);
+}
+
+/* Currency pill sélectionné */
+.cur-pill.on {
+    box-shadow: 0 0 10px rgba(255,149,0,0.2);
+}
+
+/* Quick buttons avec micro-animation */
+.q-btn {
+    transition: all .15s ease;
+}
+.q-btn:hover {
+    background: #3a3a3c;
+    transform: translateY(-1px);
+}
+.q-btn.on {
+    box-shadow: 0 4px 12px rgba(255,149,0,0.2);
+}
+
+/* Speed buttons EV */
+.speed-btn.on {
+    box-shadow: 0 4px 12px rgba(48,209,88,0.2);
+}
+
+/* Map container amélioré */
+.map-wrap {
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+/* FAQ items */
+.faq-item {
+    transition: all .2s;
+    border: 1px solid transparent;
+}
+.faq-item:hover {
+    border-color: rgba(255,255,255,0.05);
+}
+
+/* Toast amélioré */
+.save-toast {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Cookie banner amélioré */
+#cookieBanner {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* Focus visible pour accessibilité */
+button:focus-visible, a:focus-visible, input:focus-visible {
+    outline: 2px solid #007aff;
+    outline-offset: 2px;
+}
+
+/* Smooth scroll global */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Sélection texte */
+::selection {
+    background: rgba(255,149,0,0.3);
+    color: #fff;
+}
+body.ev-mode ::selection {
+    background: rgba(48,209,88,0.3);
+}
     </style>
 
 </head>
