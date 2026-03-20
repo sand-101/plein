@@ -2074,7 +2074,135 @@ const EDITORIAL = {
 
 // Fallback: other languages use English
 ['it','pt','ru','zh','ja'].forEach(l => { EDITORIAL[l] = EDITORIAL.en; });
+// ==================== EDITORIAL EV ====================
+const EDITORIAL_EV = {
+    fr: {
+        guideToggle: 'Guide : recharger moins cher',
+        faqToggle: 'Questions fréquentes — Véhicule électrique',
+        aboutToggle: 'À propos d\'Easy Refuel EV',
+        legalToggle: 'Mentions légales & Confidentialité',
+        guide: '<h2>Comment recharger sa voiture électrique moins cher ?</h2>' +
+            '<p>Le coût de la recharge électrique varie énormément selon le lieu et le réseau. De <strong>0,15€/kWh à domicile</strong> jusqu\'à <strong>0,79€/kWh sur autoroute</strong>, la différence peut être multipliée par 5. Voici comment optimiser.</p>' +
+            '<h3>🏠 1. Recharger à domicile</h3>' +
+            '<p>La recharge à domicile est <strong>3 à 5 fois moins chère</strong> qu\'en borne publique. En heures creuses (~0,15€/kWh), une recharge complète d\'une Tesla Model 3 coûte environ <strong>9€ pour 510 km</strong>. Installez une wallbox (borne murale) pour optimiser la vitesse et le coût.</p>' +
+            '<h3>⚡ 2. Comparer les réseaux de recharge</h3>' +
+            '<p>Les écarts entre réseaux sont considérables :</p>' +
+            '<ul><li><strong>Lidl/Leclerc</strong> : souvent gratuit ou ~0,25€/kWh</li><li><strong>Tesla Supercharger</strong> : ~0,36€/kWh</li><li><strong>Ionity</strong> : ~0,39€/kWh (avec abonnement) à 0,69€ sans</li><li><strong>Fastned</strong> : ~0,59€/kWh</li><li><strong>Autoroute</strong> : 0,60-0,79€/kWh</li></ul>' +
+            '<h3>🔌 3. Choisir la bonne puissance de charge</h3>' +
+            '<p>Plus la charge est rapide, plus elle est chère. <strong>AC 7-22kW</strong> (borne lente) coûte moins cher que <strong>DC 50-350kW</strong> (charge rapide). Privilégiez la charge lente pour le quotidien et la charge rapide uniquement en voyage.</p>' +
+            '<h3>📱 4. Utiliser les abonnements</h3>' +
+            '<p>Les abonnements mensuels réduisent significativement le coût :</p>' +
+            '<ul><li><strong>Ionity Passport</strong> : 12,99€/mois → 0,35€/kWh au lieu de 0,69€</li><li><strong>Chargemap Pass</strong> : accès à 400 000 bornes en Europe</li><li><strong>Shell Recharge</strong> : tarifs négociés multi-réseaux</li></ul>' +
+            '<h3>🌍 5. Recharger en Europe</h3>' +
+            '<p>Les prix varient par pays. Les <strong>Pays-Bas</strong> et la <strong>France</strong> ont un bon réseau. L\'<strong>Allemagne</strong> a les prix les plus compétitifs grâce à EnBW et ADAC. La <strong>Norvège</strong> reste le paradis de l\'EV avec des bornes partout.</p>' +
+            '<h3>🔋 6. Préserver sa batterie</h3>' +
+            '<p>Pour maximiser la durée de vie de votre batterie :</p>' +
+            '<ul><li>Chargez entre <strong>20% et 80%</strong> au quotidien</li><li>Évitez les charges rapides DC trop fréquentes</li><li>Ne laissez pas la batterie à 0% ou 100% longtemps</li><li>Préchauffez la batterie avant une charge rapide en hiver</li></ul>',
+        faq: [
+            {q:'Comment fonctionne le calculateur EV ?', a:'Indiquez la capacité de votre batterie (kWh), le niveau actuel (%), la puissance de charge (kW) et le prix du kWh. L\'application calcule instantanément le coût, le temps de charge et l\'autonomie gagnée.'},
+            {q:'Où trouver les bornes de recharge ?', a:'Easy Refuel utilise Open Charge Map (250 000+ bornes dans le monde) et OpenStreetMap pour localiser les bornes autour de vous. Filtrez par type de connecteur (Type 2, CCS, CHAdeMO).'},
+            {q:'Combien coûte une recharge complète ?', a:'Cela dépend du lieu : ~9€ à domicile (heures creuses), ~20€ en borne publique AC, ~35€ en charge rapide DC, ~45€ sur autoroute. Pour une batterie de 60 kWh.'},
+            {q:'Combien de temps dure une recharge ?', a:'AC 7kW (domicile) : 6-8h. AC 22kW (borne publique) : 2-3h. DC 50kW (rapide) : 45-60 min. DC 150kW (très rapide) : 20-30 min. DC 350kW (ultra) : 10-15 min. De 20% à 80%.'},
+            {q:'Quel connecteur pour ma voiture ?', a:'En Europe, la majorité des voitures utilisent le Type 2 (AC) et le CCS Combo 2 (DC rapide). Les Nissan Leaf et Mitsubishi utilisent CHAdeMO. Les Tesla utilisent CCS en Europe.'},
+            {q:'Est-ce moins cher que l\'essence ?', a:'Oui, significativement. En moyenne, 2-3€/100km en électrique vs 8-12€/100km en essence. À domicile en heures creuses, c\'est jusqu\'à 5x moins cher.'},
+            {q:'La recharge abîme-t-elle la batterie ?', a:'La charge lente (AC) n\'abîme pas la batterie. La charge rapide (DC) fréquente peut accélérer légèrement la dégradation. Conseil : chargez entre 20% et 80% au quotidien.'},
+            {q:'Puis-je recharger sous la pluie ?', a:'Oui, absolument. Les connecteurs et les voitures sont conçus pour résister à l\'eau (norme IP). Il n\'y a aucun danger.'}
+        ],
+        about: '<p><strong>Easy Refuel EV</strong> est un calculateur de recharge gratuit pour véhicules électriques. Trouvez les bornes les moins chères, calculez le coût et le temps de charge.</p><p style="margin-top:12px">15 véhicules prédéfinis, 5 vitesses de charge, réseaux de recharge européens. 9 langues, 8 devises.</p><p style="margin-top:12px">Source bornes : Open Charge Map (250 000+ bornes) + OpenStreetMap.</p>',
+        legal: null
+    },
+    en: {
+        guideToggle: 'Guide: charge for less',
+        faqToggle: 'FAQ — Electric vehicles',
+        aboutToggle: 'About Easy Refuel EV',
+        legalToggle: 'Legal notice & Privacy',
+        guide: '<h2>How to charge your EV for less?</h2>' +
+            '<p>Charging costs vary hugely: from <strong>€0.15/kWh at home</strong> to <strong>€0.79/kWh on motorways</strong>. Here\'s how to optimize.</p>' +
+            '<h3>🏠 1. Charge at home</h3>' +
+            '<p>Home charging is <strong>3-5x cheaper</strong> than public chargers. Off-peak (~€0.15/kWh), a full Tesla Model 3 charge costs about <strong>€9 for 510 km</strong>.</p>' +
+            '<h3>⚡ 2. Compare charging networks</h3>' +
+            '<ul><li><strong>Supermarkets</strong>: often free or ~€0.25/kWh</li><li><strong>Tesla SC</strong>: ~€0.36/kWh</li><li><strong>Ionity</strong>: €0.39-0.69/kWh</li><li><strong>Motorway</strong>: €0.60-0.79/kWh</li></ul>' +
+            '<h3>🔌 3. Choose the right charging speed</h3>' +
+            '<p>Slower = cheaper. Use AC 7-22kW daily, DC 50-350kW only for trips.</p>' +
+            '<h3>📱 4. Use subscriptions</h3>' +
+            '<p>Ionity Passport (€12.99/mo), Chargemap Pass, Shell Recharge — all offer significant savings.</p>' +
+            '<h3>🔋 5. Preserve your battery</h3>' +
+            '<ul><li>Charge between <strong>20% and 80%</strong> daily</li><li>Avoid frequent DC fast charging</li><li>Don\'t leave at 0% or 100% for long</li><li>Pre-condition battery before fast charging in winter</li></ul>',
+        faq: [
+            {q:'How does the EV calculator work?', a:'Enter battery capacity (kWh), current level (%), charge power (kW) and price per kWh. The app calculates cost, time and range gained instantly.'},
+            {q:'Where to find charging stations?', a:'Easy Refuel uses Open Charge Map (250,000+ stations worldwide) and OpenStreetMap.'},
+            {q:'How much does a full charge cost?', a:'~€9 at home (off-peak), ~€20 public AC, ~€35 DC fast, ~€45 motorway. For a 60 kWh battery.'},
+            {q:'How long does charging take?', a:'AC 7kW: 6-8h. AC 22kW: 2-3h. DC 50kW: 45-60min. DC 150kW: 20-30min. DC 350kW: 10-15min. From 20% to 80%.'},
+            {q:'Which connector for my car?', a:'In Europe: Type 2 (AC) and CCS Combo 2 (DC) for most cars. Nissan/Mitsubishi use CHAdeMO. Tesla uses CCS in Europe.'},
+            {q:'Is it cheaper than petrol?', a:'Yes. Average 2-3€/100km electric vs 8-12€/100km petrol. Up to 5x cheaper at home.'},
+            {q:'Does charging damage the battery?', a:'Slow AC charging is fine. Frequent DC fast charging slightly accelerates degradation. Charge 20-80% daily.'},
+            {q:'Can I charge in the rain?', a:'Yes, absolutely. Connectors and cars are waterproof (IP rated). Completely safe.'}
+        ],
+        about: '<p><strong>Easy Refuel EV</strong> is a free charging calculator for electric vehicles. Find cheapest stations, calculate cost and charging time.</p><p style="margin-top:12px">15 preset vehicles, 5 charging speeds, European networks. 9 languages, 8 currencies.</p>',
+        legal: null
+    },
+    es: {
+        guideToggle: 'Guía: cargar más barato',
+        faqToggle: 'Preguntas frecuentes — Vehículo eléctrico',
+        aboutToggle: 'Acerca de Easy Refuel EV',
+        legalToggle: 'Aviso legal y Privacidad',
+        guide: '<h2>¿Cómo cargar tu coche eléctrico más barato?</h2>' +
+            '<p>El coste varía enormemente: de <strong>0,15€/kWh en casa</strong> a <strong>0,79€/kWh en autopista</strong>.</p>' +
+            '<h3>🏠 1. Cargar en casa</h3>' +
+            '<p>La carga en casa es <strong>3-5 veces más barata</strong>. En horas valle (~0,15€/kWh), un Tesla Model 3 completo cuesta unos <strong>9€ para 510 km</strong>.</p>' +
+            '<h3>⚡ 2. Comparar redes de carga</h3>' +
+            '<ul><li><strong>Supermercados</strong>: a menudo gratis o ~0,25€/kWh</li><li><strong>Tesla SC</strong>: ~0,36€/kWh</li><li><strong>Ionity</strong>: 0,39-0,69€/kWh</li><li><strong>Autopista</strong>: 0,60-0,79€/kWh</li></ul>' +
+            '<h3>🔌 3. Elegir la velocidad adecuada</h3>' +
+            '<p>Más lento = más barato. AC 7-22kW para el día a día, DC 50-350kW solo para viajes.</p>' +
+            '<h3>🔋 4. Cuidar la batería</h3>' +
+            '<ul><li>Cargar entre <strong>20% y 80%</strong></li><li>Evitar cargas rápidas DC frecuentes</li><li>No dejar al 0% o 100% mucho tiempo</li></ul>',
+        faq: [
+            {q:'¿Cómo funciona la calculadora EV?', a:'Indica capacidad (kWh), nivel actual (%), potencia de carga (kW) y precio por kWh. La app calcula coste, tiempo y autonomía.'},
+            {q:'¿Dónde encontrar puntos de carga?', a:'Easy Refuel usa Open Charge Map (250.000+ puntos) y OpenStreetMap.'},
+            {q:'¿Cuánto cuesta una carga completa?', a:'~9€ en casa, ~20€ AC público, ~35€ DC rápido, ~45€ autopista. Para 60 kWh.'},
+            {q:'¿Cuánto tiempo tarda la carga?', a:'AC 7kW: 6-8h. AC 22kW: 2-3h. DC 50kW: 45-60min. DC 150kW: 20-30min.'},
+            {q:'¿Qué conector necesito?', a:'En Europa: Tipo 2 (AC) y CCS Combo 2 (DC). Nissan/Mitsubishi: CHAdeMO. Tesla: CCS en Europa.'},
+            {q:'¿Es más barato que la gasolina?', a:'Sí. 2-3€/100km eléctrico vs 8-12€/100km gasolina. Hasta 5x más barato en casa.'},
+            {q:'¿La carga daña la batería?', a:'La carga lenta AC no. La carga rápida DC frecuente acelera ligeramente la degradación.'},
+            {q:'¿Puedo cargar con lluvia?', a:'Sí, los conectores son impermeables (norma IP). Totalmente seguro.'}
+        ],
+        about: '<p><strong>Easy Refuel EV</strong> es una calculadora gratuita de recarga para vehículos eléctricos. 15 vehículos, 5 velocidades, redes europeas. 9 idiomas, 8 monedas.</p>',
+        legal: null
+    },
+    de: {
+        guideToggle: 'Ratgeber: günstiger laden',
+        faqToggle: 'Häufige Fragen — Elektrofahrzeug',
+        aboutToggle: 'Über Easy Refuel EV',
+        legalToggle: 'Impressum & Datenschutz',
+        guide: '<h2>Wie lädt man sein E-Auto günstiger?</h2>' +
+            '<p>Die Kosten variieren stark: von <strong>0,15€/kWh zu Hause</strong> bis <strong>0,79€/kWh an der Autobahn</strong>.</p>' +
+            '<h3>🏠 1. Zu Hause laden</h3>' +
+            '<p>Zu Hause ist <strong>3-5x günstiger</strong>. Mit Nachtstrom (~0,15€/kWh) kostet ein Tesla Model 3 nur <strong>9€ für 510 km</strong>.</p>' +
+            '<h3>⚡ 2. Ladenetzwerke vergleichen</h3>' +
+            '<ul><li><strong>Supermarkt</strong>: oft kostenlos oder ~0,25€/kWh</li><li><strong>Tesla SC</strong>: ~0,36€/kWh</li><li><strong>Ionity</strong>: 0,35-0,69€/kWh</li><li><strong>Autobahn</strong>: 0,60-0,79€/kWh</li></ul>' +
+            '<h3>🔌 3. Richtige Ladegeschwindigkeit wählen</h3>' +
+            '<p>Langsamer = günstiger. AC 7-22kW im Alltag, DC 50-350kW nur unterwegs.</p>' +
+            '<h3>📱 4. Abonnements nutzen</h3>' +
+            '<p>Ionity Passport, ADAC e-Charge, EnBW mobility+ — alle bieten erhebliche Ersparnisse.</p>' +
+            '<h3>🔋 5. Batterie pflegen</h3>' +
+            '<ul><li>Zwischen <strong>20% und 80%</strong> laden</li><li>Häufiges DC-Schnellladen vermeiden</li><li>Nicht bei 0% oder 100% stehen lassen</li><li>Batterie im Winter vorheizen</li></ul>',
+        faq: [
+            {q:'Wie funktioniert der EV-Rechner?', a:'Geben Sie Batteriekapazität (kWh), aktuellen Stand (%), Ladeleistung (kW) und Preis pro kWh ein. Die App berechnet Kosten, Zeit und Reichweite.'},
+            {q:'Wo finde ich Ladestationen?', a:'Easy Refuel nutzt Open Charge Map (250.000+ Stationen) und OpenStreetMap.'},
+            {q:'Was kostet eine Vollladung?', a:'~9€ zu Hause, ~20€ öffentlich AC, ~35€ DC schnell, ~45€ Autobahn. Für 60 kWh.'},
+            {q:'Wie lange dauert das Laden?', a:'AC 7kW: 6-8h. AC 22kW: 2-3h. DC 50kW: 45-60min. DC 150kW: 20-30min.'},
+            {q:'Welchen Stecker brauche ich?', a:'In Europa: Typ 2 (AC) und CCS Combo 2 (DC). Nissan/Mitsubishi: CHAdeMO. Tesla: CCS.'},
+            {q:'Ist es günstiger als Benzin?', a:'Ja. 2-3€/100km elektrisch vs 8-12€/100km Benzin. Bis zu 5x günstiger zu Hause.'},
+            {q:'Schadet das Laden der Batterie?', a:'Langsames AC-Laden nicht. Häufiges DC-Schnellladen beschleunigt die Alterung leicht.'},
+            {q:'Kann ich im Regen laden?', a:'Ja, die Stecker sind wasserdicht (IP-Norm). Völlig sicher.'}
+        ],
+        about: '<p><strong>Easy Refuel EV</strong> ist ein kostenloser Laderechner für Elektrofahrzeuge. 15 Fahrzeuge, 5 Ladegeschwindigkeiten, europäische Netzwerke. 9 Sprachen, 8 Währungen.</p>',
+        legal: null
+    }
+};
 
+// Fallback EV editorial
+['it','pt','ru','zh','ja'].forEach(function(l) { EDITORIAL_EV[l] = EDITORIAL_EV.en; });
 // Toggle content card
 window.toggleContent = function(id) {
     document.getElementById(id).classList.toggle('open');
@@ -2082,30 +2210,47 @@ window.toggleContent = function(id) {
 
 // Render editorial content
 function updateEditorialContent() {
-    const ed = EDITORIAL[lang] || EDITORIAL.en;
+    var isFuel = appMode !== 'ev';
+    var ed = isFuel
+        ? (EDITORIAL[lang] || EDITORIAL.en)
+        : (EDITORIAL_EV[lang] || EDITORIAL_EV.en);
 
-    // Toggle texts
-    $('guideToggleText').textContent = ed.guideToggle;
-    $('faqToggleText').textContent = ed.faqToggle;
-    $('aboutToggleText').textContent = ed.aboutToggle;
-    $('legalToggleText').textContent = ed.legalToggle;
+    if (!ed) return;
 
-    // Guide
-    $('guideContent').innerHTML = ed.guide;
+    function safeText(id, txt) {
+        var el = document.getElementById(id);
+        if (el && txt) el.textContent = txt;
+    }
+    function safeHtml(id, html) {
+        var el = document.getElementById(id);
+        if (el && html) el.innerHTML = html;
+    }
 
-    // FAQ
-    $('faqContent').innerHTML = ed.faq.map(f =>
-        `<details class="faq-item">
-            <summary class="faq-q">${f.q}</summary>
-            <p class="faq-a">${f.a}</p>
-        </details>`
-    ).join('');
+    safeText('guideToggleText', ed.guideToggle);
+    safeText('faqToggleText', ed.faqToggle);
+    safeText('aboutToggleText', ed.aboutToggle);
 
-    // About
-    $('aboutContent').innerHTML = ed.about;
+    // Legal: use fuel version if EV has null
+    var legalEd = ed.legal ? ed : (EDITORIAL[lang] || EDITORIAL.en);
+    safeText('legalToggleText', legalEd.legalToggle || ed.legalToggle);
 
-    // Legal
-    $('legalContent').innerHTML = ed.legal;
+    safeHtml('guideContent', ed.guide);
+
+    var faqEl = document.getElementById('faqContent');
+    if (faqEl && ed.faq) {
+        faqEl.innerHTML = ed.faq.map(function(f) {
+            return '<details class="faq-item">' +
+                '<summary class="faq-q">' + f.q + '</summary>' +
+                '<p class="faq-a">' + f.a + '</p>' +
+                '</details>';
+        }).join('');
+    }
+
+    safeHtml('aboutContent', ed.about);
+
+    // Legal always from fuel version (shared)
+    var legalContent = (EDITORIAL[lang] || EDITORIAL.en).legal;
+    safeHtml('legalContent', legalContent);
 }
 // ==================== AUTO-HIDE EMPTY ADS ====================
 function checkAdSlots() {
@@ -2163,13 +2308,71 @@ const EV_VEHICLES = [
     {name:'Tesla Model S', kWh:100, range:650}
 ];
 
-const EV_CHARGE_SPEEDS = [
-    {power:7, label:'AC 7kW', sub:'Domicile'},
-    {power:22, label:'AC 22kW', sub:'Borne publique'},
-    {power:50, label:'DC 50kW', sub:'Rapide'},
-    {power:150, label:'DC 150kW', sub:'Très rapide'},
-    {power:350, label:'DC 350kW', sub:'Ultra-rapide'}
-];
+const EV_CHARGE_SPEEDS = {
+    fr:[
+        {power:7, label:'AC 7kW', sub:'Domicile'},
+        {power:22, label:'AC 22kW', sub:'Borne publique'},
+        {power:50, label:'DC 50kW', sub:'Rapide'},
+        {power:150, label:'DC 150kW', sub:'Très rapide'},
+        {power:350, label:'DC 350kW', sub:'Ultra-rapide'}
+    ],
+    en:[
+        {power:7, label:'AC 7kW', sub:'Home'},
+        {power:22, label:'AC 22kW', sub:'Public charger'},
+        {power:50, label:'DC 50kW', sub:'Fast'},
+        {power:150, label:'DC 150kW', sub:'Very fast'},
+        {power:350, label:'DC 350kW', sub:'Ultra-fast'}
+    ],
+    es:[
+        {power:7, label:'AC 7kW', sub:'Hogar'},
+        {power:22, label:'AC 22kW', sub:'Punto público'},
+        {power:50, label:'DC 50kW', sub:'Rápido'},
+        {power:150, label:'DC 150kW', sub:'Muy rápido'},
+        {power:350, label:'DC 350kW', sub:'Ultra-rápido'}
+    ],
+    de:[
+        {power:7, label:'AC 7kW', sub:'Zuhause'},
+        {power:22, label:'AC 22kW', sub:'Öffentlich'},
+        {power:50, label:'DC 50kW', sub:'Schnell'},
+        {power:150, label:'DC 150kW', sub:'Sehr schnell'},
+        {power:350, label:'DC 350kW', sub:'Ultra-schnell'}
+    ],
+    it:[
+        {power:7, label:'AC 7kW', sub:'Casa'},
+        {power:22, label:'AC 22kW', sub:'Pubblica'},
+        {power:50, label:'DC 50kW', sub:'Veloce'},
+        {power:150, label:'DC 150kW', sub:'Molto veloce'},
+        {power:350, label:'DC 350kW', sub:'Ultra-veloce'}
+    ],
+    pt:[
+        {power:7, label:'AC 7kW', sub:'Casa'},
+        {power:22, label:'AC 22kW', sub:'Público'},
+        {power:50, label:'DC 50kW', sub:'Rápido'},
+        {power:150, label:'DC 150kW', sub:'Muito rápido'},
+        {power:350, label:'DC 350kW', sub:'Ultra-rápido'}
+    ],
+    ru:[
+        {power:7, label:'AC 7кВт', sub:'Дома'},
+        {power:22, label:'AC 22кВт', sub:'Публичная'},
+        {power:50, label:'DC 50кВт', sub:'Быстрая'},
+        {power:150, label:'DC 150кВт', sub:'Очень быстрая'},
+        {power:350, label:'DC 350кВт', sub:'Ультра'}
+    ],
+    zh:[
+        {power:7, label:'AC 7kW', sub:'家庭'},
+        {power:22, label:'AC 22kW', sub:'公共'},
+        {power:50, label:'DC 50kW', sub:'快充'},
+        {power:150, label:'DC 150kW', sub:'超快'},
+        {power:350, label:'DC 350kW', sub:'超级快'}
+    ],
+    ja:[
+        {power:7, label:'AC 7kW', sub:'自宅'},
+        {power:22, label:'AC 22kW', sub:'公共'},
+        {power:50, label:'DC 50kW', sub:'急速'},
+        {power:150, label:'DC 150kW', sub:'超急速'},
+        {power:350, label:'DC 350kW', sub:'ウルトラ'}
+    ]
+};
 
 const EV_NETWORKS = {
     EUR:[
@@ -2336,8 +2539,8 @@ window.setMode = function(mode) {
         if (hSub) hSub.textContent = TL.sub.replace('{n}', tank);
     }
 
-    // Safe update texts
     try { applyTexts(); } catch(e) {}
+    try { updateEditorialContent(); } catch(e) {}
 };
 
 // ==================== EV BATTERY ====================
@@ -2497,7 +2700,8 @@ function buildChargeSpeeds() {
     var w = document.getElementById('chargeSpeeds');
     if (!w) return;
     w.innerHTML = '';
-    EV_CHARGE_SPEEDS.forEach(function(s) {
+    var speeds = EV_CHARGE_SPEEDS[lang] || EV_CHARGE_SPEEDS.en;
+    speeds.forEach(function(s) {
         var b = document.createElement('button');
         b.className = 'speed-btn' + (s.power === evChargePower ? ' on' : '');
         b.innerHTML = s.label + '<small>' + s.sub + '</small>';
