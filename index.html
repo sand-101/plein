@@ -81,8 +81,16 @@
         input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:30px;height:30px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.06)}
         .slider-marks{display:flex;justify-content:space-between;margin-top:7px}
         .slider-marks span{font-size:10px;color:#636366;font-weight:500}
-        .alert{display:none;align-items:center;gap:10px;background:rgba(255,59,48,.1);border:1px solid rgba(255,59,48,.18);border-radius:14px;padding:13px 15px;margin-bottom:14px}
-        .alert.on{display:flex}
+        .alert{
+    display:none;
+    align-items:center;
+    gap:10px;
+    background:rgba(255,59,48,.1);
+    border:1px solid rgba(255,59,48,.18);
+    border-radius:14px;
+    padding:13px 15px;
+    margin-bottom:14px;
+}
         .alert-dot{width:10px;height:10px;border-radius:50%;background:#ff3b30;flex-shrink:0;animation:blink 1.8s infinite}
         .alert-txt{font-size:13px;color:#ff6961;font-weight:500;line-height:1.35}
         @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
@@ -605,6 +613,37 @@ html {
 }
 body.ev-mode ::selection {
     background: rgba(48,209,88,0.3);
+}
+/* ===== SLIDER COLORISÉ ===== */
+input[type=range].colored-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    outline: none;
+    background: linear-gradient(to right, #ff3b30 0%, #ff3b30 0%, #2c2c2e 0%, #2c2c2e 100%);
+}
+input[type=range].colored-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.06);
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+}
+input[type=range].colored-slider::-moz-range-thumb {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.35);
+    border: none;
+    cursor: pointer;
 }
     </style>
 
@@ -1593,7 +1632,7 @@ function buildQuickBtns() {
         const b = document.createElement('button');
         b.className = 'q-btn'; b.dataset.l = l;
         b.innerHTML = label + '<small>' + fmt((l/100)*tank) + ' L</small>';
-        b.addEventListener('click', () => { lvl=l; sLevel.value=lvl; save(); calc(); });
+        b.addEventListener('click', () => { lvl=l; sLevel.value=lvl; save(); calc();colorizeSlider(sLevel, lvl); });
         w.appendChild(b);
     });
 }
@@ -1633,27 +1672,70 @@ function gColor(p) {
 }
 
 function calc() {
-    const cL = (lvl/100)*tank, add = tank-cL, cost = add*prc, full = tank*prc;
-    gFill.style.strokeDashoffset = arcLen - (arcLen*lvl/100);
-    gFill.style.stroke = gColor(lvl);
-    needleEl.style.transform = 'rotate(' + (-90 + (lvl/100)*180) + 'deg)';
-    $('dPct').textContent = lvl;
-    $('dLiters').textContent = TL.inTank.replace('{n}', fmt(cL));
-    $('rAmount').textContent = fmtCur(cost);
-    $('rDetail').textContent = fmt(add)+' L × '+fmtPS(prc)+' '+C.symbol+'/L';
-    $('sAdd').textContent = fmt(add)+' L';
-    $('sCur').textContent = fmt(cL)+' L';
-    $('sFull').textContent = fmtCur(full);
-    $('alertBox').classList.toggle('on', lvl <= 12);
-    $('qBtnsWrap').querySelectorAll('.q-btn').forEach(b =>
-        b.classList.toggle('on', parseInt(b.dataset.l) === lvl));
+    var cL = (lvl / 100) * tank;
+    var add = tank - cL;
+    var cost = add * prc;
+    var full = tank * prc;
+
+    // Gauge
+    try {
+        gFill.style.strokeDashoffset = arcLen - (arcLen * lvl / 100);
+        gFill.style.stroke = gColor(lvl);
+        needleEl.style.transform = 'rotate(' + (-90 + (lvl / 100) * 180) + 'deg)';
+    } catch(e) {}
+
+    var dPct = document.getElementById('dPct');
+    if (dPct) dPct.textContent = lvl;
+
+    var dLiters = document.getElementById('dLiters');
+    if (dLiters) dLiters.textContent = TL.inTank.replace('{n}', fmt(cL));
+
+    var rAmount = document.getElementById('rAmount');
+    if (rAmount) rAmount.textContent = fmtCur(cost);
+
+    var rDetail = document.getElementById('rDetail');
+    if (rDetail) rDetail.textContent = fmt(add) + ' L × ' + fmtPS(prc) + ' ' + C.symbol + '/L';
+
+    var sAdd = document.getElementById('sAdd');
+    if (sAdd) sAdd.textContent = fmt(add) + ' L';
+
+    var sCur = document.getElementById('sCur');
+    if (sCur) sCur.textContent = fmt(cL) + ' L';
+
+    var sFull = document.getElementById('sFull');
+    if (sFull) sFull.textContent = fmtCur(full);
+
+    // ===== ALERT FIX =====
+    var alertBox = document.getElementById('alertBox');
+    if (alertBox) {
+        if (lvl <= 12) {
+            alertBox.style.display = 'flex';
+            alertBox.classList.add('on');
+        } else {
+            alertBox.style.display = 'none';
+            alertBox.classList.remove('on');
+        }
+    }
+
+    // Quick btns highlight
+    var qWrap = document.getElementById('qBtnsWrap');
+    if (qWrap) {
+        qWrap.querySelectorAll('.q-btn').forEach(function(b) {
+            b.classList.toggle('on', parseInt(b.dataset.l) === lvl);
+        });
+    }
 }
 
 // ==================== STEPPER ====================
 function changeTank(d) {
-    const n = tank + d;
+    var n = tank + d;
     if (n < 10 || n > 120) return;
-    tank = n; updateTankUI(); buildQuickBtns(); save(); calc();
+    tank = n;
+    updateTankUI();
+    buildQuickBtns();
+    save();
+    calc();
+	
 }
 
 $('btnMinus').addEventListener('click', () => changeTank(-1));
@@ -1683,7 +1765,12 @@ function stopHold() {
 });
 
 // ==================== SLIDER + PRICE INPUT ====================
-sLevel.addEventListener('input', e => { lvl = +e.target.value; save(); calc(); });
+sLevel.addEventListener('input', function(e) {
+    lvl = parseInt(e.target.value);
+    save();
+    calc();
+    colorizeSlider(sLevel, lvl);
+});
 
 iPrice.addEventListener('input', () => {
     prc = parseFloat(iPrice.value) || 0;
@@ -2027,6 +2114,9 @@ function init() {
 
     // Ads
     checkAdSlots();
+	 // Colorise les sliders
+    colorizeSlider(document.getElementById('sLevel'), lvl);
+    colorizeEvSlider(document.getElementById('evLevel'), evLvl);
 }
 // ==================== PREMIUM SYSTEM ====================
 
@@ -2860,6 +2950,7 @@ function buildEvPresets() {
             updateEvBattUI();
             buildEvQuickBtns();
             evCalc();
+			
             showToast('🔋 ' + v.name + ' — ' + v.kWh + ' kWh');
         });
         w.appendChild(b);
@@ -2956,6 +3047,7 @@ function buildEvQuickBtns() {
             localStorage.setItem('evLvl', evLvl);
             updateEvGauge();
             evCalc();
+			colorizeEvSlider(evLevelSlider, evLvl);
         });
         w.appendChild(b);
     });
@@ -2967,6 +3059,7 @@ if (evLevelSlider) {
         localStorage.setItem('evLvl', evLvl);
         updateEvGauge();
         evCalc();
+        colorizeEvSlider(evLevelSlider, evLvl);
     });
 }
 
@@ -3131,6 +3224,39 @@ function initEV() {
         setMode('ev');
     }
 }
+// ==================== COLORED SLIDERS ====================
+function colorizeSlider(slider, percent) {
+    if (!slider) return;
+    var color;
+    if (percent <= 12) color = '#ff3b30';
+    else if (percent <= 25) color = '#ff6723';
+    else if (percent <= 40) color = '#ff9f0a';
+    else if (percent <= 65) color = '#ffd60a';
+    else color = '#30d158';
+
+    var bg = '#2c2c2e';
+    slider.style.background = 'linear-gradient(to right, ' +
+        color + ' 0%, ' +
+        color + ' ' + percent + '%, ' +
+        bg + ' ' + percent + '%, ' +
+        bg + ' 100%)';
+}
+
+function colorizeEvSlider(slider, percent) {
+    if (!slider) return;
+    var color;
+    if (percent <= 15) color = '#ff3b30';
+    else if (percent <= 30) color = '#ff9f0a';
+    else color = '#30d158';
+
+    var bg = '#2c2c2e';
+    slider.style.background = 'linear-gradient(to right, ' +
+        color + ' 0%, ' +
+        color + ' ' + percent + '%, ' +
+        bg + ' ' + percent + '%, ' +
+        bg + ' 100%)';
+}
+
 window.addEventListener('load', init);
 // Register Service Worker
 if ('serviceWorker' in navigator) {
