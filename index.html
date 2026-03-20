@@ -295,6 +295,21 @@ body.ev-mode .ev-only{display:block}
 .station-power{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;margin-top:4px}
 .station-power.fast{background:rgba(48,209,88,.15);color:#30d158}
 .station-power.slow{background:rgba(255,149,0,.15);color:#ff9500}
+/* ===== DESKTOP FIX ===== */
+@media (min-width: 500px) {
+    body {
+        display: flex;
+        justify-content: center;
+        background: #000;
+    }
+    .app {
+        max-width: 420px;
+        width: 100%;
+    }
+    .mode-toggle {
+        max-width: 420px;
+    }
+}
     </style>
 
 </head>
@@ -1136,78 +1151,83 @@ function setCurrency(code) {
 
 // ==================== REBUILD ALL ====================
 function rebuildAll() {
-    applyTexts();
-    buildTankPresets();
-    buildQuickBtns();
-    buildFuelPills();
-    buildSliderMarks();
-    buildFuelFilter();
-    updateTankUI();
-    updatePremiumUI();
-    updateEditorialContent();
+    try { applyTexts(); } catch(e) {}
+    try { buildTankPresets(); } catch(e) {}
+    try { buildQuickBtns(); } catch(e) {}
+    try { buildFuelPills(); } catch(e) {}
+    try { buildSliderMarks(); } catch(e) {}
+    try { buildFuelFilter(); } catch(e) {}
+    try { updateTankUI(); } catch(e) {}
+    try { updatePremiumUI(); } catch(e) {}
+    try { updateEditorialContent(); } catch(e) {}
 
-    // EV rebuild
-    applyEvTexts();
-    buildEvPresets();
-    buildEvQuickBtns();
-    buildChargeSpeeds();
-    buildEvNetworkPills();
-    updateEvBattUI();
-    updateEvGauge();
-    evCalc();
+    // EV
+    try { applyEvTexts(); } catch(e) {}
+    try { buildEvPresets(); } catch(e) {}
+    try { buildEvQuickBtns(); } catch(e) {}
+    try { buildChargeSpeeds(); } catch(e) {}
+    try { buildEvNetworkPills(); } catch(e) {}
+    try { updateEvBattUI(); } catch(e) {}
+    try { updateEvGauge(); } catch(e) {}
+    try { evCalc(); } catch(e) {}
 
-    // Re-apply mode (update header title)
-    setMode(appMode);
+    // Re-apply mode
+    try { setMode(appMode); } catch(e) {}
 
-    calc();
-    if (stationsData.length) renderStations();
+    try { calc(); } catch(e) {}
+    if (stationsData.length) {
+        try { renderStations(); } catch(e) {}
+    }
 }
 
 function applyTexts() {
-    $('hTitle').textContent = TL.title;
-    $('lTank').textContent = TL.tankLabel;
-    $('lLevel').textContent = TL.levelLabel;
-    $('lPrice').textContent = TL.priceLabel;
-    $('lResult').textContent = TL.resultLabel;
-    $('lAdd').textContent = TL.addLabel;
-    $('lCur').textContent = TL.curLabel;
-    $('lFull').textContent = TL.fullLabel;
-    $('lCap').textContent = TL.capLabel;
-    $('pUnit').textContent = TL.perLiter;
-    $('pSym').textContent = C.symbol;
-    $('alertTxt').textContent = TL.alert;
-    $('lStations').textContent = TL.stationsLabel;
-    $('locateTxt').textContent = TL.locateBtn;
-    $('lRadius').textContent = TL.radiusLabel;
-	// EV mode station label override
+    function safeText(id, txt) {
+        var el = document.getElementById(id);
+        if (el && txt !== undefined) el.textContent = txt;
+    }
+
+    safeText('hTitle', TL.title);
+    safeText('lTank', TL.tankLabel);
+    safeText('lLevel', TL.levelLabel);
+    safeText('lPrice', TL.priceLabel);
+    safeText('lResult', TL.resultLabel);
+    safeText('lAdd', TL.addLabel);
+    safeText('lCur', TL.curLabel);
+    safeText('lFull', TL.fullLabel);
+    safeText('lCap', TL.capLabel);
+    safeText('pUnit', TL.perLiter);
+    safeText('pSym', C.symbol);
+    safeText('alertTxt', TL.alert);
+    safeText('lStations', TL.stationsLabel);
+    safeText('locateTxt', TL.locateBtn);
+    safeText('lRadius', TL.radiusLabel);
+
+    // EV mode overrides
     if (appMode === 'ev') {
-        var lStations = document.getElementById('lStations');
-        var ei = EV_I18N[lang] || EV_I18N.en;
-        if (lStations) lStations.textContent = '📍 ' + (
-            lang === 'fr' ? 'Bornes de recharge à proximité' :
-            lang === 'en' ? 'Charging stations nearby' :
-            lang === 'es' ? 'Puntos de carga cercanos' :
-            lang === 'de' ? 'Ladestationen in der Nähe' :
-            lang === 'it' ? 'Stazioni di ricarica vicine' :
-            lang === 'pt' ? 'Postos de carregamento próximos' :
-            lang === 'ru' ? 'Зарядные станции рядом' :
-            lang === 'zh' ? '附近充电站' :
-            lang === 'ja' ? '近くの充電スタンド' :
-            'Charging stations nearby'
-        );
-        var locateTxt = document.getElementById('locateTxt');
-        if (locateTxt) locateTxt.textContent = (
-            lang === 'fr' ? 'Trouver les bornes proches' :
-            lang === 'en' ? 'Find nearby chargers' :
-            lang === 'es' ? 'Buscar cargadores' :
-            lang === 'de' ? 'Ladestationen finden' :
-            lang === 'it' ? 'Cerca stazioni di ricarica' :
-            lang === 'pt' ? 'Encontrar carregadores' :
-            lang === 'ru' ? 'Найти зарядки' :
-            lang === 'zh' ? '查找充电站' :
-            lang === 'ja' ? '充電スタンド検索' :
-            'Find nearby chargers'
-        );
+        var evStationLabels = {
+            fr:'Bornes de recharge à proximité',
+            en:'Charging stations nearby',
+            es:'Puntos de carga cercanos',
+            de:'Ladestationen in der Nähe',
+            it:'Stazioni di ricarica vicine',
+            pt:'Postos de carregamento próximos',
+            ru:'Зарядные станции рядом',
+            zh:'附近充电站',
+            ja:'近くの充電スタンド'
+        };
+        var evLocateLabels = {
+            fr:'Trouver les bornes proches',
+            en:'Find nearby chargers',
+            es:'Buscar cargadores',
+            de:'Ladestationen finden',
+            it:'Cerca stazioni di ricarica',
+            pt:'Encontrar carregadores',
+            ru:'Найти зарядки',
+            zh:'查找充电站',
+            ja:'充電スタンド検索'
+        };
+        safeText('lStations', '📍 ' + (evStationLabels[lang] || evStationLabels.en));
+        safeText('locateTxt', evLocateLabels[lang] || evLocateLabels.en);
     }
 }
 
@@ -2256,29 +2276,6 @@ window.setMode = function(mode) {
 
     var fuelBtn = document.getElementById('modeFuel');
     var evBtn = document.getElementById('modeEV');
-    if (fuelBtn) { fuelBtn.classList.toggle('active', mode === 'fuel'); }
-    if (evBtn) { evBtn.classList.toggle('active', mode === 'ev'); }
-
-    // Update header
-    var hTitle = document.getElementById('hTitle');
-    var hSub = document.getElementById('hSub');
-    var ei = EV_I18N[lang] || EV_I18N.en;
-
-    if (mode === 'ev') {
-        if (hTitle) hTitle.textContent = '🔋 ' + ei.ev;
-        if (hSub) hSub.textContent = ei.evSub.replace('{n}', evBatt);
-    } else {
-        if (hTitle) hTitle.textContent = TL.title;
-        if (hSub) hSub.textContent = TL.sub.replace('{n}', tank);
-    }
-	window.setMode = function(mode) {
-    appMode = mode;
-    localStorage.setItem('appMode', mode);
-
-    document.body.classList.toggle('ev-mode', mode === 'ev');
-
-    var fuelBtn = document.getElementById('modeFuel');
-    var evBtn = document.getElementById('modeEV');
     if (fuelBtn) fuelBtn.classList.toggle('active', mode === 'fuel');
     if (evBtn) evBtn.classList.toggle('active', mode === 'ev');
 
@@ -2294,9 +2291,8 @@ window.setMode = function(mode) {
         if (hSub) hSub.textContent = TL.sub.replace('{n}', tank);
     }
 
-    // Update station labels
-    applyTexts();
-};
+    // Safe update texts
+    try { applyTexts(); } catch(e) {}
 };
 
 // ==================== EV BATTERY ====================
