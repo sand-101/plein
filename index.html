@@ -819,6 +819,81 @@ body.ev-mode .share-card-preview::before{
 .share-method.whatsapp{border-color:#25d366;color:#25d366}
 .share-method.twitter{border-color:#1da1f2;color:#1da1f2}
 .share-method.copy{border-color:#ff9500;color:#ff9500}
+/* ===== FAVORIS STATIONS ===== */
+.fav-btn{
+    background:none;border:none;font-size:20px;cursor:pointer;
+    padding:4px;transition:transform .2s;flex-shrink:0;
+}
+.fav-btn:active{transform:scale(1.3)}
+.fav-btn.is-fav{animation:favPop .3s ease}
+@keyframes favPop{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.4)}
+    100%{transform:scale(1)}
+}
+
+/* Favoris card */
+.favorites-card{padding:0;overflow:hidden}
+.favorites-toggle{
+    width:100%;padding:18px 20px;
+    display:flex;align-items:center;justify-content:space-between;
+    background:transparent;border:none;color:#fff;
+    font-size:15px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;text-align:left;gap:10px;
+}
+.favorites-toggle:active{background:#2c2c2e}
+.favorites-toggle .ft-left{display:flex;align-items:center;gap:10px}
+.favorites-toggle .ft-badge{
+    background:#ffd700;color:#000;font-size:11px;font-weight:700;
+    padding:2px 8px;border-radius:10px;min-width:24px;text-align:center;
+}
+.favorites-toggle .ft-arrow{font-size:14px;color:#8e8e93;transition:transform .3s}
+.favorites-card.open .ft-arrow{transform:rotate(180deg)}
+.favorites-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.25,.46,.45,.94)}
+.favorites-card.open .favorites-body{max-height:2000px}
+.favorites-inner{padding:0 20px 20px}
+
+.fav-empty{
+    text-align:center;padding:24px 16px;color:#636366;font-size:13px;line-height:1.5;
+}
+.fav-empty-icon{font-size:32px;margin-bottom:8px}
+
+.fav-list{display:flex;flex-direction:column;gap:8px}
+
+.fav-item{
+    display:flex;align-items:center;gap:12px;
+    padding:14px;background:#2c2c2e;border-radius:13px;
+    cursor:pointer;transition:all .15s;position:relative;
+}
+.fav-item:active{transform:scale(.98);background:#3a3a3c}
+
+.fav-item .fav-rank{
+    width:28px;height:28px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;flex-shrink:0;
+    background:#3a3a3c;
+}
+
+.fav-item .fav-info{flex:1;min-width:0}
+.fav-item .fav-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fav-item .fav-addr{font-size:11px;color:#8e8e93;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fav-item .fav-added{font-size:10px;color:#636366;margin-top:1px}
+
+.fav-item .fav-actions{display:flex;gap:4px;flex-shrink:0}
+.fav-item .fav-nav{
+    padding:6px 12px;border-radius:8px;border:none;
+    background:rgba(0,122,255,.12);color:#007aff;
+    font-size:11px;font-weight:600;
+    font-family:-apple-system,sans-serif;cursor:pointer;
+}
+.fav-item .fav-nav:active{opacity:.7}
+.fav-item .fav-remove{
+    padding:6px 8px;border-radius:8px;border:none;
+    background:rgba(255,59,48,.1);color:#ff3b30;
+    font-size:13px;cursor:pointer;
+}
+.fav-item .fav-remove:active{opacity:.7}
     </style>
 
 </head>
@@ -858,6 +933,22 @@ body.ev-mode .share-card-preview::before{
         <div id="osmNote" class="osm-note" style="display:none"></div>
         <div class="station-list hidden" id="stationList"></div>
     </div>
+	<!-- ===== FAVORIS STATIONS ===== -->
+<div class="card favorites-card" id="favoritesCard">
+    <button class="favorites-toggle" onclick="toggleContent('favoritesCard')">
+        <span class="ft-left">
+            <span>⭐</span>
+            <span id="favToggleText">Mes stations favorites</span>
+            <span class="ft-badge" id="favCount">0</span>
+        </span>
+        <span class="ft-arrow">▼</span>
+    </button>
+    <div class="favorites-body">
+        <div class="favorites-inner">
+            <div id="favContent"></div>
+        </div>
+    </div>
+</div>
 	<!-- PREMIUM CARD -->
 <!-- ===== PREMIUM ===== -->
 <div class="card premium-card" id="premiumCard">
@@ -1764,6 +1855,7 @@ function rebuildAll() {
     try { updateEditorialContent(); } catch(e) {}
 	try { updateHistoryUI(); } catch(e) {}
 	try { updateShareUI(); } catch(e) {}
+	try { updateFavoritesUI(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -2242,7 +2334,8 @@ function renderStations() {
         return `
         <div class="station-item${isCheapest?' cheapest':''}"
              onclick="useStationPrice(${price})">
-            <div class="station-rank">${i + 1}</div>
+            '<div class="station-rank">' + (i + 1) + '</div>' +
+'<button class="fav-btn ' + (isFavorite(s.id) ? 'is-fav' : '') + '" onclick="event.stopPropagation();toggleFavorite(\'' + s.id + '\',\'' + escH(s.name).replace(/'/g, "\\'") + '\',\'' + escH(s.addr).replace(/'/g, "\\'") + '\',\'' + escH(s.city).replace(/'/g, "\\'") + '\',' + s.lat + ',' + s.lon + ')">' + (isFavorite(s.id) ? '⭐' : '☆') + '</button>' +
             <div class="station-info">
                 <div class="station-name">${escH(s.name)}</div>
                 <div class="station-addr">${escH(s.addr)}${s.cp?', '+escH(s.cp):''}${s.city?' '+escH(s.city):''}</div>
@@ -3182,6 +3275,7 @@ window.setMode = function(mode) {
     try { updateEditorialContent(); } catch(e) {}
 	try { updateHistoryUI(); } catch(e) {}
 	try { updateShareUI(); } catch(e) {}
+	try { updateFavoritesUI(); } catch(e) {}
 };
 
 // ==================== EV BATTERY ====================
@@ -3851,6 +3945,114 @@ window.shareVia = function(platform) {
             break;
     }
 };
+// ==================== FAVORIS STATIONS ====================
+var favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+
+var FAV_I18N = {
+    fr:{toggle:'Mes stations favorites',toggleEv:'Mes bornes favorites',empty:'Aucune station favorite. Appuyez sur ⭐ dans les résultats pour en ajouter.',emptyEv:'Aucune borne favorite. Appuyez sur ⭐ dans les résultats pour en ajouter.',added:'Ajouté aux favoris',removed:'Retiré des favoris',navigate:'Y aller',addedOn:'Ajouté le'},
+    en:{toggle:'My favorite stations',toggleEv:'My favorite chargers',empty:'No favorites yet. Tap ⭐ in results to add.',emptyEv:'No favorite chargers. Tap ⭐ in results to add.',added:'Added to favorites',removed:'Removed from favorites',navigate:'Go',addedOn:'Added'},
+    es:{toggle:'Mis gasolineras favoritas',toggleEv:'Mis cargadores favoritos',empty:'Sin favoritos. Toca ⭐ en los resultados.',emptyEv:'Sin cargadores favoritos. Toca ⭐.',added:'Añadido a favoritos',removed:'Eliminado de favoritos',navigate:'Ir',addedOn:'Añadido'},
+    de:{toggle:'Meine Lieblingstankstellen',toggleEv:'Meine Lieblings-Ladestationen',empty:'Keine Favoriten. Tippen Sie ⭐ in den Ergebnissen.',emptyEv:'Keine Lieblings-Ladestationen.',added:'Zu Favoriten hinzugefügt',removed:'Aus Favoriten entfernt',navigate:'Route',addedOn:'Hinzugefügt'},
+    it:{toggle:'Le mie stazioni preferite',toggleEv:'Le mie stazioni di ricarica',empty:'Nessun preferito. Tocca ⭐ nei risultati.',emptyEv:'Nessuna stazione di ricarica preferita.',added:'Aggiunto ai preferiti',removed:'Rimosso dai preferiti',navigate:'Vai',addedOn:'Aggiunto'},
+    pt:{toggle:'Meus postos favoritos',toggleEv:'Meus carregadores favoritos',empty:'Sem favoritos. Toque ⭐ nos resultados.',emptyEv:'Sem carregadores favoritos.',added:'Adicionado aos favoritos',removed:'Removido dos favoritos',navigate:'Ir',addedOn:'Adicionado'},
+    ru:{toggle:'Мои избранные АЗС',toggleEv:'Мои избранные зарядки',empty:'Нет избранных. Нажмите ⭐ в результатах.',emptyEv:'Нет избранных зарядок.',added:'Добавлено в избранное',removed:'Удалено из избранного',navigate:'Маршрут',addedOn:'Добавлено'},
+    zh:{toggle:'我的收藏站',toggleEv:'我的收藏充电站',empty:'没有收藏。在结果中点击⭐添加。',emptyEv:'没有收藏的充电站。',added:'已收藏',removed:'已取消收藏',navigate:'导航',addedOn:'添加于'},
+    ja:{toggle:'お気に入りGS',toggleEv:'お気に入り充電スタンド',empty:'お気に入りなし。結果の⭐をタップ。',emptyEv:'お気に入りの充電スタンドなし。',added:'お気に入りに追加',removed:'お気に入りから削除',navigate:'ナビ',addedOn:'追加日'}
+};
+
+function getFavI18n() {
+    return FAV_I18N[lang] || FAV_I18N.en;
+}
+
+function isFavorite(stationId) {
+    return favorites.some(function(f) { return f.id === stationId; });
+}
+
+window.toggleFavorite = function(stationId, stationName, stationAddr, stationCity, stationLat, stationLon) {
+    var fi = getFavI18n();
+    var idx = favorites.findIndex(function(f) { return f.id === stationId; });
+
+    if (idx >= 0) {
+        favorites.splice(idx, 1);
+        showToast('⭐ ' + fi.removed);
+    } else {
+        favorites.unshift({
+            id: stationId,
+            name: stationName,
+            addr: stationAddr,
+            city: stationCity,
+            lat: stationLat,
+            lon: stationLon,
+            mode: appMode,
+            date: new Date().toISOString()
+        });
+        if (favorites.length > 50) favorites.pop();
+        showToast('⭐ ' + fi.added);
+    }
+
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    updateFavoritesUI();
+    // Re-render stations to update star icons
+    if (stationsData.length) {
+        try { renderStations(); } catch(e) {}
+    }
+};
+
+window.removeFavorite = function(stationId) {
+    var fi = getFavI18n();
+    var idx = favorites.findIndex(function(f) { return f.id === stationId; });
+    if (idx >= 0) {
+        favorites.splice(idx, 1);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateFavoritesUI();
+        showToast('⭐ ' + fi.removed);
+    }
+};
+
+function updateFavoritesUI() {
+    var fi = getFavI18n();
+    var isEv = appMode === 'ev';
+
+    var toggleText = document.getElementById('favToggleText');
+    if (toggleText) toggleText.textContent = isEv ? fi.toggleEv : fi.toggle;
+
+    // Filter by mode
+    var filtered = favorites.filter(function(f) { return f.mode === appMode; });
+
+    var badge = document.getElementById('favCount');
+    if (badge) badge.textContent = filtered.length;
+
+    var content = document.getElementById('favContent');
+    if (!content) return;
+
+    if (!filtered.length) {
+        content.innerHTML =
+            '<div class="fav-empty">' +
+                '<div class="fav-empty-icon">⭐</div>' +
+                '<p>' + (isEv ? fi.emptyEv : fi.empty) + '</p>' +
+            '</div>';
+        return;
+    }
+
+    content.innerHTML = '<div class="fav-list">' +
+        filtered.map(function(f, i) {
+            var d = new Date(f.date);
+            var dateStr = d.toLocaleDateString(lang === 'fr' ? 'fr-FR' : lang, {day:'numeric', month:'short'});
+            return '<div class="fav-item">' +
+                '<div class="fav-rank">⭐</div>' +
+                '<div class="fav-info">' +
+                    '<div class="fav-name">' + escH(f.name) + '</div>' +
+                    '<div class="fav-addr">' + escH(f.addr) + (f.city ? ', ' + escH(f.city) : '') + '</div>' +
+                    '<div class="fav-added">' + fi.addedOn + ' ' + dateStr + '</div>' +
+                '</div>' +
+                '<div class="fav-actions">' +
+                    '<a class="fav-nav" href="https://maps.apple.com/?daddr=' + f.lat + ',' + f.lon + '&dirflg=d" onclick="event.stopPropagation()">' + fi.navigate + ' →</a>' +
+                    '<button class="fav-remove" onclick="event.stopPropagation();removeFavorite(\'' + f.id + '\')">✕</button>' +
+                '</div>' +
+            '</div>';
+        }).join('') +
+    '</div>';
+}
 window.addEventListener('load', init);
 // Register Service Worker
 if ('serviceWorker' in navigator) {
