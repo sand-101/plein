@@ -4382,40 +4382,56 @@ function drawQRCode() {
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
     var url = 'https://easy-refuel.eu';
-    
-    // Use actual QR API if available, otherwise draw pattern
-    var img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = function() {
-        canvas.width = 180;
-        canvas.height = 180;
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, 180, 180);
-        ctx.drawImage(img, 0, 0, 180, 180);
-    };
-    img.onerror = function() {
-        // Fallback: draw matrix pattern
-        var matrix = QR.generateMatrix(url);
-        var size = matrix.length;
-        var cellSize = Math.floor(180 / size);
-        canvas.width = cellSize * size;
-        canvas.height = cellSize * size;
-        
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#000000';
-        
-        for (var r = 0; r < size; r++) {
-            for (var c = 0; c < size; c++) {
-                if (matrix[r][c]) {
-                    ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
-                }
-            }
+
+    canvas.width = 200;
+    canvas.height = 200;
+
+    // Fond blanc en attendant
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, 200, 200);
+    ctx.fillStyle = '#aaaaaa';
+    ctx.font = '12px -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Chargement...', 100, 105);
+
+    // Essayer plusieurs APIs dans l'ordre
+    var apis = [
+        'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(url),
+        'https://quickchart.io/qr?text=' + encodeURIComponent(url) + '&size=200',
+        'https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=' + encodeURIComponent(url)
+    ];
+
+    function tryLoadQR(index) {
+        if (index >= apis.length) {
+            // Toutes les APIs ont échoué → afficher lien texte
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 200, 200);
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 16px -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('easy-refuel.eu', 100, 100);
+            ctx.font = '12px -apple-system, sans-serif';
+            ctx.fillStyle = '#888888';
+            ctx.fillText('QR indisponible', 100, 125);
+            return;
         }
-    };
-    // Use Google Charts QR API (free, reliable)
-    img.src = 'https://chart.googleapis.com/chart?cht=qr&chs=180x180&chl=' + 
-        encodeURIComponent('https://easy-refuel.eu') + '&choe=UTF-8&chld=M|2';
+
+        var img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function() {
+            canvas.width = 200;
+            canvas.height = 200;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 200, 200);
+            ctx.drawImage(img, 0, 0, 200, 200);
+        };
+        img.onerror = function() {
+            tryLoadQR(index + 1);
+        };
+        img.src = apis[index];
+    }
+
+    tryLoadQR(0);
 }
 
 window.shareQR = function() {
