@@ -643,6 +643,106 @@ input[type=range]::-moz-range-thumb {
     border: none;
     cursor: pointer;
 }
+/* ===== HISTORIQUE ===== */
+.history-card{padding:0;overflow:hidden}
+.history-toggle{
+    width:100%;padding:18px 20px;
+    display:flex;align-items:center;justify-content:space-between;
+    background:transparent;border:none;color:#fff;
+    font-size:15px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;text-align:left;gap:10px;
+}
+.history-toggle:active{background:#2c2c2e}
+.history-toggle .ht-left{display:flex;align-items:center;gap:10px}
+.history-toggle .ht-badge{
+    background:#ff9500;color:#000;font-size:11px;font-weight:700;
+    padding:2px 8px;border-radius:10px;min-width:24px;text-align:center;
+}
+body.ev-mode .history-toggle .ht-badge{background:#30d158}
+.history-toggle .ht-arrow{font-size:14px;color:#8e8e93;transition:transform .3s}
+.history-card.open .ht-arrow{transform:rotate(180deg)}
+.history-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.25,.46,.45,.94)}
+.history-card.open .history-body{max-height:3000px}
+.history-inner{padding:0 20px 20px}
+
+/* Stats résumé */
+.history-stats{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;
+    margin-bottom:16px;
+}
+.h-stat{
+    background:#2c2c2e;border-radius:12px;padding:12px;text-align:center;
+}
+.h-stat-v{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
+.h-stat-l{font-size:9px;color:#8e8e93;text-transform:uppercase;letter-spacing:.3px;margin-top:3px}
+
+/* Graphique */
+.history-chart{
+    height:120px;background:#2c2c2e;border-radius:12px;
+    padding:12px;margin-bottom:16px;position:relative;overflow:hidden;
+}
+.chart-bars{display:flex;align-items:flex-end;gap:3px;height:100%}
+.chart-bar{
+    flex:1;min-width:4px;border-radius:3px 3px 0 0;
+    background:linear-gradient(180deg,#ff9500,#ff6723);
+    transition:height .3s ease;position:relative;
+}
+body.ev-mode .chart-bar{background:linear-gradient(180deg,#30d158,#00c853)}
+.chart-bar:hover{opacity:.8}
+.chart-empty{
+    display:flex;align-items:center;justify-content:center;
+    height:100%;color:#636366;font-size:12px;
+}
+
+/* Liste historique */
+.history-list{display:flex;flex-direction:column;gap:8px}
+.history-item{
+    display:flex;align-items:center;gap:12px;
+    padding:12px;background:#2c2c2e;border-radius:12px;
+    position:relative;
+}
+.history-item .hi-date{
+    font-size:11px;color:#8e8e93;min-width:50px;
+}
+.history-item .hi-info{flex:1;min-width:0}
+.history-item .hi-station{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.history-item .hi-detail{font-size:11px;color:#8e8e93;margin-top:2px}
+.history-item .hi-cost{
+    font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;
+    flex-shrink:0;
+}
+.history-item .hi-delete{
+    position:absolute;top:8px;right:8px;
+    background:none;border:none;color:#636366;font-size:14px;
+    cursor:pointer;padding:4px;
+}
+.history-item .hi-delete:hover{color:#ff3b30}
+
+/* Bouton enregistrer */
+.save-fill-btn{
+    width:100%;padding:14px;border:none;border-radius:12px;
+    background:linear-gradient(135deg,#ff9500,#ff6723);
+    color:#000;font-size:15px;font-weight:700;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    margin-top:16px;
+}
+body.ev-mode .save-fill-btn{background:linear-gradient(135deg,#30d158,#00c853)}
+.save-fill-btn:active{transform:scale(.97);opacity:.85}
+
+/* Actions historique */
+.history-actions{
+    display:flex;gap:8px;margin-top:12px;
+}
+.h-action{
+    flex:1;padding:10px;border-radius:10px;border:1.5px solid #3a3a3c;
+    background:transparent;color:#8e8e93;font-size:12px;font-weight:600;
+    font-family:-apple-system,sans-serif;cursor:pointer;
+    text-align:center;transition:all .15s;
+}
+.h-action:active{transform:scale(.95);background:#2c2c2e}
     </style>
 
 </head>
@@ -825,6 +925,60 @@ input[type=range]::-moz-range-thumb {
         <span class="unit" id="evPUnit">/ kWh</span>
     </div>
     <div class="pills" id="evNetworkPills"></div>
+</div>
+
+<!-- ===== HISTORIQUE (partagé fuel + ev) ===== -->
+<div class="card history-card" id="historyCard">
+    <button class="history-toggle" onclick="toggleContent('historyCard')">
+        <span class="ht-left">
+            <span>📊</span>
+            <span id="historyToggleText">Historique des pleins</span>
+            <span class="ht-badge" id="historyCount">0</span>
+        </span>
+        <span class="ht-arrow">▼</span>
+    </button>
+    <div class="history-body">
+        <div class="history-inner">
+            <!-- Stats résumé -->
+            <div class="history-stats">
+                <div class="h-stat">
+                    <div class="h-stat-v" id="hStatTotal">0 €</div>
+                    <div class="h-stat-l" id="hStatTotalL">Ce mois</div>
+                </div>
+                <div class="h-stat">
+                    <div class="h-stat-v" id="hStatAvg">0 €</div>
+                    <div class="h-stat-l" id="hStatAvgL">Moy. / plein</div>
+                </div>
+                <div class="h-stat">
+                    <div class="h-stat-v" id="hStatCount">0</div>
+                    <div class="h-stat-l" id="hStatCountL">Pleins</div>
+                </div>
+            </div>
+
+            <!-- Graphique -->
+            <div class="history-chart" id="historyChart">
+                <div class="chart-bars" id="chartBars"></div>
+            </div>
+
+            <!-- Bouton enregistrer -->
+            <button class="save-fill-btn" id="saveFillBtn" onclick="saveCurrentFill()">
+                💾 <span id="saveFillText">Enregistrer ce plein</span>
+            </button>
+
+            <!-- Liste -->
+            <div class="history-list" id="historyList"></div>
+
+            <!-- Actions -->
+            <div class="history-actions">
+                <button class="h-action" onclick="exportHistory()">
+                    📤 <span id="hExportText">Exporter CSV</span>
+                </button>
+                <button class="h-action" onclick="clearHistory()">
+                    🗑️ <span id="hClearText">Tout effacer</span>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- RESULT -->
     <div class="card res-card fuel-only">
@@ -1494,6 +1648,7 @@ function rebuildAll() {
     try { updateTankUI(); } catch(e) {}
     try { updatePremiumUI(); } catch(e) {}
     try { updateEditorialContent(); } catch(e) {}
+	try { updateHistoryUI(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -2909,6 +3064,7 @@ window.setMode = function(mode) {
 
     try { applyTexts(); } catch(e) {}
     try { updateEditorialContent(); } catch(e) {}
+	try { updateHistoryUI(); } catch(e) {}
 };
 
 // ==================== EV BATTERY ====================
@@ -3251,7 +3407,196 @@ function colorizeEvSlider(slider, percent) {
         color + ' 0%,' + color + ' ' + percent + '%,' +
         '#2c2c2e ' + percent + '%,#2c2c2e 100%)';
 }
+// ==================== HISTORIQUE DES PLEINS ====================
+var fillHistory = JSON.parse(localStorage.getItem('fillHistory') || '[]');
 
+var HIST_I18N = {
+    fr:{toggle:'Historique des pleins',toggleEv:'Historique des recharges',month:'Ce mois',avg:'Moy. / plein',avgEv:'Moy. / recharge',count:'Pleins',countEv:'Recharges',save:'Enregistrer ce plein',saveEv:'Enregistrer cette recharge',export:'Exporter CSV',clear:'Tout effacer',clearConfirm:'Supprimer tout l\'historique ?',empty:'Aucun enregistrement',deleteConfirm:'Supprimer ?',liters:'L',kwh:'kWh',at:'à'},
+    en:{toggle:'Fill-up history',toggleEv:'Charging history',month:'This month',avg:'Avg / fill',avgEv:'Avg / charge',count:'Fill-ups',countEv:'Charges',save:'Save this fill-up',saveEv:'Save this charge',export:'Export CSV',clear:'Clear all',clearConfirm:'Delete all history?',empty:'No records',deleteConfirm:'Delete?',liters:'L',kwh:'kWh',at:'at'},
+    es:{toggle:'Historial de repostajes',toggleEv:'Historial de recargas',month:'Este mes',avg:'Media / repostaje',avgEv:'Media / recarga',count:'Repostajes',countEv:'Recargas',save:'Guardar repostaje',saveEv:'Guardar recarga',export:'Exportar CSV',clear:'Borrar todo',clearConfirm:'¿Eliminar historial?',empty:'Sin registros',deleteConfirm:'¿Eliminar?',liters:'L',kwh:'kWh',at:'a'},
+    de:{toggle:'Tankhistorie',toggleEv:'Ladehistorie',month:'Diesen Monat',avg:'Ø / Tankung',avgEv:'Ø / Ladung',count:'Tankungen',countEv:'Ladungen',save:'Tankung speichern',saveEv:'Ladung speichern',export:'CSV Export',clear:'Alle löschen',clearConfirm:'Alle Daten löschen?',empty:'Keine Einträge',deleteConfirm:'Löschen?',liters:'L',kwh:'kWh',at:'bei'},
+    it:{toggle:'Storico rifornimenti',toggleEv:'Storico ricariche',month:'Questo mese',avg:'Media / pieno',avgEv:'Media / ricarica',count:'Pieni',countEv:'Ricariche',save:'Salva rifornimento',saveEv:'Salva ricarica',export:'Esporta CSV',clear:'Cancella tutto',clearConfirm:'Eliminare tutto?',empty:'Nessun dato',deleteConfirm:'Eliminare?',liters:'L',kwh:'kWh',at:'a'},
+    pt:{toggle:'Histórico',toggleEv:'Histórico de cargas',month:'Este mês',avg:'Média',avgEv:'Média / carga',count:'Abastecimentos',countEv:'Cargas',save:'Guardar',saveEv:'Guardar carga',export:'Exportar CSV',clear:'Apagar tudo',clearConfirm:'Apagar histórico?',empty:'Sem dados',deleteConfirm:'Apagar?',liters:'L',kwh:'kWh',at:'em'},
+    ru:{toggle:'История заправок',toggleEv:'История зарядок',month:'Этот месяц',avg:'Средн.',avgEv:'Средн. / зарядка',count:'Заправок',countEv:'Зарядок',save:'Сохранить',saveEv:'Сохранить зарядку',export:'Экспорт CSV',clear:'Очистить',clearConfirm:'Удалить всё?',empty:'Нет данных',deleteConfirm:'Удалить?',liters:'л',kwh:'кВт·ч',at:'по'},
+    zh:{toggle:'加油历史',toggleEv:'充电历史',month:'本月',avg:'平均',avgEv:'平均/充电',count:'次',countEv:'充电次数',save:'保存记录',saveEv:'保存充电',export:'导出CSV',clear:'全部删除',clearConfirm:'删除所有记录？',empty:'无记录',deleteConfirm:'删除？',liters:'L',kwh:'kWh',at:'@'},
+    ja:{toggle:'給油履歴',toggleEv:'充電履歴',month:'今月',avg:'平均',avgEv:'平均/充電',count:'回',countEv:'充電回数',save:'記録を保存',saveEv:'充電を保存',export:'CSV出力',clear:'全削除',clearConfirm:'全て削除しますか？',empty:'記録なし',deleteConfirm:'削除？',liters:'L',kwh:'kWh',at:'@'}
+};
+
+function getHistI18n() {
+    return HIST_I18N[lang] || HIST_I18N.en;
+}
+
+// Save current fill/charge
+window.saveCurrentFill = function() {
+    var hi = getHistI18n();
+    var entry;
+
+    if (appMode === 'ev') {
+        var evCurrentKwh = (evLvl / 100) * evBatt;
+        var evToAdd = evBatt - evCurrentKwh;
+        var evCost = evToAdd * evPrice;
+        entry = {
+            date: new Date().toISOString(),
+            mode: 'ev',
+            amount: parseFloat(evToAdd.toFixed(1)),
+            unit: 'kWh',
+            pricePerUnit: evPrice,
+            totalCost: parseFloat(evCost.toFixed(2)),
+            level: evLvl,
+            vehicle: evBatt + 'kWh',
+            currency: C.symbol
+        };
+    } else {
+        var cL = (lvl / 100) * tank;
+        var toAdd = tank - cL;
+        var cost = toAdd * prc;
+        entry = {
+            date: new Date().toISOString(),
+            mode: 'fuel',
+            amount: parseFloat(toAdd.toFixed(1)),
+            unit: 'L',
+            pricePerUnit: prc,
+            totalCost: parseFloat(cost.toFixed(2)),
+            level: lvl,
+            vehicle: tank + 'L',
+            currency: C.symbol
+        };
+    }
+
+    fillHistory.unshift(entry);
+    if (fillHistory.length > 100) fillHistory.pop();
+    localStorage.setItem('fillHistory', JSON.stringify(fillHistory));
+
+    updateHistoryUI();
+    showToast('💾 ' + (appMode === 'ev' ? hi.saveEv : hi.save) + ' ✅');
+};
+
+// Delete one entry
+window.deleteHistoryEntry = function(index) {
+    var hi = getHistI18n();
+    if (!confirm(hi.deleteConfirm)) return;
+    fillHistory.splice(index, 1);
+    localStorage.setItem('fillHistory', JSON.stringify(fillHistory));
+    updateHistoryUI();
+};
+
+// Clear all
+window.clearHistory = function() {
+    var hi = getHistI18n();
+    if (!confirm(hi.clearConfirm)) return;
+    fillHistory = [];
+    localStorage.setItem('fillHistory', JSON.stringify(fillHistory));
+    updateHistoryUI();
+    showToast('🗑️ OK');
+};
+
+// Export CSV
+window.exportHistory = function() {
+    if (!fillHistory.length) return;
+    var csv = 'Date,Mode,Amount,Unit,PricePerUnit,TotalCost,Currency,Level,Vehicle\n';
+    fillHistory.forEach(function(e) {
+        var d = new Date(e.date);
+        csv += d.toLocaleDateString() + ',' + e.mode + ',' + e.amount + ',' +
+            e.unit + ',' + e.pricePerUnit + ',' + e.totalCost + ',' +
+            e.currency + ',' + e.level + '%,' + e.vehicle + '\n';
+    });
+    var blob = new Blob([csv], {type:'text/csv'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'easy-refuel-history.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('📤 CSV exported');
+};
+
+// Update UI
+function updateHistoryUI() {
+    var hi = getHistI18n();
+    var isEv = appMode === 'ev';
+
+    // Toggle text
+    var toggleText = document.getElementById('historyToggleText');
+    if (toggleText) toggleText.textContent = isEv ? hi.toggleEv : hi.toggle;
+
+    // Save button text
+    var saveText = document.getElementById('saveFillText');
+    if (saveText) saveText.textContent = isEv ? hi.saveEv : hi.save;
+
+    // Export / clear texts
+    var expText = document.getElementById('hExportText');
+    if (expText) expText.textContent = hi.export;
+    var clrText = document.getElementById('hClearText');
+    if (clrText) clrText.textContent = hi.clear;
+
+    // Filter by current mode
+    var filtered = fillHistory.filter(function(e) { return e.mode === appMode; });
+
+    // Badge count
+    var badge = document.getElementById('historyCount');
+    if (badge) badge.textContent = filtered.length;
+
+    // Stats
+    var now = new Date();
+    var thisMonth = filtered.filter(function(e) {
+        var d = new Date(e.date);
+        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    });
+    var monthTotal = thisMonth.reduce(function(s, e) { return s + e.totalCost; }, 0);
+    var avgCost = filtered.length ? filtered.reduce(function(s, e) { return s + e.totalCost; }, 0) / filtered.length : 0;
+
+    var hStatTotal = document.getElementById('hStatTotal');
+    if (hStatTotal) hStatTotal.textContent = fmtCur(monthTotal);
+    var hStatTotalL = document.getElementById('hStatTotalL');
+    if (hStatTotalL) hStatTotalL.textContent = hi.month;
+
+    var hStatAvg = document.getElementById('hStatAvg');
+    if (hStatAvg) hStatAvg.textContent = fmtCur(avgCost);
+    var hStatAvgL = document.getElementById('hStatAvgL');
+    if (hStatAvgL) hStatAvgL.textContent = isEv ? hi.avgEv : hi.avg;
+
+    var hStatCount = document.getElementById('hStatCount');
+    if (hStatCount) hStatCount.textContent = filtered.length;
+    var hStatCountL = document.getElementById('hStatCountL');
+    if (hStatCountL) hStatCountL.textContent = isEv ? hi.countEv : hi.count;
+
+    // Chart
+    var chartBars = document.getElementById('chartBars');
+    if (chartBars) {
+        if (!filtered.length) {
+            chartBars.innerHTML = '<div class="chart-empty">' + hi.empty + '</div>';
+        } else {
+            var last20 = filtered.slice(0, 20).reverse();
+            var maxCost = Math.max.apply(null, last20.map(function(e) { return e.totalCost; }));
+            chartBars.innerHTML = last20.map(function(e) {
+                var h = maxCost > 0 ? (e.totalCost / maxCost) * 100 : 0;
+                return '<div class="chart-bar" style="height:' + Math.max(4, h) + '%" title="' + fmtCur(e.totalCost) + '"></div>';
+            }).join('');
+        }
+    }
+
+    // List
+    var list = document.getElementById('historyList');
+    if (list) {
+        if (!filtered.length) {
+            list.innerHTML = '';
+        } else {
+            list.innerHTML = filtered.slice(0, 15).map(function(e, i) {
+                var d = new Date(e.date);
+                var dateStr = d.toLocaleDateString(lang === 'fr' ? 'fr-FR' : lang, {day:'numeric', month:'short'});
+                return '<div class="history-item">' +
+                    '<div class="hi-date">' + dateStr + '</div>' +
+                    '<div class="hi-info">' +
+                        '<div class="hi-station">' + e.amount + ' ' + e.unit + '</div>' +
+                        '<div class="hi-detail">' + hi.at + ' ' + e.pricePerUnit.toFixed(2) + ' ' + e.currency + '/' + e.unit + ' — ' + e.vehicle + '</div>' +
+                    '</div>' +
+                    '<div class="hi-cost">' + fmtCur(e.totalCost) + '</div>' +
+                    '<button class="hi-delete" onclick="deleteHistoryEntry(' + i + ')">✕</button>' +
+                '</div>';
+            }).join('');
+        }
+    }
+}
 window.addEventListener('load', init);
 // Register Service Worker
 if ('serviceWorker' in navigator) {
