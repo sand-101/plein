@@ -743,6 +743,82 @@ body.ev-mode .save-fill-btn{background:linear-gradient(135deg,#30d158,#00c853)}
     text-align:center;transition:all .15s;
 }
 .h-action:active{transform:scale(.95);background:#2c2c2e}
+/* ===== PARTAGE SOCIAL ===== */
+.share-btn{
+    width:100%;padding:14px;border:none;border-radius:12px;
+    background:linear-gradient(135deg,#007aff,#5856d6);
+    color:#fff;font-size:15px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    margin-top:12px;
+    box-shadow:0 4px 15px rgba(0,122,255,.2);
+}
+.share-btn:active{transform:scale(.97);opacity:.85}
+
+.share-card-preview{
+    background:#1c1c1e;border-radius:16px;padding:20px;
+    margin-top:12px;border:1px solid #2c2c2e;
+    position:relative;overflow:hidden;
+}
+.share-card-preview::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,#ff9500,#ff6723,#30d158,#007aff);
+}
+body.ev-mode .share-card-preview::before{
+    background:linear-gradient(90deg,#30d158,#00c853,#007aff,#5856d6);
+}
+.share-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.share-logo{font-size:28px}
+.share-app-name{font-size:14px;font-weight:700;color:#fff}
+.share-app-url{font-size:11px;color:#636366}
+.share-amount{font-size:36px;font-weight:800;text-align:center;margin:16px 0;letter-spacing:-1px}
+.share-amount.fuel-color{
+    background:linear-gradient(135deg,#ff9f0a,#ff6723);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.share-amount.ev-color{
+    background:linear-gradient(135deg,#30d158,#00c853);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.share-details{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;
+    margin-bottom:14px;
+}
+.share-detail{
+    background:#2c2c2e;border-radius:10px;padding:10px;text-align:center;
+}
+.share-detail-v{font-size:16px;font-weight:700}
+.share-detail-l{font-size:10px;color:#8e8e93;margin-top:2px}
+.share-savings{
+    text-align:center;padding:10px;
+    background:rgba(48,209,88,.08);border-radius:10px;
+    margin-bottom:12px;
+}
+.share-savings-v{font-size:14px;font-weight:600;color:#30d158}
+.share-footer{
+    text-align:center;font-size:11px;color:#636366;
+    border-top:1px solid #2c2c2e;padding-top:10px;
+}
+
+/* QR Code */
+.share-qr{
+    display:flex;justify-content:center;margin:12px 0;
+}
+.share-qr canvas{border-radius:8px}
+
+/* Share methods */
+.share-methods{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:center}
+.share-method{
+    padding:10px 16px;border-radius:20px;border:1.5px solid #3a3a3c;
+    background:transparent;color:#e5e5ea;font-size:12px;font-weight:600;
+    font-family:-apple-system,sans-serif;cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;gap:6px;
+}
+.share-method:active{transform:scale(.94)}
+.share-method.whatsapp{border-color:#25d366;color:#25d366}
+.share-method.twitter{border-color:#1da1f2;color:#1da1f2}
+.share-method.copy{border-color:#ff9500;color:#ff9500}
     </style>
 
 </head>
@@ -926,7 +1002,45 @@ body.ev-mode .save-fill-btn{background:linear-gradient(135deg,#30d158,#00c853)}
     </div>
     <div class="pills" id="evNetworkPills"></div>
 </div>
+<!-- ===== PARTAGE SOCIAL ===== -->
+<div class="card" style="padding:18px">
+    <div class="card-label" id="lShare">📤 Partager</div>
 
+    <!-- Preview card -->
+    <div class="share-card-preview" id="sharePreview">
+        <div class="share-header">
+            <span class="share-logo">⛽</span>
+            <div>
+                <div class="share-app-name">Easy Refuel</div>
+                <div class="share-app-url">easy-refuel.eu</div>
+            </div>
+        </div>
+        <div class="share-amount" id="shareAmount"></div>
+        <div class="share-details" id="shareDetails"></div>
+        <div class="share-savings" id="shareSavings" style="display:none">
+            <div class="share-savings-v" id="shareSavingsText"></div>
+        </div>
+        <div class="share-footer" id="shareFooter"></div>
+    </div>
+
+    <!-- Share button (native) -->
+    <button class="share-btn" id="shareBtn" onclick="shareResult()">
+        📤 <span id="shareText">Partager mon économie</span>
+    </button>
+
+    <!-- Fallback share methods -->
+    <div class="share-methods" id="shareMethods" style="display:none">
+        <button class="share-method whatsapp" onclick="shareVia('whatsapp')">
+            💬 WhatsApp
+        </button>
+        <button class="share-method twitter" onclick="shareVia('twitter')">
+            🐦 Twitter/X
+        </button>
+        <button class="share-method copy" onclick="shareVia('copy')">
+            📋 <span id="shareCopyText">Copier</span>
+        </button>
+    </div>
+</div>
 <!-- ===== HISTORIQUE (partagé fuel + ev) ===== -->
 <div class="card history-card" id="historyCard">
     <button class="history-toggle" onclick="toggleContent('historyCard')">
@@ -1649,6 +1763,7 @@ function rebuildAll() {
     try { updatePremiumUI(); } catch(e) {}
     try { updateEditorialContent(); } catch(e) {}
 	try { updateHistoryUI(); } catch(e) {}
+	try { updateShareUI(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -1876,6 +1991,7 @@ function calc() {
             b.classList.toggle('on', parseInt(b.dataset.l) === lvl);
         });
     }
+	try { updateShareUI(); } catch(e) {}
 }
 
 // ==================== STEPPER ====================
@@ -3065,6 +3181,7 @@ window.setMode = function(mode) {
     try { applyTexts(); } catch(e) {}
     try { updateEditorialContent(); } catch(e) {}
 	try { updateHistoryUI(); } catch(e) {}
+	try { updateShareUI(); } catch(e) {}
 };
 
 // ==================== EV BATTERY ====================
@@ -3334,6 +3451,7 @@ function evCalc() {
             b.classList.toggle('on', parseInt(b.dataset.l) === evLvl);
         });
     }
+	try { updateShareUI(); } catch(e) {}
 }
 
 // ==================== EV TEXTS ====================
@@ -3597,6 +3715,142 @@ function updateHistoryUI() {
         }
     }
 }
+// ==================== PARTAGE SOCIAL ====================
+var SHARE_I18N = {
+    fr:{label:'📤 Partager',btn:'Partager mon économie',btnEv:'Partager ma recharge',copy:'Copier',copied:'Copié !',footer:'Trouvez les stations les moins chères sur easy-refuel.eu',footerEv:'Trouvez les bornes les moins chères sur easy-refuel.eu',forFull:'pour un plein de',forCharge:'pour une recharge de',savedVs:'Économie vs station la plus chère :',at:'à',perL:'/L',perKwh:'/kWh'},
+    en:{label:'📤 Share',btn:'Share my savings',btnEv:'Share my charge',copy:'Copy',copied:'Copied!',footer:'Find cheapest stations at easy-refuel.eu',footerEv:'Find cheapest chargers at easy-refuel.eu',forFull:'for a fill-up of',forCharge:'for a charge of',savedVs:'Saved vs most expensive:',at:'at',perL:'/L',perKwh:'/kWh'},
+    es:{label:'📤 Compartir',btn:'Compartir mi ahorro',btnEv:'Compartir mi recarga',copy:'Copiar',copied:'¡Copiado!',footer:'Encuentra las gasolineras más baratas en easy-refuel.eu',footerEv:'Encuentra los cargadores más baratos en easy-refuel.eu',forFull:'para un depósito de',forCharge:'para una recarga de',savedVs:'Ahorro vs más cara:',at:'a',perL:'/L',perKwh:'/kWh'},
+    de:{label:'📤 Teilen',btn:'Ersparnis teilen',btnEv:'Ladung teilen',copy:'Kopieren',copied:'Kopiert!',footer:'Finde günstigste Tankstellen auf easy-refuel.eu',footerEv:'Finde günstigste Ladestationen auf easy-refuel.eu',forFull:'für eine Tankung von',forCharge:'für eine Ladung von',savedVs:'Ersparnis vs teuerste:',at:'bei',perL:'/L',perKwh:'/kWh'},
+    it:{label:'📤 Condividi',btn:'Condividi il risparmio',btnEv:'Condividi la ricarica',copy:'Copia',copied:'Copiato!',footer:'Trova i distributori più economici su easy-refuel.eu',footerEv:'Trova le stazioni di ricarica su easy-refuel.eu',forFull:'per un pieno di',forCharge:'per una ricarica di',savedVs:'Risparmio vs più cara:',at:'a',perL:'/L',perKwh:'/kWh'},
+    pt:{label:'📤 Partilhar',btn:'Partilhar poupança',btnEv:'Partilhar carga',copy:'Copiar',copied:'Copiado!',footer:'Encontre postos mais baratos em easy-refuel.eu',footerEv:'Encontre carregadores em easy-refuel.eu',forFull:'para um depósito de',forCharge:'para uma carga de',savedVs:'Poupança vs mais cara:',at:'a',perL:'/L',perKwh:'/kWh'},
+    ru:{label:'📤 Поделиться',btn:'Поделиться экономией',btnEv:'Поделиться зарядкой',copy:'Копировать',copied:'Скопировано!',footer:'Найдите дешёвые АЗС на easy-refuel.eu',footerEv:'Найдите дешёвые зарядки на easy-refuel.eu',forFull:'за заправку',forCharge:'за зарядку',savedVs:'Экономия:',at:'по',perL:'/л',perKwh:'/кВт·ч'},
+    zh:{label:'📤 分享',btn:'分享省钱',btnEv:'分享充电',copy:'复制',copied:'已复制!',footer:'在easy-refuel.eu找最便宜的加油站',footerEv:'在easy-refuel.eu找最便宜的充电站',forFull:'加油',forCharge:'充电',savedVs:'节省:',at:'@',perL:'/L',perKwh:'/kWh'},
+    ja:{label:'📤 共有',btn:'節約を共有',btnEv:'充電を共有',copy:'コピー',copied:'コピー済!',footer:'easy-refuel.euで最安GSを探す',footerEv:'easy-refuel.euで最安充電を探す',forFull:'給油',forCharge:'充電',savedVs:'節約:',at:'@',perL:'/L',perKwh:'/kWh'}
+};
+
+function updateShareUI() {
+    var si = SHARE_I18N[lang] || SHARE_I18N.en;
+    var isEv = appMode === 'ev';
+
+    var lShare = document.getElementById('lShare');
+    if (lShare) lShare.textContent = si.label;
+
+    var shareText = document.getElementById('shareText');
+    if (shareText) shareText.textContent = isEv ? si.btnEv : si.btn;
+
+    var shareCopyText = document.getElementById('shareCopyText');
+    if (shareCopyText) shareCopyText.textContent = si.copy;
+
+    // Preview card
+    var logo = document.querySelector('.share-logo');
+    if (logo) logo.textContent = isEv ? '🔋' : '⛽';
+
+    var shareAmount = document.getElementById('shareAmount');
+    var shareDetails = document.getElementById('shareDetails');
+    var shareFooter = document.getElementById('shareFooter');
+
+    if (isEv) {
+        var evCurrentKwh = (evLvl / 100) * evBatt;
+        var evToAdd = evBatt - evCurrentKwh;
+        var evCostVal = evToAdd * evPrice;
+
+        if (shareAmount) {
+            shareAmount.className = 'share-amount ev-color';
+            shareAmount.textContent = fmtCur(evCostVal);
+        }
+        if (shareDetails) {
+            shareDetails.innerHTML =
+                '<div class="share-detail"><div class="share-detail-v">' + evToAdd.toFixed(1) + ' kWh</div><div class="share-detail-l">' + si.forCharge + '</div></div>' +
+                '<div class="share-detail"><div class="share-detail-v">' + evPrice.toFixed(2) + ' ' + C.symbol + si.perKwh + '</div><div class="share-detail-l">' + si.at + '</div></div>';
+        }
+        if (shareFooter) shareFooter.textContent = si.footerEv;
+    } else {
+        var cL = (lvl / 100) * tank;
+        var toAdd = tank - cL;
+        var costVal = toAdd * prc;
+
+        if (shareAmount) {
+            shareAmount.className = 'share-amount fuel-color';
+            shareAmount.textContent = fmtCur(costVal);
+        }
+        if (shareDetails) {
+            shareDetails.innerHTML =
+                '<div class="share-detail"><div class="share-detail-v">' + toAdd.toFixed(1) + ' L</div><div class="share-detail-l">' + si.forFull + '</div></div>' +
+                '<div class="share-detail"><div class="share-detail-v">' + fmtPS(prc) + ' ' + C.symbol + si.perL + '</div><div class="share-detail-l">' + si.at + '</div></div>';
+        }
+        if (shareFooter) shareFooter.textContent = si.footer;
+    }
+}
+
+function getShareText() {
+    var si = SHARE_I18N[lang] || SHARE_I18N.en;
+    var isEv = appMode === 'ev';
+    var text;
+
+    if (isEv) {
+        var evToAdd = evBatt - (evLvl / 100) * evBatt;
+        var evCostVal = evToAdd * evPrice;
+        text = '🔋 ' + fmtCur(evCostVal) + ' ' + si.forCharge + ' ' + evToAdd.toFixed(1) + ' kWh ' + si.at + ' ' + evPrice.toFixed(2) + C.symbol + '/kWh';
+    } else {
+        var toAdd = tank - (lvl / 100) * tank;
+        var costVal = toAdd * prc;
+        text = '⛽ ' + fmtCur(costVal) + ' ' + si.forFull + ' ' + toAdd.toFixed(1) + 'L ' + si.at + ' ' + fmtPS(prc) + C.symbol + '/L';
+    }
+
+    text += '\n\n' + (isEv ? si.footerEv : si.footer);
+    text += '\nhttps://easy-refuel.eu';
+
+    return text;
+}
+
+// Native share (iOS/Android)
+window.shareResult = function() {
+    var text = getShareText();
+
+    if (navigator.share) {
+        navigator.share({
+            title: 'Easy Refuel',
+            text: text,
+            url: 'https://easy-refuel.eu'
+        }).catch(function() {});
+    } else {
+        // Fallback: show share methods
+        var methods = document.getElementById('shareMethods');
+        if (methods) {
+            methods.style.display = methods.style.display === 'none' ? 'flex' : 'none';
+        }
+    }
+};
+
+// Share via specific platform
+window.shareVia = function(platform) {
+    var text = encodeURIComponent(getShareText());
+    var url = encodeURIComponent('https://easy-refuel.eu');
+
+    switch(platform) {
+        case 'whatsapp':
+            window.open('https://wa.me/?text=' + text, '_blank');
+            break;
+        case 'twitter':
+            window.open('https://twitter.com/intent/tweet?text=' + text, '_blank');
+            break;
+        case 'copy':
+            var si = SHARE_I18N[lang] || SHARE_I18N.en;
+            navigator.clipboard.writeText(getShareText()).then(function() {
+                showToast('📋 ' + si.copied);
+            }).catch(function() {
+                // Fallback for older browsers
+                var ta = document.createElement('textarea');
+                ta.value = getShareText();
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('📋 ' + si.copied);
+            });
+            break;
+    }
+};
 window.addEventListener('load', init);
 // Register Service Worker
 if ('serviceWorker' in navigator) {
