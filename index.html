@@ -971,6 +971,119 @@ body.ev-mode .share-card-preview::before{
 .qr-action.primary{background:linear-gradient(135deg,#007aff,#5856d6);color:#fff;box-shadow:0 4px 12px rgba(0,122,255,.2)}
 .qr-action.secondary{background:#2c2c2e;color:#e5e5ea;border:1.5px solid #3a3a3c}
 .qr-description{font-size:12px;color:#636366;margin-top:12px;line-height:1.5}
+/* ===== GAMIFICATION ===== */
+.badges-card{padding:0;overflow:hidden}
+.badges-toggle{
+    width:100%;padding:18px 20px;
+    display:flex;align-items:center;justify-content:space-between;
+    background:transparent;border:none;color:#fff;
+    font-size:15px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;text-align:left;gap:10px;
+}
+.badges-toggle:active{background:#2c2c2e}
+.badges-toggle .bt-left{display:flex;align-items:center;gap:10px}
+.badges-toggle .bt-progress{
+    font-size:11px;color:#8e8e93;font-weight:500;
+}
+.badges-toggle .bt-arrow{font-size:14px;color:#8e8e93;transition:transform .3s}
+.badges-card.open .bt-arrow{transform:rotate(180deg)}
+.badges-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.25,.46,.45,.94)}
+.badges-card.open .badges-body{max-height:3000px}
+.badges-inner{padding:0 20px 20px}
+
+/* Level bar */
+.level-section{margin-bottom:18px}
+.level-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.level-title{font-size:16px;font-weight:700}
+.level-xp{font-size:12px;color:#8e8e93}
+.level-bar-wrap{
+    height:10px;background:#2c2c2e;border-radius:5px;overflow:hidden;
+}
+.level-bar{
+    height:100%;border-radius:5px;
+    background:linear-gradient(90deg,#ff9500,#ff6723,#ff3b30);
+    transition:width .5s ease;
+}
+.level-next{font-size:11px;color:#636366;margin-top:6px;text-align:right}
+
+/* Badges grid */
+.badges-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;
+}
+.badge-item{
+    background:#2c2c2e;border-radius:14px;padding:16px 12px;
+    text-align:center;position:relative;overflow:hidden;
+    transition:all .2s;
+}
+.badge-item:active{transform:scale(.97)}
+.badge-item.unlocked{
+    border:1.5px solid rgba(255,215,0,.2);
+    background:rgba(255,215,0,.04);
+}
+.badge-item.locked{opacity:.5;filter:grayscale(1)}
+.badge-icon{font-size:36px;margin-bottom:8px}
+.badge-item.locked .badge-icon{filter:grayscale(1);opacity:.4}
+.badge-name{font-size:13px;font-weight:600;margin-bottom:4px}
+.badge-desc{font-size:10px;color:#8e8e93;line-height:1.3}
+.badge-progress{
+    margin-top:8px;height:4px;background:#3a3a3c;border-radius:2px;
+    overflow:hidden;
+}
+.badge-progress-bar{
+    height:100%;border-radius:2px;
+    background:linear-gradient(90deg,#ffd700,#ffaa00);
+    transition:width .5s ease;
+}
+.badge-check{
+    position:absolute;top:8px;right:8px;
+    font-size:14px;
+}
+.badge-date{
+    font-size:9px;color:#636366;margin-top:4px;
+}
+
+/* Badge unlock animation */
+@keyframes badgeUnlock{
+    0%{transform:scale(0.5);opacity:0}
+    50%{transform:scale(1.2)}
+    100%{transform:scale(1);opacity:1}
+}
+.badge-item.just-unlocked{animation:badgeUnlock .5s ease}
+
+/* Stats section */
+.game-stats{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;
+    margin-top:16px;
+}
+.game-stat{
+    background:#2c2c2e;border-radius:10px;padding:10px;text-align:center;
+}
+.game-stat-v{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+.game-stat-l{font-size:9px;color:#8e8e93;text-transform:uppercase;margin-top:2px}
+
+/* Toast badge */
+.badge-toast{
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);
+    background:rgba(28,28,30,.95);backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(255,215,0,.2);
+    border-radius:24px;padding:30px 24px;text-align:center;
+    z-index:10000;transition:transform .4s cubic-bezier(.21,1.02,.73,1);
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+    min-width:260px;
+}
+.badge-toast.show{transform:translate(-50%,-50%) scale(1)}
+.badge-toast .bt-icon{font-size:64px;margin-bottom:12px}
+.badge-toast .bt-title{font-size:18px;font-weight:700;color:#ffd700;margin-bottom:4px}
+.badge-toast .bt-name{font-size:15px;font-weight:600;margin-bottom:8px}
+.badge-toast .bt-desc{font-size:12px;color:#8e8e93}
+.badge-toast .bt-close{
+    margin-top:16px;padding:10px 30px;border:none;border-radius:20px;
+    background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;
+    font-size:14px;font-weight:700;font-family:-apple-system,sans-serif;
+    cursor:pointer;
+}
     </style>
 
 </head>
@@ -1025,6 +1138,42 @@ body.ev-mode .share-card-preview::before{
             <div id="favContent"></div>
         </div>
     </div>
+</div>
+<!-- ===== GAMIFICATION ===== -->
+<div class="card badges-card" id="badgesCard">
+    <button class="badges-toggle" onclick="toggleContent('badgesCard')">
+        <span class="bt-left">
+            <span>🏆</span>
+            <span id="badgesToggleText">Mes badges</span>
+        </span>
+        <span class="bt-progress" id="badgesProgress">0/12</span>
+        <span class="bt-arrow">▼</span>
+    </button>
+    <div class="badges-body">
+        <div class="badges-inner">
+            <div class="level-section">
+                <div class="level-header">
+                    <span class="level-title" id="levelTitle">Niveau 1</span>
+                    <span class="level-xp" id="levelXp">0 / 100 XP</span>
+                </div>
+                <div class="level-bar-wrap">
+                    <div class="level-bar" id="levelBar" style="width:0%"></div>
+                </div>
+                <div class="level-next" id="levelNext"></div>
+            </div>
+            <div class="badges-grid" id="badgesGrid"></div>
+            <div class="game-stats" id="gameStats"></div>
+        </div>
+    </div>
+</div>
+
+<!-- BADGE UNLOCK TOAST -->
+<div class="badge-toast" id="badgeToast">
+    <div class="bt-icon" id="btIcon">🏆</div>
+    <div class="bt-title" id="btTitle">Badge débloqué !</div>
+    <div class="bt-name" id="btName"></div>
+    <div class="bt-desc" id="btDesc"></div>
+    <button class="bt-close" onclick="closeBadgeToast()">OK !</button>
 </div>
 	<!-- PREMIUM CARD -->
 <!-- ===== PREMIUM ===== -->
@@ -1958,6 +2107,7 @@ function rebuildAll() {
 	try { updateShareUI(); } catch(e) {}
 	try { updateFavoritesUI(); } catch(e) {}
 	try { updateQRUI(); } catch(e) {}
+	try { updateBadgesUI(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -2334,6 +2484,7 @@ function locateAndFetch() {
                 buildFuelFilter();
 
                 await fetchStations();
+				try { trackGameEvent('search', {country: detectedCountryCode}); } catch(e) {}
             } catch(e) {
                 console.error(e);
                 showToast('❌ ' + TL.stationError);
@@ -2585,6 +2736,11 @@ function init() {
         colorizeSlider(rSlider, rPct);
     }
 	try { drawQRCode(); } catch(e) {}
+	// Night owl check
+    var hour = new Date().getHours();
+    if (hour >= 0 && hour < 5) {
+        try { trackGameEvent('night'); } catch(e) {}
+    }
 }
 
 // ==================== PREMIUM SYSTEM ====================
@@ -3372,6 +3528,9 @@ window.setMode = function(mode) {
         if (hTitle) hTitle.textContent = TL.title;
         if (hSub) hSub.textContent = TL.sub.replace('{n}', tank);
     }
+	if (mode === 'ev') {
+        try { trackGameEvent('ev_mode'); } catch(e) {}
+    }
 
     try { applyTexts(); } catch(e) {}
     try { updateEditorialContent(); } catch(e) {}
@@ -3379,6 +3538,7 @@ window.setMode = function(mode) {
 	try { updateShareUI(); } catch(e) {}
 	try { updateFavoritesUI(); } catch(e) {}
 	try { updateQRUI(); } catch(e) {}
+	try { updateBadgesUI(); } catch(e) {}
 };
 
 // ==================== EV BATTERY ====================
@@ -3784,6 +3944,7 @@ window.saveCurrentFill = function() {
 
     updateHistoryUI();
     showToast('💾 ' + (appMode === 'ev' ? hi.saveEv : hi.save) + ' ✅');
+	try { trackGameEvent('fill'); } catch(e) {}
 };
 
 // Delete one entry
@@ -4016,6 +4177,7 @@ window.shareResult = function() {
         if (methods) {
             methods.style.display = methods.style.display === 'none' ? 'flex' : 'none';
         }
+		try { trackGameEvent('share'); } catch(e) {}
     }
 };
 
@@ -4089,6 +4251,7 @@ window.toggleFavorite = function(stationId, stationName, stationAddr, stationCit
             mode: appMode,
             date: new Date().toISOString()
         });
+		try { trackGameEvent('favorite'); } catch(e) {}
         if (favorites.length > 50) favorites.pop();
         showToast('⭐ ' + fi.added);
     }
@@ -4324,6 +4487,277 @@ function updateQRUI() {
     if (qrDownloadText) qrDownloadText.textContent = qi.download;
     var qrDesc = document.getElementById('qrDesc');
     if (qrDesc) qrDesc.textContent = isEv ? qi.descEv : qi.desc;
+}
+// ==================== GAMIFICATION ====================
+var gameData = JSON.parse(localStorage.getItem('gameData') || '{}');
+if (!gameData.xp) gameData.xp = 0;
+if (!gameData.badges) gameData.badges = {};
+if (!gameData.stats) gameData.stats = {searches:0, fills:0, shares:0, favorites:0, countries:[], stations:[]};
+
+function saveGameData() {
+    localStorage.setItem('gameData', JSON.stringify(gameData));
+}
+
+// XP System
+function addXP(amount) {
+    gameData.xp += amount;
+    saveGameData();
+    updateBadgesUI();
+}
+
+function getLevel() {
+    var xp = gameData.xp;
+    if (xp < 100) return {level:1, name:'Débutant', min:0, max:100};
+    if (xp < 300) return {level:2, name:'Apprenti', min:100, max:300};
+    if (xp < 600) return {level:3, name:'Conducteur', min:300, max:600};
+    if (xp < 1000) return {level:4, name:'Expert', min:600, max:1000};
+    if (xp < 2000) return {level:5, name:'Maître', min:1000, max:2000};
+    if (xp < 5000) return {level:6, name:'Légende', min:2000, max:5000};
+    return {level:7, name:'Champion', min:5000, max:99999};
+}
+
+// Badge definitions
+var BADGES = [
+    {
+        id:'first_fill',
+        icon:'⛽',
+        xp:20,
+        names:{fr:'Premier plein',en:'First fill-up',es:'Primer repostaje',de:'Erste Tankung',it:'Primo pieno',pt:'Primeiro abastecimento',ru:'Первая заправка',zh:'第一次加油',ja:'初給油'},
+        descs:{fr:'Enregistrez votre premier plein',en:'Record your first fill-up',es:'Registra tu primer repostaje',de:'Erste Tankung speichern',it:'Registra il primo pieno',pt:'Registe o primeiro abastecimento',ru:'Запишите первую заправку',zh:'记录第一次加油',ja:'初めての給油を記録'},
+        check:function(){ return gameData.stats.fills >= 1; }
+    },
+    {
+        id:'five_fills',
+        icon:'🔥',
+        xp:50,
+        names:{fr:'Habitué',en:'Regular',es:'Habitual',de:'Stammgast',it:'Abituale',pt:'Habitual',ru:'Постоянный',zh:'常客',ja:'常連'},
+        descs:{fr:'5 pleins enregistrés',en:'5 fill-ups recorded',es:'5 repostajes',de:'5 Tankungen',it:'5 pieni',pt:'5 abastecimentos',ru:'5 заправок',zh:'5次加油',ja:'5回給油'},
+        check:function(){ return gameData.stats.fills >= 5; }
+    },
+    {
+        id:'twenty_fills',
+        icon:'💪',
+        xp:100,
+        names:{fr:'Vétéran',en:'Veteran',es:'Veterano',de:'Veteran',it:'Veterano',pt:'Veterano',ru:'Ветеран',zh:'老手',ja:'ベテラン'},
+        descs:{fr:'20 pleins enregistrés',en:'20 fill-ups recorded',es:'20 repostajes',de:'20 Tankungen',it:'20 pieni',pt:'20 abastecimentos',ru:'20 заправок',zh:'20次加油',ja:'20回給油'},
+        check:function(){ return gameData.stats.fills >= 20; }
+    },
+    {
+        id:'first_search',
+        icon:'🔍',
+        xp:10,
+        names:{fr:'Explorateur',en:'Explorer',es:'Explorador',de:'Entdecker',it:'Esploratore',pt:'Explorador',ru:'Исследователь',zh:'探索者',ja:'探検家'},
+        descs:{fr:'Première recherche de station',en:'First station search',es:'Primera búsqueda',de:'Erste Suche',it:'Prima ricerca',pt:'Primeira pesquisa',ru:'Первый поиск',zh:'第一次搜索',ja:'初検索'},
+        check:function(){ return gameData.stats.searches >= 1; }
+    },
+    {
+        id:'ten_searches',
+        icon:'🗺️',
+        xp:40,
+        names:{fr:'Cartographe',en:'Cartographer',es:'Cartógrafo',de:'Kartograf',it:'Cartografo',pt:'Cartógrafo',ru:'Картограф',zh:'制图师',ja:'地図職人'},
+        descs:{fr:'10 recherches effectuées',en:'10 searches done',es:'10 búsquedas',de:'10 Suchen',it:'10 ricerche',pt:'10 pesquisas',ru:'10 поисков',zh:'10次搜索',ja:'10回検索'},
+        check:function(){ return gameData.stats.searches >= 10; }
+    },
+    {
+        id:'first_fav',
+        icon:'⭐',
+        xp:15,
+        names:{fr:'Connaisseur',en:'Connoisseur',es:'Conocedor',de:'Kenner',it:'Intenditore',pt:'Conhecedor',ru:'Знаток',zh:'行家',ja:'通'},
+        descs:{fr:'Ajoutez votre première station favorite',en:'Add your first favorite station',es:'Añade tu primera favorita',de:'Erster Favorit',it:'Primo preferito',pt:'Primeiro favorito',ru:'Первое избранное',zh:'第一个收藏',ja:'初お気に入り'},
+        check:function(){ return gameData.stats.favorites >= 1; }
+    },
+    {
+        id:'five_favs',
+        icon:'🌟',
+        xp:50,
+        names:{fr:'Collectionneur',en:'Collector',es:'Coleccionista',de:'Sammler',it:'Collezionista',pt:'Colecionador',ru:'Коллекционер',zh:'收藏家',ja:'コレクター'},
+        descs:{fr:'5 stations favorites',en:'5 favorite stations',es:'5 favoritas',de:'5 Favoriten',it:'5 preferiti',pt:'5 favoritos',ru:'5 избранных',zh:'5个收藏',ja:'5つのお気に入り'},
+        check:function(){ return gameData.stats.favorites >= 5; }
+    },
+    {
+        id:'first_share',
+        icon:'📤',
+        xp:15,
+        names:{fr:'Ambassadeur',en:'Ambassador',es:'Embajador',de:'Botschafter',it:'Ambasciatore',pt:'Embaixador',ru:'Посол',zh:'大使',ja:'アンバサダー'},
+        descs:{fr:'Partagez pour la première fois',en:'Share for the first time',es:'Comparte por primera vez',de:'Erstes Teilen',it:'Prima condivisione',pt:'Primeira partilha',ru:'Первый шеринг',zh:'第一次分享',ja:'初シェア'},
+        check:function(){ return gameData.stats.shares >= 1; }
+    },
+    {
+        id:'ev_mode',
+        icon:'🔋',
+        xp:20,
+        names:{fr:'Électrique',en:'Electric',es:'Eléctrico',de:'Elektrisch',it:'Elettrico',pt:'Elétrico',ru:'Электро',zh:'电动',ja:'電気'},
+        descs:{fr:'Utilisez le mode véhicule électrique',en:'Use the EV mode',es:'Usa el modo eléctrico',de:'EV-Modus nutzen',it:'Usa la modalità EV',pt:'Use o modo EV',ru:'Режим EV',zh:'使用电动模式',ja:'EVモードを使用'},
+        check:function(){ return gameData.stats.evUsed; }
+    },
+    {
+        id:'multi_country',
+        icon:'🌍',
+        xp:80,
+        names:{fr:'Globe-trotter',en:'Globe-trotter',es:'Trotamundos',de:'Weltreisender',it:'Giramondo',pt:'Viajante',ru:'Путешественник',zh:'环球旅行者',ja:'グローブトロッター'},
+        descs:{fr:'Recherchez dans 2 pays différents',en:'Search in 2 different countries',es:'Busca en 2 países',de:'In 2 Ländern suchen',it:'Cerca in 2 paesi',pt:'Pesquise em 2 países',ru:'Поиск в 2 странах',zh:'在2个国家搜索',ja:'2カ国で検索'},
+        check:function(){ return gameData.stats.countries && gameData.stats.countries.length >= 2; }
+    },
+    {
+        id:'premium_user',
+        icon:'💎',
+        xp:100,
+        names:{fr:'Supporter',en:'Supporter',es:'Supporter',de:'Unterstützer',it:'Supporter',pt:'Apoiante',ru:'Сторонник',zh:'支持者',ja:'サポーター'},
+        descs:{fr:'Passez à Premium',en:'Go Premium',es:'Hazte Premium',de:'Premium werden',it:'Passa a Premium',pt:'Seja Premium',ru:'Станьте Premium',zh:'升级Premium',ja:'Premiumへ'},
+        check:function(){ return isPremium(); }
+    },
+    {
+        id:'night_owl',
+        icon:'🦉',
+        xp:30,
+        names:{fr:'Noctambule',en:'Night owl',es:'Noctámbulo',de:'Nachteule',it:'Nottambulo',pt:'Noturno',ru:'Полуночник',zh:'夜猫子',ja:'夜更かし'},
+        descs:{fr:'Utilisez l\'app entre minuit et 5h',en:'Use the app between midnight and 5am',es:'Usa la app de noche',de:'App nachts nutzen',it:'Usa l\'app di notte',pt:'Use a app de noite',ru:'Используйте ночью',zh:'午夜使用',ja:'深夜に使用'},
+        check:function(){ return gameData.stats.nightUse; }
+    }
+];
+
+var GAME_I18N = {
+    fr:{toggle:'Mes badges',progress:'{n}/{t} débloqués',level:'Niveau {n}',nextLevel:'Prochain niveau : {n} XP',searches:'Recherches',fills:'Pleins',shares:'Partages',unlocked:'Badge débloqué !'},
+    en:{toggle:'My badges',progress:'{n}/{t} unlocked',level:'Level {n}',nextLevel:'Next level: {n} XP',searches:'Searches',fills:'Fill-ups',shares:'Shares',unlocked:'Badge unlocked!'},
+    es:{toggle:'Mis insignias',progress:'{n}/{t} desbloqueados',level:'Nivel {n}',nextLevel:'Siguiente: {n} XP',searches:'Búsquedas',fills:'Repostajes',shares:'Compartidos',unlocked:'¡Insignia desbloqueada!'},
+    de:{toggle:'Meine Abzeichen',progress:'{n}/{t} freigeschaltet',level:'Stufe {n}',nextLevel:'Nächste Stufe: {n} XP',searches:'Suchen',fills:'Tankungen',shares:'Geteilt',unlocked:'Abzeichen freigeschaltet!'},
+    it:{toggle:'I miei badge',progress:'{n}/{t} sbloccati',level:'Livello {n}',nextLevel:'Prossimo: {n} XP',searches:'Ricerche',fills:'Pieni',shares:'Condivisioni',unlocked:'Badge sbloccato!'},
+    pt:{toggle:'Meus emblemas',progress:'{n}/{t} desbloqueados',level:'Nível {n}',nextLevel:'Próximo: {n} XP',searches:'Pesquisas',fills:'Abastecimentos',shares:'Partilhas',unlocked:'Emblema desbloqueado!'},
+    ru:{toggle:'Мои значки',progress:'{n}/{t} открыто',level:'Уровень {n}',nextLevel:'Следующий: {n} XP',searches:'Поиски',fills:'Заправки',shares:'Шеринг',unlocked:'Значок разблокирован!'},
+    zh:{toggle:'我的徽章',progress:'{n}/{t} 已解锁',level:'{n}级',nextLevel:'下一级: {n} XP',searches:'搜索',fills:'加油',shares:'分享',unlocked:'徽章解锁！'},
+    ja:{toggle:'マイバッジ',progress:'{n}/{t} 解除済',level:'レベル{n}',nextLevel:'次: {n} XP',searches:'検索',fills:'給油',shares:'共有',unlocked:'バッジ解除！'}
+};
+
+function getGameI18n() { return GAME_I18N[lang] || GAME_I18N.en; }
+
+// Track game events
+function trackGameEvent(eventType, data) {
+    if (eventType === 'search') {
+        gameData.stats.searches = (gameData.stats.searches || 0) + 1;
+        if (data && data.country && gameData.stats.countries.indexOf(data.country) < 0) {
+            gameData.stats.countries.push(data.country);
+        }
+        addXP(5);
+    }
+    if (eventType === 'fill') {
+        gameData.stats.fills = (gameData.stats.fills || 0) + 1;
+        addXP(10);
+    }
+    if (eventType === 'share') {
+        gameData.stats.shares = (gameData.stats.shares || 0) + 1;
+        addXP(5);
+    }
+    if (eventType === 'favorite') {
+        gameData.stats.favorites = (gameData.stats.favorites || 0) + 1;
+        addXP(5);
+    }
+    if (eventType === 'ev_mode') {
+        gameData.stats.evUsed = true;
+        addXP(10);
+    }
+    if (eventType === 'night') {
+        gameData.stats.nightUse = true;
+    }
+
+    saveGameData();
+    checkBadges();
+    updateBadgesUI();
+}
+
+// Check and unlock badges
+function checkBadges() {
+    BADGES.forEach(function(badge) {
+        if (!gameData.badges[badge.id] && badge.check()) {
+            gameData.badges[badge.id] = new Date().toISOString();
+            saveGameData();
+            showBadgeToast(badge);
+            addXP(badge.xp);
+        }
+    });
+}
+
+// Badge unlock toast
+function showBadgeToast(badge) {
+    var gi = getGameI18n();
+    var btIcon = document.getElementById('btIcon');
+    var btTitle = document.getElementById('btTitle');
+    var btName = document.getElementById('btName');
+    var btDesc = document.getElementById('btDesc');
+    var toast = document.getElementById('badgeToast');
+
+    if (btIcon) btIcon.textContent = badge.icon;
+    if (btTitle) btTitle.textContent = gi.unlocked;
+    if (btName) btName.textContent = badge.names[lang] || badge.names.en;
+    if (btDesc) btDesc.textContent = badge.descs[lang] || badge.descs.en;
+    if (toast) toast.classList.add('show');
+
+    // Auto close after 4s
+    setTimeout(function() {
+        if (toast) toast.classList.remove('show');
+    }, 4000);
+}
+
+window.closeBadgeToast = function() {
+    var toast = document.getElementById('badgeToast');
+    if (toast) toast.classList.remove('show');
+};
+
+// Update badges UI
+function updateBadgesUI() {
+    var gi = getGameI18n();
+    var unlockedCount = 0;
+    BADGES.forEach(function(b) { if (gameData.badges[b.id]) unlockedCount++; });
+
+    var toggleText = document.getElementById('badgesToggleText');
+    if (toggleText) toggleText.textContent = gi.toggle;
+
+    var progress = document.getElementById('badgesProgress');
+    if (progress) progress.textContent = gi.progress.replace('{n}', unlockedCount).replace('{t}', BADGES.length);
+
+    // Level
+    var lvlData = getLevel();
+    var levelTitle = document.getElementById('levelTitle');
+    if (levelTitle) levelTitle.textContent = gi.level.replace('{n}', lvlData.level) + ' — ' + lvlData.name;
+
+    var levelXp = document.getElementById('levelXp');
+    if (levelXp) levelXp.textContent = gameData.xp + ' / ' + lvlData.max + ' XP';
+
+    var levelBar = document.getElementById('levelBar');
+    if (levelBar) {
+        var pct = ((gameData.xp - lvlData.min) / (lvlData.max - lvlData.min)) * 100;
+        levelBar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+    }
+
+    var levelNext = document.getElementById('levelNext');
+    if (levelNext) levelNext.textContent = gi.nextLevel.replace('{n}', lvlData.max - gameData.xp);
+
+    // Badges grid
+    var grid = document.getElementById('badgesGrid');
+    if (grid) {
+        grid.innerHTML = BADGES.map(function(b) {
+            var unlocked = !!gameData.badges[b.id];
+            var dateStr = '';
+            if (unlocked) {
+                var d = new Date(gameData.badges[b.id]);
+                dateStr = d.toLocaleDateString(lang === 'fr' ? 'fr-FR' : lang, {day:'numeric', month:'short'});
+            }
+            return '<div class="badge-item ' + (unlocked ? 'unlocked' : 'locked') + '">' +
+                '<div class="badge-icon">' + b.icon + '</div>' +
+                '<div class="badge-name">' + (b.names[lang] || b.names.en) + '</div>' +
+                '<div class="badge-desc">' + (b.descs[lang] || b.descs.en) + '</div>' +
+                (unlocked ? '<div class="badge-check">✅</div><div class="badge-date">' + dateStr + '</div>' : '') +
+            '</div>';
+        }).join('');
+    }
+
+    // Game stats
+    var statsEl = document.getElementById('gameStats');
+    if (statsEl) {
+        statsEl.innerHTML =
+            '<div class="game-stat"><div class="game-stat-v">' + (gameData.stats.searches || 0) + '</div><div class="game-stat-l">' + gi.searches + '</div></div>' +
+            '<div class="game-stat"><div class="game-stat-v">' + (gameData.stats.fills || 0) + '</div><div class="game-stat-l">' + gi.fills + '</div></div>' +
+            '<div class="game-stat"><div class="game-stat-v">' + (gameData.stats.shares || 0) + '</div><div class="game-stat-l">' + gi.shares + '</div></div>';
+    }
 }
 window.addEventListener('load', init);
 // Register Service Worker
