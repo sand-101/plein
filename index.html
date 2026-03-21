@@ -161,7 +161,51 @@
         @media(max-height:480px){.gauge-card{display:none}.header{padding:10px 0 4px}.header h1{font-size:20px}.map-wrap{height:180px}}
 		/* ===== PREMIUM ===== */
 .premium-card{padding:20px;background:linear-gradient(145deg,#1c1c1e,#2c2c1e);border:1px solid rgba(255,204,0,.15)}
-.premium-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;font-size:11px;font-weight:700;letter-spacing:.3px}
+/* ===== PREMIUM BADGE MODERNE ===== */
+.premium-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:5px 14px;border-radius:20px;
+    background:linear-gradient(135deg,#ffd700,#f0a500,#ff8c00);
+    color:#000;font-size:11px;font-weight:800;
+    letter-spacing:1.2px;text-transform:uppercase;
+    box-shadow:0 2px 12px rgba(255,215,0,.3),inset 0 1px 0 rgba(255,255,255,.3);
+    position:relative;overflow:hidden;
+    animation:premBadgeShine 3s ease infinite;
+}
+
+/* Effet shine qui glisse */
+.premium-badge::after{
+    content:'';
+    position:absolute;
+    top:-50%;left:-50%;
+    width:200%;height:200%;
+    background:linear-gradient(
+        115deg,
+        transparent 40%,
+        rgba(255,255,255,.4) 45%,
+        rgba(255,255,255,.1) 50%,
+        transparent 55%
+    );
+    animation:premShine 3s ease-in-out infinite;
+    pointer-events:none;
+}
+
+@keyframes premShine{
+    0%{transform:translateX(-100%) rotate(15deg)}
+    100%{transform:translateX(100%) rotate(15deg)}
+}
+
+/* Icône diamant/couronne au lieu de l'étoile */
+.premium-badge .prem-icon{
+    font-size:14px;
+    filter:drop-shadow(0 1px 2px rgba(0,0,0,.2));
+    animation:premIconFloat 2s ease-in-out infinite;
+}
+
+@keyframes premIconFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-2px)}
+}
 .premium-title{font-size:20px;font-weight:700;margin-top:12px}
 .premium-features{margin-top:14px;display:flex;flex-direction:column;gap:8px}
 .premium-feat{display:flex;align-items:center;gap:8px;font-size:13px;color:#ccc}
@@ -953,7 +997,7 @@ body.ev-mode .share-card-preview::before{
 <!-- ===== PREMIUM ===== -->
 <div class="card premium-card" id="premiumCard">
     <div id="premOffer">
-        <div class="premium-badge">⭐ PREMIUM</div>
+        <div class="premium-badge"><span class="prem-icon">💎</span> PREMIUM</div>
         <div class="premium-title" id="prT"></div>
         <div class="premium-features">
             <div class="premium-feat"><span class="ck">✓</span><span id="pf1"></span></div>
