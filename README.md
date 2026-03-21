@@ -1,2 +1,2 @@
 # plein
-tool for checking refuel cost in €
+webapp for checking refuel/recharge cost in €
