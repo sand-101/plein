@@ -220,6 +220,18 @@
 .plan-cta{display:inline-block;margin-top:10px;padding:8px 20px;border-radius:20px;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;font-size:13px;font-weight:700;font-family:-apple-system,sans-serif}
 .premium-manage{text-align:center;margin-top:12px}
 .premium-manage a{color:#8e8e93;font-size:12px;text-decoration:underline}
+.prem-active .big-icon{
+    font-size:56px;
+    margin-bottom:12px;
+    animation:premDiamondPulse 2s ease-in-out infinite;
+    filter:drop-shadow(0 4px 15px rgba(255,215,0,.3));
+}
+
+@keyframes premDiamondPulse{
+    0%,100%{transform:scale(1) rotate(0deg)}
+    25%{transform:scale(1.05) rotate(-3deg)}
+    75%{transform:scale(1.05) rotate(3deg)}
+}
 .premium-active{text-align:center;padding:20px}
 .premium-active .big-check{font-size:48px;margin-bottom:10px}
 .premium-active .active-text{font-size:16px;font-weight:600;color:#30d158}
@@ -1014,8 +1026,8 @@ body.ev-mode .share-card-preview::before{
         </div>
     </div>
     <div id="premActive" style="display:none">
-        <div class="prem-active">
-            <div class="big-icon">⭐</div>
+    <div class="prem-active">
+        <div class="big-icon">💎</div>
             <div class="act-text" id="actTxt"></div>
             <div class="act-until" id="actUntil"></div>
             <div class="prem-manage" style="margin-top:14px">
