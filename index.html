@@ -1084,6 +1084,92 @@ body.ev-mode .share-card-preview::before{
     font-size:14px;font-weight:700;font-family:-apple-system,sans-serif;
     cursor:pointer;
 }
+/* ===== COMPTEUR ANIMÉ ===== */
+.animated-amount{
+    position:relative;
+    display:inline-block;
+    transition:transform .1s ease;
+}
+.animated-amount.counting{
+    animation:amountPulse .3s ease;
+}
+@keyframes amountPulse{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.03)}
+    100%{transform:scale(1)}
+}
+
+/* Chiffres qui défilent */
+.digit-roller{
+    display:inline-block;
+    overflow:hidden;
+    height:1.1em;
+    vertical-align:bottom;
+}
+.digit-roller-inner{
+    transition:transform .4s cubic-bezier(.2,.8,.3,1);
+}
+.digit-char{
+    display:block;
+    height:1.1em;
+    line-height:1.1em;
+}
+
+/* Flash de changement */
+.amount-flash{
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle,rgba(255,149,0,.15) 0%,transparent 70%);
+    opacity:0;
+    pointer-events:none;
+    border-radius:12px;
+    transition:opacity .3s;
+}
+.amount-flash.on{opacity:1}
+body.ev-mode .amount-flash.on{
+    background:radial-gradient(circle,rgba(48,209,88,.15) 0%,transparent 70%);
+}
+
+/* Particules au changement */
+.amount-particle{
+    position:absolute;
+    width:4px;height:4px;
+    border-radius:50%;
+    background:#ff9500;
+    pointer-events:none;
+    animation:particleFly .6s ease-out forwards;
+}
+body.ev-mode .amount-particle{background:#30d158}
+
+@keyframes particleFly{
+    0%{opacity:1;transform:translate(0,0) scale(1)}
+    100%{opacity:0;transform:translate(var(--px),var(--py)) scale(0)}
+}
+
+/* Indicateur de variation */
+.amount-delta{
+    position:absolute;
+    right:-8px;top:-8px;
+    font-size:12px;font-weight:700;
+    opacity:0;pointer-events:none;
+    transition:all .3s ease;
+}
+.amount-delta.show-up{
+    opacity:1;color:#30d158;
+    animation:deltaUp .8s ease forwards;
+}
+.amount-delta.show-down{
+    opacity:1;color:#ff3b30;
+    animation:deltaDown .8s ease forwards;
+}
+@keyframes deltaUp{
+    0%{opacity:1;transform:translateY(0)}
+    100%{opacity:0;transform:translateY(-20px)}
+}
+@keyframes deltaDown{
+    0%{opacity:1;transform:translateY(0)}
+    100%{opacity:0;transform:translateY(20px)}
+}
     </style>
 
 </head>
@@ -1415,7 +1501,11 @@ body.ev-mode .share-card-preview::before{
     <div class="card res-card fuel-only">
         <div class="res-top">
             <div class="res-lbl" id="lResult"></div>
-            <div class="res-amount" id="rAmount"></div>
+            <div class="res-amount" id="rAmount" style="position:relative">
+    <span class="animated-amount" id="rAmountValue"></span>
+    <div class="amount-flash" id="rAmountFlash"></div>
+    <div class="amount-delta" id="rAmountDelta"></div>
+</div>
             <div class="res-detail" id="rDetail"></div>
         </div>
         <div class="stats">
@@ -1429,7 +1519,11 @@ body.ev-mode .share-card-preview::before{
 <div class="card ev-res-card ev-only">
     <div class="res-top">
         <div class="res-lbl" id="lEvResult">Coût de la recharge</div>
-        <div class="ev-res-amount" id="evCost">0,00 €</div>
+        <div class="ev-res-amount" id="evCost" style="position:relative">
+    <span class="animated-amount" id="evCostValue"></span>
+    <div class="amount-flash" id="evCostFlash"></div>
+    <div class="amount-delta" id="evCostDelta"></div>
+</div>
         <div class="res-detail" id="evDetail"></div>
     </div>
     <div class="stats">
@@ -2307,8 +2401,10 @@ function calc() {
     var dLiters = document.getElementById('dLiters');
     if (dLiters) dLiters.textContent = TL.inTank.replace('{n}', fmt(cL));
 
-    var rAmount = document.getElementById('rAmount');
-    if (rAmount) rAmount.textContent = fmtCur(cost);
+    // Animated counter fuel
+    var newFuelAmount = cost;
+    animateCounter('rAmountValue', 'rAmountFlash', 'rAmountDelta', lastFuelAmount, newFuelAmount, 400);
+    lastFuelAmount = newFuelAmount;
 
     var rDetail = document.getElementById('rDetail');
     if (rDetail) rDetail.textContent = fmt(add) + ' L × ' + fmtPS(prc) + ' ' + C.symbol + '/L';
@@ -3522,6 +3618,8 @@ const EV_I18N = {
 window.setMode = function(mode) {
     haptic('medium');
     appMode = mode;
+	lastFuelAmount = 0;
+    lastEvAmount = 0;
     localStorage.setItem('appMode', mode);
 
     document.body.classList.toggle('ev-mode', mode === 'ev');
@@ -3793,9 +3891,10 @@ function evCalc() {
 
     var ei = EV_I18N[lang] || EV_I18N.en;
 
-    // Update results
-    var costEl = document.getElementById('evCost');
-    if (costEl) costEl.textContent = fmtCur(cost);
+    // Animated counter EV
+    var newEvAmount = cost;
+    animateCounter('evCostValue', 'evCostFlash', 'evCostDelta', lastEvAmount, newEvAmount, 400);
+    lastEvAmount = newEvAmount;
 
     var detailEl = document.getElementById('evDetail');
     if (detailEl) detailEl.textContent = kwhToAdd.toFixed(1) + ' kWh × ' + evPrice.toFixed(2).replace('.', C.decSep) + ' ' + C.symbol + '/kWh';
@@ -4816,6 +4915,116 @@ function haptic(style) {
                 default:        navigator.vibrate(10);
             }
         }
+    } catch(e) {}
+}
+// ==================== ANIMATED COUNTER ====================
+var lastFuelAmount = 0;
+var lastEvAmount = 0;
+var counterAnimFrame = null;
+
+function animateCounter(elementId, flashId, deltaId, startVal, endVal, duration) {
+    var el = document.getElementById(elementId);
+    if (!el) return;
+
+    var flash = document.getElementById(flashId);
+    var delta = document.getElementById(deltaId);
+
+    // Skip animation if values are very close
+    if (Math.abs(startVal - endVal) < 0.01) {
+        el.textContent = fmtCur(endVal);
+        return;
+    }
+
+    // Show delta indicator
+    if (delta && Math.abs(endVal - startVal) > 0.5) {
+        delta.className = 'amount-delta';
+        if (endVal > startVal) {
+            delta.textContent = '▲';
+            delta.classList.add('show-up');
+        } else {
+            delta.textContent = '▼';
+            delta.classList.add('show-down');
+        }
+        setTimeout(function() {
+            delta.className = 'amount-delta';
+        }, 800);
+    }
+
+    // Flash effect
+    if (flash) {
+        flash.classList.add('on');
+        setTimeout(function() { flash.classList.remove('on'); }, 300);
+    }
+
+    // Spawn particles
+    spawnParticles(el);
+
+    // Pulse animation
+    el.classList.add('counting');
+    setTimeout(function() { el.classList.remove('counting'); }, 300);
+
+    // Counter animation
+    var start = performance.now();
+    var diff = endVal - startVal;
+
+    function tick(now) {
+        var elapsed = now - start;
+        var progress = Math.min(elapsed / duration, 1);
+
+        // Easing: ease-out cubic
+        var ease = 1 - Math.pow(1 - progress, 3);
+        var current = startVal + diff * ease;
+
+        el.textContent = fmtCur(current);
+
+        if (progress < 1) {
+            counterAnimFrame = requestAnimationFrame(tick);
+        } else {
+            el.textContent = fmtCur(endVal);
+        }
+    }
+
+    if (counterAnimFrame) cancelAnimationFrame(counterAnimFrame);
+    counterAnimFrame = requestAnimationFrame(tick);
+}
+
+function spawnParticles(parentEl) {
+    if (!parentEl) return;
+    var rect = parentEl.getBoundingClientRect();
+    var container = parentEl.parentElement;
+    if (!container) return;
+
+    for (var i = 0; i < 6; i++) {
+        var p = document.createElement('div');
+        p.className = 'amount-particle';
+        var angle = (Math.PI * 2 * i) / 6;
+        var dist = 20 + Math.random() * 30;
+        p.style.setProperty('--px', Math.cos(angle) * dist + 'px');
+        p.style.setProperty('--py', Math.sin(angle) * dist + 'px');
+        p.style.left = '50%';
+        p.style.top = '50%';
+        container.appendChild(p);
+        setTimeout(function(el) {
+            if (el.parentElement) el.parentElement.removeChild(el);
+        }, 600, p);
+    }
+}
+
+// Sound effect (optional — subtle tick)
+var audioCtx = null;
+function playTickSound() {
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        var osc = audioCtx.createOscillator();
+        var gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = 1200;
+        osc.type = 'sine';
+        gain.gain.value = 0.03;
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
     } catch(e) {}
 }
 window.addEventListener('load', init);
