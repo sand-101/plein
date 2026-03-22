@@ -2024,6 +2024,7 @@ function save() { localStorage.setItem('tank',tank); localStorage.setItem('lvl',
 
 let toastT;
 function showToast(m) {
+    haptic('tick');
     clearTimeout(toastT);
     $('toast').textContent = m;
     $('toast').classList.add('show');
@@ -2059,6 +2060,7 @@ function buildCurBar() {
 }
 
 function setLang(code) {
+    haptic('medium');
     lang = code; loadLC();
     cur = TL.defaultCur; loadLC();
     localStorage.setItem('lang', lang);
@@ -2077,6 +2079,7 @@ function setLang(code) {
 }
 
 function setCurrency(code) {
+    haptic('light');
     cur = code; loadLC();
     localStorage.setItem('cur', cur);
     var f = FUEL_PRICES[cur];
@@ -2224,6 +2227,7 @@ function buildTankPresets() {
         b.dataset.t = v;
         b.textContent = l;
         b.addEventListener('click', function() {
+		    haptic('medium');
             tank = parseInt(v);
             updateTankUI();
             buildQuickBtns();
@@ -2244,7 +2248,7 @@ function buildQuickBtns() {
         const b = document.createElement('button');
         b.className = 'q-btn'; b.dataset.l = l;
         b.innerHTML = label + '<small>' + fmt((l/100)*tank) + ' L</small>';
-        b.addEventListener('click', () => { lvl=l; sLevel.value=lvl; save(); calc();colorizeSlider(document.getElementById('sLevel'), lvl); });
+        b.addEventListener('click', () => { haptic('light');lvl=l; sLevel.value=lvl; save(); calc();colorizeSlider(document.getElementById('sLevel'), lvl); });
         w.appendChild(b);
     });
 }
@@ -2266,6 +2270,7 @@ function buildFuelPills() {
         b.dataset.p = f.p;
         b.textContent = n + ' · ' + fmtPS(f.p);
         b.addEventListener('click', () => {
+		    haptic('light');
             prc = f.p;
             iPrice.value = cur==='JPY' ? prc.toFixed(0) : prc.toFixed(2);
             document.querySelectorAll('.pill').forEach(x => x.classList.remove('on'));
@@ -2341,7 +2346,11 @@ function calc() {
 // ==================== STEPPER ====================
 function changeTank(d) {
     var n = tank + d;
-    if (n < 10 || n > 120) return;
+    if (n < 10 || n > 120){
+        haptic('error');
+        return;
+    }
+	haptic('tick');
     tank = n;
     updateTankUI();
     buildQuickBtns();
@@ -2379,6 +2388,7 @@ function stopHold() {
 // ==================== SLIDER + PRICE INPUT ====================
 sLevel.addEventListener('input', function(e) {
     lvl = parseInt(e.target.value);
+	if (lvl % 10 === 0) haptic('tick');
     save();
     calc();
     colorizeSlider(sLevel, lvl);
@@ -2434,6 +2444,7 @@ function buildFuelFilter() {
 var locateBtn = document.getElementById('locateBtn');
 if (locateBtn) {
     locateBtn.addEventListener('click', function() {
+	    haptic('medium');
         if (!checkSearchLimit()) return;
         locateAndFetch();
     });
@@ -2620,6 +2631,7 @@ function renderStations() {
 
 // ==================== USE STATION PRICE ====================
 window.useStationPrice = function(price) {
+    haptic('success');
     if (price === null || price === undefined) return;
     prc = price;
     iPrice.value = cur === 'JPY' ? prc.toFixed(0) : prc.toFixed(2);
@@ -3195,6 +3207,7 @@ const EDITORIAL_EV = {
 ['it','pt','ru','zh','ja'].forEach(function(l) { EDITORIAL_EV[l] = EDITORIAL_EV.en; });
 // Toggle content card
 window.toggleContent = function(id) {
+    haptic('light');
     document.getElementById(id).classList.toggle('open');
 };
 
@@ -3507,6 +3520,7 @@ const EV_I18N = {
 
 // ==================== MODE TOGGLE ====================
 window.setMode = function(mode) {
+    haptic('medium');
     appMode = mode;
     localStorage.setItem('appMode', mode);
 
@@ -3594,7 +3608,11 @@ function buildEvPresets() {
 var evHoldTimer = null, evHoldSpeed = 500;
 function changeEvBatt(d) {
     var n = evBatt + d;
-    if (n < 10 || n > 150) return;
+    if (n < 10 || n > 150) {
+        haptic('error');
+        return;
+    }
+    haptic('tick');
     evBatt = n;
     localStorage.setItem('evBatt', evBatt);
     updateEvBattUI();
@@ -3675,6 +3693,7 @@ function buildEvQuickBtns() {
         var kwh = (item.l / 100) * evBatt;
         b.innerHTML = item.label + '<small>' + kwh.toFixed(0) + ' kWh</small>';
         b.addEventListener('click', function() {
+		haptic('light');
     evLvl = item.l;
     if (evLevelSlider) evLevelSlider.value = evLvl;
     localStorage.setItem('evLvl', evLvl);
@@ -3689,6 +3708,7 @@ function buildEvQuickBtns() {
 if (evLevelSlider) {
     evLevelSlider.addEventListener('input', function(e) {
         evLvl = parseInt(e.target.value);
+		if (evLvl % 10 === 0) haptic('tick');
         localStorage.setItem('evLvl', evLvl);
         updateEvGauge();
         evCalc();
@@ -3707,6 +3727,7 @@ function buildChargeSpeeds() {
         b.className = 'speed-btn' + (s.power === evChargePower ? ' on' : '');
         b.innerHTML = s.label + '<small>' + s.sub + '</small>';
         b.addEventListener('click', function() {
+		    haptic('light');
             evChargePower = s.power;
             localStorage.setItem('evChargePower', evChargePower);
             document.querySelectorAll('.speed-btn').forEach(function(x) { x.classList.remove('on'); });
@@ -3731,6 +3752,7 @@ function buildEvNetworkPills() {
         b.className = 'pill' + (Math.abs(net.p - evPrice) < 0.005 ? ' on' : '');
         b.textContent = name + ' · ' + net.p.toFixed(2).replace('.', C.decSep);
         b.addEventListener('click', function() {
+		    haptic('light');
             evPrice = net.p;
             if (evPriceInput) evPriceInput.value = net.p.toFixed(2);
             localStorage.setItem('evPrice', evPrice);
@@ -3903,6 +3925,7 @@ function getHistI18n() {
 
 // Save current fill/charge
 window.saveCurrentFill = function() {
+    haptic('success');
     var hi = getHistI18n();
     var entry;
 
@@ -4163,6 +4186,7 @@ function getShareText() {
 
 // Native share (iOS/Android)
 window.shareResult = function() {
+    haptic('medium');
     var text = getShareText();
 
     if (navigator.share) {
@@ -4234,6 +4258,7 @@ function isFavorite(stationId) {
 }
 
 window.toggleFavorite = function(stationId, stationName, stationAddr, stationCity, stationLat, stationLon) {
+    haptic('medium');
     var fi = getFavI18n();
     var idx = favorites.findIndex(function(f) { return f.id === stationId; });
 
@@ -4694,6 +4719,7 @@ function checkBadges() {
 
 // Badge unlock toast
 function showBadgeToast(badge) {
+    haptic('success');
     var gi = getGameI18n();
     var btIcon = document.getElementById('btIcon');
     var btTitle = document.getElementById('btTitle');
@@ -4774,6 +4800,23 @@ function updateBadgesUI() {
             '<div class="game-stat"><div class="game-stat-v">' + (gameData.stats.fills || 0) + '</div><div class="game-stat-l">' + gi.fills + '</div></div>' +
             '<div class="game-stat"><div class="game-stat-v">' + (gameData.stats.shares || 0) + '</div><div class="game-stat-l">' + gi.shares + '</div></div>';
     }
+}
+// ==================== HAPTIC FEEDBACK ====================
+function haptic(style) {
+    // iOS Safari haptic (Taptic Engine)
+    try {
+        if (navigator.vibrate) {
+            switch(style) {
+                case 'light':   navigator.vibrate(10); break;
+                case 'medium':  navigator.vibrate(20); break;
+                case 'heavy':   navigator.vibrate(30); break;
+                case 'success': navigator.vibrate([10, 50, 10]); break;
+                case 'error':   navigator.vibrate([30, 50, 30]); break;
+                case 'tick':    navigator.vibrate(5); break;
+                default:        navigator.vibrate(10);
+            }
+        }
+    } catch(e) {}
 }
 window.addEventListener('load', init);
 // Register Service Worker
