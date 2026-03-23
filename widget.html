@@ -11,54 +11,112 @@
         body{
             font-family:-apple-system,BlinkMacSystemFont,sans-serif;
             background:#0a0a0f;color:#fff;
-            padding:env(safe-area-inset-top) 16px 16px;
+            padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
             min-height:100vh;
         }
         .w{max-width:380px;margin:0 auto}
+        .wh{text-align:center;padding:20px 0 6px;font-size:22px;font-weight:700}
+        .wh-sub{text-align:center;font-size:12px;color:#636366;margin-bottom:16px}
 
-        .wh{
-            text-align:center;padding:20px 0 12px;
-            font-size:22px;font-weight:700;
+        /* Loading */
+        .wloading{text-align:center;padding:40px 20px}
+        .wloading-spinner{
+            width:36px;height:36px;margin:0 auto 16px;
+            border:3px solid #2c2c2e;border-top-color:#007aff;
+            border-radius:50%;animation:wspin .7s linear infinite;
         }
-        .wh small{font-size:12px;color:#636366;display:block;margin-top:4px;font-weight:400}
+        @keyframes wspin{to{transform:rotate(360deg)}}
+        .wloading-text{font-size:14px;color:#8e8e93}
 
+        /* Error */
+        .werror{text-align:center;padding:30px 20px}
+        .werror-icon{font-size:40px;margin-bottom:12px}
+        .werror-text{font-size:14px;color:#8e8e93;line-height:1.5}
+        .werror-btn{
+            display:inline-block;margin-top:14px;padding:12px 24px;
+            background:#007aff;color:#fff;border-radius:12px;border:none;
+            font-size:14px;font-weight:600;font-family:-apple-system,sans-serif;
+            cursor:pointer;
+        }
+
+        /* Cards */
         .wc{
             background:#1c1c1e;border-radius:16px;
             padding:18px;margin-bottom:12px;
             border:1px solid rgba(255,255,255,.04);
         }
+        .wl{font-size:11px;color:#8e8e93;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
 
-        .wl{font-size:11px;color:#8e8e93;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-
-        .ws-row{display:flex;align-items:center;gap:12px}
-        .ws-icon{font-size:28px}
-        .ws-info{flex:1}
-        .ws-name{font-size:16px;font-weight:600}
+        /* Station card */
+        .ws-best{position:relative;overflow:hidden}
+        .ws-best::before{
+            content:'';position:absolute;top:0;left:0;right:0;height:2px;
+            background:linear-gradient(90deg,#30d158,#00c853);
+        }
+        .ws-best.fuel-mode::before{
+            background:linear-gradient(90deg,#ff9500,#ff6723);
+        }
+        .ws-row{display:flex;align-items:center;gap:14px}
+        .ws-icon{font-size:32px}
+        .ws-info{flex:1;min-width:0}
+        .ws-name{font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .ws-addr{font-size:12px;color:#8e8e93;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .ws-dist{font-size:12px;color:#636366;margin-top:2px}
-        .ws-price{font-size:28px;font-weight:800;color:#ff9500;flex-shrink:0}
+        .ws-price-box{text-align:right;flex-shrink:0}
+        .ws-price{font-size:32px;font-weight:800}
+        .ws-price.fuel-c{color:#ff9500}
+        .ws-price.ev-c{color:#30d158}
         .ws-unit{font-size:11px;color:#636366}
 
-        .wp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-        .wp-box{
-            background:#2c2c2e;border-radius:12px;
-            padding:14px;text-align:center;
+        .ws-go{
+            display:block;text-align:center;padding:14px;
+            background:rgba(48,209,88,.1);
+            color:#30d158;border-radius:12px;
+            font-size:15px;font-weight:600;
+            text-decoration:none;margin-top:12px;
         }
-        .wp-value{font-size:22px;font-weight:800}
-        .wp-value.orange{color:#ff9500}
-        .wp-value.green{color:#30d158}
+        .ws-go.fuel-mode{background:rgba(255,149,0,.1);color:#ff9500}
+        .ws-go:active{opacity:.7}
+
+        /* Price grid */
+        .wp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .wp-box{background:#2c2c2e;border-radius:12px;padding:14px;text-align:center}
+        .wp-value{font-size:24px;font-weight:800}
+        .wp-value.fuel-c{color:#ff9500}
+        .wp-value.ev-c{color:#30d158}
         .wp-label{font-size:10px;color:#8e8e93;margin-top:4px;text-transform:uppercase}
 
+        /* Station list */
+        .ws-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+        .ws-item{
+            display:flex;align-items:center;gap:10px;
+            padding:12px;background:#2c2c2e;border-radius:12px;
+        }
+        .ws-item-rank{
+            width:24px;height:24px;border-radius:50%;
+            background:#3a3a3c;color:#fff;
+            font-size:12px;font-weight:700;
+            display:flex;align-items:center;justify-content:center;
+            flex-shrink:0;
+        }
+        .ws-item-rank.first{background:#30d158;color:#000}
+        .ws-item-info{flex:1;min-width:0}
+        .ws-item-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .ws-item-dist{font-size:11px;color:#636366}
+        .ws-item-price{font-size:16px;font-weight:700;flex-shrink:0}
+
+        /* Last fill */
         .wf{
             display:flex;align-items:center;gap:12px;
-            background:#2c2c2e;border-radius:12px;
-            padding:12px 14px;
+            padding:12px;background:#2c2c2e;border-radius:12px;
         }
-        .wf-icon{font-size:22px}
+        .wf-icon{font-size:22px;flex-shrink:0}
         .wf-info{flex:1}
         .wf-text{font-size:13px;color:#aaa}
         .wf-date{font-size:10px;color:#636366;margin-top:1px}
-        .wf-cost{font-size:18px;font-weight:700}
+        .wf-cost{font-size:18px;font-weight:700;flex-shrink:0}
 
+        /* Actions */
         .wa{
             display:block;text-align:center;padding:16px;
             background:linear-gradient(135deg,#007aff,#5856d6);
@@ -69,112 +127,281 @@
         }
         .wa:active{opacity:.8}
 
-        .wgo{
-            display:block;text-align:center;padding:14px;
-            background:rgba(48,209,88,.12);
-            color:#30d158;border-radius:12px;
-            font-size:14px;font-weight:600;
-            text-decoration:none;margin-top:8px;
-        }
-        .wgo:active{opacity:.7}
-
-        .wtime{text-align:center;font-size:11px;color:#636366;margin-top:12px}
-        .wempty{text-align:center;padding:40px 20px;color:#636366;font-size:14px;line-height:1.6}
-        .wempty-icon{font-size:40px;margin-bottom:12px}
+        .wtime{text-align:center;font-size:11px;color:#636366;margin-top:12px;margin-bottom:8px}
     </style>
 </head>
 <body>
     <div class="w">
-        <div class="wh">
-            ⛽ Easy Refuel
-            <small id="wUpdate"></small>
-        </div>
-
-        <div id="wContent">
-            <div class="wempty">
-                <div class="wempty-icon">📍</div>
-                Ouvrez Easy Refuel et recherchez des stations pour activer le widget
+        <div class="wh">⛽🔋 Easy Refuel</div>
+        <div class="wh-sub" id="wSub">Recherche des stations...</div>
+        <div id="wMain">
+            <div class="wloading" id="wLoading">
+                <div class="wloading-spinner"></div>
+                <div class="wloading-text" id="wLoadingText">Géolocalisation en cours...</div>
             </div>
         </div>
-
-        <a class="wa" href="https://easy-refuel.eu">
-            Ouvrir Easy Refuel →
-        </a>
+        <a class="wa" href="https://easy-refuel.eu">Ouvrir Easy Refuel →</a>
+        <div class="wtime" id="wTime"></div>
     </div>
 
-    <script>
-    try {
-        var d = JSON.parse(localStorage.getItem('widgetData') || '{}');
-        var h = JSON.parse(localStorage.getItem('fillHistory') || '[]');
-        var prc = parseFloat(localStorage.getItem('prc')) || 0;
-        var evPrice = parseFloat(localStorage.getItem('evPrice')) || 0;
-        var mode = localStorage.getItem('appMode') || 'fuel';
-        var cur = d.currency || '€';
+<script>
+// ==================== WIDGET AUTO-GEOLOC ====================
+var wMode = localStorage.getItem('appMode') || 'fuel';
+var wCurrency = '€';
+var wLang = localStorage.getItem('lang') || 'fr';
 
-        var content = document.getElementById('wContent');
-        var wUpdate = document.getElementById('wUpdate');
+// i18n
+var WI = {
+    fr:{searching:'Recherche des stations...',locating:'Géolocalisation...',loading:'Chargement des prix...',cheapest:'Station la moins chère',cheapestEv:'Borne la moins chère',nearby:'Autres stations proches',nearbyEv:'Autres bornes proches',yourPrice:'Votre prix',avgPrice:'Prix moyen',lastFill:'Dernier plein',lastCharge:'Dernière recharge',goTo:'🧭 Y aller',open:'Ouvrir Easy Refuel →',updated:'Mis à jour',ago:'il y a',min:'min',hours:'h',days:'j',geoError:'📍 Géolocalisation refusée',geoErrorText:'Autorisez la localisation pour voir les stations proches',retry:'Réessayer',noStations:'Aucune station trouvée',perL:'/L',perKwh:'/kWh'},
+    en:{searching:'Searching stations...',locating:'Getting location...',loading:'Loading prices...',cheapest:'Cheapest station',cheapestEv:'Cheapest charger',nearby:'Other nearby stations',nearbyEv:'Other nearby chargers',yourPrice:'Your price',avgPrice:'Avg price',lastFill:'Last fill-up',lastCharge:'Last charge',goTo:'🧭 Go there',open:'Open Easy Refuel →',updated:'Updated',ago:'ago',min:'min',hours:'h',days:'d',geoError:'📍 Location denied',geoErrorText:'Allow location to see nearby stations',retry:'Retry',noStations:'No stations found',perL:'/L',perKwh:'/kWh'},
+    es:{searching:'Buscando gasolineras...',locating:'Obteniendo ubicación...',loading:'Cargando precios...',cheapest:'Gasolinera más barata',cheapestEv:'Cargador más barato',nearby:'Otras gasolineras cercanas',nearbyEv:'Otros cargadores cercanos',yourPrice:'Tu precio',avgPrice:'Precio medio',lastFill:'Último repostaje',lastCharge:'Última recarga',goTo:'🧭 Ir',open:'Abrir Easy Refuel →',updated:'Actualizado',ago:'hace',min:'min',hours:'h',days:'d',geoError:'📍 Ubicación denegada',geoErrorText:'Permite la ubicación para ver gasolineras cercanas',retry:'Reintentar',noStations:'No se encontraron gasolineras',perL:'/L',perKwh:'/kWh'},
+    de:{searching:'Suche Tankstellen...',locating:'Standort ermitteln...',loading:'Preise laden...',cheapest:'Günstigste Tankstelle',cheapestEv:'Günstigste Ladestation',nearby:'Weitere Tankstellen',nearbyEv:'Weitere Ladestationen',yourPrice:'Dein Preis',avgPrice:'Ø Preis',lastFill:'Letzte Tankung',lastCharge:'Letzte Ladung',goTo:'🧭 Route',open:'Easy Refuel öffnen →',updated:'Aktualisiert',ago:'vor',min:'Min',hours:'Std',days:'T',geoError:'📍 Standort verweigert',geoErrorText:'Erlauben Sie den Standort',retry:'Erneut versuchen',noStations:'Keine Tankstellen gefunden',perL:'/L',perKwh:'/kWh'}
+};
+var wi = WI[wLang] || WI.en;
 
-        if (d.cheapest) {
-            var isEv = mode === 'ev';
-            var priceColor = isEv ? 'green' : 'orange';
-            var currentPrice = isEv ? evPrice : prc;
+// Haversine
+function hav(a,b,c,d){var R=6371,dL=(c-a)*Math.PI/180,dN=(d-b)*Math.PI/180,x=Math.sin(dL/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dN/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))}
 
-            // Last update
-            if (d.lastUpdate && wUpdate) {
-                var diff = Date.now() - new Date(d.lastUpdate).getTime();
-                var mins = Math.floor(diff / 60000);
-                if (mins < 60) wUpdate.textContent = 'Mis à jour il y a ' + mins + ' min';
-                else wUpdate.textContent = 'Mis à jour il y a ' + Math.floor(mins/60) + 'h';
-            }
+// Time ago
+function tAgo(ms){
+    var m=Math.floor(ms/60000),h=Math.floor(ms/3600000),d=Math.floor(ms/86400000);
+    if(d>0)return wi.ago+' '+d+wi.days;
+    if(h>0)return wi.ago+' '+h+wi.hours;
+    return wi.ago+' '+m+wi.min;
+}
 
-            var html = '';
+// Main
+function startWidget(){
+    document.getElementById('wSub').textContent=wi.searching;
+    document.getElementById('wLoadingText').textContent=wi.locating;
 
-            // Cheapest station
-            html += '<div class="wc">';
-            html += '<div class="wl">' + (isEv ? '🔋 Borne la moins chère' : '⛽ Station la moins chère') + '</div>';
-            html += '<div class="ws-row">';
-            html += '<span class="ws-icon">' + (isEv ? '🔋' : '⛽') + '</span>';
-            html += '<div class="ws-info">';
-            html += '<div class="ws-name">' + d.cheapest.name + '</div>';
-            if (d.cheapest.dist) {
-                html += '<div class="ws-dist">📍 ' + (d.cheapest.dist < 1 ? (d.cheapest.dist*1000).toFixed(0)+' m' : d.cheapest.dist.toFixed(1)+' km') + '</div>';
-            }
-            html += '</div>';
-            html += '<div><div class="ws-price">' + (d.cheapest.price ? d.cheapest.price.toFixed(2) : '—') + '</div>';
-            html += '<div class="ws-unit">' + cur + (isEv ? '/kWh' : '/L') + '</div></div>';
-            html += '</div>';
-            if (d.cheapest.lat && d.cheapest.lon) {
-                html += '<a class="wgo" href="https://maps.apple.com/?daddr=' + d.cheapest.lat + ',' + d.cheapest.lon + '&dirflg=d">🧭 Y aller →</a>';
-            }
-            html += '</div>';
-
-            // Price boxes
-            html += '<div class="wc"><div class="wp-grid">';
-            html += '<div class="wp-box"><div class="wp-value ' + priceColor + '">' + (currentPrice > 0 ? currentPrice.toFixed(2) : '—') + '</div><div class="wp-label">Votre prix ' + cur + (isEv?'/kWh':'/L') + '</div></div>';
-            html += '<div class="wp-box"><div class="wp-value ' + priceColor + '">' + (d.avgPrice > 0 ? d.avgPrice.toFixed(2) : '—') + '</div><div class="wp-label">Prix moyen</div></div>';
-            html += '</div></div>';
-
-            // Last fill
-            var modeH = h.filter(function(f) { return f.mode === mode; });
-            if (modeH.length > 0) {
-                var last = modeH[0];
-                var ago = Date.now() - new Date(last.date).getTime();
-                var agoTxt = Math.floor(ago/86400000) > 0 ? Math.floor(ago/86400000)+'j' : Math.floor(ago/3600000)+'h';
-                html += '<div class="wc">';
-                html += '<div class="wl">' + (isEv ? '🔋 Dernière recharge' : '⛽ Dernier plein') + '</div>';
-                html += '<div class="wf">';
-                html += '<span class="wf-icon">' + (isEv ? '🔋' : '⛽') + '</span>';
-                html += '<div class="wf-info"><div class="wf-text">' + last.amount + ' ' + last.unit + ' à ' + last.pricePerUnit.toFixed(2) + cur + '</div>';
-                html += '<div class="wf-date">il y a ' + agoTxt + '</div></div>';
-                html += '<div class="wf-cost">' + last.totalCost.toFixed(2) + cur + '</div>';
-                html += '</div></div>';
-            }
-
-            content.innerHTML = html;
-        }
-    } catch(e) {
-        console.error(e);
+    if(!navigator.geolocation){
+        showError(wi.geoError,wi.geoErrorText);
+        return;
     }
-    </script>
+
+    navigator.geolocation.getCurrentPosition(
+        function(pos){onLocation(pos.coords.latitude,pos.coords.longitude)},
+        function(){
+            // Fallback: try cached data
+            var cached=JSON.parse(localStorage.getItem('widgetData')||'{}');
+            if(cached.cheapest){
+                showCachedData(cached);
+            }else{
+                showError(wi.geoError,wi.geoErrorText);
+            }
+        },
+        {enableHighAccuracy:true,timeout:10000,maximumAge:300000}
+    );
+}
+
+async function onLocation(lat,lon){
+    document.getElementById('wLoadingText').textContent=wi.loading;
+
+    try{
+        // Detect country
+        var country='';
+        try{
+            var geoResp=await fetch('https://nominatim.openstreetmap.org/reverse?lat='+lat+'&lon='+lon+'&format=json&zoom=3',{headers:{'User-Agent':'EasyRefuelWidget/1.0'}});
+            var geoData=await geoResp.json();
+            country=(geoData.address?.country_code||'').toUpperCase();
+        }catch(e){}
+
+        var stations=[];
+
+        // Try country-specific API first
+        if(country==='FR'){
+            stations=await fetchFranceStations(lat,lon);
+        }else if(country==='ES'){
+            stations=await fetchSpainStations(lat,lon);
+        }
+
+        // Fallback to Overpass
+        if(!stations.length){
+            stations=await fetchOverpassStations(lat,lon);
+        }
+
+        // Calculate distances
+        stations.forEach(function(s){s.dist=hav(lat,lon,s.lat,s.lon)});
+        stations.sort(function(a,b){
+            var pa=a.price||999,pb=b.price||999;
+            if(pa!==pb)return pa-pb;
+            return a.dist-b.dist;
+        });
+
+        // Save to localStorage for main app
+        var best=stations[0]||null;
+        var prices=stations.map(function(s){return s.price}).filter(function(p){return p&&p>0});
+        var avg=prices.length?prices.reduce(function(a,b){return a+b},0)/prices.length:0;
+
+        localStorage.setItem('widgetData',JSON.stringify({
+            cheapest:best?{name:best.name,price:best.price,dist:best.dist,lat:best.lat,lon:best.lon}:null,
+            avgPrice:avg,
+            lastUpdate:new Date().toISOString(),
+            mode:wMode,
+            currency:wCurrency
+        }));
+
+        showStations(stations);
+
+    }catch(e){
+        console.error(e);
+        var cached=JSON.parse(localStorage.getItem('widgetData')||'{}');
+        if(cached.cheapest)showCachedData(cached);
+        else showError('📡','Erreur de connexion');
+    }
+}
+
+// France API
+async function fetchFranceStations(lat,lon){
+    var url='https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?where=within_distance(geom,geom\'POINT('+lon+' '+lat+')\',5000m)&limit=20&select=id,adresse,ville,geom,prix_nom,prix_valeur,marque';
+    var resp=await fetch(url);var data=await resp.json();
+    var map={};
+    (data.results||[]).forEach(function(r){
+        var id=r.id;
+        if(!map[id])map[id]={id:id,name:r.marque||r.ville||'Station',addr:r.adresse||'',lat:r.geom?.lat||0,lon:r.geom?.lon||0,price:null};
+        if(r.prix_valeur){var p=parseFloat(r.prix_valeur);if(!map[id].price||p<map[id].price)map[id].price=p;}
+    });
+    return Object.values(map).filter(function(s){return s.price&&s.price>0});
+}
+
+// Spain API
+async function fetchSpainStations(lat,lon){
+    var resp=await fetch('https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/');
+    var data=await resp.json();var stations=[];
+    (data.ListaEESSPrecio||[]).forEach(function(s){
+        var sLat=parseFloat((s.Latitud||'').replace(',','.'));
+        var sLon=parseFloat((s['Longitud (WGS84)']||'').replace(',','.'));
+        if(!sLat||!sLon)return;
+        if(hav(lat,lon,sLat,sLon)>5)return;
+        var price=parseFloat((s['Precio Gasolina 95 E5']||s['Precio Gasoleo A']||'').replace(',','.'));
+        if(!price||price<=0)return;
+        stations.push({id:s['IDEESS']||''+Math.random(),name:s['Rótulo']||'Estación',addr:s['Dirección']||'',lat:sLat,lon:sLon,price:price});
+    });
+    return stations;
+}
+
+// Overpass fallback
+async function fetchOverpassStations(lat,lon){
+    var amenity=wMode==='ev'?'charging_station':'fuel';
+    var query='[out:json][timeout:10];node["amenity"="'+amenity+'"](around:5000,'+lat+','+lon+');out body 20;';
+    var resp=await fetch('https://overpass-api.de/api/interpreter?data='+encodeURIComponent(query));
+    var data=await resp.json();
+    return(data.elements||[]).map(function(e){
+        return{id:''+e.id,name:e.tags?.brand||e.tags?.name||e.tags?.operator||'Station',addr:e.tags?.['addr:street']||'',lat:e.lat,lon:e.lon,price:null};
+    });
+}
+
+// Display stations
+function showStations(stations){
+    var main=document.getElementById('wMain');
+    var isEv=wMode==='ev';
+    var priceClass=isEv?'ev-c':'fuel-c';
+    var unit=isEv?wi.perKwh:wi.perL;
+    var modeClass=isEv?'':'fuel-mode';
+
+    if(!stations.length){
+        main.innerHTML='<div class="werror"><div class="werror-icon">🔍</div><div class="werror-text">'+wi.noStations+'</div></div>';
+        updateTime();return;
+    }
+
+    var best=stations[0];
+    var prices=stations.map(function(s){return s.price}).filter(function(p){return p&&p>0});
+    var avg=prices.length?prices.reduce(function(a,b){return a+b},0)/prices.length:0;
+    var currentPrice=parseFloat(localStorage.getItem(isEv?'evPrice':'prc'))||0;
+
+    var html='';
+
+    // Best station
+    html+='<div class="wc ws-best '+modeClass+'">';
+    html+='<div class="wl">'+(isEv?wi.cheapestEv:wi.cheapest)+'</div>';
+    html+='<div class="ws-row">';
+    html+='<span class="ws-icon">'+(isEv?'🔋':'⛽')+'</span>';
+    html+='<div class="ws-info">';
+    html+='<div class="ws-name">'+best.name+'</div>';
+    if(best.addr)html+='<div class="ws-addr">'+best.addr+'</div>';
+    html+='<div class="ws-dist">📍 '+(best.dist<1?(best.dist*1000).toFixed(0)+' m':best.dist.toFixed(1)+' km')+'</div>';
+    html+='</div>';
+    html+='<div class="ws-price-box">';
+    html+='<div class="ws-price '+priceClass+'">'+(best.price?best.price.toFixed(2):'—')+'</div>';
+    html+='<div class="ws-unit">'+wCurrency+unit+'</div>';
+    html+='</div></div>';
+    if(best.lat&&best.lon){
+        html+='<a class="ws-go '+modeClass+'" href="https://maps.apple.com/?daddr='+best.lat+','+best.lon+'&dirflg=d">'+wi.goTo+'</a>';
+    }
+    html+='</div>';
+
+    // Price comparison
+    html+='<div class="wc"><div class="wp-grid">';
+    html+='<div class="wp-box"><div class="wp-value '+priceClass+'">'+(currentPrice>0?currentPrice.toFixed(2):'—')+'</div><div class="wp-label">'+wi.yourPrice+'</div></div>';
+    html+='<div class="wp-box"><div class="wp-value '+priceClass+'">'+(avg>0?avg.toFixed(2):'—')+'</div><div class="wp-label">'+wi.avgPrice+'</div></div>';
+    html+='</div></div>';
+
+    // Other stations (top 5)
+    if(stations.length>1){
+        html+='<div class="wc">';
+        html+='<div class="wl">'+(isEv?wi.nearbyEv:wi.nearby)+'</div>';
+        html+='<div class="ws-list">';
+        stations.slice(0,5).forEach(function(s,i){
+            html+='<div class="ws-item">';
+            html+='<div class="ws-item-rank'+(i===0?' first':'')+'">'+(i+1)+'</div>';
+            html+='<div class="ws-item-info"><div class="ws-item-name">'+s.name+'</div>';
+            html+='<div class="ws-item-dist">📍 '+(s.dist<1?(s.dist*1000).toFixed(0)+' m':s.dist.toFixed(1)+' km')+'</div></div>';
+            html+='<div class="ws-item-price '+(s.price?priceClass:'')+'">'+(s.price?s.price.toFixed(2)+wCurrency:'—')+'</div>';
+            html+='</div>';
+        });
+        html+='</div></div>';
+    }
+
+    // Last fill
+    var history=JSON.parse(localStorage.getItem('fillHistory')||'[]');
+    var modeH=history.filter(function(f){return f.mode===wMode});
+    if(modeH.length>0){
+        var last=modeH[0];
+        var agoMs=Date.now()-new Date(last.date).getTime();
+        html+='<div class="wc">';
+        html+='<div class="wl">'+(isEv?wi.lastCharge:wi.lastFill)+'</div>';
+        html+='<div class="wf">';
+        html+='<span class="wf-icon">'+(isEv?'🔋':'⛽')+'</span>';
+        html+='<div class="wf-info"><div class="wf-text">'+last.amount+' '+last.unit+'</div>';
+        html+='<div class="wf-date">'+tAgo(agoMs)+'</div></div>';
+        html+='<div class="wf-cost">'+last.totalCost.toFixed(2)+wCurrency+'</div>';
+        html+='</div></div>';
+    }
+
+    document.getElementById('wSub').textContent=isEv?wi.cheapestEv:wi.cheapest;
+    main.innerHTML=html;
+    updateTime();
+}
+
+function showCachedData(cached){
+    var stations=[];
+    if(cached.cheapest){
+        stations.push({
+            name:cached.cheapest.name,
+            price:cached.cheapest.price,
+            dist:cached.cheapest.dist,
+            lat:cached.cheapest.lat,
+            lon:cached.cheapest.lon,
+            addr:''
+        });
+    }
+    showStations(stations);
+    document.getElementById('wSub').textContent=wi.updated+' '+tAgo(Date.now()-new Date(cached.lastUpdate).getTime());
+}
+
+function showError(icon,text){
+    var main=document.getElementById('wMain');
+    main.innerHTML='<div class="werror"><div class="werror-icon">'+icon+'</div><div class="werror-text">'+text+'</div><button class="werror-btn" onclick="location.reload()">'+wi.retry+'</button></div>';
+}
+
+function updateTime(){
+    var wTime=document.getElementById('wTime');
+    if(wTime)wTime.textContent=wi.updated+' — '+new Date().toLocaleTimeString(wLang==='fr'?'fr-FR':wLang,{hour:'2-digit',minute:'2-digit'});
+}
+
+// Auto-start
+startWidget();
+</script>
 </body>
 </html>
