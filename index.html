@@ -1466,17 +1466,21 @@ body.ev-mode .amount-particle{background:#30d158}
 
 /* Back button — large touch target */
 .trip-back{
-    background:none;border:none;color:#007aff;
+    color:#007aff;
     font-size:17px;font-weight:600;
     font-family:-apple-system,sans-serif;
     cursor:pointer;
     display:flex;align-items:center;gap:6px;
-    /* Large touch area */
     padding:14px 16px 14px 4px;
     margin:-14px 0 -14px -4px;
     min-width:100px;
     min-height:48px;
-    -webkit-tap-highlight-color:transparent;
+    -webkit-tap-highlight-color:rgba(0,122,255,.15);
+    text-decoration:none;
+    /* Force clickable on iOS */
+    -webkit-user-select:none;
+    user-select:none;
+    touch-action:manipulation;
 }
 .trip-back:active{opacity:.5}
 
@@ -6166,20 +6170,6 @@ window.closeTripPage = function() {
     page.classList.remove('open');
 };
 
-// Back button — multiple ways to close
-var tripBackBtn = document.getElementById('tripBackBtn');
-if (tripBackBtn) {
-    tripBackBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        closeTripPage();
-    });
-    tripBackBtn.addEventListener('touchend', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        closeTripPage();
-    }, {passive: false});
-}
 
 // Push state when opening trip page (so back button works)
 var origOpenTrip = window.openTripPage;
@@ -6468,10 +6458,11 @@ if ('serviceWorker' in navigator) {
 
         <!-- Header with big back button -->
 <div class="trip-header">
-    <button class="trip-back" id="tripBackBtn">
+    <a href="javascript:void(0)" class="trip-back" id="tripBackBtn" 
+       ontouchstart="closeTripPage()" onclick="closeTripPage()">
         <span style="font-size:22px">‹</span>
         <span id="tripBackText">Retour</span>
-    </button>
+    </a>
     <span class="trip-page-title" id="tripPageTitle">🗺️ Trajet</span>
     <div class="trip-header-spacer"></div>
 </div>
