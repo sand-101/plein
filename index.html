@@ -1675,12 +1675,65 @@ body.ev-mode .trip-cost-value{
     margin-top:14px;
 }
 .trip-share-btn:active{transform:scale(.97);background:#3a3a3c}
+/* ===== PULL TO REFRESH ===== */
+.ptr-container{
+    position:fixed;top:0;left:0;right:0;
+    display:flex;justify-content:center;
+    z-index:9999;pointer-events:none;
+}
+.ptr-indicator{
+    width:40px;height:40px;
+    border-radius:50%;
+    background:#1c1c1e;
+    border:1px solid #3a3a3c;
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;
+    transform:translateY(-50px);
+    transition:transform .3s ease, opacity .3s ease;
+    opacity:0;
+    box-shadow:0 4px 15px rgba(0,0,0,.3);
+}
+.ptr-indicator.pulling{
+    opacity:1;
+    transition:none;
+}
+.ptr-indicator.refreshing{
+    opacity:1;
+    transform:translateY(60px);
+    transition:transform .3s ease;
+}
+.ptr-indicator.refreshing .ptr-arrow{
+    animation:ptrSpin .7s linear infinite;
+}
+.ptr-indicator.done{
+    transform:translateY(60px);
+    opacity:1;
+}
+.ptr-indicator.hiding{
+    transform:translateY(-50px);
+    opacity:0;
+    transition:all .3s ease;
+}
 
+.ptr-arrow{
+    transition:transform .2s ease;
+    font-size:20px;
+}
+
+@keyframes ptrSpin{
+    to{transform:rotate(360deg)}
+}
     </style>
 
 </head>
 
 <body>
+<!-- PULL TO REFRESH -->
+<div class="ptr-container" id="ptrContainer">
+    <div class="ptr-indicator" id="ptrIndicator">
+        <span class="ptr-arrow" id="ptrArrow">↓</span>
+    </div>
+</div>
 <!-- ===== ONBOARDING ===== -->
 <div class="onboarding-overlay" id="onboarding">
     <div class="ob-container">
@@ -6731,6 +6784,160 @@ function saveWidgetData() {
     };
     localStorage.setItem('widgetData', JSON.stringify(data));
 }
+// ==================== PULL TO REFRESH ====================
+(function() {
+    var startY = 0;
+    var currentY = 0;
+    var pulling = false;
+    var refreshing = false;
+    var threshold = 80;
+
+    var container = document.getElementById('ptrContainer');
+    var indicator = document.getElementById('ptrIndicator');
+    var arrow = document.getElementById('ptrArrow');
+
+    if (!container || !indicator || !arrow) return;
+
+    // Only trigger when scrolled to top
+    function isAtTop() {
+        return window.scrollY <= 5;
+    }
+
+    document.addEventListener('touchstart', function(e) {
+        if (refreshing) return;
+        if (!isAtTop()) return;
+        startY = e.touches[0].clientY;
+        pulling = true;
+    }, {passive: true});
+
+    document.addEventListener('touchmove', function(e) {
+        if (!pulling || refreshing) return;
+        if (!isAtTop()) {
+            pulling = false;
+            indicator.className = 'ptr-indicator';
+            return;
+        }
+
+        currentY = e.touches[0].clientY;
+        var pullDistance = currentY - startY;
+
+        if (pullDistance < 0) {
+            pulling = false;
+            return;
+        }
+
+        // Dampen the pull
+        var dampened = Math.min(pullDistance * 0.4, 120);
+
+        indicator.className = 'ptr-indicator pulling';
+        indicator.style.transform = 'translateY(' + (dampened - 10) + 'px)';
+
+        // Rotate arrow based on progress
+        var progress = Math.min(dampened / threshold, 1);
+        arrow.style.transform = 'rotate(' + (progress * 180) + 'deg)';
+
+        // Change icon when threshold reached
+        if (dampened >= threshold) {
+            arrow.textContent = '↑';
+            arrow.style.color = '#30d158';
+        } else {
+            arrow.textContent = '↓';
+            arrow.style.color = '#fff';
+        }
+    }, {passive: true});
+
+    document.addEventListener('touchend', function() {
+        if (!pulling || refreshing) return;
+        pulling = false;
+
+        var pullDistance = (currentY - startY) * 0.4;
+
+        if (pullDistance >= threshold) {
+            // Trigger refresh
+            doRefresh();
+        } else {
+            // Cancel — hide indicator
+            indicator.className = 'ptr-indicator hiding';
+            indicator.style.transform = '';
+            setTimeout(function() {
+                indicator.className = 'ptr-indicator';
+            }, 300);
+        }
+
+        startY = 0;
+        currentY = 0;
+    }, {passive: true});
+
+    function doRefresh() {
+        refreshing = true;
+        haptic('medium');
+
+        // Show spinning indicator
+        indicator.className = 'ptr-indicator refreshing';
+        indicator.style.transform = '';
+        arrow.textContent = '↻';
+        arrow.style.color = '#007aff';
+        arrow.style.transform = '';
+
+        // Do the actual refresh
+        setTimeout(function() {
+            try {
+                // Rebuild all UI
+                rebuildAll();
+
+                // Re-search stations if we have location
+                if (userLat && userLon) {
+                    fetchStations().then(function() {
+                        finishRefresh('✓');
+                    }).catch(function() {
+                        finishRefresh('✓');
+                    });
+                } else {
+                    finishRefresh('✓');
+                }
+            } catch(e) {
+                finishRefresh('✓');
+            }
+        }, 300);
+    }
+
+    function finishRefresh(icon) {
+        // Show done
+        arrow.textContent = icon;
+        arrow.style.color = '#30d158';
+        indicator.className = 'ptr-indicator done';
+
+        haptic('success');
+        showToast('🔄 ' + getRefreshText());
+
+        // Hide after delay
+        setTimeout(function() {
+            indicator.className = 'ptr-indicator hiding';
+            indicator.style.transform = '';
+            setTimeout(function() {
+                indicator.className = 'ptr-indicator';
+                arrow.textContent = '↓';
+                arrow.style.color = '#fff';
+                refreshing = false;
+            }, 300);
+        }, 600);
+    }
+
+    function getRefreshText() {
+        var texts = {
+            fr:'Données actualisées',
+            en:'Data refreshed',
+            es:'Datos actualizados',
+            de:'Daten aktualisiert',
+            it:'Dati aggiornati',
+            pt:'Dados atualizados',
+            ru:'Данные обновлены',
+            zh:'数据已刷新',
+            ja:'データ更新済み'
+        };
+        return texts[lang] || texts.en;
+    }
+})();
 window.addEventListener('load', init);
 // Register Service Worker
 if ('serviceWorker' in navigator) {
