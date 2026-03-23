@@ -1415,6 +1415,176 @@ body.ev-mode .amount-particle{background:#30d158}
     border:1px solid rgba(255,215,0,.1);
 }
 .vm-premium-hint a{color:#ffd700;font-weight:600;text-decoration:none}
+/* ===== CALCUL TRAJET — PAGE MODALE ===== */
+.trip-launcher{
+    width:100%;padding:16px;border:none;border-radius:14px;
+    background:linear-gradient(135deg,#007aff,#5856d6);
+    color:#fff;font-size:15px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    box-shadow:0 4px 15px rgba(0,122,255,.25);
+}
+.trip-launcher:active{transform:scale(.97);opacity:.85}
+
+/* Fullscreen page */
+.trip-page{
+    position:fixed;inset:0;
+    background:#0a0a0f;
+    z-index:10002;
+    transform:translateX(100%);
+    transition:transform .35s cubic-bezier(.25,.46,.45,.94);
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+}
+.trip-page.open{transform:translateX(0)}
+
+.trip-page-inner{
+    max-width:420px;margin:0 auto;
+    padding:0 18px 50px;
+}
+
+/* Header */
+.trip-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 0;position:sticky;top:0;
+    background:#0a0a0f;z-index:2;
+    border-bottom:1px solid #1c1c1e;
+}
+.trip-back{
+    background:none;border:none;color:#007aff;
+    font-size:15px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;display:flex;align-items:center;gap:4px;
+    padding:8px 0;
+}
+.trip-back:active{opacity:.6}
+.trip-page-title{
+    font-size:17px;font-weight:700;
+    position:absolute;left:50%;transform:translateX(-50%);
+}
+.trip-header-spacer{width:60px}
+
+/* Sections */
+.trip-section{
+    background:#1c1c1e;border-radius:16px;
+    padding:20px;margin-top:14px;
+}
+.trip-section-title{
+    font-size:13px;font-weight:600;color:#8e8e93;
+    text-transform:uppercase;letter-spacing:.5px;
+    margin-bottom:14px;
+}
+
+/* Input fields */
+.trip-field{margin-bottom:14px}
+.trip-label{font-size:12px;color:#8e8e93;font-weight:600;margin-bottom:6px;display:block}
+.trip-input-row{
+    display:flex;align-items:center;
+    background:#2c2c2e;border-radius:12px;
+    overflow:hidden;border:2px solid transparent;
+    transition:border-color .2s;
+}
+.trip-input-row:focus-within{border-color:#007aff}
+.trip-input-row .trip-icon{padding:12px 14px;font-size:18px;background:rgba(0,122,255,.08)}
+.trip-input-row input{
+    flex:1;background:transparent;border:none;
+    color:#fff;font-size:16px;font-weight:600;
+    padding:12px 10px;outline:none;
+    font-family:-apple-system,sans-serif;
+    -webkit-user-select:text;user-select:text;
+}
+.trip-input-row input::placeholder{color:#48484a}
+.trip-input-row .trip-unit{padding:12px 14px;font-size:13px;color:#636366;font-weight:500}
+
+/* Presets */
+.conso-presets{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.conso-preset{
+    padding:7px 14px;border-radius:16px;
+    border:1.5px solid #3a3a3c;background:transparent;
+    color:#e5e5ea;font-size:12px;font-weight:500;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+}
+.conso-preset:active{transform:scale(.94)}
+.conso-preset.on{background:#007aff;border-color:#007aff;color:#fff;font-weight:600}
+
+/* Calculate button */
+.trip-calc-btn{
+    width:100%;padding:16px;border:none;border-radius:14px;
+    background:linear-gradient(135deg,#007aff,#5856d6);
+    color:#fff;font-size:16px;font-weight:700;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    margin-top:16px;box-shadow:0 4px 15px rgba(0,122,255,.25);
+}
+.trip-calc-btn:active{transform:scale(.97);opacity:.85}
+
+/* Results */
+.trip-results{margin-top:14px}
+.trip-results.hidden{display:none}
+
+.trip-main-cost{
+    background:linear-gradient(145deg,#1c1c1e,#19191d);
+    border:1px solid #2c2c2e;border-radius:16px;
+    padding:24px;text-align:center;
+}
+.trip-cost-label{font-size:12px;color:#8e8e93;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.trip-cost-value{
+    font-size:52px;font-weight:800;letter-spacing:-2px;
+    background:linear-gradient(135deg,#ff9f0a,#ff6723);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;line-height:1.1;
+}
+body.ev-mode .trip-cost-value{
+    background:linear-gradient(135deg,#30d158,#00c853);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+}
+.trip-cost-detail{font-size:13px;color:#8e8e93;margin-top:6px}
+
+.trip-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}
+.trip-stat{background:#1c1c1e;border-radius:13px;padding:14px;text-align:center;border:1px solid #2c2c2e}
+.trip-stat-v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.trip-stat-l{font-size:9px;color:#8e8e93;text-transform:uppercase;letter-spacing:.3px;margin-top:3px}
+
+/* EV stops */
+.trip-ev-stops{
+    margin-top:14px;padding:16px;
+    background:rgba(48,209,88,.06);border-radius:14px;
+    border:1px solid rgba(48,209,88,.12);
+}
+.trip-ev-stops-title{font-size:13px;font-weight:600;color:#30d158;margin-bottom:8px}
+.trip-ev-stops-detail{font-size:13px;color:#aaa;line-height:1.6}
+
+/* Compare */
+.trip-compare{
+    margin-top:14px;padding:16px;
+    background:#1c1c1e;border-radius:14px;
+    border:1px solid #2c2c2e;
+}
+.trip-compare-title{font-size:13px;font-weight:600;color:#007aff;margin-bottom:10px}
+.trip-compare-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:8px 0;font-size:14px;
+}
+.trip-compare-row .tcr-label{color:#aaa}
+.trip-compare-row .tcr-value{font-weight:700}
+.trip-compare-row .tcr-savings{color:#30d158;font-weight:700;font-size:16px}
+.trip-compare-divider{border-top:1px solid rgba(255,255,255,.05);padding-top:10px;margin-top:6px}
+
+/* Share trip */
+.trip-share-btn{
+    width:100%;padding:14px;border:none;border-radius:14px;
+    background:#2c2c2e;color:#fff;
+    font-size:14px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    margin-top:14px;
+}
+.trip-share-btn:active{transform:scale(.97);background:#3a3a3c}
     </style>
 
 </head>
@@ -1914,6 +2084,12 @@ body.ev-mode .amount-particle{background:#30d158}
             <button class="btn-c" onclick="closeLim()"></button>
         </div>
     </div>
+</div>
+<!-- ===== BOUTON TRAJET ===== -->
+<div class="card" style="padding:18px">
+    <button class="trip-launcher" onclick="openTripPage()">
+        🗺️ <span id="tripLauncherText">Calculer un trajet</span>
+    </button>
 </div>
 <!-- ===== QR CODE ===== -->
 <div class="card qr-card" id="qrCard">
@@ -2573,6 +2749,7 @@ function rebuildAll() {
 	try { updateQRUI(); } catch(e) {}
 	try { updateBadgesUI(); } catch(e) {}
 	try { updateVehiclesUI(); } catch(e) {}
+	try { updateTripUI(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -4022,6 +4199,7 @@ window.setMode = function(mode) {
 	try { updateQRUI(); } catch(e) {}
 	try { updateBadgesUI(); } catch(e) {}
 	try { updateVehiclesUI(); } catch(e) {}
+	try { updateTripUI(); } catch(e) {}
 };
 
 // ==================== EV BATTERY ====================
@@ -5923,11 +6101,375 @@ function updateVehiclesUI() {
         '</div>';
     }).join('');
 }
+// ==================== CALCUL TRAJET — PAGE ====================
+var tripConso = 6.5;
+var tripEvConso = 17;
+
+var TRIP_I18N = {
+    fr:{launcher:'Calculer un trajet',back:'Retour',pageTitle:'🗺️ Trajet',distTitle:'📍 Distance',consoTitle:'⛽ Consommation',evConsoTitle:'🔋 Consommation',priceTitle:'💶 Prix actuel',calc:'Calculer le coût',costLabel:'Coût du trajet',liters:'Litres',kwhUsed:'kWh',stops:'Arrêts',stopsEv:'Recharges',per100:'/100 km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Arrêts recharge',evStopsDetail:'{stops} arrêt(s) · ~{time} min · {kwh} kWh/arrêt',compareTitle:'⚖️ Essence vs Électrique',fuelCost:'Coût essence',evCost:'Coût électrique',savings:'Économie',shareTxt:'Partager ce calcul',shareMsg:'🗺️ Trajet {dist} km\n💰 Coût : {cost}\n⛽ {fuel}\n\nCalculé avec Easy Refuel\nhttps://easy-refuel.eu',city:'Ville',mixed:'Mixte',highway:'Autoroute',suv:'SUV',evCity:'Ville',evMixed:'Mixte',evHighway:'Autoroute',evFast:'Sportif',perL:'/L',perKwh:'/kWh'},
+    en:{launcher:'Calculate a trip',back:'Back',pageTitle:'🗺️ Trip',distTitle:'📍 Distance',consoTitle:'⛽ Consumption',evConsoTitle:'🔋 Consumption',priceTitle:'💶 Current price',calc:'Calculate cost',costLabel:'Trip cost',liters:'Liters',kwhUsed:'kWh',stops:'Stops',stopsEv:'Charges',per100:'/100 km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Charging stops',evStopsDetail:'{stops} stop(s) · ~{time} min · {kwh} kWh/stop',compareTitle:'⚖️ Fuel vs Electric',fuelCost:'Fuel cost',evCost:'Electric cost',savings:'Savings',shareTxt:'Share this calculation',shareMsg:'🗺️ Trip {dist} km\n💰 Cost: {cost}\n⛽ {fuel}\n\nCalculated with Easy Refuel\nhttps://easy-refuel.eu',city:'City',mixed:'Mixed',highway:'Highway',suv:'SUV',evCity:'City',evMixed:'Mixed',evHighway:'Highway',evFast:'Sport',perL:'/L',perKwh:'/kWh'},
+    es:{launcher:'Calcular un viaje',back:'Volver',pageTitle:'🗺️ Viaje',distTitle:'📍 Distancia',consoTitle:'⛽ Consumo',evConsoTitle:'🔋 Consumo',priceTitle:'💶 Precio actual',calc:'Calcular coste',costLabel:'Coste del viaje',liters:'Litros',kwhUsed:'kWh',stops:'Paradas',stopsEv:'Recargas',per100:'/100 km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Paradas de recarga',evStopsDetail:'{stops} parada(s) · ~{time} min · {kwh} kWh',compareTitle:'⚖️ Gasolina vs Eléctrico',fuelCost:'Gasolina',evCost:'Eléctrico',savings:'Ahorro',shareTxt:'Compartir',shareMsg:'🗺️ Viaje {dist} km\n💰 Coste: {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'Ciudad',mixed:'Mixto',highway:'Autopista',suv:'SUV',evCity:'Ciudad',evMixed:'Mixto',evHighway:'Autopista',evFast:'Deportivo',perL:'/L',perKwh:'/kWh'},
+    de:{launcher:'Reise berechnen',back:'Zurück',pageTitle:'🗺️ Reise',distTitle:'📍 Entfernung',consoTitle:'⛽ Verbrauch',evConsoTitle:'🔋 Verbrauch',priceTitle:'💶 Aktueller Preis',calc:'Kosten berechnen',costLabel:'Reisekosten',liters:'Liter',kwhUsed:'kWh',stops:'Stopps',stopsEv:'Ladestopps',per100:'/100 km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Ladestopps',evStopsDetail:'{stops} Stopp(s) · ~{time} Min · {kwh} kWh',compareTitle:'⚖️ Benzin vs Elektrisch',fuelCost:'Benzin',evCost:'Elektrisch',savings:'Ersparnis',shareTxt:'Teilen',shareMsg:'🗺️ Reise {dist} km\n💰 Kosten: {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'Stadt',mixed:'Gemischt',highway:'Autobahn',suv:'SUV',evCity:'Stadt',evMixed:'Gemischt',evHighway:'Autobahn',evFast:'Sportlich',perL:'/L',perKwh:'/kWh'},
+    it:{launcher:'Calcola viaggio',back:'Indietro',pageTitle:'🗺️ Viaggio',distTitle:'📍 Distanza',consoTitle:'⛽ Consumo',evConsoTitle:'🔋 Consumo',priceTitle:'💶 Prezzo attuale',calc:'Calcola',costLabel:'Costo viaggio',liters:'Litri',kwhUsed:'kWh',stops:'Soste',stopsEv:'Ricariche',per100:'/100 km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Soste ricarica',evStopsDetail:'{stops} sosta(e) · ~{time} min · {kwh} kWh',compareTitle:'⚖️ Benzina vs Elettrico',fuelCost:'Benzina',evCost:'Elettrico',savings:'Risparmio',shareTxt:'Condividi',shareMsg:'🗺️ Viaggio {dist} km\n💰 Costo: {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'Città',mixed:'Misto',highway:'Autostrada',suv:'SUV',evCity:'Città',evMixed:'Misto',evHighway:'Autostrada',evFast:'Sportivo',perL:'/L',perKwh:'/kWh'},
+    pt:{launcher:'Calcular viagem',back:'Voltar',pageTitle:'🗺️ Viagem',distTitle:'📍 Distância',consoTitle:'⛽ Consumo',evConsoTitle:'🔋 Consumo',priceTitle:'💶 Preço atual',calc:'Calcular',costLabel:'Custo',liters:'Litros',kwhUsed:'kWh',stops:'Paragens',stopsEv:'Cargas',per100:'/100 km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Paragens de carga',evStopsDetail:'{stops} paragem(ns) · ~{time} min · {kwh} kWh',compareTitle:'⚖️ Gasolina vs Elétrico',fuelCost:'Gasolina',evCost:'Elétrico',savings:'Poupança',shareTxt:'Partilhar',shareMsg:'🗺️ Viagem {dist} km\n💰 Custo: {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'Cidade',mixed:'Misto',highway:'Autoestrada',suv:'SUV',evCity:'Cidade',evMixed:'Misto',evHighway:'Autoestrada',evFast:'Desportivo',perL:'/L',perKwh:'/kWh'},
+    ru:{launcher:'Рассчитать поездку',back:'Назад',pageTitle:'🗺️ Поездка',distTitle:'📍 Расстояние',consoTitle:'⛽ Расход',evConsoTitle:'🔋 Расход',priceTitle:'💶 Текущая цена',calc:'Рассчитать',costLabel:'Стоимость',liters:'Литры',kwhUsed:'кВт·ч',stops:'Остановки',stopsEv:'Зарядки',per100:'/100 км',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Остановки',evStopsDetail:'{stops} ост. · ~{time} мин · {kwh} кВт·ч',compareTitle:'⚖️ Бензин vs Электро',fuelCost:'Бензин',evCost:'Электро',savings:'Экономия',shareTxt:'Поделиться',shareMsg:'🗺️ Поездка {dist} км\n💰 Стоимость: {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'Город',mixed:'Смешанный',highway:'Трасса',suv:'Кроссовер',evCity:'Город',evMixed:'Смешанный',evHighway:'Трасса',evFast:'Спорт',perL:'/л',perKwh:'/кВт·ч'},
+    zh:{launcher:'计算行程',back:'返回',pageTitle:'🗺️ 行程',distTitle:'📍 距离',consoTitle:'⛽ 油耗',evConsoTitle:'🔋 电耗',priceTitle:'💶 当前价格',calc:'计算',costLabel:'行程费用',liters:'升',kwhUsed:'kWh',stops:'停靠',stopsEv:'充电',per100:'/100km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ 充电停靠',evStopsDetail:'{stops}次·~{time}分钟·{kwh}kWh',compareTitle:'⚖️ 汽油vs电动',fuelCost:'汽油',evCost:'电动',savings:'节省',shareTxt:'分享',shareMsg:'🗺️ {dist}km\n💰 {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'城市',mixed:'综合',highway:'高速',suv:'SUV',evCity:'城市',evMixed:'综合',evHighway:'高速',evFast:'运动',perL:'/L',perKwh:'/kWh'},
+    ja:{launcher:'旅行計算',back:'戻る',pageTitle:'🗺️ 旅行',distTitle:'📍 距離',consoTitle:'⛽ 燃費',evConsoTitle:'🔋 電費',priceTitle:'💶 現在の価格',calc:'計算',costLabel:'旅行費用',liters:'L',kwhUsed:'kWh',stops:'停車',stopsEv:'充電',per100:'/100km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ 充電停車',evStopsDetail:'{stops}回·~{time}分·{kwh}kWh',compareTitle:'⚖️ ガソリンvs電気',fuelCost:'ガソリン',evCost:'電気',savings:'節約',shareTxt:'共有',shareMsg:'🗺️ {dist}km\n💰 {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'市街地',mixed:'混合',highway:'高速',suv:'SUV',evCity:'市街地',evMixed:'混合',evHighway:'高速',evFast:'スポーツ',perL:'/L',perKwh:'/kWh'}
+};
+
+function getTripI18n() { return TRIP_I18N[lang] || TRIP_I18N.en; }
+
+// Open/close page
+window.openTripPage = function() {
+    haptic('medium');
+    var page = document.getElementById('tripPage');
+    if (page) {
+        page.classList.add('open');
+        updateTripPageUI();
+        buildConsoPresets();
+    }
+};
+
+window.closeTripPage = function() {
+    haptic('light');
+    var page = document.getElementById('tripPage');
+    if (page) page.classList.remove('open');
+};
+
+// Build presets
+function buildConsoPresets() {
+    var ti = getTripI18n();
+
+    var w = document.getElementById('consoPresets');
+    if (w) {
+        var presets = [{v:5.5,l:ti.city},{v:6.5,l:ti.mixed},{v:7.5,l:ti.highway},{v:9.0,l:ti.suv}];
+        w.innerHTML = '';
+        presets.forEach(function(p) {
+            var btn = document.createElement('button');
+            btn.className = 'conso-preset' + (Math.abs(tripConso - p.v) < 0.1 ? ' on' : '');
+            btn.textContent = p.l + ' · ' + p.v + 'L';
+            btn.addEventListener('click', function() {
+                haptic('light');
+                tripConso = p.v;
+                var input = document.getElementById('tripConso');
+                if (input) input.value = p.v;
+                w.querySelectorAll('.conso-preset').forEach(function(b) { b.classList.remove('on'); });
+                btn.classList.add('on');
+            });
+            w.appendChild(btn);
+        });
+    }
+
+    var wEv = document.getElementById('evConsoPresets');
+    if (wEv) {
+        var evP = [{v:14,l:ti.evCity},{v:17,l:ti.evMixed},{v:20,l:ti.evHighway},{v:24,l:ti.evFast}];
+        wEv.innerHTML = '';
+        evP.forEach(function(p) {
+            var btn = document.createElement('button');
+            btn.className = 'conso-preset' + (Math.abs(tripEvConso - p.v) < 0.5 ? ' on' : '');
+            btn.textContent = p.l + ' · ' + p.v + 'kWh';
+            btn.addEventListener('click', function() {
+                haptic('light');
+                tripEvConso = p.v;
+                var input = document.getElementById('tripEvConso');
+                if (input) input.value = p.v;
+                wEv.querySelectorAll('.conso-preset').forEach(function(b) { b.classList.remove('on'); });
+                btn.classList.add('on');
+            });
+            wEv.appendChild(btn);
+        });
+    }
+}
+
+// Update page UI
+function updateTripPageUI() {
+    var ti = getTripI18n();
+    var isEv = appMode === 'ev';
+
+    var backText = document.getElementById('tripBackText');
+    if (backText) backText.textContent = ti.back;
+    var pageTitle = document.getElementById('tripPageTitle');
+    if (pageTitle) pageTitle.textContent = ti.pageTitle;
+    var distTitle = document.getElementById('tripDistTitle');
+    if (distTitle) distTitle.textContent = ti.distTitle;
+    var consoTitle = document.getElementById('tripConsoTitle');
+    if (consoTitle) consoTitle.textContent = ti.consoTitle;
+    var evConsoTitle = document.getElementById('tripEvConsoTitle');
+    if (evConsoTitle) evConsoTitle.textContent = ti.evConsoTitle;
+    var priceTitle = document.getElementById('tripPriceTitle');
+    if (priceTitle) priceTitle.textContent = ti.priceTitle;
+    var calcText = document.getElementById('tripCalcText');
+    if (calcText) calcText.textContent = ti.calc;
+    var shareText = document.getElementById('tripShareText');
+    if (shareText) shareText.textContent = ti.shareTxt;
+
+    // Current price display
+    var curPrice = document.getElementById('tripCurrentPrice');
+    var curUnit = document.getElementById('tripCurrentPriceUnit');
+    if (isEv) {
+        if (curPrice) curPrice.textContent = evPrice.toFixed(2) + ' ' + C.symbol;
+        if (curUnit) curUnit.textContent = ti.perKwh;
+    } else {
+        if (curPrice) curPrice.textContent = fmtPS(prc) + ' ' + C.symbol;
+        if (curUnit) curUnit.textContent = ti.perL;
+    }
+
+    // Apply fuel-only / ev-only visibility
+    var page = document.getElementById('tripPage');
+    if (page) {
+        page.querySelectorAll('.fuel-only').forEach(function(el) {
+            el.style.display = isEv ? 'none' : 'block';
+        });
+        page.querySelectorAll('.ev-only').forEach(function(el) {
+            el.style.display = isEv ? 'block' : 'none';
+        });
+    }
+
+    // Hide results until calculated
+    var results = document.getElementById('tripResults');
+    if (results) results.classList.add('hidden');
+}
+
+// Calculate
+window.calculateTrip = function() {
+    haptic('success');
+    var ti = getTripI18n();
+    var isEv = appMode === 'ev';
+    var distInput = document.getElementById('tripDist');
+    var dist = distInput ? parseFloat(distInput.value) || 300 : 300;
+
+    var results = document.getElementById('tripResults');
+    if (results) results.classList.remove('hidden');
+
+    if (isEv) {
+        var consoInput = document.getElementById('tripEvConso');
+        var conso = consoInput ? parseFloat(consoInput.value) || 17 : 17;
+        var totalKwh = (dist / 100) * conso;
+        var totalCost = totalKwh * evPrice;
+        var costPer100 = conso * evPrice;
+        var usable = evBatt * 0.7;
+        var rangePerCharge = (usable / conso) * 100;
+        var stops = Math.max(0, Math.ceil(dist / rangePerCharge) - 1);
+        var timePerStop = Math.round((usable / evChargePower) * 60);
+
+        setTripResult(ti, dist, fmtCur(totalCost), totalKwh.toFixed(1) + ' kWh', evPrice.toFixed(2) + ' ' + C.symbol + '/kWh', totalKwh.toFixed(1), ti.kwhUsed, stops, ti.stopsEv, fmtCur(costPer100));
+
+        var evStops = document.getElementById('tripEvStops');
+        if (evStops) evStops.style.display = stops > 0 ? 'block' : 'none';
+        var evStopsTitle = document.getElementById('tripEvStopsTitle');
+        if (evStopsTitle) evStopsTitle.textContent = ti.evStopsTitle;
+        var evStopsDetail = document.getElementById('tripEvStopsDetail');
+        if (evStopsDetail) evStopsDetail.textContent = ti.evStopsDetail.replace('{stops}', stops).replace('{time}', timePerStop).replace('{kwh}', usable.toFixed(0));
+
+        showTripCompare(ti, dist, null, totalCost, true);
+    } else {
+        var consoInput = document.getElementById('tripConso');
+        var conso = consoInput ? parseFloat(consoInput.value) || 6.5 : 6.5;
+        var totalLiters = (dist / 100) * conso;
+        var totalCost = totalLiters * prc;
+        var costPer100 = conso * prc;
+        var stops = Math.max(0, Math.ceil(totalLiters / tank) - 1);
+
+        setTripResult(ti, dist, fmtCur(totalCost), totalLiters.toFixed(1) + ' L', fmtPS(prc) + ' ' + C.symbol + '/L', totalLiters.toFixed(1), ti.liters, stops, ti.stops, fmtCur(costPer100));
+
+        var evStops = document.getElementById('tripEvStops');
+        if (evStops) evStops.style.display = 'none';
+
+        showTripCompare(ti, dist, totalCost, null, false);
+    }
+
+    if (results) results.scrollIntoView({behavior:'smooth', block:'start'});
+};
+
+function setTripResult(ti, dist, costStr, fuelStr, priceStr, statFuel, statFuelL, stops, stopsL, per100) {
+    var costValue = document.getElementById('tripCostValue');
+    if (costValue) costValue.textContent = costStr;
+    var costLabel = document.getElementById('tripCostLabel');
+    if (costLabel) costLabel.textContent = ti.costLabel;
+    var costDetail = document.getElementById('tripCostDetail');
+    if (costDetail) costDetail.textContent = ti.detail.replace('{fuel}', fuelStr).replace('{price}', priceStr).replace('{cost}', costStr);
+    var sf = document.getElementById('tripStatFuel');
+    if (sf) sf.textContent = statFuel;
+    var sfl = document.getElementById('tripStatFuelL');
+    if (sfl) sfl.textContent = statFuelL;
+    var ss = document.getElementById('tripStatStops');
+    if (ss) ss.textContent = stops;
+    var ssl = document.getElementById('tripStatStopsL');
+    if (ssl) ssl.textContent = stopsL;
+    var sp = document.getElementById('tripStatPer100');
+    if (sp) sp.textContent = per100;
+    var spl = document.getElementById('tripStatPer100L');
+    if (spl) spl.textContent = ti.per100;
+}
+
+function showTripCompare(ti, dist, fuelCost, evCostVal, isEv) {
+    var fuelC = fuelCost || (dist / 100) * 6.5 * prc;
+    var evC = evCostVal || (dist / 100) * 17 * 0.35;
+    var savings = fuelC - evC;
+
+    var compareTitle = document.getElementById('tripCompareTitle');
+    if (compareTitle) compareTitle.textContent = ti.compareTitle;
+    var compareContent = document.getElementById('tripCompareContent');
+    if (compareContent) {
+        compareContent.innerHTML =
+            '<div class="trip-compare-row"><span class="tcr-label">⛽ ' + ti.fuelCost + '</span><span class="tcr-value">' + fmtCur(fuelC) + '</span></div>' +
+            '<div class="trip-compare-row"><span class="tcr-label">🔋 ' + ti.evCost + '</span><span class="tcr-value">' + fmtCur(evC) + '</span></div>' +
+            '<div class="trip-compare-row trip-compare-divider"><span class="tcr-label">💰 ' + ti.savings + '</span><span class="tcr-savings">' + (savings > 0 ? '−' : '+') + fmtCur(Math.abs(savings)) + '</span></div>';
+    }
+}
+
+// Share trip
+window.shareTrip = function() {
+    haptic('medium');
+    var ti = getTripI18n();
+    var distInput = document.getElementById('tripDist');
+    var dist = distInput ? distInput.value : '300';
+    var costValue = document.getElementById('tripCostValue');
+    var cost = costValue ? costValue.textContent : '';
+    var fuelDetail = document.getElementById('tripCostDetail');
+    var fuel = fuelDetail ? fuelDetail.textContent : '';
+
+    var text = ti.shareMsg.replace('{dist}', dist).replace('{cost}', cost).replace('{fuel}', fuel);
+
+    if (navigator.share) {
+        navigator.share({title:'Easy Refuel', text:text, url:'https://easy-refuel.eu'}).catch(function() {});
+    } else {
+        navigator.clipboard.writeText(text).then(function() {
+            showToast('📋 Copied!');
+        }).catch(function() {});
+    }
+    try { trackGameEvent('share'); } catch(e) {}
+};
+
+// Update launcher text
+function updateTripUI() {
+    var ti = getTripI18n();
+    var launcher = document.getElementById('tripLauncherText');
+    if (launcher) launcher.textContent = ti.launcher;
+}
+
+// Input listeners
+var tripDistInput = document.getElementById('tripDist');
+if (tripDistInput) {
+    tripDistInput.addEventListener('focus', function() {
+        setTimeout(function() { tripDistInput.scrollIntoView({behavior:'smooth', block:'center'}); }, 300);
+    });
+}
 window.addEventListener('load', init);
 // Register Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 </script>
+<!-- ===== TRIP PAGE (fullscreen) ===== -->
+<div class="trip-page" id="tripPage">
+    <div class="trip-page-inner">
+
+        <!-- Header -->
+        <div class="trip-header">
+            <button class="trip-back" onclick="closeTripPage()">
+                ← <span id="tripBackText">Retour</span>
+            </button>
+            <span class="trip-page-title" id="tripPageTitle">🗺️ Trajet</span>
+            <div class="trip-header-spacer"></div>
+        </div>
+
+        <!-- Distance -->
+        <div class="trip-section">
+            <div class="trip-section-title" id="tripDistTitle">📍 Distance</div>
+            <div class="trip-field">
+                <div class="trip-input-row">
+                    <span class="trip-icon">📍</span>
+                    <input type="number" id="tripDist" value="300" min="1" max="9999" step="1" inputmode="numeric" placeholder="300">
+                    <span class="trip-unit">km</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consommation fuel -->
+        <div class="trip-section fuel-only">
+            <div class="trip-section-title" id="tripConsoTitle">⛽ Consommation</div>
+            <div class="trip-field">
+                <div class="trip-input-row">
+                    <span class="trip-icon">⛽</span>
+                    <input type="number" id="tripConso" value="6.5" min="1" max="30" step="0.1" inputmode="decimal" placeholder="6.5">
+                    <span class="trip-unit">L/100km</span>
+                </div>
+                <div class="conso-presets" id="consoPresets"></div>
+            </div>
+        </div>
+
+        <!-- Consommation EV -->
+        <div class="trip-section ev-only">
+            <div class="trip-section-title" id="tripEvConsoTitle">🔋 Consommation</div>
+            <div class="trip-field">
+                <div class="trip-input-row">
+                    <span class="trip-icon">🔋</span>
+                    <input type="number" id="tripEvConso" value="17" min="5" max="40" step="0.5" inputmode="decimal" placeholder="17">
+                    <span class="trip-unit">kWh/100km</span>
+                </div>
+                <div class="conso-presets" id="evConsoPresets"></div>
+            </div>
+        </div>
+
+        <!-- Prix actuel -->
+        <div class="trip-section">
+            <div class="trip-section-title" id="tripPriceTitle">💶 Prix actuel</div>
+            <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:28px;font-weight:800" id="tripCurrentPrice"></span>
+                <span style="font-size:14px;color:#8e8e93" id="tripCurrentPriceUnit"></span>
+            </div>
+        </div>
+
+        <!-- Calculate -->
+        <button class="trip-calc-btn" onclick="calculateTrip()">
+            🧮 <span id="tripCalcText">Calculer le coût</span>
+        </button>
+
+        <!-- Results -->
+        <div class="trip-results hidden" id="tripResults">
+
+            <!-- Main cost -->
+            <div class="trip-main-cost">
+                <div class="trip-cost-label" id="tripCostLabel">Coût du trajet</div>
+                <div class="trip-cost-value" id="tripCostValue">0 €</div>
+                <div class="trip-cost-detail" id="tripCostDetail"></div>
+            </div>
+
+            <!-- Stats -->
+            <div class="trip-stats">
+                <div class="trip-stat">
+                    <div class="trip-stat-v" id="tripStatFuel">0</div>
+                    <div class="trip-stat-l" id="tripStatFuelL">Litres</div>
+                </div>
+                <div class="trip-stat">
+                    <div class="trip-stat-v" id="tripStatStops">0</div>
+                    <div class="trip-stat-l" id="tripStatStopsL">Arrêts</div>
+                </div>
+                <div class="trip-stat">
+                    <div class="trip-stat-v" id="tripStatPer100">0 €</div>
+                    <div class="trip-stat-l" id="tripStatPer100L">/100 km</div>
+                </div>
+            </div>
+
+            <!-- EV stops -->
+            <div class="trip-ev-stops ev-only" id="tripEvStops" style="display:none">
+                <div class="trip-ev-stops-title" id="tripEvStopsTitle">⚡ Arrêts recharge</div>
+                <div class="trip-ev-stops-detail" id="tripEvStopsDetail"></div>
+            </div>
+
+            <!-- Compare -->
+            <div class="trip-compare" id="tripCompare">
+                <div class="trip-compare-title" id="tripCompareTitle">⚖️ Essence vs Électrique</div>
+                <div id="tripCompareContent"></div>
+            </div>
+
+            <!-- Share trip -->
+            <button class="trip-share-btn" onclick="shareTrip()">
+                📤 <span id="tripShareText">Partager ce calcul</span>
+            </button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
