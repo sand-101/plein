@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Easy Refuel Widget</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,sans-serif;background:#0a0a0f;color:#fff;padding:20px;min-height:100vh}
+        .w{max-width:380px;margin:0 auto}
+        .wh{text-align:center;padding:16px 0;font-size:20px;font-weight:700}
+        .wb{background:#1c1c1e;border-radius:16px;padding:18px;margin-bottom:12px}
+        .wl{font-size:11px;color:#8e8e93;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+        .wv{font-size:32px;font-weight:800;color:#ff9500}
+        .ws{font-size:13px;color:#aaa;margin-top:4px}
+        .wn{font-size:15px;font-weight:600;margin-top:8px}
+        .wa{display:block;text-align:center;padding:14px;background:#007aff;color:#fff;border-radius:12px;font-size:15px;font-weight:600;text-decoration:none;margin-top:16px}
+    </style>
+</head>
+<body>
+    <div class="w">
+        <div class="wh">⛽ Easy Refuel</div>
+        <div class="wb">
+            <div class="wl" id="wLabel">Station la moins chère</div>
+            <div class="wn" id="wName">—</div>
+            <div class="wv" id="wPrice">—</div>
+            <div class="ws" id="wDist"></div>
+        </div>
+        <div class="wb">
+            <div class="wl">Votre prix actuel</div>
+            <div class="wv" id="wCurrent" style="font-size:24px">—</div>
+        </div>
+        <a class="wa" href="https://easy-refuel.eu">Ouvrir Easy Refuel →</a>
+    </div>
+    <script>
+        try {
+            var d = JSON.parse(localStorage.getItem('widgetData') || '{}');
+            if (d.cheapest) {
+                document.getElementById('wName').textContent = d.cheapest.name;
+                document.getElementById('wPrice').textContent = d.cheapest.price ? d.cheapest.price.toFixed(2) + ' €' : '—';
+                if (d.cheapest.dist) {
+                    document.getElementById('wDist').textContent = '📍 ' + (d.cheapest.dist < 1 ? (d.cheapest.dist*1000).toFixed(0)+' m' : d.cheapest.dist.toFixed(1)+' km');
+                }
+            }
+            var prc = parseFloat(localStorage.getItem('prc')) || 0;
+            if (prc > 0) document.getElementById('wCurrent').textContent = prc.toFixed(2) + ' €/L';
+        } catch(e) {}
+    </script>
+</body>
+</html>
