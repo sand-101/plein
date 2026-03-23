@@ -1611,102 +1611,7 @@ body.ev-mode .trip-cost-value{
     margin-top:14px;
 }
 .trip-share-btn:active{transform:scale(.97);background:#3a3a3c}
-/* ===== WIDGET / MINI DASHBOARD ===== */
-.widget-card{
-    padding:16px 18px;
-    background:linear-gradient(145deg,#1c1c1e,#252528);
-    border:1px solid rgba(255,255,255,.04);
-    overflow:hidden;position:relative;
-}
-.widget-card::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,#ff9500,#ff6723,#30d158);
-}
-body.ev-mode .widget-card::before{
-    background:linear-gradient(90deg,#30d158,#00c853,#007aff);
-}
 
-.widget-header{
-    display:flex;align-items:center;justify-content:space-between;
-    margin-bottom:12px;
-}
-.widget-title{font-size:13px;font-weight:600;color:#8e8e93;display:flex;align-items:center;gap:6px}
-.widget-refresh{
-    background:none;border:none;color:#007aff;font-size:12px;
-    font-weight:600;font-family:-apple-system,sans-serif;
-    cursor:pointer;padding:6px 10px;border-radius:8px;
-    display:flex;align-items:center;gap:4px;
-}
-.widget-refresh:active{background:rgba(0,122,255,.1)}
-.widget-refresh.spinning .wr-icon{animation:widgetSpin .8s linear}
-@keyframes widgetSpin{to{transform:rotate(360deg)}}
-
-.widget-content{display:flex;gap:10px}
-
-/* Price widget */
-.widget-price-box{
-    flex:1;background:#2c2c2e;border-radius:14px;
-    padding:14px;text-align:center;
-}
-.widget-price-label{font-size:10px;color:#8e8e93;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
-.widget-price-value{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums}
-.widget-price-value.fuel-c{color:#ff9500}
-.widget-price-value.ev-c{color:#30d158}
-.widget-price-unit{font-size:10px;color:#636366;margin-top:2px}
-.widget-price-trend{font-size:11px;font-weight:600;margin-top:4px}
-.widget-price-trend.up{color:#ff3b30}
-.widget-price-trend.down{color:#30d158}
-.widget-price-trend.stable{color:#8e8e93}
-
-/* Station widget */
-.widget-station-box{
-    flex:1.5;background:#2c2c2e;border-radius:14px;
-    padding:14px;position:relative;
-}
-.widget-station-label{font-size:10px;color:#8e8e93;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
-.widget-station-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.widget-station-price{font-size:20px;font-weight:800;margin-top:4px}
-.widget-station-price.fuel-c{color:#ff9500}
-.widget-station-price.ev-c{color:#30d158}
-.widget-station-dist{font-size:11px;color:#636366;margin-top:2px}
-.widget-station-go{
-    position:absolute;bottom:14px;right:14px;
-    padding:6px 12px;border-radius:8px;
-    background:rgba(0,122,255,.12);color:#007aff;
-    font-size:11px;font-weight:600;text-decoration:none;
-    font-family:-apple-system,sans-serif;
-}
-.widget-station-go:active{opacity:.6}
-
-.widget-empty{
-    text-align:center;padding:16px;color:#636366;font-size:12px;line-height:1.5;
-}
-.widget-empty-icon{font-size:28px;margin-bottom:6px}
-
-/* Last fill widget */
-.widget-fill-row{
-    display:flex;align-items:center;gap:10px;
-    margin-top:10px;padding:10px;
-    background:#2c2c2e;border-radius:10px;
-}
-.widget-fill-icon{font-size:20px}
-.widget-fill-info{flex:1;min-width:0}
-.widget-fill-text{font-size:12px;color:#aaa}
-.widget-fill-date{font-size:10px;color:#636366;margin-top:1px}
-.widget-fill-cost{font-size:16px;font-weight:700}
-
-/* Install shortcut prompt */
-.widget-shortcut{
-    margin-top:10px;padding:10px 14px;
-    background:rgba(0,122,255,.06);border-radius:10px;
-    border:1px solid rgba(0,122,255,.1);
-    display:flex;align-items:center;gap:10px;
-    cursor:pointer;
-}
-.widget-shortcut:active{background:rgba(0,122,255,.12)}
-.widget-shortcut-icon{font-size:22px;flex-shrink:0}
-.widget-shortcut-text{font-size:11px;color:#aaa;line-height:1.4}
-.widget-shortcut-text strong{color:#fff}
     </style>
 
 </head>
@@ -1856,29 +1761,7 @@ body.ev-mode .widget-card::before{
         </div>
     </div>
 </div>
-<!-- ===== WIDGET / MINI DASHBOARD ===== -->
-<div class="card widget-card" id="widgetCard">
-    <div class="widget-header">
-        <span class="widget-title" id="widgetTitle">📊 Dashboard</span>
-        <button class="widget-refresh" id="widgetRefresh" onclick="refreshWidget()">
-            <span class="wr-icon">🔄</span>
-            <span id="widgetRefreshText">Actualiser</span>
-        </button>
-    </div>
-    <div class="widget-content" id="widgetContent">
-        <div class="widget-empty" id="widgetEmpty">
-            <div class="widget-empty-icon">📍</div>
-            <span id="widgetEmptyText">Recherchez des stations pour activer le dashboard</span>
-        </div>
-    </div>
-    <div id="widgetFillRow"></div>
-    <div class="widget-shortcut" id="widgetShortcut" onclick="showShortcutGuide()" style="display:none">
-        <span class="widget-shortcut-icon">📲</span>
-        <div class="widget-shortcut-text" id="widgetShortcutText">
-            <strong>Astuce :</strong> Créez un raccourci Siri pour voir le dashboard directement sur votre écran d'accueil
-        </div>
-    </div>
-</div>
+
 <!-- STATIONS -->
     <div class="card stations-card">
         <div class="card-label" id="lStations">📍 Stations à proximité</div>
@@ -2896,7 +2779,6 @@ function rebuildAll() {
 	try { updateBadgesUI(); } catch(e) {}
 	try { updateVehiclesUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
-	try { updateWidgetUI(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -3545,7 +3427,7 @@ function init() {
     }
 	// Onboarding
     try { showOnboarding(); } catch(e) {}
-	try { updateWidgetUI(); } catch(e) {}
+
 }
 
 // ==================== PREMIUM SYSTEM ====================
@@ -4350,7 +4232,6 @@ window.setMode = function(mode) {
 	try { updateBadgesUI(); } catch(e) {}
 	try { updateVehiclesUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
-	try { updateWidgetUI(); } catch(e) {}
 };
 
 // ==================== EV BATTERY ====================
@@ -6696,13 +6577,10 @@ function updateWidgetUI() {
     }
 }
 
-// Save widget data when stations are found
+// ==================== WIDGET DATA (for widget.html) ====================
 function saveWidgetData() {
     if (!stationsData || !stationsData.length) return;
 
-    var isEv = appMode === 'ev';
-
-    // Find cheapest
     var cheapestStation = null;
     var cheapestPrice = Infinity;
     stationsData.forEach(function(s) {
@@ -6722,7 +6600,6 @@ function saveWidgetData() {
         }
     });
 
-    // Calculate average
     var allPrices = [];
     stationsData.forEach(function(s) {
         Object.values(s.fuels).forEach(function(f) {
@@ -6731,47 +6608,15 @@ function saveWidgetData() {
     });
     var avg = allPrices.length ? allPrices.reduce(function(a, b) { return a + b; }, 0) / allPrices.length : 0;
 
-    widgetData = {
+    var data = {
         cheapest: cheapestStation,
         avgPrice: avg,
         lastUpdate: new Date().toISOString(),
-        mode: appMode
+        mode: appMode,
+        currency: C.symbol
     };
-    localStorage.setItem('widgetData', JSON.stringify(widgetData));
-    updateWidgetUI();
+    localStorage.setItem('widgetData', JSON.stringify(data));
 }
-
-// Refresh widget = search stations
-window.refreshWidget = function() {
-    haptic('medium');
-    var btn = document.getElementById('widgetRefresh');
-    if (btn) btn.classList.add('spinning');
-    setTimeout(function() {
-        if (btn) btn.classList.remove('spinning');
-    }, 800);
-
-    // Trigger station search
-    var locateBtn = document.getElementById('locateBtn');
-    if (locateBtn) locateBtn.click();
-};
-
-// Shortcut guide
-window.showShortcutGuide = function() {
-    var wi = getWidgetI18n();
-    haptic('light');
-
-    var msg = wi.shortcutTitle + '\n\n' +
-        (wi.shortcutStep1 || '') + '\n' +
-        (wi.shortcutStep2 || '') + '\n' +
-        (wi.shortcutStep3 || '') + '\n' +
-        (wi.shortcutStep4 || '');
-
-    alert(msg);
-
-    localStorage.setItem('shortcut_tip_dismissed', '1');
-    var shortcut = document.getElementById('widgetShortcut');
-    if (shortcut) shortcut.style.display = 'none';
-};
 window.addEventListener('load', init);
 // Register Service Worker
 if ('serviceWorker' in navigator) {
