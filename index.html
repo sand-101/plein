@@ -1170,11 +1170,170 @@ body.ev-mode .amount-particle{background:#30d158}
     0%{opacity:1;transform:translateY(0)}
     100%{opacity:0;transform:translateY(20px)}
 }
+/* ===== ONBOARDING ===== */
+.onboarding-overlay{
+    display:none;position:fixed;inset:0;
+    background:rgba(0,0,0,.85);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    z-index:10001;
+    align-items:center;justify-content:center;
+    padding:20px;
+}
+.onboarding-overlay.show{display:flex}
+
+.ob-container{
+    max-width:380px;width:100%;
+    background:#1c1c1e;border-radius:24px;
+    overflow:hidden;position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+    animation:obIn .5s cubic-bezier(.21,1.02,.73,1);
+}
+@keyframes obIn{
+    from{opacity:0;transform:translateY(40px) scale(.95)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.ob-slides{
+    display:flex;transition:transform .4s cubic-bezier(.25,.46,.45,.94);
+}
+.ob-slide{
+    min-width:100%;padding:40px 28px 28px;
+    text-align:center;
+    display:flex;flex-direction:column;align-items:center;
+}
+.ob-icon{font-size:72px;margin-bottom:20px}
+.ob-title{font-size:22px;font-weight:700;margin-bottom:10px;line-height:1.3}
+.ob-desc{font-size:14px;color:#aaa;line-height:1.6;margin-bottom:24px}
+.ob-highlight{color:#ff9500;font-weight:600}
+.ob-highlight-ev{color:#30d158;font-weight:600}
+
+/* Dots */
+.ob-dots{
+    display:flex;justify-content:center;gap:8px;
+    margin-bottom:20px;
+}
+.ob-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:#3a3a3c;transition:all .3s;
+}
+.ob-dot.active{
+    background:#ff9500;width:24px;border-radius:4px;
+}
+
+/* Buttons */
+.ob-actions{
+    display:flex;gap:10px;width:100%;padding:0 28px 28px;
+}
+.ob-btn{
+    flex:1;padding:14px;border-radius:14px;border:none;
+    font-size:15px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+}
+.ob-btn:active{transform:scale(.97)}
+.ob-btn.skip{background:#2c2c2e;color:#8e8e93}
+.ob-btn.next{
+    background:linear-gradient(135deg,#ff9500,#ff6723);
+    color:#000;box-shadow:0 4px 15px rgba(255,149,0,.3);
+}
+.ob-btn.start{
+    background:linear-gradient(135deg,#30d158,#00c853);
+    color:#000;box-shadow:0 4px 15px rgba(48,209,88,.3);
+    flex:2;
+}
+
+/* Vehicle selector in onboarding */
+.ob-vehicles{
+    display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+    margin:12px 0 20px;max-height:160px;overflow-y:auto;
+}
+.ob-vehicle{
+    padding:8px 14px;border-radius:12px;
+    border:1.5px solid #3a3a3c;background:transparent;
+    color:#e5e5ea;font-size:12px;font-weight:500;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+}
+.ob-vehicle:active{transform:scale(.95)}
+.ob-vehicle.on{background:#ff9500;border-color:#ff9500;color:#000;font-weight:600}
+.ob-vehicle.ev-on{background:#30d158;border-color:#30d158;color:#000;font-weight:600}
+
+/* Install prompt */
+.ob-install{
+    display:flex;align-items:center;gap:10px;
+    background:#2c2c2e;border-radius:12px;
+    padding:12px 16px;margin:12px 0;text-align:left;
+}
+.ob-install-icon{font-size:24px;flex-shrink:0}
+.ob-install-text{font-size:12px;color:#aaa;line-height:1.4}
+.ob-install-text strong{color:#fff}
     </style>
 
 </head>
 
 <body>
+<!-- ===== ONBOARDING ===== -->
+<div class="onboarding-overlay" id="onboarding">
+    <div class="ob-container">
+        <div class="ob-slides" id="obSlides">
+
+            <!-- Slide 1 — Bienvenue -->
+            <div class="ob-slide">
+                <div class="ob-icon">⛽🔋</div>
+                <div class="ob-title" id="ob1Title">Bienvenue sur Easy Refuel !</div>
+                <div class="ob-desc" id="ob1Desc">
+                    Trouvez les <span class="ob-highlight">stations les moins chères</span>
+                    et calculez votre plein en un instant.
+                    <br><br>
+                    Essence <span class="ob-highlight">⛽</span> et
+                    Électrique <span class="ob-highlight-ev">🔋</span> — tout dans une seule app.
+                </div>
+            </div>
+
+            <!-- Slide 2 — Véhicule -->
+            <div class="ob-slide">
+                <div class="ob-icon">🚗</div>
+                <div class="ob-title" id="ob2Title">Quel est votre véhicule ?</div>
+                <div class="ob-desc" id="ob2Desc">Sélectionnez pour configurer automatiquement :</div>
+                <div class="ob-vehicles" id="obVehicles"></div>
+            </div>
+
+            <!-- Slide 3 — Installer -->
+            <div class="ob-slide">
+                <div class="ob-icon">📱</div>
+                <div class="ob-title" id="ob3Title">Installez l'app !</div>
+                <div class="ob-desc" id="ob3Desc">
+                    Ajoutez Easy Refuel à votre écran d'accueil pour y accéder en un tap.
+                </div>
+                <div class="ob-install" id="obInstallIOS">
+                    <span class="ob-install-icon">📲</span>
+                    <div class="ob-install-text" id="obInstallIOSText">
+                        <strong>iPhone :</strong> Safari → Partage ⬆️ → "Sur l'écran d'accueil"
+                    </div>
+                </div>
+                <div class="ob-install" id="obInstallAndroid">
+                    <span class="ob-install-icon">📲</span>
+                    <div class="ob-install-text" id="obInstallAndroidText">
+                        <strong>Android :</strong> Chrome → ⋮ → "Installer l'application"
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dots -->
+        <div class="ob-dots" id="obDots">
+            <div class="ob-dot active"></div>
+            <div class="ob-dot"></div>
+            <div class="ob-dot"></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="ob-actions">
+            <button class="ob-btn skip" id="obSkip" onclick="obAction('skip')">Passer</button>
+            <button class="ob-btn next" id="obNext" onclick="obAction('next')">Suivant</button>
+        </div>
+    </div>
+</div>
 <div class="save-toast" id="toast">💾</div>
 <div class="app">
     <div class="lang-bar" id="langBar"></div>
@@ -2849,6 +3008,8 @@ function init() {
     if (hour >= 0 && hour < 5) {
         try { trackGameEvent('night'); } catch(e) {}
     }
+	// Onboarding
+    try { showOnboarding(); } catch(e) {}
 }
 
 // ==================== PREMIUM SYSTEM ====================
@@ -5026,6 +5187,231 @@ function playTickSound() {
         osc.start();
         osc.stop(audioCtx.currentTime + 0.05);
     } catch(e) {}
+}
+// ==================== ONBOARDING ====================
+var obStep = 0;
+var obTotalSteps = 3;
+
+var OB_I18N = {
+    fr:{
+        t1:'Bienvenue sur Easy Refuel !',
+        d1:'Trouvez les <span class="ob-highlight">stations les moins chères</span> et calculez votre plein en un instant.<br><br>Essence <span class="ob-highlight">⛽</span> et Électrique <span class="ob-highlight-ev">🔋</span> — tout dans une seule app.',
+        t2:'Quel est votre véhicule ?',
+        d2:'Sélectionnez pour configurer automatiquement :',
+        t3:'Installez l\'app !',
+        d3:'Ajoutez Easy Refuel à votre écran d\'accueil pour y accéder en un tap.',
+        ios:'<strong>iPhone :</strong> Safari → Partage ⬆️ → "Sur l\'écran d\'accueil"',
+        android:'<strong>Android :</strong> Chrome → ⋮ → "Installer l\'application"',
+        skip:'Passer',next:'Suivant',start:'C\'est parti !',
+        fuelCar:'Essence / Diesel',evCar:'Électrique'
+    },
+    en:{
+        t1:'Welcome to Easy Refuel!',
+        d1:'Find the <span class="ob-highlight">cheapest stations</span> and calculate your fill-up instantly.<br><br>Fuel <span class="ob-highlight">⛽</span> and Electric <span class="ob-highlight-ev">🔋</span> — all in one app.',
+        t2:'What\'s your vehicle?',
+        d2:'Select to auto-configure:',
+        t3:'Install the app!',
+        d3:'Add Easy Refuel to your home screen for quick access.',
+        ios:'<strong>iPhone:</strong> Safari → Share ⬆️ → "Add to Home Screen"',
+        android:'<strong>Android:</strong> Chrome → ⋮ → "Install app"',
+        skip:'Skip',next:'Next',start:'Let\'s go!',
+        fuelCar:'Petrol / Diesel',evCar:'Electric'
+    },
+    es:{
+        t1:'¡Bienvenido a Easy Refuel!',
+        d1:'Encuentra las <span class="ob-highlight">gasolineras más baratas</span> y calcula tu depósito al instante.<br><br>Gasolina <span class="ob-highlight">⛽</span> y Eléctrico <span class="ob-highlight-ev">🔋</span>.',
+        t2:'¿Cuál es tu vehículo?',
+        d2:'Selecciona para configurar:',
+        t3:'¡Instala la app!',
+        d3:'Añade Easy Refuel a tu pantalla de inicio.',
+        ios:'<strong>iPhone:</strong> Safari → Compartir ⬆️ → "Pantalla de inicio"',
+        android:'<strong>Android:</strong> Chrome → ⋮ → "Instalar aplicación"',
+        skip:'Saltar',next:'Siguiente',start:'¡Vamos!',
+        fuelCar:'Gasolina / Diésel',evCar:'Eléctrico'
+    },
+    de:{
+        t1:'Willkommen bei Easy Refuel!',
+        d1:'Finde die <span class="ob-highlight">günstigsten Tankstellen</span> und berechne deine Tankung sofort.<br><br>Benzin <span class="ob-highlight">⛽</span> und Elektrisch <span class="ob-highlight-ev">🔋</span>.',
+        t2:'Was ist dein Fahrzeug?',
+        d2:'Wähle zur automatischen Konfiguration:',
+        t3:'App installieren!',
+        d3:'Füge Easy Refuel zum Startbildschirm hinzu.',
+        ios:'<strong>iPhone:</strong> Safari → Teilen ⬆️ → "Zum Home-Bildschirm"',
+        android:'<strong>Android:</strong> Chrome → ⋮ → "App installieren"',
+        skip:'Überspringen',next:'Weiter',start:'Los geht\'s!',
+        fuelCar:'Benzin / Diesel',evCar:'Elektrisch'
+    },
+    it:{t1:'Benvenuto su Easy Refuel!',d1:'Trova i <span class="ob-highlight">distributori più economici</span>.',t2:'Qual è il tuo veicolo?',d2:'Seleziona per configurare:',t3:'Installa l\'app!',d3:'Aggiungi Easy Refuel alla schermata Home.',ios:'<strong>iPhone:</strong> Safari → Condividi → "Schermata Home"',android:'<strong>Android:</strong> Chrome → ⋮ → "Installa"',skip:'Salta',next:'Avanti',start:'Andiamo!',fuelCar:'Benzina / Diesel',evCar:'Elettrico'},
+    pt:{t1:'Bem-vindo ao Easy Refuel!',d1:'Encontre os <span class="ob-highlight">postos mais baratos</span>.',t2:'Qual é o seu veículo?',d2:'Selecione para configurar:',t3:'Instale a app!',d3:'Adicione à tela inicial.',ios:'<strong>iPhone:</strong> Safari → Partilhar → "Ecrã principal"',android:'<strong>Android:</strong> Chrome → ⋮ → "Instalar"',skip:'Saltar',next:'Seguinte',start:'Vamos!',fuelCar:'Gasolina / Diesel',evCar:'Elétrico'},
+    ru:{t1:'Добро пожаловать!',d1:'Найдите <span class="ob-highlight">дешёвые АЗС</span>.',t2:'Ваш автомобиль?',d2:'Выберите для настройки:',t3:'Установите приложение!',d3:'Добавьте на главный экран.',ios:'<strong>iPhone:</strong> Safari → Поделиться → "На экран Домой"',android:'<strong>Android:</strong> Chrome → ⋮ → "Установить"',skip:'Пропустить',next:'Далее',start:'Поехали!',fuelCar:'Бензин / Дизель',evCar:'Электро'},
+    zh:{t1:'欢迎使用Easy Refuel!',d1:'找到<span class="ob-highlight">最便宜的加油站</span>。',t2:'您的车辆？',d2:'选择以自动配置：',t3:'安装应用！',d3:'添加到主屏幕。',ios:'<strong>iPhone:</strong> Safari → 分享 → "添加到主屏幕"',android:'<strong>Android:</strong> Chrome → ⋮ → "安装"',skip:'跳过',next:'下一步',start:'开始！',fuelCar:'汽油/柴油',evCar:'电动'},
+    ja:{t1:'Easy Refuelへようこそ！',d1:'<span class="ob-highlight">最安GS</span>を見つけよう。',t2:'お車は？',d2:'選択して設定：',t3:'アプリをインストール！',d3:'ホーム画面に追加。',ios:'<strong>iPhone:</strong> Safari → 共有 → "ホーム画面に追加"',android:'<strong>Android:</strong> Chrome → ⋮ → "インストール"',skip:'スキップ',next:'次へ',start:'スタート！',fuelCar:'ガソリン/軽油',evCar:'電気'}
+};
+
+function getObI18n() { return OB_I18N[lang] || OB_I18N.en; }
+
+function showOnboarding() {
+    var seen = localStorage.getItem('onboarding_done');
+    if (seen) return;
+
+    var oi = getObI18n();
+    var overlay = document.getElementById('onboarding');
+    if (!overlay) return;
+
+    // Apply texts
+    var ob1Title = document.getElementById('ob1Title');
+    if (ob1Title) ob1Title.textContent = oi.t1;
+    var ob1Desc = document.getElementById('ob1Desc');
+    if (ob1Desc) ob1Desc.innerHTML = oi.d1;
+    var ob2Title = document.getElementById('ob2Title');
+    if (ob2Title) ob2Title.textContent = oi.t2;
+    var ob2Desc = document.getElementById('ob2Desc');
+    if (ob2Desc) ob2Desc.textContent = oi.d2;
+    var ob3Title = document.getElementById('ob3Title');
+    if (ob3Title) ob3Title.textContent = oi.t3;
+    var ob3Desc = document.getElementById('ob3Desc');
+    if (ob3Desc) ob3Desc.textContent = oi.d3;
+    var obIOS = document.getElementById('obInstallIOSText');
+    if (obIOS) obIOS.innerHTML = oi.ios;
+    var obAndroid = document.getElementById('obInstallAndroidText');
+    if (obAndroid) obAndroid.innerHTML = oi.android;
+    var obSkip = document.getElementById('obSkip');
+    if (obSkip) obSkip.textContent = oi.skip;
+    var obNext = document.getElementById('obNext');
+    if (obNext) obNext.textContent = oi.next;
+
+    // Build vehicle list
+    buildObVehicles();
+
+    // Show
+    obStep = 0;
+    updateObSlide();
+    overlay.classList.add('show');
+}
+
+function buildObVehicles() {
+    var w = document.getElementById('obVehicles');
+    if (!w) return;
+    var oi = getObI18n();
+    w.innerHTML = '';
+
+    // Fuel section header
+    var fuelLabel = document.createElement('div');
+    fuelLabel.style.cssText = 'width:100%;font-size:11px;color:#8e8e93;font-weight:600;margin-top:4px';
+    fuelLabel.textContent = '⛽ ' + oi.fuelCar;
+    w.appendChild(fuelLabel);
+
+    // Fuel vehicles
+    var fuelVehicles = [
+        {name:'Citadine', tank:35, type:'fuel'},
+        {name:'Compacte', tank:42, type:'fuel'},
+        {name:'Berline', tank:50, type:'fuel'},
+        {name:'SUV', tank:60, type:'fuel'},
+        {name:'Utilitaire', tank:80, type:'fuel'}
+    ];
+    fuelVehicles.forEach(function(v) {
+        var btn = document.createElement('button');
+        btn.className = 'ob-vehicle' + (tank === v.tank ? ' on' : '');
+        btn.textContent = v.name + ' · ' + v.tank + 'L';
+        btn.addEventListener('click', function() {
+            haptic('medium');
+            tank = v.tank;
+            save();
+            w.querySelectorAll('.ob-vehicle').forEach(function(b) { b.classList.remove('on','ev-on'); });
+            btn.classList.add('on');
+            setMode('fuel');
+        });
+        w.appendChild(btn);
+    });
+
+    // EV section header
+    var evLabel = document.createElement('div');
+    evLabel.style.cssText = 'width:100%;font-size:11px;color:#8e8e93;font-weight:600;margin-top:10px';
+    evLabel.textContent = '🔋 ' + oi.evCar;
+    w.appendChild(evLabel);
+
+    // EV vehicles
+    var evVehicles = [
+        {name:'Dacia Spring', kWh:27},
+        {name:'Renault Zoé', kWh:52},
+        {name:'Tesla Model 3', kWh:60},
+        {name:'Tesla Model Y', kWh:75},
+        {name:'VW ID.4', kWh:77}
+    ];
+    evVehicles.forEach(function(v) {
+        var btn = document.createElement('button');
+        btn.className = 'ob-vehicle' + (evBatt === v.kWh ? ' ev-on' : '');
+        btn.textContent = v.name + ' · ' + v.kWh + 'kWh';
+        btn.addEventListener('click', function() {
+            haptic('medium');
+            evBatt = v.kWh;
+            localStorage.setItem('evBatt', evBatt);
+            w.querySelectorAll('.ob-vehicle').forEach(function(b) { b.classList.remove('on','ev-on'); });
+            btn.classList.add('ev-on');
+            setMode('ev');
+        });
+        w.appendChild(btn);
+    });
+}
+
+function updateObSlide() {
+    var slides = document.getElementById('obSlides');
+    if (slides) slides.style.transform = 'translateX(-' + (obStep * 100) + '%)';
+
+    // Dots
+    var dots = document.querySelectorAll('.ob-dot');
+    dots.forEach(function(d, i) {
+        d.classList.toggle('active', i === obStep);
+    });
+
+    // Buttons
+    var oi = getObI18n();
+    var skipBtn = document.getElementById('obSkip');
+    var nextBtn = document.getElementById('obNext');
+
+    if (obStep === obTotalSteps - 1) {
+        if (skipBtn) skipBtn.style.display = 'none';
+        if (nextBtn) {
+            nextBtn.textContent = oi.start;
+            nextBtn.className = 'ob-btn start';
+        }
+    } else {
+        if (skipBtn) {
+            skipBtn.style.display = 'block';
+            skipBtn.textContent = oi.skip;
+        }
+        if (nextBtn) {
+            nextBtn.textContent = oi.next;
+            nextBtn.className = 'ob-btn next';
+        }
+    }
+}
+
+window.obAction = function(action) {
+    haptic('light');
+
+    if (action === 'skip') {
+        closeOnboarding();
+        return;
+    }
+
+    if (action === 'next') {
+        if (obStep < obTotalSteps - 1) {
+            obStep++;
+            updateObSlide();
+        } else {
+            closeOnboarding();
+        }
+    }
+};
+
+function closeOnboarding() {
+    var overlay = document.getElementById('onboarding');
+    if (overlay) overlay.classList.remove('show');
+    localStorage.setItem('onboarding_done', '1');
+
+    // Rebuild with chosen vehicle
+    try { rebuildAll(); } catch(e) {}
 }
 window.addEventListener('load', init);
 // Register Service Worker
