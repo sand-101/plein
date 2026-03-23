@@ -7145,6 +7145,9 @@ var DRIVE_I18N = {
 function getDriveI18n() { return DRIVE_I18N[lang] || DRIVE_I18N.en; }
 
 window.openDriveMode = function() {
+    // Check search limit (same as station search)
+    if (!checkSearchLimit()) return;
+    
     haptic('heavy');
     var page = document.getElementById('drivePage');
     if (!page) return;
@@ -7175,6 +7178,9 @@ window.closeDriveMode = function() {
 };
 
 window.refreshDriveMode = function() {
+    // Check search limit on refresh too
+    if (!checkSearchLimit()) return;
+    
     haptic('medium');
     var btn = document.getElementById('driveRefreshBtn');
     if (btn) btn.classList.add('loading');
