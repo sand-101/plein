@@ -237,16 +237,80 @@
 .premium-active .active-text{font-size:16px;font-weight:600;color:#30d158}
 .premium-active .active-until{font-size:12px;color:#8e8e93;margin-top:4px}
 
-/* Limite gratuite modal */
-.limit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9998;align-items:center;justify-content:center;padding:20px}
+/* ===== LIMITE GRATUITE POP-UP ===== */
+.limit-overlay{
+    display:none;position:fixed;inset:0;
+    background:rgba(0,0,0,.8);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    z-index:10001;
+    align-items:center;justify-content:center;
+    padding:20px;
+    animation:limFadeIn .3s ease;
+}
 .limit-overlay.on{display:flex}
-.limit-modal{background:#1c1c1e;border-radius:20px;padding:28px 24px;max-width:340px;width:100%;text-align:center;animation:cardIn .3s ease}
-.limit-modal h3{font-size:18px;margin-bottom:8px}
-.limit-modal p{font-size:13px;color:#8e8e93;line-height:1.5;margin-bottom:18px}
-.limit-modal .modal-btns{display:flex;flex-direction:column;gap:8px}
-.limit-modal .modal-btn{padding:14px;border-radius:12px;border:none;font-size:15px;font-weight:600;font-family:-apple-system,sans-serif;cursor:pointer;text-decoration:none;text-align:center;display:block}
-.limit-modal .btn-premium{background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000}
-.limit-modal .btn-close{background:#2c2c2e;color:#8e8e93}
+@keyframes limFadeIn{from{opacity:0}to{opacity:1}}
+
+.limit-modal{
+    background:#1c1c1e;border-radius:24px;
+    padding:32px 24px 24px;max-width:340px;width:100%;
+    text-align:center;
+    animation:limSlideIn .4s cubic-bezier(.21,1.02,.73,1);
+    border:1px solid rgba(255,215,0,.1);
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+    position:relative;overflow:hidden;
+}
+.limit-modal::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,#ffd700,#ff9500,#ff6723);
+}
+@keyframes limSlideIn{
+    from{opacity:0;transform:translateY(30px) scale(.95)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.limit-modal .lim-icon{font-size:56px;margin-bottom:16px}
+.limit-modal h3{font-size:20px;font-weight:700;margin-bottom:10px;color:#fff}
+.limit-modal p{font-size:14px;color:#aaa;line-height:1.6;margin-bottom:20px}
+.limit-modal .lim-counter{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:6px 14px;border-radius:20px;
+    background:rgba(255,59,48,.1);
+    color:#ff6961;font-size:13px;font-weight:600;
+    margin-bottom:16px;
+}
+.limit-modal .lim-features{
+    text-align:left;margin-bottom:20px;
+    display:flex;flex-direction:column;gap:8px;
+}
+.limit-modal .lim-feat{
+    display:flex;align-items:center;gap:8px;
+    font-size:13px;color:#ccc;
+}
+.limit-modal .lim-feat .lf-icon{color:#30d158;font-size:16px;flex-shrink:0}
+
+.limit-modal .mb{display:flex;flex-direction:column;gap:10px}
+.limit-modal .mb .btn-p{
+    padding:16px;border-radius:14px;border:none;
+    background:linear-gradient(135deg,#ffd700,#ffaa00);
+    color:#000;font-size:16px;font-weight:700;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;text-decoration:none;text-align:center;
+    display:block;
+    box-shadow:0 4px 15px rgba(255,215,0,.25);
+    transition:all .15s;
+}
+.limit-modal .mb .btn-p:active{transform:scale(.97)}
+.limit-modal .mb .btn-c{
+    padding:14px;border-radius:14px;border:none;
+    background:#2c2c2e;color:#8e8e93;
+    font-size:14px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+}
+.limit-modal .mb .btn-c:active{background:#3a3a3c}
+.limit-modal .lim-reset{
+    font-size:11px;color:#636366;margin-top:12px;
+}
 
 body.is-premium .ad-slot{display:none!important}
 body.is-premium .premium-card .free-only{display:none}
@@ -2111,12 +2175,21 @@ body.ev-mode .trip-cost-value{
 <!-- LIMIT MODAL -->
 <div class="limit-overlay" id="limOv">
     <div class="limit-modal">
-        <h3 id="limT"></h3>
-        <p id="limP"></p>
-        <div class="mb">
-            <a class="btn-p" id="limBtn" href="#" target="_blank"></a>
-            <button class="btn-c" onclick="closeLim()"></button>
+        <div class="lim-icon" id="limIcon">🔒</div>
+        <h3 id="limT">Limite atteinte</h3>
+        <div class="lim-counter" id="limCounter">3/3 recherches utilisées</div>
+        <p id="limP">Vous avez utilisé vos 3 recherches gratuites du jour.</p>
+        <div class="lim-features">
+            <div class="lim-feat"><span class="lf-icon">✓</span><span id="limF1">Recherches illimitées</span></div>
+            <div class="lim-feat"><span class="lf-icon">✓</span><span id="limF2">Rayon jusqu'à 50 km</span></div>
+            <div class="lim-feat"><span class="lf-icon">✓</span><span id="limF3">Aucune publicité</span></div>
+            <div class="lim-feat"><span class="lf-icon">✓</span><span id="limF4">Soutenez le développement</span></div>
         </div>
+        <div class="mb">
+            <a class="btn-p" id="limBtn" href="#" target="_blank">💎 Passer à Premium</a>
+            <button class="btn-c" id="limClose" onclick="closeLim()">Revenir demain</button>
+        </div>
+        <div class="lim-reset" id="limReset">Les recherches gratuites se réinitialisent à minuit</div>
     </div>
 </div>
 
@@ -3467,15 +3540,15 @@ const STRIPE_P = 'https://billing.stripe.com/p/login/4gMaEX2Bz4YheYD3lo2go00';
 
 // Premium translations
 const PI18N = {
-    fr:{t:'Passez à Premium',f1:'Recherches de stations illimitées',f2:'Rayon jusqu\'à 50 km',f3:'Aucune publicité',f4:'Soutenez le développement',mo:'/mois',yr:'/an',sv:'Économisez 33%',ct:'Choisir',ac:'Premium actif !',un:'Valide jusqu\'au {d}',mg:'Gérer mon abonnement',al:'Déjà Premium ? Gérer mon abonnement',lt:'🔒 Limite atteinte',lp:'Vous avez utilisé vos 3 recherches gratuites du jour. Passez à Premium pour des recherches illimitées !',lb:'⭐ Premium — 2,99€/mois',lc:'Revenir demain'},
-    en:{t:'Go Premium',f1:'Unlimited station searches',f2:'Search radius up to 50 km',f3:'No advertisements',f4:'Support development',mo:'/month',yr:'/year',sv:'Save 33%',ct:'Choose',ac:'Premium active!',un:'Valid until {d}',mg:'Manage subscription',al:'Already Premium? Manage',lt:'🔒 Limit reached',lp:'You\'ve used your 3 free searches today. Go Premium for unlimited!',lb:'⭐ Premium — €2.99/mo',lc:'Come back tomorrow'},
-    es:{t:'Hazte Premium',f1:'Búsquedas ilimitadas',f2:'Radio hasta 50 km',f3:'Sin publicidad',f4:'Apoya el desarrollo',mo:'/mes',yr:'/año',sv:'Ahorra 33%',ct:'Elegir',ac:'¡Premium activo!',un:'Válido hasta {d}',mg:'Gestionar suscripción',al:'¿Ya Premium? Gestionar',lt:'🔒 Límite alcanzado',lp:'Has usado tus 3 búsquedas gratuitas hoy. ¡Hazte Premium!',lb:'⭐ Premium — 2,99€/mes',lc:'Volver mañana'},
-    it:{t:'Passa a Premium',f1:'Ricerche illimitate',f2:'Raggio fino a 50 km',f3:'Nessuna pubblicità',f4:'Supporta lo sviluppo',mo:'/mese',yr:'/anno',sv:'Risparmi 33%',ct:'Scegli',ac:'Premium attivo!',un:'Valido fino al {d}',mg:'Gestisci abbonamento',al:'Già Premium? Gestisci',lt:'🔒 Limite raggiunto',lp:'Hai usato le 3 ricerche gratuite oggi.',lb:'⭐ Premium — 2,99€/mese',lc:'Torna domani'},
-    pt:{t:'Seja Premium',f1:'Pesquisas ilimitadas',f2:'Raio até 50 km',f3:'Sem anúncios',f4:'Apoie o desenvolvimento',mo:'/mês',yr:'/ano',sv:'Economize 33%',ct:'Escolher',ac:'Premium ativo!',un:'Válido até {d}',mg:'Gerenciar',al:'Já Premium? Gerenciar',lt:'🔒 Limite atingido',lp:'Você usou suas 3 buscas gratuitas hoje.',lb:'⭐ Premium — 2,99€/mês',lc:'Voltar amanhã'},
-    ru:{t:'Премиум',f1:'Безлимитный поиск',f2:'Радиус до 50 км',f3:'Без рекламы',f4:'Поддержка разработки',mo:'/мес',yr:'/год',sv:'Экономия 33%',ct:'Выбрать',ac:'Премиум активен!',un:'До {d}',mg:'Управление',al:'Уже Премиум?',lt:'🔒 Лимит',lp:'3 бесплатных поиска использованы.',lb:'⭐ Премиум — 2,99€/мес',lc:'Завтра'},
-    zh:{t:'升级Premium',f1:'无限搜索',f2:'半径50公里',f3:'无广告',f4:'支持开发',mo:'/月',yr:'/年',sv:'节省33%',ct:'选择',ac:'Premium已激活!',un:'有效期至{d}',mg:'管理订阅',al:'已是Premium?',lt:'🔒 已达上限',lp:'今日3次免费搜索已用完。',lb:'⭐ Premium — 2.99€/月',lc:'明天再来'},
-    ja:{t:'Premiumへ',f1:'無制限検索',f2:'半径50km',f3:'広告なし',f4:'開発支援',mo:'/月',yr:'/年',sv:'33%お得',ct:'選択',ac:'Premium有効!',un:'{d}まで',mg:'管理',al:'Premium会員?',lt:'🔒 制限',lp:'本日の無料検索3回を使用済み。',lb:'⭐ Premium — 2.99€/月',lc:'明日また'},
-    de:{t:'Premium werden',f1:'Unbegrenzte Tankstellensuche',f2:'Radius bis 50 km',f3:'Keine Werbung',f4:'Entwicklung unterstützen',mo:'/Monat',yr:'/Jahr',sv:'33% sparen',ct:'Wählen',ac:'Premium aktiv!',un:'Gültig bis {d}',mg:'Abo verwalten',al:'Bereits Premium? Verwalten',lt:'🔒 Limit erreicht',lp:'Sie haben heute Ihre 3 kostenlosen Suchen verbraucht.',lb:'⭐ Premium — 2,99€/Monat',lc:'Morgen wiederkommen'}
+    fr:{t:'Passez à Premium',f1:'Recherches de stations illimitées',f2:'Rayon jusqu\'à 50 km',f3:'Aucune publicité',f4:'Soutenez le développement',mo:'/mois',yr:'/an',sv:'Économisez 33%',ct:'Choisir',ac:'Premium actif !',un:'Valide jusqu\'au {d}',mg:'Gérer mon abonnement',al:'Déjà Premium ? Gérer mon abonnement',lt:'🔒 Limite atteinte',lp:'Vous avez utilisé vos 3 recherches gratuites du jour.',lb:'💎 Passer à Premium — 2,99€/mois',lc:'Revenir demain',lcount:'{n}/3 recherches utilisées',lreset:'Les recherches gratuites se réinitialisent à minuit'},
+    en:{t:'Go Premium',f1:'Unlimited station searches',f2:'Search radius up to 50 km',f3:'No advertisements',f4:'Support development',mo:'/month',yr:'/year',sv:'Save 33%',ct:'Choose',ac:'Premium active!',un:'Valid until {d}',mg:'Manage subscription',al:'Already Premium? Manage',lt:'🔒 Limit reached',lp:'You\'ve used your 3 free searches today.',lb:'💎 Go Premium — €2.99/mo',lc:'Come back tomorrow',lcount:'{n}/3 searches used',lreset:'Free searches reset at midnight'},
+    es:{t:'Hazte Premium',f1:'Búsquedas ilimitadas de gasolineras',f2:'Radio hasta 50 km',f3:'Sin publicidad',f4:'Apoya el desarrollo',mo:'/mes',yr:'/año',sv:'Ahorra 33%',ct:'Elegir',ac:'¡Premium activo!',un:'Válido hasta {d}',mg:'Gestionar suscripción',al:'¿Ya Premium? Gestionar',lt:'🔒 Límite alcanzado',lp:'Has usado tus 3 búsquedas gratuitas de hoy.',lb:'💎 Hazte Premium — 2,99€/mes',lc:'Volver mañana',lcount:'{n}/3 búsquedas usadas',lreset:'Las búsquedas gratuitas se reinician a medianoche'},
+    de:{t:'Premium werden',f1:'Unbegrenzte Tankstellensuche',f2:'Radius bis 50 km',f3:'Keine Werbung',f4:'Entwicklung unterstützen',mo:'/Monat',yr:'/Jahr',sv:'33% sparen',ct:'Wählen',ac:'Premium aktiv!',un:'Gültig bis {d}',mg:'Abo verwalten',al:'Bereits Premium? Verwalten',lt:'🔒 Limit erreicht',lp:'Sie haben heute Ihre 3 kostenlosen Suchen verbraucht.',lb:'💎 Premium werden — 2,99€/Monat',lc:'Morgen wiederkommen',lcount:'{n}/3 Suchen verbraucht',lreset:'Kostenlose Suchen werden um Mitternacht zurückgesetzt'},
+    it:{t:'Passa a Premium',f1:'Ricerche illimitate',f2:'Raggio fino a 50 km',f3:'Nessuna pubblicità',f4:'Supporta lo sviluppo',mo:'/mese',yr:'/anno',sv:'Risparmi 33%',ct:'Scegli',ac:'Premium attivo!',un:'Valido fino al {d}',mg:'Gestisci abbonamento',al:'Già Premium? Gestisci',lt:'🔒 Limite raggiunto',lp:'Hai usato le 3 ricerche gratuite di oggi.',lb:'💎 Passa a Premium — 2,99€/mese',lc:'Torna domani',lcount:'{n}/3 ricerche usate',lreset:'Le ricerche gratuite si rinnovano a mezzanotte'},
+    pt:{t:'Seja Premium',f1:'Pesquisas ilimitadas',f2:'Raio até 50 km',f3:'Sem anúncios',f4:'Apoie o desenvolvimento',mo:'/mês',yr:'/ano',sv:'Economize 33%',ct:'Escolher',ac:'Premium ativo!',un:'Válido até {d}',mg:'Gerenciar',al:'Já Premium? Gerenciar',lt:'🔒 Limite atingido',lp:'Você usou suas 3 pesquisas gratuitas de hoje.',lb:'💎 Seja Premium — 2,99€/mês',lc:'Voltar amanhã',lcount:'{n}/3 pesquisas usadas',lreset:'As pesquisas gratuitas renovam-se à meia-noite'},
+    ru:{t:'Премиум',f1:'Безлимитный поиск АЗС',f2:'Радиус до 50 км',f3:'Без рекламы',f4:'Поддержка разработки',mo:'/мес',yr:'/год',sv:'Экономия 33%',ct:'Выбрать',ac:'Премиум активен!',un:'До {d}',mg:'Управление',al:'Уже Премиум?',lt:'🔒 Лимит достигнут',lp:'Вы использовали 3 бесплатных поиска за сегодня.',lb:'💎 Премиум — 2,99€/мес',lc:'Завтра',lcount:'{n}/3 поисков использовано',lreset:'Бесплатные поиски обновляются в полночь'},
+    zh:{t:'升级Premium',f1:'无限搜索加油站',f2:'半径50公里',f3:'无广告',f4:'支持开发',mo:'/月',yr:'/年',sv:'节省33%',ct:'选择',ac:'Premium已激活!',un:'有效期至{d}',mg:'管理订阅',al:'已是Premium?',lt:'🔒 已达上限',lp:'今日3次免费搜索已用完。',lb:'💎 升级Premium — 2.99€/月',lc:'明天再来',lcount:'{n}/3 次搜索已使用',lreset:'免费搜索在午夜重置'},
+    ja:{t:'Premiumへ',f1:'無制限検索',f2:'半径50km',f3:'広告なし',f4:'開発支援',mo:'/月',yr:'/年',sv:'33%お得',ct:'選択',ac:'Premium有効!',un:'{d}まで',mg:'管理',al:'Premium会員?',lt:'🔒 制限に達しました',lp:'本日の無料検索3回を使用済みです。',lb:'💎 Premiumへ — 2.99€/月',lc:'明日また',lcount:'{n}/3 回検索済み',lreset:'無料検索は深夜にリセットされます'}
 };
 
 // Check premium status
@@ -3510,20 +3583,17 @@ function checkStripeReturn() {
 function checkSearchLimit() {
     if (isPremium()) return true;
 
-    const today = new Date().toDateString();
-    let data = JSON.parse(localStorage.getItem('search_limit') || '{}');
+    var today = new Date().toDateString();
+    var d = JSON.parse(localStorage.getItem('search_limit') || '{}');
+    if (d.date !== today) d = {date: today, count: 0};
 
-    if (data.date !== today) {
-        data = {date: today, count: 0};
-    }
-
-    if (data.count >= 3) {
+    if (d.count >= 3) {
         showLimModal();
         return false;
     }
 
-    data.count++;
-    localStorage.setItem('search_limit', JSON.stringify(data));
+    d.count++;
+    localStorage.setItem('search_limit', JSON.stringify(d));
     return true;
 }
 
@@ -3608,23 +3678,52 @@ function updatePremiumUI() {
         }
     } catch(e) {}
 
-    // Modal limite
+    // Limit modal texts
+    var pi = PI18N[lang] || PI18N.en;
+
     var limT = document.getElementById('limT');
     if (limT) limT.textContent = pi.lt || '';
     var limP = document.getElementById('limP');
     if (limP) limP.textContent = pi.lp || '';
     var limBtn = document.getElementById('limBtn');
     if (limBtn) { limBtn.textContent = pi.lb || ''; limBtn.href = STRIPE_M; }
-    var limOv = document.getElementById('limOv');
-    if (limOv) {
-        var closeBtn = limOv.querySelector('.btn-c');
-        if (closeBtn) closeBtn.textContent = pi.lc || '';
-    }
-}
+    var limClose = document.getElementById('limClose');
+    if (limClose) limClose.textContent = pi.lc || '';
 
+    // Features
+    var limF1 = document.getElementById('limF1');
+    if (limF1) limF1.textContent = pi.f1 || '';
+    var limF2 = document.getElementById('limF2');
+    if (limF2) limF2.textContent = pi.f2 || '';
+    var limF3 = document.getElementById('limF3');
+    if (limF3) limF3.textContent = pi.f3 || '';
+    var limF4 = document.getElementById('limF4');
+    if (limF4) limF4.textContent = pi.f4 || '';
+
+    // Counter
+    var limCounter = document.getElementById('limCounter');
+    if (limCounter) {
+        var searchData = JSON.parse(localStorage.getItem('search_limit') || '{}');
+        var today = new Date().toDateString();
+        var count = (searchData.date === today) ? (searchData.count || 0) : 0;
+        limCounter.textContent = (pi.lcount || '{n}/3').replace('{n}', count);
+    }
+
+    // Reset text
+    var limReset = document.getElementById('limReset');
+    if (limReset) limReset.textContent = pi.lreset || '';
+}
+function showLimModal() {
+    haptic('error');
+    var overlay = document.getElementById('limOv');
+    if (overlay) overlay.classList.add('on');
+    // Update counter
+    try { updatePremiumUI(); } catch(e) {}
+}
 window.closeLim = function() {
-    var el = document.getElementById('limOv');
-    if (el) el.classList.remove('on');
+    haptic('light');
+    var overlay = document.getElementById('limOv');
+    if (overlay) overlay.classList.remove('on');
 };
 
 
