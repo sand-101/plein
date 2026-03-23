@@ -1723,6 +1723,187 @@ body.ev-mode .trip-cost-value{
 @keyframes ptrSpin{
     to{transform:rotate(360deg)}
 }
+/* ===== MODE CONDUITE ===== */
+.drive-mode-btn{
+    width:100%;padding:16px;border:none;border-radius:14px;
+    background:linear-gradient(135deg,#1c1c1e,#2c2c2e);
+    color:#fff;font-size:14px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    border:1.5px solid #3a3a3c;
+    margin-bottom:14px;
+}
+.drive-mode-btn:active{transform:scale(.97);border-color:#007aff}
+.drive-mode-btn .dm-icon{font-size:20px}
+
+/* Fullscreen drive page */
+.drive-page{
+    position:fixed;inset:0;
+    background:#000;
+    z-index:10003;
+    transform:translateY(100%);
+    transition:transform .35s cubic-bezier(.25,.46,.45,.94);
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.drive-page.open{transform:translateY(0)}
+.drive-inner{
+    max-width:420px;margin:0 auto;
+    padding:0 20px 40px;
+    min-height:100vh;
+    display:flex;flex-direction:column;
+}
+
+/* Drive header */
+.drive-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 0;
+    position:sticky;top:0;
+    background:rgba(0,0,0,.95);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    z-index:2;
+}
+.drive-close{
+    color:#007aff;font-size:17px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    background:none;border:none;cursor:pointer;
+    padding:12px 16px 12px 0;min-height:48px;
+    display:flex;align-items:center;gap:4px;
+    -webkit-tap-highlight-color:rgba(0,122,255,.15);
+    text-decoration:none;
+}
+.drive-close:active{opacity:.5}
+.drive-title{font-size:17px;font-weight:700;position:absolute;left:50%;transform:translateX(-50%)}
+.drive-header-spacer{width:60px}
+
+/* Status bar */
+.drive-status{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    padding:10px;margin-bottom:16px;
+    background:#1c1c1e;border-radius:12px;
+}
+.drive-status-dot{
+    width:10px;height:10px;border-radius:50%;
+    background:#30d158;
+    animation:drivePulse 2s infinite;
+}
+@keyframes drivePulse{0%,100%{opacity:1}50%{opacity:.4}}
+.drive-status-text{font-size:13px;color:#aaa}
+
+/* Big station card */
+.drive-station{
+    background:#1c1c1e;border-radius:20px;
+    padding:24px;margin-bottom:16px;
+    border:1px solid rgba(255,255,255,.05);
+    flex-shrink:0;
+}
+.drive-station.best{
+    border:2px solid rgba(48,209,88,.3);
+    background:linear-gradient(145deg,#1c1c1e,#1a2e1a);
+    box-shadow:0 8px 30px rgba(48,209,88,.08);
+}
+.drive-station.best.fuel-mode{
+    border-color:rgba(255,149,0,.3);
+    background:linear-gradient(145deg,#1c1c1e,#2e2518);
+    box-shadow:0 8px 30px rgba(255,149,0,.08);
+}
+.drive-station-label{
+    font-size:12px;font-weight:600;color:#30d158;
+    text-transform:uppercase;letter-spacing:1px;
+    margin-bottom:12px;
+}
+.drive-station.best.fuel-mode .drive-station-label{color:#ff9500}
+
+.drive-station-name{
+    font-size:28px;font-weight:800;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    margin-bottom:8px;
+}
+.drive-station-addr{font-size:14px;color:#8e8e93;margin-bottom:4px}
+.drive-station-dist{font-size:16px;color:#636366;margin-bottom:16px;display:flex;align-items:center;gap:6px}
+.drive-station-dist .dsd-icon{font-size:18px}
+
+.drive-price-row{
+    display:flex;align-items:baseline;gap:8px;
+    margin-bottom:20px;
+}
+.drive-price{font-size:56px;font-weight:800;letter-spacing:-2px}
+.drive-price.fuel-c{color:#ff9500}
+.drive-price.ev-c{color:#30d158}
+.drive-price-unit{font-size:18px;color:#636366;font-weight:500}
+
+/* Big navigate button */
+.drive-go{
+    display:flex;align-items:center;justify-content:center;gap:12px;
+    width:100%;padding:20px;border-radius:16px;border:none;
+    font-size:20px;font-weight:700;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;text-decoration:none;color:#000;
+    transition:all .15s;
+}
+.drive-go.fuel-bg{
+    background:linear-gradient(135deg,#ff9500,#ff6723);
+    box-shadow:0 6px 25px rgba(255,149,0,.3);
+}
+.drive-go.ev-bg{
+    background:linear-gradient(135deg,#30d158,#00c853);
+    box-shadow:0 6px 25px rgba(48,209,88,.3);
+}
+.drive-go:active{transform:scale(.97);opacity:.9}
+.drive-go-icon{font-size:28px}
+
+/* Other stations list (simplified) */
+.drive-others{margin-top:16px}
+.drive-others-title{font-size:13px;color:#8e8e93;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.drive-other-item{
+    display:flex;align-items:center;gap:14px;
+    padding:16px;background:#1c1c1e;border-radius:14px;
+    margin-bottom:8px;cursor:pointer;transition:all .15s;
+    text-decoration:none;color:#fff;
+}
+.drive-other-item:active{transform:scale(.98);background:#2c2c2e}
+.drive-other-rank{
+    width:36px;height:36px;border-radius:50%;
+    background:#2c2c2e;color:#fff;
+    font-size:16px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+}
+.drive-other-info{flex:1;min-width:0}
+.drive-other-name{font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.drive-other-dist{font-size:13px;color:#636366;margin-top:2px}
+.drive-other-price{font-size:22px;font-weight:800;flex-shrink:0}
+.drive-other-price.fuel-c{color:#ff9500}
+.drive-other-price.ev-c{color:#30d158}
+
+/* Refresh button */
+.drive-refresh{
+    width:100%;padding:16px;border:none;border-radius:14px;
+    background:#1c1c1e;color:#007aff;
+    font-size:16px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    margin-top:12px;border:1.5px solid #2c2c2e;
+}
+.drive-refresh:active{transform:scale(.97);background:#2c2c2e}
+.drive-refresh.loading{opacity:.5;pointer-events:none}
+.drive-refresh.loading .dr-icon{animation:ptrSpin .7s linear infinite}
+
+/* Keep screen awake notice */
+.drive-awake{
+    text-align:center;font-size:11px;color:#636366;
+    margin-top:16px;padding:8px;
+}
+
+/* Landscape optimization */
+@media (orientation: landscape) {
+    .drive-station-name{font-size:22px}
+    .drive-price{font-size:42px}
+    .drive-go{padding:14px}
+}
     </style>
 
 </head>
@@ -1812,6 +1993,11 @@ body.ev-mode .trip-cost-value{
         🔋 <span id="modeEVText">🔋 Électrique</span>
     </button>
 </div>
+<!-- MODE CONDUITE BUTTON -->
+<button class="drive-mode-btn" onclick="openDriveMode()">
+    <span class="dm-icon">🚗</span>
+    <span id="driveBtnText">Mode conduite</span>
+</button>
 <!-- ===== BOUTON TRAJET ===== -->
 <div class="card" style="padding:18px">
     <button class="trip-launcher" onclick="openTripPage()">
@@ -2905,6 +3091,7 @@ function rebuildAll() {
 	try { updateBadgesUI(); } catch(e) {}
 	try { updateVehiclesUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
+	try { updateDriveBtnText(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -4411,6 +4598,7 @@ window.setMode = function(mode) {
 	try { updateBadgesUI(); } catch(e) {}
 	try { updateVehiclesUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
+	try { updateDriveBtnText(); } catch(e) {}
 };
 
 // ==================== EV BATTERY ====================
@@ -6938,6 +7126,237 @@ function saveWidgetData() {
         return texts[lang] || texts.en;
     }
 })();
+
+// ==================== MODE CONDUITE ====================
+var wakeLock = null;
+
+var DRIVE_I18N = {
+    fr:{btn:'Mode conduite',title:'🚗 Mode conduite',close:'Fermer',searching:'Recherche en cours...',found:'{n} stations trouvées',foundEv:'{n} bornes trouvées',cheapest:'LA MOINS CHÈRE',cheapestEv:'LA MOINS CHÈRE',go:'Y ALLER — NAVIGATION',others:'Autres stations proches',othersEv:'Autres bornes proches',refresh:'Actualiser',awake:'📱 L\'écran reste allumé en mode conduite',noStation:'Aucune station trouvée',noStationSub:'Vérifiez votre connexion et réessayez',geoError:'Géolocalisation nécessaire',geoErrorSub:'Autorisez la localisation pour le mode conduite',perL:'/L',perKwh:'/kWh'},
+    en:{btn:'Driving mode',title:'🚗 Driving mode',close:'Close',searching:'Searching...',found:'{n} stations found',foundEv:'{n} chargers found',cheapest:'CHEAPEST',cheapestEv:'CHEAPEST',go:'GO — NAVIGATE',others:'Other nearby stations',othersEv:'Other nearby chargers',refresh:'Refresh',awake:'📱 Screen stays on in driving mode',noStation:'No station found',noStationSub:'Check your connection and try again',geoError:'Location needed',geoErrorSub:'Allow location for driving mode',perL:'/L',perKwh:'/kWh'},
+    es:{btn:'Modo conducción',title:'🚗 Modo conducción',close:'Cerrar',searching:'Buscando...',found:'{n} gasolineras encontradas',foundEv:'{n} cargadores encontrados',cheapest:'LA MÁS BARATA',cheapestEv:'EL MÁS BARATO',go:'IR — NAVEGAR',others:'Otras gasolineras cercanas',othersEv:'Otros cargadores cercanos',refresh:'Actualizar',awake:'📱 Pantalla activa en modo conducción',noStation:'No se encontraron gasolineras',noStationSub:'Verifica tu conexión',geoError:'Ubicación necesaria',geoErrorSub:'Permite la ubicación',perL:'/L',perKwh:'/kWh'},
+    de:{btn:'Fahrmodus',title:'🚗 Fahrmodus',close:'Schließen',searching:'Suche...',found:'{n} Tankstellen gefunden',foundEv:'{n} Ladestationen gefunden',cheapest:'AM GÜNSTIGSTEN',cheapestEv:'AM GÜNSTIGSTEN',go:'ROUTE — NAVIGATION',others:'Weitere Tankstellen',othersEv:'Weitere Ladestationen',refresh:'Aktualisieren',awake:'📱 Bildschirm bleibt an im Fahrmodus',noStation:'Keine Tankstelle gefunden',noStationSub:'Verbindung prüfen',geoError:'Standort nötig',geoErrorSub:'Standort erlauben',perL:'/L',perKwh:'/kWh'},
+    it:{btn:'Modalità guida',title:'🚗 Modalità guida',close:'Chiudi',searching:'Ricerca...',found:'{n} stazioni trovate',foundEv:'{n} stazioni di ricarica',cheapest:'PIÙ ECONOMICO',cheapestEv:'PIÙ ECONOMICO',go:'VAI — NAVIGA',others:'Altre stazioni vicine',othersEv:'Altre stazioni di ricarica',refresh:'Aggiorna',awake:'📱 Schermo attivo in modalità guida',noStation:'Nessuna stazione',noStationSub:'Verifica la connessione',geoError:'Posizione necessaria',geoErrorSub:'Consenti la posizione',perL:'/L',perKwh:'/kWh'},
+    pt:{btn:'Modo condução',title:'🚗 Modo condução',close:'Fechar',searching:'A procurar...',found:'{n} postos encontrados',foundEv:'{n} carregadores encontrados',cheapest:'MAIS BARATO',cheapestEv:'MAIS BARATO',go:'IR — NAVEGAR',others:'Outros postos próximos',othersEv:'Outros carregadores',refresh:'Atualizar',awake:'📱 Ecrã ativo em modo condução',noStation:'Nenhum posto encontrado',noStationSub:'Verifique a ligação',geoError:'Localização necessária',geoErrorSub:'Permita a localização',perL:'/L',perKwh:'/kWh'},
+    ru:{btn:'Режим вождения',title:'🚗 Режим вождения',close:'Закрыть',searching:'Поиск...',found:'{n} АЗС найдено',foundEv:'{n} зарядок найдено',cheapest:'САМАЯ ДЕШЁВАЯ',cheapestEv:'САМАЯ ДЕШЁВАЯ',go:'ЕХАТЬ — НАВИГАЦИЯ',others:'Другие АЗС',othersEv:'Другие зарядки',refresh:'Обновить',awake:'📱 Экран активен',noStation:'АЗС не найдены',noStationSub:'Проверьте подключение',geoError:'Нужна геолокация',geoErrorSub:'Разрешите определение местоположения',perL:'/л',perKwh:'/кВт·ч'},
+    zh:{btn:'驾驶模式',title:'🚗 驾驶模式',close:'关闭',searching:'搜索中...',found:'找到{n}个站点',foundEv:'找到{n}个充电站',cheapest:'最便宜',cheapestEv:'最便宜',go:'前往 — 导航',others:'其他附近站点',othersEv:'其他充电站',refresh:'刷新',awake:'📱 屏幕保持常亮',noStation:'未找到站点',noStationSub:'检查网络连接',geoError:'需要定位',geoErrorSub:'请允许定位',perL:'/L',perKwh:'/kWh'},
+    ja:{btn:'運転モード',title:'🚗 運転モード',close:'閉じる',searching:'検索中...',found:'{n}件見つかりました',foundEv:'{n}件の充電スタンド',cheapest:'最安',cheapestEv:'最安',go:'ナビ開始',others:'その他のGS',othersEv:'その他の充電スタンド',refresh:'更新',awake:'📱 運転モード中は画面点灯',noStation:'見つかりません',noStationSub:'接続を確認してください',geoError:'位置情報が必要',geoErrorSub:'位置情報を許可してください',perL:'/L',perKwh:'/kWh'}
+};
+
+function getDriveI18n() { return DRIVE_I18N[lang] || DRIVE_I18N.en; }
+
+window.openDriveMode = function() {
+    haptic('heavy');
+    var page = document.getElementById('drivePage');
+    if (!page) return;
+
+    document.body.style.overflow = 'hidden';
+    page.classList.add('open');
+
+    // Keep screen awake
+    requestWakeLock();
+
+    // Update texts
+    updateDriveTexts();
+
+    // Start searching
+    searchDriveStations();
+};
+
+window.closeDriveMode = function() {
+    haptic('light');
+    var page = document.getElementById('drivePage');
+    if (!page) return;
+
+    document.body.style.overflow = '';
+    page.classList.remove('open');
+
+    // Release wake lock
+    releaseWakeLock();
+};
+
+window.refreshDriveMode = function() {
+    haptic('medium');
+    var btn = document.getElementById('driveRefreshBtn');
+    if (btn) btn.classList.add('loading');
+    searchDriveStations();
+};
+
+function updateDriveTexts() {
+    var di = getDriveI18n();
+    var driveTitle = document.getElementById('driveTitle');
+    if (driveTitle) driveTitle.textContent = di.title;
+    var driveCloseText = document.getElementById('driveCloseText');
+    if (driveCloseText) driveCloseText.textContent = di.close;
+    var driveRefreshText = document.getElementById('driveRefreshText');
+    if (driveRefreshText) driveRefreshText.textContent = di.refresh;
+    var driveStatusText = document.getElementById('driveStatusText');
+    if (driveStatusText) driveStatusText.textContent = di.searching;
+    var driveAwake = document.getElementById('driveAwake');
+    if (driveAwake) driveAwake.textContent = di.awake;
+    var driveBtnText = document.getElementById('driveBtnText');
+    if (driveBtnText) driveBtnText.textContent = di.btn;
+}
+
+function searchDriveStations() {
+    var di = getDriveI18n();
+    var statusText = document.getElementById('driveStatusText');
+    if (statusText) statusText.textContent = di.searching;
+
+    if (!navigator.geolocation) {
+        showDriveError(di.geoError, di.geoErrorSub);
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function(pos) { fetchDriveStations(pos.coords.latitude, pos.coords.longitude); },
+        function() { showDriveError(di.geoError, di.geoErrorSub); },
+        {enableHighAccuracy: true, timeout: 10000, maximumAge: 60000}
+    );
+}
+
+async function fetchDriveStations(lat, lon) {
+    var di = getDriveI18n();
+    var isEv = appMode === 'ev';
+
+    try {
+        var cc = '';
+        try {
+            cc = await detectCountry(lat, lon);
+        } catch(e) {}
+
+        var provider;
+        if (isEv) {
+            provider = typeof EV_PROVIDER !== 'undefined' ? EV_PROVIDER : FALLBACK_PROVIDER;
+        } else {
+            provider = getProvider(cc);
+        }
+
+        var stations = await provider.fetch(lat, lon, 10);
+
+        stations.forEach(function(s) {
+            s.dist = haversine(lat, lon, s.lat, s.lon);
+        });
+
+        // Sort by price then distance
+        stations.sort(function(a, b) {
+            var pa = getBestPrice(a) || 999;
+            var pb = getBestPrice(b) || 999;
+            if (Math.abs(pa - pb) > 0.001) return pa - pb;
+            return a.dist - b.dist;
+        });
+
+        showDriveStations(stations, lat, lon);
+
+    } catch(e) {
+        console.error(e);
+        showDriveError(di.noStation, di.noStationSub);
+    }
+
+    var btn = document.getElementById('driveRefreshBtn');
+    if (btn) btn.classList.remove('loading');
+}
+
+function showDriveStations(stations, lat, lon) {
+    var di = getDriveI18n();
+    var isEv = appMode === 'ev';
+    var content = document.getElementById('driveContent');
+    var statusText = document.getElementById('driveStatusText');
+    var priceClass = isEv ? 'ev-c' : 'fuel-c';
+    var bgClass = isEv ? 'ev-bg' : 'fuel-bg';
+    var modeClass = isEv ? '' : 'fuel-mode';
+    var unit = isEv ? di.perKwh : di.perL;
+
+    if (!stations.length) {
+        showDriveError(di.noStation, di.noStationSub);
+        return;
+    }
+
+    if (statusText) {
+        var foundText = isEv ? di.foundEv : di.found;
+        statusText.textContent = foundText.replace('{n}', stations.length);
+    }
+
+    var best = stations[0];
+    var bestPrice = getBestPrice(best);
+    var html = '';
+
+    // Best station — BIG card
+    html += '<div class="drive-station best ' + modeClass + '">';
+    html += '<div class="drive-station-label">' + (isEv ? di.cheapestEv : di.cheapest) + '</div>';
+    html += '<div class="drive-station-name">' + escH(best.name) + '</div>';
+    if (best.addr) html += '<div class="drive-station-addr">' + escH(best.addr) + '</div>';
+    html += '<div class="drive-station-dist"><span class="dsd-icon">📍</span> ';
+    html += best.dist < 1 ? (best.dist * 1000).toFixed(0) + ' m' : best.dist.toFixed(1) + ' km';
+    html += '</div>';
+    html += '<div class="drive-price-row">';
+    html += '<span class="drive-price ' + priceClass + '">' + (bestPrice ? bestPrice.toFixed(2) : '—') + '</span>';
+    html += '<span class="drive-price-unit">' + C.symbol + unit + '</span>';
+    html += '</div>';
+    html += '<a class="drive-go ' + bgClass + '" href="https://maps.apple.com/?daddr=' + best.lat + ',' + best.lon + '&dirflg=d">';
+    html += '<span class="drive-go-icon">🧭</span> ' + di.go;
+    html += '</a>';
+    html += '</div>';
+
+    // Other stations (2-5)
+    if (stations.length > 1) {
+        html += '<div class="drive-others">';
+        html += '<div class="drive-others-title">' + (isEv ? di.othersEv : di.others) + '</div>';
+        stations.slice(1, 5).forEach(function(s, i) {
+            var p = getBestPrice(s);
+            html += '<a class="drive-other-item" href="https://maps.apple.com/?daddr=' + s.lat + ',' + s.lon + '&dirflg=d">';
+            html += '<div class="drive-other-rank">' + (i + 2) + '</div>';
+            html += '<div class="drive-other-info">';
+            html += '<div class="drive-other-name">' + escH(s.name) + '</div>';
+            html += '<div class="drive-other-dist">📍 ';
+            html += s.dist < 1 ? (s.dist * 1000).toFixed(0) + ' m' : s.dist.toFixed(1) + ' km';
+            html += '</div></div>';
+            html += '<div class="drive-other-price ' + priceClass + '">' + (p ? p.toFixed(2) : '—') + '</div>';
+            html += '</a>';
+        });
+        html += '</div>';
+    }
+
+    if (content) content.innerHTML = html;
+}
+
+function showDriveError(title, subtitle) {
+    var content = document.getElementById('driveContent');
+    if (content) {
+        content.innerHTML =
+            '<div style="text-align:center;padding:40px 20px">' +
+            '<div style="font-size:48px;margin-bottom:16px">😕</div>' +
+            '<div style="font-size:18px;font-weight:700;margin-bottom:8px">' + title + '</div>' +
+            '<div style="font-size:14px;color:#8e8e93;line-height:1.5">' + subtitle + '</div>' +
+            '</div>';
+    }
+    var btn = document.getElementById('driveRefreshBtn');
+    if (btn) btn.classList.remove('loading');
+}
+
+// Wake Lock — Keep screen on
+async function requestWakeLock() {
+    try {
+        if ('wakeLock' in navigator) {
+            wakeLock = await navigator.wakeLock.request('screen');
+        }
+    } catch(e) {}
+}
+
+function releaseWakeLock() {
+    try {
+        if (wakeLock) {
+            wakeLock.release();
+            wakeLock = null;
+        }
+    } catch(e) {}
+}
+
+// Update drive button text on language change
+function updateDriveBtnText() {
+    var di = getDriveI18n();
+    var btn = document.getElementById('driveBtnText');
+    if (btn) btn.textContent = di.btn;
+}
 window.addEventListener('load', init);
 // Register Service Worker
 if ('serviceWorker' in navigator) {
@@ -7053,6 +7472,37 @@ if ('serviceWorker' in navigator) {
             <button class="trip-share-btn" onclick="shareTrip()">
                 📤 <span id="tripShareText">Partager ce calcul</span>
             </button>
+        </div>
+    </div>
+</div>
+<!-- ===== DRIVE MODE PAGE ===== -->
+<div class="drive-page" id="drivePage">
+    <div class="drive-inner">
+        <div class="drive-header">
+            <a href="javascript:void(0)" class="drive-close"
+               ontouchstart="closeDriveMode()" onclick="closeDriveMode()">
+                ✕ <span id="driveCloseText">Fermer</span>
+            </a>
+            <span class="drive-title" id="driveTitle">🚗 Mode conduite</span>
+            <div class="drive-header-spacer"></div>
+        </div>
+
+        <div class="drive-status" id="driveStatus">
+            <div class="drive-status-dot"></div>
+            <span class="drive-status-text" id="driveStatusText">Recherche en cours...</span>
+        </div>
+
+        <div id="driveContent">
+            <!-- Filled dynamically -->
+        </div>
+
+        <button class="drive-refresh" id="driveRefreshBtn" onclick="refreshDriveMode()">
+            <span class="dr-icon">🔄</span>
+            <span id="driveRefreshText">Actualiser</span>
+        </button>
+
+        <div class="drive-awake" id="driveAwake">
+            📱 L'écran reste allumé en mode conduite
         </div>
     </div>
 </div>
