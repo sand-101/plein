@@ -1267,6 +1267,154 @@ body.ev-mode .amount-particle{background:#30d158}
 .ob-install-icon{font-size:24px;flex-shrink:0}
 .ob-install-text{font-size:12px;color:#aaa;line-height:1.4}
 .ob-install-text strong{color:#fff}
+/* ===== MULTI-VÉHICULES ===== */
+.vehicles-card{padding:0;overflow:hidden}
+.vehicles-toggle{
+    width:100%;padding:18px 20px;
+    display:flex;align-items:center;justify-content:space-between;
+    background:transparent;border:none;color:#fff;
+    font-size:15px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;text-align:left;gap:10px;
+}
+.vehicles-toggle:active{background:#2c2c2e}
+.vehicles-toggle .vt-left{display:flex;align-items:center;gap:10px}
+.vehicles-toggle .vt-badge{
+    background:#007aff;color:#fff;font-size:11px;font-weight:700;
+    padding:2px 8px;border-radius:10px;min-width:24px;text-align:center;
+}
+.vehicles-toggle .vt-arrow{font-size:14px;color:#8e8e93;transition:transform .3s}
+.vehicles-card.open .vt-arrow{transform:rotate(180deg)}
+.vehicles-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.25,.46,.45,.94)}
+.vehicles-card.open .vehicles-body{max-height:2000px}
+.vehicles-inner{padding:0 20px 20px}
+
+/* Vehicle list */
+.vehicle-list{display:flex;flex-direction:column;gap:8px}
+.vehicle-item{
+    display:flex;align-items:center;gap:12px;
+    padding:14px;background:#2c2c2e;border-radius:13px;
+    cursor:pointer;transition:all .15s;position:relative;
+}
+.vehicle-item:active{transform:scale(.98)}
+.vehicle-item.active{
+    border:1.5px solid rgba(0,122,255,.4);
+    background:rgba(0,122,255,.06);
+    box-shadow:0 4px 15px rgba(0,122,255,.1);
+}
+.vehicle-item .vi-icon{
+    width:44px;height:44px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:24px;flex-shrink:0;
+}
+.vehicle-item .vi-icon.fuel-bg{background:rgba(255,149,0,.1)}
+.vehicle-item .vi-icon.ev-bg{background:rgba(48,209,88,.1)}
+.vehicle-item .vi-info{flex:1;min-width:0}
+.vehicle-item .vi-name{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vehicle-item .vi-detail{font-size:12px;color:#8e8e93;margin-top:2px}
+.vehicle-item .vi-active-badge{
+    font-size:10px;color:#007aff;font-weight:600;
+    background:rgba(0,122,255,.1);padding:2px 8px;
+    border-radius:8px;margin-top:4px;display:inline-block;
+}
+.vehicle-item .vi-actions{display:flex;gap:6px;flex-shrink:0}
+.vehicle-item .vi-edit,.vehicle-item .vi-delete{
+    width:32px;height:32px;border-radius:8px;border:none;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;cursor:pointer;transition:all .15s;
+}
+.vehicle-item .vi-edit{background:rgba(0,122,255,.1);color:#007aff}
+.vehicle-item .vi-delete{background:rgba(255,59,48,.1);color:#ff3b30}
+.vehicle-item .vi-edit:active,.vehicle-item .vi-delete:active{transform:scale(.9)}
+
+/* Add vehicle button */
+.add-vehicle-btn{
+    width:100%;padding:14px;border-radius:12px;
+    border:2px dashed #3a3a3c;background:transparent;
+    color:#8e8e93;font-size:14px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    margin-top:10px;
+}
+.add-vehicle-btn:active{border-color:#007aff;color:#007aff;transform:scale(.98)}
+
+/* Vehicle form modal */
+.vehicle-modal-overlay{
+    display:none;position:fixed;inset:0;
+    background:rgba(0,0,0,.75);z-index:10000;
+    align-items:center;justify-content:center;padding:20px;
+}
+.vehicle-modal-overlay.show{display:flex}
+.vehicle-modal{
+    background:#1c1c1e;border-radius:20px;padding:24px;
+    max-width:360px;width:100%;
+    animation:cardIn .3s ease;
+}
+.vm-title{font-size:18px;font-weight:700;margin-bottom:18px;text-align:center}
+.vm-field{margin-bottom:14px}
+.vm-label{font-size:12px;color:#8e8e93;font-weight:600;margin-bottom:6px;display:block}
+.vm-input{
+    width:100%;padding:12px 14px;border-radius:10px;
+    background:#2c2c2e;border:1.5px solid #3a3a3c;
+    color:#fff;font-size:15px;font-weight:500;
+    font-family:-apple-system,sans-serif;outline:none;
+    -webkit-user-select:text;user-select:text;
+}
+.vm-input:focus{border-color:#007aff}
+.vm-input::placeholder{color:#48484a}
+
+.vm-type-selector{display:flex;gap:8px;margin-bottom:14px}
+.vm-type-btn{
+    flex:1;padding:12px;border-radius:10px;
+    border:1.5px solid #3a3a3c;background:transparent;
+    color:#e5e5ea;font-size:14px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;text-align:center;
+}
+.vm-type-btn:active{transform:scale(.97)}
+.vm-type-btn.on-fuel{background:rgba(255,149,0,.12);border-color:#ff9500;color:#ff9500}
+.vm-type-btn.on-ev{background:rgba(48,209,88,.12);border-color:#30d158;color:#30d158}
+
+.vm-capacity-row{display:flex;align-items:center;gap:10px}
+.vm-capacity-row input[type=number]{
+    flex:1;padding:12px;border-radius:10px;
+    background:#2c2c2e;border:1.5px solid #3a3a3c;
+    color:#fff;font-size:18px;font-weight:600;
+    font-family:-apple-system,sans-serif;outline:none;
+    text-align:center;-webkit-user-select:text;user-select:text;
+}
+.vm-capacity-row input:focus{border-color:#007aff}
+.vm-capacity-unit{font-size:14px;color:#8e8e93;font-weight:600}
+
+.vm-icons{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.vm-icon-btn{
+    width:40px;height:40px;border-radius:10px;
+    border:1.5px solid #3a3a3c;background:transparent;
+    font-size:22px;cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;
+}
+.vm-icon-btn:active{transform:scale(.9)}
+.vm-icon-btn.on{border-color:#007aff;background:rgba(0,122,255,.1)}
+
+.vm-actions{display:flex;gap:10px;margin-top:18px}
+.vm-btn{
+    flex:1;padding:14px;border-radius:12px;border:none;
+    font-size:15px;font-weight:600;font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+}
+.vm-btn:active{transform:scale(.97)}
+.vm-btn.cancel{background:#2c2c2e;color:#8e8e93}
+.vm-btn.save{background:linear-gradient(135deg,#007aff,#5856d6);color:#fff}
+
+/* Premium limit indicator */
+.vm-premium-hint{
+    text-align:center;padding:12px;margin-top:8px;
+    font-size:12px;color:#8e8e93;
+    background:rgba(255,215,0,.05);border-radius:10px;
+    border:1px solid rgba(255,215,0,.1);
+}
+.vm-premium-hint a{color:#ffd700;font-weight:600;text-decoration:none}
     </style>
 
 </head>
@@ -1349,6 +1497,66 @@ body.ev-mode .amount-particle{background:#30d158}
     <button class="mode-btn ev" id="modeEV" onclick="setMode('ev')">
         🔋 <span id="modeEVText">🔋 Électrique</span>
     </button>
+</div>
+<!-- ===== MULTI-VÉHICULES ===== -->
+<div class="card vehicles-card" id="vehiclesCard">
+    <button class="vehicles-toggle" onclick="toggleContent('vehiclesCard')">
+        <span class="vt-left">
+            <span>🚗</span>
+            <span id="vehiclesToggleText">Mes véhicules</span>
+            <span class="vt-badge" id="vehiclesCount">0</span>
+        </span>
+        <span class="vt-arrow">▼</span>
+    </button>
+    <div class="vehicles-body">
+        <div class="vehicles-inner">
+            <div class="vehicle-list" id="vehicleList"></div>
+            <button class="add-vehicle-btn" id="addVehicleBtn" onclick="openVehicleModal()">
+                ＋ <span id="addVehicleText">Ajouter un véhicule</span>
+            </button>
+            <div class="vm-premium-hint" id="vmPremiumHint" style="display:none">
+                💎 <span id="vmPremiumText"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VEHICLE FORM MODAL -->
+<div class="vehicle-modal-overlay" id="vmOverlay">
+    <div class="vehicle-modal">
+        <div class="vm-title" id="vmTitle">Ajouter un véhicule</div>
+
+        <div class="vm-field">
+            <label class="vm-label" id="vmNameLabel">Nom</label>
+            <input class="vm-input" id="vmName" type="text" placeholder="Ma voiture" maxlength="30">
+        </div>
+
+        <div class="vm-field">
+            <label class="vm-label" id="vmTypeLabel">Type</label>
+            <div class="vm-type-selector">
+                <button class="vm-type-btn on-fuel" id="vmTypeFuel" onclick="setVmType('fuel')">⛽ Essence</button>
+                <button class="vm-type-btn" id="vmTypeEv" onclick="setVmType('ev')">🔋 Électrique</button>
+            </div>
+        </div>
+
+        <div class="vm-field">
+            <label class="vm-label" id="vmCapLabel">Capacité</label>
+            <div class="vm-capacity-row">
+                <input type="number" id="vmCapacity" value="42" min="10" max="150" step="1" inputmode="numeric">
+                <span class="vm-capacity-unit" id="vmCapUnit">L</span>
+            </div>
+        </div>
+
+        <div class="vm-field">
+            <label class="vm-label" id="vmIconLabel">Icône</label>
+            <div class="vm-icons" id="vmIcons"></div>
+        </div>
+
+        <div class="vm-actions">
+            <button class="vm-btn cancel" onclick="closeVehicleModal()"><span id="vmCancelText">Annuler</span></button>
+            <button class="vm-btn save" onclick="saveVehicle()"><span id="vmSaveText">Enregistrer</span></button>
+        </div>
+    </div>
 </div>
 <!-- STATIONS -->
     <div class="card stations-card">
@@ -2364,6 +2572,7 @@ function rebuildAll() {
 	try { updateFavoritesUI(); } catch(e) {}
 	try { updateQRUI(); } catch(e) {}
 	try { updateBadgesUI(); } catch(e) {}
+	try { updateVehiclesUI(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -3812,6 +4021,7 @@ window.setMode = function(mode) {
 	try { updateFavoritesUI(); } catch(e) {}
 	try { updateQRUI(); } catch(e) {}
 	try { updateBadgesUI(); } catch(e) {}
+	try { updateVehiclesUI(); } catch(e) {}
 };
 
 // ==================== EV BATTERY ====================
@@ -5412,6 +5622,284 @@ function closeOnboarding() {
 
     // Rebuild with chosen vehicle
     try { rebuildAll(); } catch(e) {}
+}
+// ==================== MULTI-VÉHICULES ====================
+var myVehicles = JSON.parse(localStorage.getItem('myVehicles') || '[]');
+var activeVehicleId = localStorage.getItem('activeVehicleId') || null;
+var editingVehicleId = null;
+var vmType = 'fuel';
+var vmIcon = '🚗';
+
+var VM_ICONS_FUEL = ['🚗','🚙','🏎️','🚕','🚐','🛻','🚚'];
+var VM_ICONS_EV = ['🔋','⚡','🚗','🚙','🏎️','🚕','🚐'];
+
+var VM_I18N = {
+    fr:{toggle:'Mes véhicules',add:'Ajouter un véhicule',title:'Ajouter un véhicule',titleEdit:'Modifier le véhicule',name:'Nom du véhicule',namePh:'Ma voiture',type:'Type',fuel:'⛽ Essence',ev:'🔋 Électrique',capacity:'Capacité',icon:'Icône',cancel:'Annuler',save:'Enregistrer',active:'Actif',deleteConfirm:'Supprimer ce véhicule ?',premiumText:'Version gratuite : 1 véhicule. <a href="{link}">Passez à Premium</a> pour illimité.',saved:'Véhicule enregistré ✅',deleted:'Véhicule supprimé',switched:'Véhicule activé : {n}'},
+    en:{toggle:'My vehicles',add:'Add a vehicle',title:'Add a vehicle',titleEdit:'Edit vehicle',name:'Vehicle name',namePh:'My car',type:'Type',fuel:'⛽ Fuel',ev:'🔋 Electric',capacity:'Capacity',icon:'Icon',cancel:'Cancel',save:'Save',active:'Active',deleteConfirm:'Delete this vehicle?',premiumText:'Free: 1 vehicle. <a href="{link}">Go Premium</a> for unlimited.',saved:'Vehicle saved ✅',deleted:'Vehicle deleted',switched:'Active vehicle: {n}'},
+    es:{toggle:'Mis vehículos',add:'Añadir vehículo',title:'Añadir vehículo',titleEdit:'Editar vehículo',name:'Nombre',namePh:'Mi coche',type:'Tipo',fuel:'⛽ Gasolina',ev:'🔋 Eléctrico',capacity:'Capacidad',icon:'Icono',cancel:'Cancelar',save:'Guardar',active:'Activo',deleteConfirm:'¿Eliminar vehículo?',premiumText:'Gratis: 1 vehículo. <a href="{link}">Premium</a> para ilimitados.',saved:'Vehículo guardado ✅',deleted:'Vehículo eliminado',switched:'Vehículo activo: {n}'},
+    de:{toggle:'Meine Fahrzeuge',add:'Fahrzeug hinzufügen',title:'Fahrzeug hinzufügen',titleEdit:'Fahrzeug bearbeiten',name:'Name',namePh:'Mein Auto',type:'Typ',fuel:'⛽ Benzin',ev:'🔋 Elektrisch',capacity:'Kapazität',icon:'Symbol',cancel:'Abbrechen',save:'Speichern',active:'Aktiv',deleteConfirm:'Fahrzeug löschen?',premiumText:'Kostenlos: 1 Fahrzeug. <a href="{link}">Premium</a> für unbegrenzt.',saved:'Fahrzeug gespeichert ✅',deleted:'Fahrzeug gelöscht',switched:'Aktives Fahrzeug: {n}'},
+    it:{toggle:'I miei veicoli',add:'Aggiungi veicolo',title:'Aggiungi veicolo',titleEdit:'Modifica veicolo',name:'Nome',namePh:'La mia auto',type:'Tipo',fuel:'⛽ Benzina',ev:'🔋 Elettrico',capacity:'Capacità',icon:'Icona',cancel:'Annulla',save:'Salva',active:'Attivo',deleteConfirm:'Eliminare veicolo?',premiumText:'Gratis: 1 veicolo. <a href="{link}">Premium</a> per illimitati.',saved:'Veicolo salvato ✅',deleted:'Veicolo eliminato',switched:'Veicolo attivo: {n}'},
+    pt:{toggle:'Meus veículos',add:'Adicionar veículo',title:'Adicionar veículo',titleEdit:'Editar veículo',name:'Nome',namePh:'O meu carro',type:'Tipo',fuel:'⛽ Gasolina',ev:'🔋 Elétrico',capacity:'Capacidade',icon:'Ícone',cancel:'Cancelar',save:'Guardar',active:'Ativo',deleteConfirm:'Eliminar veículo?',premiumText:'Grátis: 1 veículo. <a href="{link}">Premium</a> para ilimitados.',saved:'Veículo guardado ✅',deleted:'Veículo eliminado',switched:'Veículo ativo: {n}'},
+    ru:{toggle:'Мои авто',add:'Добавить авто',title:'Добавить авто',titleEdit:'Редактировать',name:'Название',namePh:'Моя машина',type:'Тип',fuel:'⛽ Бензин',ev:'🔋 Электро',capacity:'Объём',icon:'Иконка',cancel:'Отмена',save:'Сохранить',active:'Активно',deleteConfirm:'Удалить авто?',premiumText:'Бесплатно: 1 авто. <a href="{link}">Premium</a> для безлимита.',saved:'Авто сохранено ✅',deleted:'Авто удалено',switched:'Активное авто: {n}'},
+    zh:{toggle:'我的车辆',add:'添加车辆',title:'添加车辆',titleEdit:'编辑车辆',name:'名称',namePh:'我的车',type:'类型',fuel:'⛽ 汽油',ev:'🔋 电动',capacity:'容量',icon:'图标',cancel:'取消',save:'保存',active:'当前',deleteConfirm:'删除车辆？',premiumText:'免费: 1辆。<a href="{link}">Premium</a>无限制。',saved:'已保存 ✅',deleted:'已删除',switched:'当前车辆: {n}'},
+    ja:{toggle:'マイカー',add:'車両追加',title:'車両追加',titleEdit:'車両編集',name:'名前',namePh:'マイカー',type:'タイプ',fuel:'⛽ ガソリン',ev:'🔋 電気',capacity:'容量',icon:'アイコン',cancel:'キャンセル',save:'保存',active:'使用中',deleteConfirm:'車両を削除？',premiumText:'無料: 1台。<a href="{link}">Premium</a>で無制限。',saved:'保存済 ✅',deleted:'削除済',switched:'使用中: {n}'}
+};
+
+function getVmI18n() { return VM_I18N[lang] || VM_I18N.en; }
+
+// Open modal
+window.openVehicleModal = function(vehicleId) {
+    haptic('medium');
+    var vi = getVmI18n();
+
+    // Check free limit
+    if (!vehicleId && !isPremium() && myVehicles.length >= 1) {
+        var hint = document.getElementById('vmPremiumHint');
+        var hintText = document.getElementById('vmPremiumText');
+        if (hint && hintText) {
+            hint.style.display = 'block';
+            hintText.innerHTML = vi.premiumText.replace('{link}', STRIPE_M);
+        }
+        return;
+    }
+
+    editingVehicleId = vehicleId || null;
+    vmType = 'fuel';
+    vmIcon = '🚗';
+
+    var vmTitle = document.getElementById('vmTitle');
+    if (vmTitle) vmTitle.textContent = vehicleId ? vi.titleEdit : vi.title;
+    var vmNameLabel = document.getElementById('vmNameLabel');
+    if (vmNameLabel) vmNameLabel.textContent = vi.name;
+    var vmTypeLabel = document.getElementById('vmTypeLabel');
+    if (vmTypeLabel) vmTypeLabel.textContent = vi.type;
+    var vmCapLabel = document.getElementById('vmCapLabel');
+    if (vmCapLabel) vmCapLabel.textContent = vi.capacity;
+    var vmIconLabel = document.getElementById('vmIconLabel');
+    if (vmIconLabel) vmIconLabel.textContent = vi.icon;
+    var vmCancelText = document.getElementById('vmCancelText');
+    if (vmCancelText) vmCancelText.textContent = vi.cancel;
+    var vmSaveText = document.getElementById('vmSaveText');
+    if (vmSaveText) vmSaveText.textContent = vi.save;
+    var vmTypeFuel = document.getElementById('vmTypeFuel');
+    if (vmTypeFuel) vmTypeFuel.textContent = vi.fuel;
+    var vmTypeEv = document.getElementById('vmTypeEv');
+    if (vmTypeEv) vmTypeEv.textContent = vi.ev;
+
+    var nameInput = document.getElementById('vmName');
+    var capInput = document.getElementById('vmCapacity');
+
+    // Pre-fill if editing
+    if (vehicleId) {
+        var v = myVehicles.find(function(x) { return x.id === vehicleId; });
+        if (v) {
+            if (nameInput) nameInput.value = v.name;
+            vmType = v.type;
+            vmIcon = v.icon;
+            if (capInput) capInput.value = v.capacity;
+        }
+    } else {
+        if (nameInput) nameInput.value = '';
+        if (nameInput) nameInput.placeholder = vi.namePh;
+        if (capInput) capInput.value = vmType === 'ev' ? 60 : 42;
+    }
+
+    setVmType(vmType);
+    buildVmIcons();
+
+    var overlay = document.getElementById('vmOverlay');
+    if (overlay) overlay.classList.add('show');
+};
+
+window.closeVehicleModal = function() {
+    haptic('light');
+    var overlay = document.getElementById('vmOverlay');
+    if (overlay) overlay.classList.remove('show');
+    editingVehicleId = null;
+};
+
+// Click overlay to close
+var vmOv = document.getElementById('vmOverlay');
+if (vmOv) {
+    vmOv.addEventListener('click', function(e) {
+        if (e.target === this) closeVehicleModal();
+    });
+}
+
+window.setVmType = function(type) {
+    vmType = type;
+    var fuelBtn = document.getElementById('vmTypeFuel');
+    var evBtn = document.getElementById('vmTypeEv');
+    if (fuelBtn) { fuelBtn.className = 'vm-type-btn' + (type === 'fuel' ? ' on-fuel' : ''); }
+    if (evBtn) { evBtn.className = 'vm-type-btn' + (type === 'ev' ? ' on-ev' : ''); }
+    var unit = document.getElementById('vmCapUnit');
+    if (unit) unit.textContent = type === 'ev' ? 'kWh' : 'L';
+    var capInput = document.getElementById('vmCapacity');
+    if (capInput && !editingVehicleId) {
+        capInput.value = type === 'ev' ? 60 : 42;
+    }
+    buildVmIcons();
+};
+
+function buildVmIcons() {
+    var w = document.getElementById('vmIcons');
+    if (!w) return;
+    var icons = vmType === 'ev' ? VM_ICONS_EV : VM_ICONS_FUEL;
+    w.innerHTML = '';
+    icons.forEach(function(ic) {
+        var btn = document.createElement('button');
+        btn.className = 'vm-icon-btn' + (ic === vmIcon ? ' on' : '');
+        btn.textContent = ic;
+        btn.addEventListener('click', function() {
+            haptic('light');
+            vmIcon = ic;
+            w.querySelectorAll('.vm-icon-btn').forEach(function(b) { b.classList.remove('on'); });
+            btn.classList.add('on');
+        });
+        w.appendChild(btn);
+    });
+}
+
+window.saveVehicle = function() {
+    haptic('success');
+    var vi = getVmI18n();
+    var nameInput = document.getElementById('vmName');
+    var capInput = document.getElementById('vmCapacity');
+    var name = nameInput ? nameInput.value.trim() : '';
+    var capacity = capInput ? parseInt(capInput.value) : 42;
+
+    if (!name) name = vmType === 'ev' ? 'Mon EV' : 'Ma voiture';
+    if (capacity < 10) capacity = 10;
+    if (capacity > 150) capacity = 150;
+
+    if (editingVehicleId) {
+        var idx = myVehicles.findIndex(function(x) { return x.id === editingVehicleId; });
+        if (idx >= 0) {
+            myVehicles[idx].name = name;
+            myVehicles[idx].type = vmType;
+            myVehicles[idx].capacity = capacity;
+            myVehicles[idx].icon = vmIcon;
+        }
+    } else {
+        myVehicles.push({
+            id: Date.now().toString(),
+            name: name,
+            type: vmType,
+            capacity: capacity,
+            icon: vmIcon,
+            created: new Date().toISOString()
+        });
+    }
+
+    localStorage.setItem('myVehicles', JSON.stringify(myVehicles));
+    closeVehicleModal();
+    updateVehiclesUI();
+
+    // Auto-activate if first vehicle
+    if (myVehicles.length === 1) {
+        switchToVehicle(myVehicles[0].id);
+    }
+
+    showToast(vi.saved);
+};
+
+window.deleteVehicle = function(vehicleId) {
+    var vi = getVmI18n();
+    if (!confirm(vi.deleteConfirm)) return;
+    haptic('medium');
+
+    myVehicles = myVehicles.filter(function(v) { return v.id !== vehicleId; });
+    localStorage.setItem('myVehicles', JSON.stringify(myVehicles));
+
+    if (activeVehicleId === vehicleId) {
+        activeVehicleId = myVehicles.length ? myVehicles[0].id : null;
+        localStorage.setItem('activeVehicleId', activeVehicleId || '');
+        if (activeVehicleId) switchToVehicle(activeVehicleId);
+    }
+
+    updateVehiclesUI();
+    showToast(vi.deleted);
+};
+
+window.switchToVehicle = function(vehicleId) {
+    haptic('medium');
+    var vi = getVmI18n();
+    var v = myVehicles.find(function(x) { return x.id === vehicleId; });
+    if (!v) return;
+
+    activeVehicleId = vehicleId;
+    localStorage.setItem('activeVehicleId', vehicleId);
+
+    // Apply vehicle settings
+    if (v.type === 'fuel') {
+        tank = v.capacity;
+        save();
+        setMode('fuel');
+        try { updateTankUI(); } catch(e) {}
+        try { buildQuickBtns(); } catch(e) {}
+        try { calc(); } catch(e) {}
+    } else {
+        evBatt = v.capacity;
+        localStorage.setItem('evBatt', evBatt);
+        setMode('ev');
+        try { updateEvBattUI(); } catch(e) {}
+        try { buildEvQuickBtns(); } catch(e) {}
+        try { evCalc(); } catch(e) {}
+    }
+
+    updateVehiclesUI();
+    showToast(vi.switched.replace('{n}', v.icon + ' ' + v.name));
+};
+
+function updateVehiclesUI() {
+    var vi = getVmI18n();
+
+    var toggleText = document.getElementById('vehiclesToggleText');
+    if (toggleText) toggleText.textContent = vi.toggle;
+    var addText = document.getElementById('addVehicleText');
+    if (addText) addText.textContent = vi.add;
+
+    var badge = document.getElementById('vehiclesCount');
+    if (badge) badge.textContent = myVehicles.length;
+
+    // Premium hint
+    var hint = document.getElementById('vmPremiumHint');
+    if (hint) {
+        if (!isPremium() && myVehicles.length >= 1) {
+            hint.style.display = 'block';
+            var hintText = document.getElementById('vmPremiumText');
+            if (hintText) hintText.innerHTML = vi.premiumText.replace('{link}', STRIPE_M);
+        } else {
+            hint.style.display = 'none';
+        }
+    }
+
+    // Vehicle list
+    var list = document.getElementById('vehicleList');
+    if (!list) return;
+
+    if (!myVehicles.length) {
+        list.innerHTML = '';
+        return;
+    }
+
+    list.innerHTML = myVehicles.map(function(v) {
+        var isActive = v.id === activeVehicleId;
+        var typeIcon = v.type === 'ev' ? 'ev-bg' : 'fuel-bg';
+        var unit = v.type === 'ev' ? 'kWh' : 'L';
+        return '<div class="vehicle-item' + (isActive ? ' active' : '') + '" onclick="switchToVehicle(\'' + v.id + '\')">' +
+            '<div class="vi-icon ' + typeIcon + '">' + v.icon + '</div>' +
+            '<div class="vi-info">' +
+                '<div class="vi-name">' + escH(v.name) + '</div>' +
+                '<div class="vi-detail">' + (v.type === 'ev' ? '🔋' : '⛽') + ' ' + v.capacity + ' ' + unit + '</div>' +
+                (isActive ? '<span class="vi-active-badge">✓ ' + vi.active + '</span>' : '') +
+            '</div>' +
+            '<div class="vi-actions">' +
+                '<button class="vi-edit" onclick="event.stopPropagation();openVehicleModal(\'' + v.id + '\')">✏️</button>' +
+                '<button class="vi-delete" onclick="event.stopPropagation();deleteVehicle(\'' + v.id + '\')">🗑️</button>' +
+            '</div>' +
+        '</div>';
+    }).join('');
 }
 window.addEventListener('load', init);
 // Register Service Worker
