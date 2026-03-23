@@ -3680,24 +3680,23 @@ const EDITORIAL = {
         faqToggle: 'Preguntas frecuentes',
         aboutToggle: 'Acerca de Easy Refuel',
         legalToggle: 'Aviso legal y Privacidad',
-        guide: `
-            <h2>¿Cómo ahorrar en combustible?</h2>
-            <p>El coste del carburante supone una parte importante del presupuesto del automóvil. De media, un conductor gasta entre <strong>1.500 y 2.000€ al año</strong>. Estos son nuestros consejos.</p>
-            <h3>🔍 1. Comparar precios entre gasolineras</h3>
-            <p>Las diferencias pueden alcanzar <strong>15-20 céntimos por litro</strong>. En un depósito de 50 litros, eso supone hasta <strong>10€ de ahorro</strong>. Las gasolineras de supermercados suelen ser 5-8% más baratas.</p>
-            <h3>⛽ 2. Elegir el carburante adecuado</h3>
-            <p>La <strong>Gasolina 95</strong> es la más vendida y <strong>4-6 céntimos más barata</strong> que la 98. El <strong>E85</strong> (~0,85€/L) necesita vehículo compatible.</p>
-            <h3>🚗 3. Conducción eficiente</h3>
-            <p>Reduce el consumo <strong>15-20%</strong>:</p>
-            <ul><li>Anticipar frenadas y aceleraciones</li><li>Velocidad constante</li><li>Apagar motor en paradas (+30s)</li><li>Revisar presión de neumáticos</li><li>Evitar aire acondicionado</li><li>Eliminar cargas innecesarias</li></ul>
-            <h3>📊 4. Mejores momentos para repostar</h3>
-            <p><strong>Lunes y martes</strong> precios más bajos. <strong>Viernes y fines de semana</strong> más caros. Evitar estaciones de autopista (<strong>15-20% más caro</strong>).</p>
-            <h3>💰 5. Programas de fidelidad</h3>
-            <p>Tarjetas de supermercado, cashback, promociones: ahorro acumulado de <strong>100-200€/año</strong>.</p>
-            <h3>🌍 6. Precios en Europa</h3>
-            <p><strong>Luxemburgo</strong> y <strong>España</strong> entre los más baratos. <strong>Países Bajos</strong> y <strong>Finlandia</strong> entre los más caros.</p>
-            <h3>🔋 7. Alternativas</h3>
-            <p><strong>GLP</strong> (~0,90€/L), <strong>GNC</strong>, <strong>eléctrico</strong> (~0,30€/L equivalente), <strong>hidrógeno</strong> (experimental ~15€/kg).</p>`,
+        guide: '<h2>¿Cómo ahorrar en combustible?</h2>' +
+            '<p>El coste del carburante supone una parte importante del presupuesto del automóvil. De media, un conductor gasta entre <strong>1.500 y 2.000€ al año</strong>. Estos son nuestros consejos.</p>' +
+            '<h3>🔍 1. Comparar precios entre gasolineras</h3>' +
+            '<p>Las diferencias pueden alcanzar <strong>15-20 céntimos por litro</strong>. En un depósito de 50 litros, eso supone hasta <strong>10€ de ahorro</strong>. Las gasolineras de supermercados suelen ser 5-8% más baratas.</p>' +
+            '<h3>⛽ 2. Elegir el carburante adecuado</h3>' +
+            '<p>La <strong>Gasolina 95</strong> es la más vendida y <strong>4-6 céntimos más barata</strong> que la 98. El <strong>E85</strong> (~0,85€/L) necesita vehículo compatible.</p>' +
+            '<h3>🚗 3. Conducción eficiente</h3>' +
+            '<p>Reduce el consumo un <strong>15-20%</strong>:</p>' +
+            '<ul><li>Anticipar frenadas y aceleraciones</li><li>Mantener velocidad constante</li><li>Apagar el motor en paradas largas (+30s)</li><li>Revisar la presión de los neumáticos cada mes</li><li>Evitar el aire acondicionado cuando sea posible</li><li>Eliminar cargas innecesarias del maletero</li></ul>' +
+            '<h3>📊 4. Mejores momentos para repostar</h3>' +
+            '<p><strong>Lunes y martes</strong> suelen tener los precios más bajos. <strong>Viernes y fines de semana</strong> son más caros. Evitar gasolineras de autopista (<strong>15-20% más caras</strong>).</p>' +
+            '<h3>💰 5. Programas de fidelización</h3>' +
+            '<p>Tarjetas de fidelización de supermercados, aplicaciones de cashback, promociones a precio de coste: el ahorro acumulado puede representar <strong>100-200€/año</strong>.</p>' +
+            '<h3>🌍 6. Precios en Europa</h3>' +
+            '<p><strong>Luxemburgo</strong> y <strong>España</strong> están entre los más baratos. <strong>Países Bajos</strong> y <strong>Finlandia</strong> entre los más caros.</p>' +
+            '<h3>🔋 7. Alternativas</h3>' +
+            '<p><strong>GLP</strong> (~0,90€/L), <strong>GNC</strong> para vehículos comerciales, <strong>eléctrico</strong> (~0,30€/L equivalente), <strong>hidrógeno</strong> (experimental ~15€/kg).</p>',
         faq: [
             {q:'¿Cómo funciona Easy Refuel?', a:'Usa datos oficiales de gobiernos (Francia: data.economie.gouv.fr, España: minetur.gob.es, Alemania: tankerkoenig.de) para mostrar precios en tiempo real. Indica tu nivel de depósito y el precio por litro.'},
             {q:'¿Son fiables los precios?', a:'Sí. Provienen de fuentes oficiales gubernamentales con actualización obligatoria. Datos actualizados cada pocas horas.'},
@@ -5183,7 +5182,7 @@ window.downloadQR = function() {
 var QR_I18N = {
     fr:{label:'📱 Partager l\'application',sub:'Scannez ce QR code pour ouvrir Easy Refuel',share:'Partager',download:'Télécharger',desc:'Partagez ce QR code avec vos proches pour qu\'ils trouvent aussi les stations les moins chères !',descEv:'Partagez ce QR code pour trouver les bornes les moins chères !',shareMsg:'Trouvez les stations les moins chères avec Easy Refuel !',copied:'Lien copié !',downloaded:'téléchargé ✅'},
     en:{label:'📱 Share the app',sub:'Scan this QR code to open Easy Refuel',share:'Share',download:'Download',desc:'Share this QR code with friends to help them find the cheapest stations too!',descEv:'Share this QR code to find the cheapest chargers!',shareMsg:'Find the cheapest fuel stations with Easy Refuel!',copied:'Link copied!',downloaded:'downloaded ✅'},
-    es:{label:'📱 Compartir la app',sub:'Escanea este QR para abrir Easy Refuel',share:'Compartir',download:'Descargar',desc:'¡Comparte este QR con tus amigos para que encuentren gasolineras baratas!',descEv:'¡Comparte este QR para encontrar cargadores baratos!',shareMsg:'¡Encuentra gasolineras baratas con Easy Refuel!',copied:'¡Enlace copiado!',downloaded:'descargado ✅'},
+    es:{label:'📱 Compartir la app',sub:'Escanea este código QR para abrir Easy Refuel',share:'Compartir',download:'Descargar',desc:'¡Comparte este código QR con tus amigos para que encuentren las gasolineras más baratas!',descEv:'¡Comparte este código QR para encontrar los cargadores más baratos!',shareMsg:'¡Encuentra las gasolineras más baratas con Easy Refuel!',copied:'¡Enlace copiado!',downloaded:'descargado ✅'},
     de:{label:'📱 App teilen',sub:'Scannen Sie diesen QR-Code für Easy Refuel',share:'Teilen',download:'Herunterladen',desc:'Teilen Sie diesen QR-Code mit Freunden um günstige Tankstellen zu finden!',descEv:'Teilen Sie diesen QR-Code für günstige Ladestationen!',shareMsg:'Finde günstige Tankstellen mit Easy Refuel!',copied:'Link kopiert!',downloaded:'heruntergeladen ✅'},
     it:{label:'📱 Condividi l\'app',sub:'Scansiona il QR per aprire Easy Refuel',share:'Condividi',download:'Scarica',desc:'Condividi il QR con gli amici per trovare i distributori più economici!',descEv:'Condividi il QR per trovare le stazioni di ricarica!',shareMsg:'Trova i distributori più economici con Easy Refuel!',copied:'Link copiato!',downloaded:'scaricato ✅'},
     pt:{label:'📱 Partilhar a app',sub:'Escaneie o QR para abrir Easy Refuel',share:'Partilhar',download:'Descarregar',desc:'Partilhe o QR com amigos para encontrar postos baratos!',descEv:'Partilhe o QR para encontrar carregadores baratos!',shareMsg:'Encontre postos baratos com Easy Refuel!',copied:'Link copiado!',downloaded:'descarregado ✅'},
@@ -5228,111 +5227,99 @@ function addXP(amount) {
 
 function getLevel() {
     var xp = gameData.xp;
-    if (xp < 100) return {level:1, name:'Débutant', min:0, max:100};
-    if (xp < 300) return {level:2, name:'Apprenti', min:100, max:300};
-    if (xp < 600) return {level:3, name:'Conducteur', min:300, max:600};
-    if (xp < 1000) return {level:4, name:'Expert', min:600, max:1000};
-    if (xp < 2000) return {level:5, name:'Maître', min:1000, max:2000};
-    if (xp < 5000) return {level:6, name:'Légende', min:2000, max:5000};
-    return {level:7, name:'Champion', min:5000, max:99999};
+    var levelNames = {
+        fr:['Débutant','Apprenti','Conducteur','Expert','Maître','Légende','Champion'],
+        en:['Beginner','Apprentice','Driver','Expert','Master','Legend','Champion'],
+        es:['Principiante','Aprendiz','Conductor','Experto','Maestro','Leyenda','Campeón'],
+        de:['Anfänger','Lehrling','Fahrer','Experte','Meister','Legende','Champion'],
+        it:['Principiante','Apprendista','Guidatore','Esperto','Maestro','Leggenda','Campione'],
+        pt:['Iniciante','Aprendiz','Condutor','Especialista','Mestre','Lenda','Campeão'],
+        ru:['Новичок','Ученик','Водитель','Эксперт','Мастер','Легенда','Чемпион'],
+        zh:['新手','学徒','司机','专家','大师','传奇','冠军'],
+        ja:['初心者','見習い','ドライバー','エキスパート','マスター','レジェンド','チャンピオン']
+    };
+    var names = levelNames[lang] || levelNames.en;
+    if (xp < 100) return {level:1, name:names[0], min:0, max:100};
+    if (xp < 300) return {level:2, name:names[1], min:100, max:300};
+    if (xp < 600) return {level:3, name:names[2], min:300, max:600};
+    if (xp < 1000) return {level:4, name:names[3], min:600, max:1000};
+    if (xp < 2000) return {level:5, name:names[4], min:1000, max:2000};
+    if (xp < 5000) return {level:6, name:names[5], min:2000, max:5000};
+    return {level:7, name:names[6], min:5000, max:99999};
 }
 
 // Badge definitions
 var BADGES = [
     {
-        id:'first_fill',
-        icon:'⛽',
-        xp:20,
+        id:'first_fill',icon:'⛽',xp:20,
         names:{fr:'Premier plein',en:'First fill-up',es:'Primer repostaje',de:'Erste Tankung',it:'Primo pieno',pt:'Primeiro abastecimento',ru:'Первая заправка',zh:'第一次加油',ja:'初給油'},
         descs:{fr:'Enregistrez votre premier plein',en:'Record your first fill-up',es:'Registra tu primer repostaje',de:'Erste Tankung speichern',it:'Registra il primo pieno',pt:'Registe o primeiro abastecimento',ru:'Запишите первую заправку',zh:'记录第一次加油',ja:'初めての給油を記録'},
         check:function(){ return gameData.stats.fills >= 1; }
     },
     {
-        id:'five_fills',
-        icon:'🔥',
-        xp:50,
+        id:'five_fills',icon:'🔥',xp:50,
         names:{fr:'Habitué',en:'Regular',es:'Habitual',de:'Stammgast',it:'Abituale',pt:'Habitual',ru:'Постоянный',zh:'常客',ja:'常連'},
-        descs:{fr:'5 pleins enregistrés',en:'5 fill-ups recorded',es:'5 repostajes',de:'5 Tankungen',it:'5 pieni',pt:'5 abastecimentos',ru:'5 заправок',zh:'5次加油',ja:'5回給油'},
+        descs:{fr:'5 pleins enregistrés',en:'5 fill-ups recorded',es:'5 repostajes registrados',de:'5 Tankungen',it:'5 pieni',pt:'5 abastecimentos',ru:'5 заправок',zh:'5次加油',ja:'5回給油'},
         check:function(){ return gameData.stats.fills >= 5; }
     },
     {
-        id:'twenty_fills',
-        icon:'💪',
-        xp:100,
+        id:'twenty_fills',icon:'💪',xp:100,
         names:{fr:'Vétéran',en:'Veteran',es:'Veterano',de:'Veteran',it:'Veterano',pt:'Veterano',ru:'Ветеран',zh:'老手',ja:'ベテラン'},
-        descs:{fr:'20 pleins enregistrés',en:'20 fill-ups recorded',es:'20 repostajes',de:'20 Tankungen',it:'20 pieni',pt:'20 abastecimentos',ru:'20 заправок',zh:'20次加油',ja:'20回給油'},
+        descs:{fr:'20 pleins enregistrés',en:'20 fill-ups recorded',es:'20 repostajes registrados',de:'20 Tankungen',it:'20 pieni',pt:'20 abastecimentos',ru:'20 заправок',zh:'20次加油',ja:'20回給油'},
         check:function(){ return gameData.stats.fills >= 20; }
     },
     {
-        id:'first_search',
-        icon:'🔍',
-        xp:10,
+        id:'first_search',icon:'🔍',xp:10,
         names:{fr:'Explorateur',en:'Explorer',es:'Explorador',de:'Entdecker',it:'Esploratore',pt:'Explorador',ru:'Исследователь',zh:'探索者',ja:'探検家'},
-        descs:{fr:'Première recherche de station',en:'First station search',es:'Primera búsqueda',de:'Erste Suche',it:'Prima ricerca',pt:'Primeira pesquisa',ru:'Первый поиск',zh:'第一次搜索',ja:'初検索'},
+        descs:{fr:'Première recherche de station',en:'First station search',es:'Primera búsqueda de gasolinera',de:'Erste Suche',it:'Prima ricerca',pt:'Primeira pesquisa',ru:'Первый поиск',zh:'第一次搜索',ja:'初検索'},
         check:function(){ return gameData.stats.searches >= 1; }
     },
     {
-        id:'ten_searches',
-        icon:'🗺️',
-        xp:40,
+        id:'ten_searches',icon:'🗺️',xp:40,
         names:{fr:'Cartographe',en:'Cartographer',es:'Cartógrafo',de:'Kartograf',it:'Cartografo',pt:'Cartógrafo',ru:'Картограф',zh:'制图师',ja:'地図職人'},
-        descs:{fr:'10 recherches effectuées',en:'10 searches done',es:'10 búsquedas',de:'10 Suchen',it:'10 ricerche',pt:'10 pesquisas',ru:'10 поисков',zh:'10次搜索',ja:'10回検索'},
+        descs:{fr:'10 recherches effectuées',en:'10 searches done',es:'10 búsquedas realizadas',de:'10 Suchen',it:'10 ricerche',pt:'10 pesquisas',ru:'10 поисков',zh:'10次搜索',ja:'10回検索'},
         check:function(){ return gameData.stats.searches >= 10; }
     },
     {
-        id:'first_fav',
-        icon:'⭐',
-        xp:15,
-        names:{fr:'Connaisseur',en:'Connoisseur',es:'Conocedor',de:'Kenner',it:'Intenditore',pt:'Conhecedor',ru:'Знаток',zh:'行家',ja:'通'},
-        descs:{fr:'Ajoutez votre première station favorite',en:'Add your first favorite station',es:'Añade tu primera favorita',de:'Erster Favorit',it:'Primo preferito',pt:'Primeiro favorito',ru:'Первое избранное',zh:'第一个收藏',ja:'初お気に入り'},
+        id:'first_fav',icon:'⭐',xp:15,
+        names:{fr:'Connaisseur',en:'Connoisseur',es:'Entendido',de:'Kenner',it:'Intenditore',pt:'Conhecedor',ru:'Знаток',zh:'行家',ja:'通'},
+        descs:{fr:'Ajoutez votre première station favorite',en:'Add your first favorite station',es:'Añade tu primera gasolinera favorita',de:'Erster Favorit',it:'Primo preferito',pt:'Primeiro favorito',ru:'Первое избранное',zh:'第一个收藏',ja:'初お気に入り'},
         check:function(){ return gameData.stats.favorites >= 1; }
     },
     {
-        id:'five_favs',
-        icon:'🌟',
-        xp:50,
+        id:'five_favs',icon:'🌟',xp:50,
         names:{fr:'Collectionneur',en:'Collector',es:'Coleccionista',de:'Sammler',it:'Collezionista',pt:'Colecionador',ru:'Коллекционер',zh:'收藏家',ja:'コレクター'},
-        descs:{fr:'5 stations favorites',en:'5 favorite stations',es:'5 favoritas',de:'5 Favoriten',it:'5 preferiti',pt:'5 favoritos',ru:'5 избранных',zh:'5个收藏',ja:'5つのお気に入り'},
+        descs:{fr:'5 stations favorites',en:'5 favorite stations',es:'5 gasolineras favoritas',de:'5 Favoriten',it:'5 preferiti',pt:'5 favoritos',ru:'5 избранных',zh:'5个收藏',ja:'5つのお気に入り'},
         check:function(){ return gameData.stats.favorites >= 5; }
     },
     {
-        id:'first_share',
-        icon:'📤',
-        xp:15,
+        id:'first_share',icon:'📤',xp:15,
         names:{fr:'Ambassadeur',en:'Ambassador',es:'Embajador',de:'Botschafter',it:'Ambasciatore',pt:'Embaixador',ru:'Посол',zh:'大使',ja:'アンバサダー'},
         descs:{fr:'Partagez pour la première fois',en:'Share for the first time',es:'Comparte por primera vez',de:'Erstes Teilen',it:'Prima condivisione',pt:'Primeira partilha',ru:'Первый шеринг',zh:'第一次分享',ja:'初シェア'},
         check:function(){ return gameData.stats.shares >= 1; }
     },
     {
-        id:'ev_mode',
-        icon:'🔋',
-        xp:20,
+        id:'ev_mode',icon:'🔋',xp:20,
         names:{fr:'Électrique',en:'Electric',es:'Eléctrico',de:'Elektrisch',it:'Elettrico',pt:'Elétrico',ru:'Электро',zh:'电动',ja:'電気'},
-        descs:{fr:'Utilisez le mode véhicule électrique',en:'Use the EV mode',es:'Usa el modo eléctrico',de:'EV-Modus nutzen',it:'Usa la modalità EV',pt:'Use o modo EV',ru:'Режим EV',zh:'使用电动模式',ja:'EVモードを使用'},
+        descs:{fr:'Utilisez le mode véhicule électrique',en:'Use the EV mode',es:'Usa el modo vehículo eléctrico',de:'EV-Modus nutzen',it:'Usa la modalità EV',pt:'Use o modo EV',ru:'Режим EV',zh:'使用电动模式',ja:'EVモードを使用'},
         check:function(){ return gameData.stats.evUsed; }
     },
     {
-        id:'multi_country',
-        icon:'🌍',
-        xp:80,
+        id:'multi_country',icon:'🌍',xp:80,
         names:{fr:'Globe-trotter',en:'Globe-trotter',es:'Trotamundos',de:'Weltreisender',it:'Giramondo',pt:'Viajante',ru:'Путешественник',zh:'环球旅行者',ja:'グローブトロッター'},
-        descs:{fr:'Recherchez dans 2 pays différents',en:'Search in 2 different countries',es:'Busca en 2 países',de:'In 2 Ländern suchen',it:'Cerca in 2 paesi',pt:'Pesquise em 2 países',ru:'Поиск в 2 странах',zh:'在2个国家搜索',ja:'2カ国で検索'},
+        descs:{fr:'Recherchez dans 2 pays différents',en:'Search in 2 different countries',es:'Busca en 2 países diferentes',de:'In 2 Ländern suchen',it:'Cerca in 2 paesi',pt:'Pesquise em 2 países',ru:'Поиск в 2 странах',zh:'在2个国家搜索',ja:'2カ国で検索'},
         check:function(){ return gameData.stats.countries && gameData.stats.countries.length >= 2; }
     },
     {
-        id:'premium_user',
-        icon:'💎',
-        xp:100,
+        id:'premium_user',icon:'💎',xp:100,
         names:{fr:'Supporter',en:'Supporter',es:'Supporter',de:'Unterstützer',it:'Supporter',pt:'Apoiante',ru:'Сторонник',zh:'支持者',ja:'サポーター'},
         descs:{fr:'Passez à Premium',en:'Go Premium',es:'Hazte Premium',de:'Premium werden',it:'Passa a Premium',pt:'Seja Premium',ru:'Станьте Premium',zh:'升级Premium',ja:'Premiumへ'},
         check:function(){ return isPremium(); }
     },
     {
-        id:'night_owl',
-        icon:'🦉',
-        xp:30,
+        id:'night_owl',icon:'🦉',xp:30,
         names:{fr:'Noctambule',en:'Night owl',es:'Noctámbulo',de:'Nachteule',it:'Nottambulo',pt:'Noturno',ru:'Полуночник',zh:'夜猫子',ja:'夜更かし'},
-        descs:{fr:'Utilisez l\'app entre minuit et 5h',en:'Use the app between midnight and 5am',es:'Usa la app de noche',de:'App nachts nutzen',it:'Usa l\'app di notte',pt:'Use a app de noite',ru:'Используйте ночью',zh:'午夜使用',ja:'深夜に使用'},
+        descs:{fr:'Utilisez l\'app entre minuit et 5h',en:'Use the app between midnight and 5am',es:'Usa la app entre medianoche y las 5h',de:'App nachts nutzen',it:'Usa l\'app di notte',pt:'Use a app de noite',ru:'Используйте ночью',zh:'午夜使用',ja:'深夜に使用'},
         check:function(){ return gameData.stats.nightUse; }
     }
 ];
