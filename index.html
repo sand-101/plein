@@ -1453,17 +1453,27 @@ body.ev-mode .amount-particle{background:#30d158}
 }
 .trip-back{
     background:none;border:none;color:#007aff;
-    font-size:15px;font-weight:600;
+    font-size:16px;font-weight:600;
     font-family:-apple-system,sans-serif;
     cursor:pointer;display:flex;align-items:center;gap:4px;
-    padding:8px 0;
+    padding:10px 12px 10px 0;
+    min-width:80px;
+    -webkit-tap-highlight-color:transparent;
 }
+.trip-back:active{opacity:.5}
 .trip-back:active{opacity:.6}
 .trip-page-title{
     font-size:17px;font-weight:700;
     position:absolute;left:50%;transform:translateX(-50%);
 }
-.trip-header-spacer{width:60px}
+.trip-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 0;position:sticky;top:0;
+    background:rgba(10,10,15,.95);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    z-index:2;border-bottom:1px solid rgba(255,255,255,.05);
+    margin-bottom:4px;
+}
 
 /* Sections */
 .trip-section{
@@ -6123,18 +6133,92 @@ function getTripI18n() { return TRIP_I18N[lang] || TRIP_I18N.en; }
 window.openTripPage = function() {
     haptic('medium');
     var page = document.getElementById('tripPage');
-    if (page) {
-        page.classList.add('open');
-        updateTripPageUI();
-        buildConsoPresets();
-    }
+    if (!page) return;
+    
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+    
+    page.classList.add('open');
+    updateTripPageUI();
+    buildConsoPresets();
+    
+    // Scroll to top of trip page
+    page.scrollTop = 0;
 };
 
 window.closeTripPage = function() {
     haptic('light');
     var page = document.getElementById('tripPage');
-    if (page) page.classList.remove('open');
+    if (!page) return;
+    
+    // Restore body scroll
+    document.body.style.overflow = '';
+    
+    page.classList.remove('open');
 };
+// Close trip page with browser back button
+window.addEventListener('popstate', function() {
+    var page = document.getElementById('tripPage');
+    if (page && page.classList.contains('open')) {
+        closeTripPage();
+    }
+});
+
+// Push state when opening trip page (so back button works)
+var origOpenTrip = window.openTripPage;
+window.openTripPage = function() {
+    history.pushState({tripOpen: true}, '');
+    origOpenTrip();
+};
+
+// Swipe right to close
+(function() {
+    var page = document.getElementById('tripPage');
+    if (!page) return;
+    
+    var startX = 0;
+    var startY = 0;
+    var tracking = false;
+    
+    page.addEventListener('touchstart', function(e) {
+        var touch = e.touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+        // Only track if starting from left edge (40px)
+        tracking = startX < 40;
+    }, {passive: true});
+    
+    page.addEventListener('touchmove', function(e) {
+        if (!tracking) return;
+        var touch = e.touches[0];
+        var dx = touch.clientX - startX;
+        var dy = Math.abs(touch.clientY - startY);
+        
+        // Must be more horizontal than vertical
+        if (dx > 20 && dx > dy) {
+            page.style.transform = 'translateX(' + Math.max(0, dx) + 'px)';
+            page.style.transition = 'none';
+        }
+    }, {passive: true});
+    
+    page.addEventListener('touchend', function(e) {
+        if (!tracking) return;
+        tracking = false;
+        
+        var touch = e.changedTouches[0];
+        var dx = touch.clientX - startX;
+        
+        page.style.transition = '';
+        
+        if (dx > 100) {
+            // Swipe enough → close
+            closeTripPage();
+        } else {
+            // Not enough → snap back
+            page.style.transform = '';
+        }
+    }, {passive: true});
+})();
 
 // Build presets
 function buildConsoPresets() {
