@@ -1611,6 +1611,102 @@ body.ev-mode .trip-cost-value{
     margin-top:14px;
 }
 .trip-share-btn:active{transform:scale(.97);background:#3a3a3c}
+/* ===== WIDGET / MINI DASHBOARD ===== */
+.widget-card{
+    padding:16px 18px;
+    background:linear-gradient(145deg,#1c1c1e,#252528);
+    border:1px solid rgba(255,255,255,.04);
+    overflow:hidden;position:relative;
+}
+.widget-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,#ff9500,#ff6723,#30d158);
+}
+body.ev-mode .widget-card::before{
+    background:linear-gradient(90deg,#30d158,#00c853,#007aff);
+}
+
+.widget-header{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:12px;
+}
+.widget-title{font-size:13px;font-weight:600;color:#8e8e93;display:flex;align-items:center;gap:6px}
+.widget-refresh{
+    background:none;border:none;color:#007aff;font-size:12px;
+    font-weight:600;font-family:-apple-system,sans-serif;
+    cursor:pointer;padding:6px 10px;border-radius:8px;
+    display:flex;align-items:center;gap:4px;
+}
+.widget-refresh:active{background:rgba(0,122,255,.1)}
+.widget-refresh.spinning .wr-icon{animation:widgetSpin .8s linear}
+@keyframes widgetSpin{to{transform:rotate(360deg)}}
+
+.widget-content{display:flex;gap:10px}
+
+/* Price widget */
+.widget-price-box{
+    flex:1;background:#2c2c2e;border-radius:14px;
+    padding:14px;text-align:center;
+}
+.widget-price-label{font-size:10px;color:#8e8e93;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
+.widget-price-value{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums}
+.widget-price-value.fuel-c{color:#ff9500}
+.widget-price-value.ev-c{color:#30d158}
+.widget-price-unit{font-size:10px;color:#636366;margin-top:2px}
+.widget-price-trend{font-size:11px;font-weight:600;margin-top:4px}
+.widget-price-trend.up{color:#ff3b30}
+.widget-price-trend.down{color:#30d158}
+.widget-price-trend.stable{color:#8e8e93}
+
+/* Station widget */
+.widget-station-box{
+    flex:1.5;background:#2c2c2e;border-radius:14px;
+    padding:14px;position:relative;
+}
+.widget-station-label{font-size:10px;color:#8e8e93;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
+.widget-station-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.widget-station-price{font-size:20px;font-weight:800;margin-top:4px}
+.widget-station-price.fuel-c{color:#ff9500}
+.widget-station-price.ev-c{color:#30d158}
+.widget-station-dist{font-size:11px;color:#636366;margin-top:2px}
+.widget-station-go{
+    position:absolute;bottom:14px;right:14px;
+    padding:6px 12px;border-radius:8px;
+    background:rgba(0,122,255,.12);color:#007aff;
+    font-size:11px;font-weight:600;text-decoration:none;
+    font-family:-apple-system,sans-serif;
+}
+.widget-station-go:active{opacity:.6}
+
+.widget-empty{
+    text-align:center;padding:16px;color:#636366;font-size:12px;line-height:1.5;
+}
+.widget-empty-icon{font-size:28px;margin-bottom:6px}
+
+/* Last fill widget */
+.widget-fill-row{
+    display:flex;align-items:center;gap:10px;
+    margin-top:10px;padding:10px;
+    background:#2c2c2e;border-radius:10px;
+}
+.widget-fill-icon{font-size:20px}
+.widget-fill-info{flex:1;min-width:0}
+.widget-fill-text{font-size:12px;color:#aaa}
+.widget-fill-date{font-size:10px;color:#636366;margin-top:1px}
+.widget-fill-cost{font-size:16px;font-weight:700}
+
+/* Install shortcut prompt */
+.widget-shortcut{
+    margin-top:10px;padding:10px 14px;
+    background:rgba(0,122,255,.06);border-radius:10px;
+    border:1px solid rgba(0,122,255,.1);
+    display:flex;align-items:center;gap:10px;
+    cursor:pointer;
+}
+.widget-shortcut:active{background:rgba(0,122,255,.12)}
+.widget-shortcut-icon{font-size:22px;flex-shrink:0}
+.widget-shortcut-text{font-size:11px;color:#aaa;line-height:1.4}
+.widget-shortcut-text strong{color:#fff}
     </style>
 
 </head>
@@ -1757,6 +1853,29 @@ body.ev-mode .trip-cost-value{
         <div class="vm-actions">
             <button class="vm-btn cancel" onclick="closeVehicleModal()"><span id="vmCancelText">Annuler</span></button>
             <button class="vm-btn save" onclick="saveVehicle()"><span id="vmSaveText">Enregistrer</span></button>
+        </div>
+    </div>
+</div>
+<!-- ===== WIDGET / MINI DASHBOARD ===== -->
+<div class="card widget-card" id="widgetCard">
+    <div class="widget-header">
+        <span class="widget-title" id="widgetTitle">📊 Dashboard</span>
+        <button class="widget-refresh" id="widgetRefresh" onclick="refreshWidget()">
+            <span class="wr-icon">🔄</span>
+            <span id="widgetRefreshText">Actualiser</span>
+        </button>
+    </div>
+    <div class="widget-content" id="widgetContent">
+        <div class="widget-empty" id="widgetEmpty">
+            <div class="widget-empty-icon">📍</div>
+            <span id="widgetEmptyText">Recherchez des stations pour activer le dashboard</span>
+        </div>
+    </div>
+    <div id="widgetFillRow"></div>
+    <div class="widget-shortcut" id="widgetShortcut" onclick="showShortcutGuide()" style="display:none">
+        <span class="widget-shortcut-icon">📲</span>
+        <div class="widget-shortcut-text" id="widgetShortcutText">
+            <strong>Astuce :</strong> Créez un raccourci Siri pour voir le dashboard directement sur votre écran d'accueil
         </div>
     </div>
 </div>
@@ -2777,6 +2896,7 @@ function rebuildAll() {
 	try { updateBadgesUI(); } catch(e) {}
 	try { updateVehiclesUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
+	try { updateWidgetUI(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -3295,6 +3415,8 @@ function renderStations() {
 
     list.classList.remove('hidden');
     updateMapMarkers(filtered.slice(0, 20));
+	// Update widget with station data
+    try { saveWidgetData(); } catch(e) {}
 }
 
 // ==================== USE STATION PRICE ====================
@@ -3423,6 +3545,7 @@ function init() {
     }
 	// Onboarding
     try { showOnboarding(); } catch(e) {}
+	try { updateWidgetUI(); } catch(e) {}
 }
 
 // ==================== PREMIUM SYSTEM ====================
@@ -4227,6 +4350,7 @@ window.setMode = function(mode) {
 	try { updateBadgesUI(); } catch(e) {}
 	try { updateVehiclesUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
+	try { updateWidgetUI(); } catch(e) {}
 };
 
 // ==================== EV BATTERY ====================
@@ -6447,6 +6571,207 @@ if (tripDistInput) {
         setTimeout(function() { tripDistInput.scrollIntoView({behavior:'smooth', block:'center'}); }, 300);
     });
 }
+// ==================== WIDGET / MINI DASHBOARD ====================
+var widgetData = JSON.parse(localStorage.getItem('widgetData') || '{}');
+
+var WIDGET_I18N = {
+    fr:{title:'📊 Dashboard',refresh:'Actualiser',empty:'Recherchez des stations pour activer le dashboard',avgPrice:'Prix moyen',cheapest:'Moins cher',yourPrice:'Votre prix',goStation:'Y aller →',lastFill:'Dernier plein',lastCharge:'Dernière recharge',ago:'il y a {n}',daysAgo:'{n}j',hoursAgo:'{n}h',shortcutTip:'<strong>Astuce :</strong> Créez un raccourci Siri pour voir le dashboard sur votre écran d\'accueil',shortcutTitle:'Raccourci iOS',shortcutStep1:'1. Ouvrez l\'app "Raccourcis" sur votre iPhone',shortcutStep2:'2. Créez un nouveau raccourci',shortcutStep3:'3. Ajoutez "Ouvrir URL" → easy-refuel.eu',shortcutStep4:'4. Ajoutez au widget sur l\'écran d\'accueil',ok:'OK',up:'▲ En hausse',down:'▼ En baisse',stable:'= Stable',perL:'/L',perKwh:'/kWh',noData:'Pas encore de données'},
+    en:{title:'📊 Dashboard',refresh:'Refresh',empty:'Search for stations to activate the dashboard',avgPrice:'Average price',cheapest:'Cheapest',yourPrice:'Your price',goStation:'Go →',lastFill:'Last fill-up',lastCharge:'Last charge',ago:'{n} ago',daysAgo:'{n}d',hoursAgo:'{n}h',shortcutTip:'<strong>Tip:</strong> Create a Siri Shortcut to see the dashboard on your home screen',shortcutTitle:'iOS Shortcut',shortcutStep1:'1. Open "Shortcuts" app on your iPhone',shortcutStep2:'2. Create a new shortcut',shortcutStep3:'3. Add "Open URL" → easy-refuel.eu',shortcutStep4:'4. Add widget to home screen',ok:'OK',up:'▲ Rising',down:'▼ Falling',stable:'= Stable',perL:'/L',perKwh:'/kWh',noData:'No data yet'},
+    es:{title:'📊 Panel',refresh:'Actualizar',empty:'Busca gasolineras para activar el panel',avgPrice:'Precio medio',cheapest:'Más barato',yourPrice:'Tu precio',goStation:'Ir →',lastFill:'Último repostaje',lastCharge:'Última recarga',ago:'hace {n}',daysAgo:'{n}d',hoursAgo:'{n}h',shortcutTip:'<strong>Consejo:</strong> Crea un atajo Siri para ver el panel en tu pantalla de inicio',shortcutTitle:'Atajo iOS',shortcutStep1:'1. Abre "Atajos" en tu iPhone',shortcutStep2:'2. Crea un nuevo atajo',shortcutStep3:'3. Añade "Abrir URL" → easy-refuel.eu',shortcutStep4:'4. Añade widget a la pantalla de inicio',ok:'OK',up:'▲ Subiendo',down:'▼ Bajando',stable:'= Estable',perL:'/L',perKwh:'/kWh',noData:'Sin datos'},
+    de:{title:'📊 Dashboard',refresh:'Aktualisieren',empty:'Suche Tankstellen um das Dashboard zu aktivieren',avgPrice:'Durchschnittspreis',cheapest:'Am günstigsten',yourPrice:'Dein Preis',goStation:'Route →',lastFill:'Letzte Tankung',lastCharge:'Letzte Ladung',ago:'vor {n}',daysAgo:'{n}T',hoursAgo:'{n}Std',shortcutTip:'<strong>Tipp:</strong> Erstelle einen Siri-Kurzbefehl für das Dashboard auf dem Startbildschirm',shortcutTitle:'iOS Kurzbefehl',shortcutStep1:'1. Öffne "Kurzbefehle" auf dem iPhone',shortcutStep2:'2. Neuen Kurzbefehl erstellen',shortcutStep3:'3. "URL öffnen" → easy-refuel.eu hinzufügen',shortcutStep4:'4. Widget zum Startbildschirm hinzufügen',ok:'OK',up:'▲ Steigend',down:'▼ Fallend',stable:'= Stabil',perL:'/L',perKwh:'/kWh',noData:'Keine Daten'},
+    it:{title:'📊 Dashboard',refresh:'Aggiorna',empty:'Cerca stazioni per attivare il dashboard',avgPrice:'Prezzo medio',cheapest:'Più economico',yourPrice:'Il tuo prezzo',goStation:'Vai →',lastFill:'Ultimo pieno',lastCharge:'Ultima ricarica',ago:'{n} fa',daysAgo:'{n}g',hoursAgo:'{n}h',shortcutTip:'<strong>Suggerimento:</strong> Crea un collegamento Siri per il dashboard',ok:'OK',up:'▲ In salita',down:'▼ In calo',stable:'= Stabile',perL:'/L',perKwh:'/kWh',noData:'Nessun dato'},
+    pt:{title:'📊 Painel',refresh:'Atualizar',empty:'Pesquise postos para ativar o painel',avgPrice:'Preço médio',cheapest:'Mais barato',yourPrice:'Seu preço',goStation:'Ir →',lastFill:'Último abastecimento',lastCharge:'Última carga',ago:'há {n}',daysAgo:'{n}d',hoursAgo:'{n}h',shortcutTip:'<strong>Dica:</strong> Crie um atalho Siri para o painel',ok:'OK',up:'▲ Subindo',down:'▼ Descendo',stable:'= Estável',perL:'/L',perKwh:'/kWh',noData:'Sem dados'},
+    ru:{title:'📊 Панель',refresh:'Обновить',empty:'Найдите АЗС для активации панели',avgPrice:'Средняя цена',cheapest:'Дешевле всех',yourPrice:'Ваша цена',goStation:'Маршрут →',lastFill:'Последняя заправка',lastCharge:'Последняя зарядка',ago:'{n} назад',daysAgo:'{n}д',hoursAgo:'{n}ч',shortcutTip:'<strong>Совет:</strong> Создайте ярлык Siri',ok:'OK',up:'▲ Рост',down:'▼ Падение',stable:'= Стабильно',perL:'/л',perKwh:'/кВт·ч',noData:'Нет данных'},
+    zh:{title:'📊 仪表盘',refresh:'刷新',empty:'搜索站点以激活仪表盘',avgPrice:'平均价格',cheapest:'最便宜',yourPrice:'您的价格',goStation:'导航 →',lastFill:'上次加油',lastCharge:'上次充电',ago:'{n}前',daysAgo:'{n}天',hoursAgo:'{n}小时',shortcutTip:'<strong>提示:</strong>创建Siri快捷方式',ok:'好',up:'▲ 上涨',down:'▼ 下跌',stable:'= 稳定',perL:'/L',perKwh:'/kWh',noData:'暂无数据'},
+    ja:{title:'📊 ダッシュボード',refresh:'更新',empty:'GSを検索してダッシュボードを有効にする',avgPrice:'平均価格',cheapest:'最安',yourPrice:'あなたの価格',goStation:'ナビ →',lastFill:'前回の給油',lastCharge:'前回の充電',ago:'{n}前',daysAgo:'{n}日',hoursAgo:'{n}時間',shortcutTip:'<strong>ヒント:</strong>Siriショートカットを作成',ok:'OK',up:'▲ 上昇',down:'▼ 下落',stable:'= 安定',perL:'/L',perKwh:'/kWh',noData:'データなし'}
+};
+
+function getWidgetI18n() { return WIDGET_I18N[lang] || WIDGET_I18N.en; }
+
+function timeAgo(dateStr) {
+    var wi = getWidgetI18n();
+    var now = new Date();
+    var then = new Date(dateStr);
+    var diffMs = now - then;
+    var diffH = Math.floor(diffMs / 3600000);
+    var diffD = Math.floor(diffMs / 86400000);
+    if (diffD > 0) return wi.ago.replace('{n}', wi.daysAgo.replace('{n}', diffD));
+    if (diffH > 0) return wi.ago.replace('{n}', wi.hoursAgo.replace('{n}', diffH));
+    return wi.ago.replace('{n}', '< 1h');
+}
+
+function updateWidgetUI() {
+    var wi = getWidgetI18n();
+    var isEv = appMode === 'ev';
+
+    var title = document.getElementById('widgetTitle');
+    if (title) title.textContent = wi.title;
+    var refreshText = document.getElementById('widgetRefreshText');
+    if (refreshText) refreshText.textContent = wi.refresh;
+
+    var content = document.getElementById('widgetContent');
+    var emptyEl = document.getElementById('widgetEmpty');
+    var emptyText = document.getElementById('widgetEmptyText');
+
+    // Check if we have station data
+    var hasStations = stationsData && stationsData.length > 0;
+    var hasFillHistory = fillHistory && fillHistory.length > 0;
+
+    if (!hasStations && !widgetData.cheapest) {
+        // Show empty state
+        if (content) content.innerHTML = '<div class="widget-empty"><div class="widget-empty-icon">📍</div><span>' + wi.empty + '</span></div>';
+    } else {
+        // Build widget with data
+        var cheapest = widgetData.cheapest || null;
+        var avgPrice = widgetData.avgPrice || 0;
+        var currentPrice = isEv ? evPrice : prc;
+        var unit = isEv ? wi.perKwh : wi.perL;
+        var priceClass = isEv ? 'ev-c' : 'fuel-c';
+
+        var html = '';
+
+        // Average price box
+        html += '<div class="widget-price-box">';
+        html += '<div class="widget-price-label">' + wi.yourPrice + '</div>';
+        html += '<div class="widget-price-value ' + priceClass + '">' + (isEv ? currentPrice.toFixed(2) : fmtPS(currentPrice)) + '</div>';
+        html += '<div class="widget-price-unit">' + C.symbol + unit + '</div>';
+        if (avgPrice > 0) {
+            var diff = currentPrice - avgPrice;
+            var trendClass = diff > 0.01 ? 'up' : diff < -0.01 ? 'down' : 'stable';
+            var trendText = diff > 0.01 ? wi.up : diff < -0.01 ? wi.down : wi.stable;
+            html += '<div class="widget-price-trend ' + trendClass + '">' + trendText + '</div>';
+        }
+        html += '</div>';
+
+        // Cheapest station box
+        if (cheapest) {
+            html += '<div class="widget-station-box">';
+            html += '<div class="widget-station-label">' + wi.cheapest + '</div>';
+            html += '<div class="widget-station-name">' + escH(cheapest.name) + '</div>';
+            html += '<div class="widget-station-price ' + priceClass + '">' + (cheapest.price ? fmtPS(cheapest.price) + ' ' + C.symbol : '—') + '</div>';
+            if (cheapest.dist) {
+                html += '<div class="widget-station-dist">📍 ' + (cheapest.dist < 1 ? (cheapest.dist * 1000).toFixed(0) + ' m' : cheapest.dist.toFixed(1) + ' km') + '</div>';
+            }
+            if (cheapest.lat && cheapest.lon) {
+                html += '<a class="widget-station-go" href="https://maps.apple.com/?daddr=' + cheapest.lat + ',' + cheapest.lon + '&dirflg=d">' + wi.goStation + '</a>';
+            }
+            html += '</div>';
+        }
+
+        if (content) content.innerHTML = html;
+    }
+
+    // Last fill row
+    var fillRow = document.getElementById('widgetFillRow');
+    if (fillRow) {
+        var modeHistory = fillHistory.filter(function(f) { return f.mode === appMode; });
+        if (modeHistory.length > 0) {
+            var last = modeHistory[0];
+            var fillLabel = isEv ? wi.lastCharge : wi.lastFill;
+            fillRow.innerHTML = '<div class="widget-fill-row">' +
+                '<span class="widget-fill-icon">' + (isEv ? '🔋' : '⛽') + '</span>' +
+                '<div class="widget-fill-info">' +
+                    '<div class="widget-fill-text">' + fillLabel + '</div>' +
+                    '<div class="widget-fill-date">' + timeAgo(last.date) + '</div>' +
+                '</div>' +
+                '<div class="widget-fill-cost">' + fmtCur(last.totalCost) + '</div>' +
+            '</div>';
+        } else {
+            fillRow.innerHTML = '';
+        }
+    }
+
+    // Shortcut tip (show on iOS)
+    var shortcut = document.getElementById('widgetShortcut');
+    if (shortcut) {
+        var isIos = /iPhone|iPad/.test(navigator.userAgent);
+        var dismissed = localStorage.getItem('shortcut_tip_dismissed');
+        if (isIos && !dismissed) {
+            shortcut.style.display = 'flex';
+            var shortcutText = document.getElementById('widgetShortcutText');
+            if (shortcutText) shortcutText.innerHTML = wi.shortcutTip;
+        } else {
+            shortcut.style.display = 'none';
+        }
+    }
+}
+
+// Save widget data when stations are found
+function saveWidgetData() {
+    if (!stationsData || !stationsData.length) return;
+
+    var isEv = appMode === 'ev';
+
+    // Find cheapest
+    var cheapestStation = null;
+    var cheapestPrice = Infinity;
+    stationsData.forEach(function(s) {
+        var prices = Object.values(s.fuels).map(function(f) { return f.price; }).filter(function(p) { return p && p > 0; });
+        if (prices.length) {
+            var minP = Math.min.apply(null, prices);
+            if (minP < cheapestPrice) {
+                cheapestPrice = minP;
+                cheapestStation = {
+                    name: s.name,
+                    price: minP,
+                    dist: s.dist,
+                    lat: s.lat,
+                    lon: s.lon
+                };
+            }
+        }
+    });
+
+    // Calculate average
+    var allPrices = [];
+    stationsData.forEach(function(s) {
+        Object.values(s.fuels).forEach(function(f) {
+            if (f.price && f.price > 0) allPrices.push(f.price);
+        });
+    });
+    var avg = allPrices.length ? allPrices.reduce(function(a, b) { return a + b; }, 0) / allPrices.length : 0;
+
+    widgetData = {
+        cheapest: cheapestStation,
+        avgPrice: avg,
+        lastUpdate: new Date().toISOString(),
+        mode: appMode
+    };
+    localStorage.setItem('widgetData', JSON.stringify(widgetData));
+    updateWidgetUI();
+}
+
+// Refresh widget = search stations
+window.refreshWidget = function() {
+    haptic('medium');
+    var btn = document.getElementById('widgetRefresh');
+    if (btn) btn.classList.add('spinning');
+    setTimeout(function() {
+        if (btn) btn.classList.remove('spinning');
+    }, 800);
+
+    // Trigger station search
+    var locateBtn = document.getElementById('locateBtn');
+    if (locateBtn) locateBtn.click();
+};
+
+// Shortcut guide
+window.showShortcutGuide = function() {
+    var wi = getWidgetI18n();
+    haptic('light');
+
+    var msg = wi.shortcutTitle + '\n\n' +
+        (wi.shortcutStep1 || '') + '\n' +
+        (wi.shortcutStep2 || '') + '\n' +
+        (wi.shortcutStep3 || '') + '\n' +
+        (wi.shortcutStep4 || '');
+
+    alert(msg);
+
+    localStorage.setItem('shortcut_tip_dismissed', '1');
+    var shortcut = document.getElementById('widgetShortcut');
+    if (shortcut) shortcut.style.display = 'none';
+};
 window.addEventListener('load', init);
 // Register Service Worker
 if ('serviceWorker' in navigator) {
