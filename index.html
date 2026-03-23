@@ -5505,6 +5505,34 @@ function buildObVehicles() {
     var oi = getObI18n();
     w.innerHTML = '';
 
+    // Fuel vehicles translated
+    var fuelVehicleNames = {
+        fr:['Citadine','Compacte','Berline','SUV','Utilitaire'],
+        en:['City car','Compact','Sedan','SUV','Van'],
+        es:['Utilitario','Compacto','Berlina','SUV','Furgoneta'],
+        de:['Kleinwagen','Kompakt','Limousine','SUV','Transporter'],
+        it:['Utilitaria','Compatta','Berlina','SUV','Furgone'],
+        pt:['Citadino','Compacto','Sedan','SUV','Furgão'],
+        ru:['Малолитражка','Компакт','Седан','Кроссовер','Фургон'],
+        zh:['小型车','紧凑型','轿车','SUV','面包车'],
+        ja:['軽自動車','コンパクト','セダン','SUV','バン']
+    };
+
+    var evVehicleNames = {
+        fr:['Dacia Spring','Renault Zoé','Tesla Model 3','Tesla Model Y','VW ID.4'],
+        en:['Dacia Spring','Renault Zoé','Tesla Model 3','Tesla Model Y','VW ID.4'],
+        es:['Dacia Spring','Renault Zoé','Tesla Model 3','Tesla Model Y','VW ID.4'],
+        de:['Dacia Spring','Renault Zoé','Tesla Model 3','Tesla Model Y','VW ID.4'],
+        it:['Dacia Spring','Renault Zoé','Tesla Model 3','Tesla Model Y','VW ID.4'],
+        pt:['Dacia Spring','Renault Zoé','Tesla Model 3','Tesla Model Y','VW ID.4'],
+        ru:['Dacia Spring','Renault Zoé','Tesla Model 3','Tesla Model Y','VW ID.4'],
+        zh:['Dacia Spring','Renault Zoé','Tesla Model 3','Tesla Model Y','VW ID.4'],
+        ja:['Dacia Spring','Renault Zoé','Tesla Model 3','Tesla Model Y','VW ID.4']
+    };
+
+    var fuelNames = fuelVehicleNames[lang] || fuelVehicleNames.en;
+    var evNames = evVehicleNames[lang] || evVehicleNames.en;
+
     // Fuel section header
     var fuelLabel = document.createElement('div');
     fuelLabel.style.cssText = 'width:100%;font-size:11px;color:#8e8e93;font-weight:600;margin-top:4px';
@@ -5512,22 +5540,19 @@ function buildObVehicles() {
     w.appendChild(fuelLabel);
 
     // Fuel vehicles
-    var fuelVehicles = [
-        {name:'Citadine', tank:35, type:'fuel'},
-        {name:'Compacte', tank:42, type:'fuel'},
-        {name:'Berline', tank:50, type:'fuel'},
-        {name:'SUV', tank:60, type:'fuel'},
-        {name:'Utilitaire', tank:80, type:'fuel'}
-    ];
-    fuelVehicles.forEach(function(v) {
+    var fuelTanks = [35, 42, 50, 60, 80];
+    fuelNames.forEach(function(name, i) {
+        var t = fuelTanks[i];
         var btn = document.createElement('button');
-        btn.className = 'ob-vehicle' + (tank === v.tank ? ' on' : '');
-        btn.textContent = v.name + ' · ' + v.tank + 'L';
+        btn.className = 'ob-vehicle' + (tank === t ? ' on' : '');
+        btn.textContent = name + ' · ' + t + 'L';
         btn.addEventListener('click', function() {
             haptic('medium');
-            tank = v.tank;
+            tank = t;
             save();
-            w.querySelectorAll('.ob-vehicle').forEach(function(b) { b.classList.remove('on','ev-on'); });
+            w.querySelectorAll('.ob-vehicle').forEach(function(b) {
+                b.classList.remove('on', 'ev-on');
+            });
             btn.classList.add('on');
             setMode('fuel');
         });
@@ -5541,22 +5566,19 @@ function buildObVehicles() {
     w.appendChild(evLabel);
 
     // EV vehicles
-    var evVehicles = [
-        {name:'Dacia Spring', kWh:27},
-        {name:'Renault Zoé', kWh:52},
-        {name:'Tesla Model 3', kWh:60},
-        {name:'Tesla Model Y', kWh:75},
-        {name:'VW ID.4', kWh:77}
-    ];
-    evVehicles.forEach(function(v) {
+    var evBatts = [27, 52, 60, 75, 77];
+    evNames.forEach(function(name, i) {
+        var kWh = evBatts[i];
         var btn = document.createElement('button');
-        btn.className = 'ob-vehicle' + (evBatt === v.kWh ? ' ev-on' : '');
-        btn.textContent = v.name + ' · ' + v.kWh + 'kWh';
+        btn.className = 'ob-vehicle' + (evBatt === kWh ? ' ev-on' : '');
+        btn.textContent = name + ' · ' + kWh + 'kWh';
         btn.addEventListener('click', function() {
             haptic('medium');
-            evBatt = v.kWh;
+            evBatt = kWh;
             localStorage.setItem('evBatt', evBatt);
-            w.querySelectorAll('.ob-vehicle').forEach(function(b) { b.classList.remove('on','ev-on'); });
+            w.querySelectorAll('.ob-vehicle').forEach(function(b) {
+                b.classList.remove('on', 'ev-on');
+            });
             btn.classList.add('ev-on');
             setMode('ev');
         });
