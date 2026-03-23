@@ -3255,44 +3255,72 @@ function renderStations() {
     const cheapestPrice = getBestPrice(filtered[0]);
     const litersToAdd = tank - (lvl/100) * tank;
 
-    list.innerHTML = filtered.slice(0, 20).map((s, i) => {
-        const price = getBestPrice(s);
-        const isCheapest = i === 0 && price !== null;
-        const extraCost = (price && cheapestPrice && !isCheapest)
+    list.innerHTML = filtered.slice(0, 20).map(function(s, i) {
+        var price = getBestPrice(s);
+        var isCheapest = i === 0 && price !== null;
+        var extraCost = (price && cheapestPrice && !isCheapest)
             ? (price - cheapestPrice) * litersToAdd : 0;
-        const fuelLabel = getMainFuelName(s);
-        const distTxt = s.dist < 1
+        var fuelLabel = getMainFuelName(s);
+        var distTxt = s.dist < 1
             ? (s.dist * 1000).toFixed(0) + ' m'
             : s.dist.toFixed(1) + ' km';
 
-        return `
-        <div class="station-item${isCheapest?' cheapest':''}"
-             onclick="useStationPrice(${price})">
-            '<div class="station-rank">' + (i + 1) + '</div>' +
-'<button class="fav-btn ' + (isFavorite(s.id) ? 'is-fav' : '') + '" onclick="event.stopPropagation();toggleFavorite(\'' + s.id + '\',\'' + escH(s.name).replace(/'/g, "\\'") + '\',\'' + escH(s.addr).replace(/'/g, "\\'") + '\',\'' + escH(s.city).replace(/'/g, "\\'") + '\',' + s.lat + ',' + s.lon + ')">' + (isFavorite(s.id) ? '⭐' : '☆') + '</button>' +
-            <div class="station-info">
-                <div class="station-name">${escH(s.name)}</div>
-                <div class="station-addr">${escH(s.addr)}${s.cp?', '+escH(s.cp):''}${s.city?' '+escH(s.city):''}</div>
-                <div class="station-dist">📍 ${distTxt}${fuelLabel?' — '+fuelLabel:''}</div>
-                ${isCheapest ? '<span class="use-price-tag">'+TL.cheapest+'</span>' : ''}
-            </div>
-            <div class="station-price-box">
-                ${price !== null
-                    ? `<div class="station-price">${fmtPS(price)}</div>
-                       <div class="station-price-unit">${C.symbol}${TL.perLiterLabel}</div>`
-                    : `<div class="station-price" style="font-size:12px;color:#636366">${TL.noPriceAvail}</div>`
-                }
-                ${extraCost > 0.01
-                    ? '<div class="station-savings" style="color:#ff6961">+ '+fmtCur(extraCost)+'</div>'
-                    : ''
-                }
-            </div>
-            <a href="https://maps.apple.com/?daddr=${s.lat},${s.lon}&dirflg=d"
-               onclick="event.stopPropagation()"
-               style="position:absolute;bottom:8px;right:14px;font-size:11px;color:#007aff;text-decoration:none;font-weight:600">
-               ${TL.navigate} →
-            </a>
-        </div>`;
+        var favClass = isFavorite(s.id) ? 'is-fav' : '';
+        var favIcon = isFavorite(s.id) ? '⭐' : '☆';
+        var safeName = (s.name || '').replace(/'/g, '');
+        var safeAddr = (s.addr || '').replace(/'/g, '');
+        var safeCity = (s.city || '').replace(/'/g, '');
+
+        var html = '<div class="station-item' + (isCheapest ? ' cheapest' : '') + '"';
+        html += ' onclick="useStationPrice(' + price + ')">';
+
+        // Rank
+        html += '<div class="station-rank">' + (i + 1) + '</div>';
+
+        // Fav button
+        html += '<button class="fav-btn ' + favClass + '"';
+        html += ' onclick="event.stopPropagation();toggleFavorite(';
+        html += "'" + s.id + "',";
+        html += "'" + safeName + "',";
+        html += "'" + safeAddr + "',";
+        html += "'" + safeCity + "',";
+        html += s.lat + ',' + s.lon + ')">';
+        html += favIcon + '</button>';
+
+        // Info
+        html += '<div class="station-info">';
+        html += '<div class="station-name">' + escH(s.name) + '</div>';
+        html += '<div class="station-addr">' + escH(s.addr);
+        if (s.cp) html += ', ' + escH(s.cp);
+        if (s.city) html += ' ' + escH(s.city);
+        html += '</div>';
+        html += '<div class="station-dist">📍 ' + distTxt;
+        if (fuelLabel) html += ' — ' + fuelLabel;
+        html += '</div>';
+        if (isCheapest) html += '<span class="use-price-tag">' + TL.cheapest + '</span>';
+        html += '</div>';
+
+        // Price
+        html += '<div class="station-price-box">';
+        if (price !== null) {
+            html += '<div class="station-price">' + fmtPS(price) + '</div>';
+            html += '<div class="station-price-unit">' + C.symbol + TL.perLiterLabel + '</div>';
+        } else {
+            html += '<div class="station-price" style="font-size:12px;color:#636366">' + TL.noPriceAvail + '</div>';
+        }
+        if (extraCost > 0.01) {
+            html += '<div class="station-savings" style="color:#ff6961">+ ' + fmtCur(extraCost) + '</div>';
+        }
+        html += '</div>';
+
+        // Navigate link
+        html += '<a href="https://maps.apple.com/?daddr=' + s.lat + ',' + s.lon + '&dirflg=d"';
+        html += ' onclick="event.stopPropagation()"';
+        html += ' style="position:absolute;bottom:8px;right:14px;font-size:11px;color:#007aff;text-decoration:none;font-weight:600">';
+        html += TL.navigate + ' →</a>';
+
+        html += '</div>';
+        return html;
     }).join('');
 
     list.classList.remove('hidden');
