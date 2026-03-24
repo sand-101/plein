@@ -20,6 +20,32 @@
         crossorigin="anonymous">
     </script>
 	<link rel="manifest" href="manifest.json">
+	<!-- Google Analytics 4 — Respecte le consentement cookies -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HX2B66VDCE"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    
+    // Default: deny analytics until consent
+    gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied'
+    });
+    
+    gtag('js', new Date());
+    gtag('config', 'G-HX2B66VDCE', {
+        send_page_view: true
+    });
+    
+    // Check if already consented
+    if (localStorage.getItem('cookie_consent') === 'accepted') {
+        gtag('consent', 'update', {
+            'analytics_storage': 'granted',
+            'ad_storage': 'granted'
+        });
+    }
+</script>
+
     <style>
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
         html{height:100%}
@@ -1915,6 +1941,41 @@ body.ev-mode .trip-cost-value{
         <span class="ptr-arrow" id="ptrArrow">↓</span>
     </div>
 </div>
+<!-- COOKIE BANNER -->
+<div id="cookieBanner" style="
+    display:none;position:fixed;bottom:0;left:0;right:0;
+    background:rgba(28,28,30,.97);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    border-top:1px solid #3a3a3c;
+    padding:16px 20px env(safe-area-inset-bottom);
+    z-index:9999;
+    animation:cookieSlide .3s ease;
+    font-family:-apple-system,sans-serif;">
+    <div style="max-width:420px;margin:0 auto">
+        <p style="font-size:13px;color:#ccc;line-height:1.5;margin-bottom:12px">
+            🍪 <span id="cookieText">Cette app utilise des cookies (Google Analytics & AdSense) pour améliorer votre expérience et financer le service gratuit.</span>
+        </p>
+        <div style="display:flex;gap:8px">
+            <button id="cookieAccept" onclick="acceptCookies()" style="
+                flex:1;padding:12px;border:none;border-radius:10px;
+                background:#30d158;color:#000;font-size:14px;
+                font-weight:600;font-family:-apple-system,sans-serif;
+                cursor:pointer">
+                ✅ Accepter
+            </button>
+            <button id="cookieRefuse" onclick="refuseCookies()" style="
+                flex:1;padding:12px;border:none;border-radius:10px;
+                background:#2c2c2e;color:#aaa;font-size:14px;
+                font-weight:600;font-family:-apple-system,sans-serif;
+                cursor:pointer;border:1px solid #3a3a3c">
+                Refuser
+            </button>
+        </div>
+    </div>
+</div>
+<style>
+    @keyframes cookieSlide{from{transform:translateY(100%)}to{transform:translateY(0)}}
+</style>
 <!-- ===== ONBOARDING ===== -->
 <div class="onboarding-overlay" id="onboarding">
     <div class="ob-container">
@@ -2148,8 +2209,12 @@ body.ev-mode .trip-cost-value{
             <div class="premium-feat"><span class="ck">✓</span><span id="pf4"></span></div>
         </div>
         <div class="premium-plans">
-            <a class="plan-btn" id="plM" href="#" target="_blank"></a>
-            <a class="plan-btn pop" id="plA" href="#" target="_blank"></a>
+            <a class="plan-btn" id="plM" href="#" target="_blank"
+   onclick="trackEvent('premium_click',{plan:'monthly'})">
+</a>
+            <a class="plan-btn pop" id="plA" href="#" target="_blank"
+   onclick="trackEvent('premium_click',{plan:'annual'})">
+</a>
         </div>
         <div class="prem-manage">
             <a href="#" target="_blank" id="mngLink"></a>
@@ -3054,6 +3119,9 @@ function setLang(code) {
     buildCurBar();
     rebuildAll();
     showToast(TL.toastLang.replace('{n}', TL.name));
+	trackEvent('change_language', {
+        language: code
+    });
 }
 
 function setCurrency(code) {
@@ -3092,6 +3160,7 @@ function rebuildAll() {
 	try { updateVehiclesUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
 	try { updateDriveBtnText(); } catch(e) {}
+	try { updateCookieBannerTexts(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -3478,6 +3547,12 @@ function locateAndFetch() {
                 buildFuelFilter();
 
                 await fetchStations();
+				trackEvent('search_stations', {
+        mode: appMode,
+        country: detectedCountryCode || 'unknown',
+        radius: parseInt(radiusSlider.value),
+        results: stationsData.length
+    });
 				try { trackGameEvent('search', {country: detectedCountryCode}); } catch(e) {}
             } catch(e) {
                 console.error(e);
@@ -3652,6 +3727,10 @@ window.useStationPrice = function(price) {
     save(); calc();
     showToast('✅ ' + TL.usePrice + ' : ' + fmtPS(price) + ' ' + C.symbol);
     document.querySelector('.res-card').scrollIntoView({behavior:'smooth', block:'center'});
+	trackEvent('use_station_price', {
+        price: price,
+        mode: appMode
+    });
 };
 
 // ==================== MAP ====================
@@ -3768,6 +3847,23 @@ function init() {
     }
 	// Onboarding
     try { showOnboarding(); } catch(e) {}
+	// Analytics user properties
+    try {
+        if (typeof gtag === 'function') {
+            gtag('set', 'user_properties', {
+                app_mode: appMode,
+                language: lang,
+                currency: cur,
+                is_premium: isPremium() ? 'yes' : 'no',
+                vehicle_count: myVehicles.length,
+                favorites_count: favorites.length,
+                fill_history_count: fillHistory.length,
+                level: getLevel().level
+            });
+        }
+    } catch(e) {}
+	// Cookie consent
+    try { checkCookieConsent(); } catch(e) {}
 
 }
 
@@ -3816,6 +3912,9 @@ function checkStripeReturn() {
         window.history.replaceState({}, '', window.location.pathname);
 
         showToast('🎉 Premium activé !');
+		trackEvent('premium_activated', {
+        plan: type
+    });
     }
 }
 
@@ -4599,6 +4698,9 @@ window.setMode = function(mode) {
 	try { updateVehiclesUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
 	try { updateDriveBtnText(); } catch(e) {}
+	trackEvent('switch_mode', {
+        mode: mode
+    });
 };
 
 // ==================== EV BATTERY ====================
@@ -5014,6 +5116,13 @@ window.saveCurrentFill = function() {
 
     updateHistoryUI();
     showToast('💾 ' + (appMode === 'ev' ? hi.saveEv : hi.save) + ' ✅');
+	trackEvent('save_fill', {
+        mode: appMode,
+        cost: entry.totalCost,
+        currency: C.symbol,
+        amount: entry.amount,
+        unit: entry.unit
+    });
 	try { trackGameEvent('fill'); } catch(e) {}
 };
 
@@ -5248,6 +5357,10 @@ window.shareResult = function() {
         if (methods) {
             methods.style.display = methods.style.display === 'none' ? 'flex' : 'none';
         }
+		trackEvent('share', {
+        mode: appMode,
+        method: navigator.share ? 'native' : 'fallback'
+    });
 		try { trackGameEvent('share'); } catch(e) {}
     }
 };
@@ -5280,6 +5393,10 @@ window.shareVia = function(platform) {
             });
             break;
     }
+	trackEvent('share_via', {
+        platform: platform,
+        mode: appMode
+    });
 };
 // ==================== FAVORIS STATIONS ====================
 var favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
@@ -5323,6 +5440,10 @@ window.toggleFavorite = function(stationId, stationName, stationAddr, stationCit
             mode: appMode,
             date: new Date().toISOString()
         });
+		trackEvent('add_favorite', {
+        station_name: stationName,
+        mode: appMode
+    });
 		try { trackGameEvent('favorite'); } catch(e) {}
         if (favorites.length > 50) favorites.pop();
         showToast('⭐ ' + fi.added);
@@ -5545,6 +5666,7 @@ window.downloadQR = function() {
     link.href = canvas.toDataURL('image/png');
     link.click();
     showToast('💾 QR Code ' + getQrI18n().downloaded);
+	trackEvent('qr_download');
 };
 
 var QR_I18N = {
@@ -5772,6 +5894,10 @@ function showBadgeToast(badge) {
     setTimeout(function() {
         if (toast) toast.classList.remove('show');
     }, 4000);
+	trackEvent('badge_unlocked', {
+        badge_id: badge.id,
+        badge_name: badge.names.en
+    });
 }
 
 window.closeBadgeToast = function() {
@@ -6209,6 +6335,9 @@ function closeOnboarding() {
 
     // Rebuild with chosen vehicle
     try { rebuildAll(); } catch(e) {}
+	trackEvent('onboarding_complete', {
+        step: obStep
+    });
 }
 // ==================== MULTI-VÉHICULES ====================
 var myVehicles = JSON.parse(localStorage.getItem('myVehicles') || '[]');
@@ -6388,6 +6517,10 @@ window.saveVehicle = function() {
     }
 
     showToast(vi.saved);
+	trackEvent('add_vehicle', {
+        type: vmType,
+        capacity: capacity
+    });
 };
 
 window.deleteVehicle = function(vehicleId) {
@@ -6521,6 +6654,7 @@ window.openTripPage = function() {
     
     // Scroll to top of trip page
     page.scrollTop = 0;
+	trackEvent('open_trip_page');
 };
 
 window.closeTripPage = function() {
@@ -6731,6 +6865,11 @@ window.calculateTrip = function() {
     }
 
     if (results) results.scrollIntoView({behavior:'smooth', block:'start'});
+	trackEvent('calculate_trip', {
+        mode: appMode,
+        distance: dist,
+        cost: totalCost
+    });
 };
 
 function setTripResult(ti, dist, costStr, fuelStr, priceStr, statFuel, statFuelL, stops, stopsL, per100) {
@@ -7163,6 +7302,9 @@ window.openDriveMode = function() {
 
     // Start searching
     searchDriveStations();
+	trackEvent('drive_mode', {
+        mode: appMode
+    });
 };
 
 window.closeDriveMode = function() {
@@ -7362,6 +7504,107 @@ function updateDriveBtnText() {
     var di = getDriveI18n();
     var btn = document.getElementById('driveBtnText');
     if (btn) btn.textContent = di.btn;
+}
+// ==================== ANALYTICS ====================
+function trackEvent(eventName, params) {
+    try {
+        if (typeof gtag === 'function') {
+            gtag('event', eventName, params || {});
+        }
+    } catch(e) {}
+}
+// ==================== COOKIE CONSENT ====================
+var COOKIE_I18N = {
+    fr:{text:'Cette app utilise des cookies (Google Analytics & AdSense) pour améliorer votre expérience et financer le service gratuit.',accept:'✅ Accepter',refuse:'Refuser',accepted:'Cookies acceptés',refused:'Cookies refusés — pas de pub ni analytics'},
+    en:{text:'This app uses cookies (Google Analytics & AdSense) to improve your experience and fund the free service.',accept:'✅ Accept',refuse:'Refuse',accepted:'Cookies accepted',refused:'Cookies refused — no ads or analytics'},
+    es:{text:'Esta app usa cookies (Google Analytics y AdSense) para mejorar tu experiencia y financiar el servicio gratuito.',accept:'✅ Aceptar',refuse:'Rechazar',accepted:'Cookies aceptadas',refused:'Cookies rechazadas — sin anuncios ni analíticas'},
+    de:{text:'Diese App verwendet Cookies (Google Analytics & AdSense) zur Verbesserung und Finanzierung des kostenlosen Dienstes.',accept:'✅ Akzeptieren',refuse:'Ablehnen',accepted:'Cookies akzeptiert',refused:'Cookies abgelehnt — keine Werbung oder Analytik'},
+    it:{text:'Questa app usa cookie (Google Analytics e AdSense) per migliorare l\'esperienza e finanziare il servizio gratuito.',accept:'✅ Accetta',refuse:'Rifiuta',accepted:'Cookie accettati',refused:'Cookie rifiutati'},
+    pt:{text:'Esta app usa cookies (Google Analytics e AdSense) para melhorar a experiência e financiar o serviço gratuito.',accept:'✅ Aceitar',refuse:'Recusar',accepted:'Cookies aceites',refused:'Cookies recusados'},
+    ru:{text:'Это приложение использует файлы cookie (Google Analytics и AdSense) для улучшения и финансирования бесплатного сервиса.',accept:'✅ Принять',refuse:'Отклонить',accepted:'Cookies приняты',refused:'Cookies отклонены'},
+    zh:{text:'此应用使用Cookie（Google Analytics和AdSense）来改善体验并资助免费服务。',accept:'✅ 接受',refuse:'拒绝',accepted:'Cookie已接受',refused:'Cookie已拒绝'},
+    ja:{text:'このアプリはCookie（Google AnalyticsとAdSense）を使用して体験を向上させ、無料サービスを提供しています。',accept:'✅ 同意',refuse:'拒否',accepted:'Cookie同意済み',refused:'Cookie拒否済み'}
+};
+
+function checkCookieConsent() {
+    var consent = localStorage.getItem('cookie_consent');
+    
+    if (consent === null) {
+        // Never answered — show banner
+        var banner = document.getElementById('cookieBanner');
+        if (banner) {
+            banner.style.display = 'block';
+            updateCookieBannerTexts();
+        }
+    } else if (consent === 'refused') {
+        disableTracking();
+    } else if (consent === 'accepted') {
+        enableTracking();
+    }
+}
+
+function updateCookieBannerTexts() {
+    var ci = COOKIE_I18N[lang] || COOKIE_I18N.en;
+    
+    var cookieText = document.getElementById('cookieText');
+    if (cookieText) cookieText.textContent = ci.text;
+    var cookieAccept = document.getElementById('cookieAccept');
+    if (cookieAccept) cookieAccept.textContent = ci.accept;
+    var cookieRefuse = document.getElementById('cookieRefuse');
+    if (cookieRefuse) cookieRefuse.textContent = ci.refuse;
+}
+
+window.acceptCookies = function() {
+    haptic('success');
+    localStorage.setItem('cookie_consent', 'accepted');
+    
+    var banner = document.getElementById('cookieBanner');
+    if (banner) banner.style.display = 'none';
+    
+    var ci = COOKIE_I18N[lang] || COOKIE_I18N.en;
+    showToast('✅ ' + ci.accepted);
+    
+    enableTracking();
+};
+
+window.refuseCookies = function() {
+    haptic('light');
+    localStorage.setItem('cookie_consent', 'refused');
+    
+    var banner = document.getElementById('cookieBanner');
+    if (banner) banner.style.display = 'none';
+    
+    var ci = COOKIE_I18N[lang] || COOKIE_I18N.en;
+    showToast('🚫 ' + ci.refused);
+    
+    disableTracking();
+};
+
+function enableTracking() {
+    try {
+        if (typeof gtag === 'function') {
+            gtag('consent', 'update', {
+                'analytics_storage': 'granted',
+                'ad_storage': 'granted'
+            });
+        }
+    } catch(e) {}
+}
+
+function disableTracking() {
+    try {
+        if (typeof gtag === 'function') {
+            gtag('consent', 'update', {
+                'analytics_storage': 'denied',
+                'ad_storage': 'denied'
+            });
+        }
+    } catch(e) {}
+    
+    // Hide ads
+    document.querySelectorAll('.ad-slot').forEach(function(el) {
+        el.style.display = 'none';
+    });
 }
 window.addEventListener('load', init);
 // Register Service Worker
