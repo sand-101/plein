@@ -73,17 +73,19 @@ body.ev-mode ::selection{background:rgba(48,209,88,.3)}
 .app::before{content:'';display:block;height:3px;background:linear-gradient(90deg,#ff9500,#ff6723,#30d158,#007aff,#5856d6);border-radius:2px;margin-bottom:8px;opacity:.7}
 body.ev-mode .app::before{background:linear-gradient(90deg,#30d158,#00c853,#007aff,#5856d6,#30d158)}
 
-/* ===== ANIMATED BACKGROUND ===== */
-.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:5;filter:blur(60px);will-change:transform}
-.bg-orb-1{width:250px;height:250px;top:-80px;right:-30px;background:rgba(255,149,0,.12);animation:orbFloat1 20s ease-in-out infinite}
-.bg-orb-2{width:300px;height:300px;bottom:-80px;left:-60px;background:rgba(88,86,214,.10);animation:orbFloat2 25s ease-in-out infinite}
-.bg-orb-3{width:200px;height:200px;top:40%;left:-40px;background:rgba(0,122,255,.08);animation:orbFloat3 18s ease-in-out infinite}
-body.ev-mode .bg-orb-1{background:rgba(48,209,88,.13)}
-body.ev-mode .bg-orb-2{background:rgba(0,199,190,.10)}
-body.ev-mode .bg-orb-3{background:rgba(48,209,88,.08)}
-body.light-theme .bg-orb-1{background:rgba(255,149,0,.08)}
-body.light-theme .bg-orb-2{background:rgba(88,86,214,.06)}
-body.light-theme .bg-orb-3{background:rgba(0,122,255,.05)}
+/* ===== ANIMATED BACKGROUND — PLUS VISIBLE ===== */
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:5;filter:blur(40px);will-change:transform}
+.bg-orb-1{width:350px;height:350px;top:-100px;right:-50px;background:rgba(255,149,0,.25);animation:orbFloat1 20s ease-in-out infinite}
+.bg-orb-2{width:400px;height:400px;bottom:-100px;left:-80px;background:rgba(88,86,214,.20);animation:orbFloat2 25s ease-in-out infinite}
+.bg-orb-3{width:300px;height:300px;top:40%;left:-50px;background:rgba(0,122,255,.18);animation:orbFloat3 18s ease-in-out infinite}
+
+body.ev-mode .bg-orb-1{background:rgba(48,209,88,.28)}
+body.ev-mode .bg-orb-2{background:rgba(0,199,190,.20)}
+body.ev-mode .bg-orb-3{background:rgba(48,209,88,.18)}
+
+body.light-theme .bg-orb-1{background:rgba(255,149,0,.12)}
+body.light-theme .bg-orb-2{background:rgba(88,86,214,.10)}
+body.light-theme .bg-orb-3{background:rgba(0,122,255,.08)}
 
 @keyframes orbFloat1{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(-30px,50px) scale(1.1)}50%{transform:translate(20px,-20px) scale(.95)}75%{transform:translate(-15px,30px) scale(1.05)}}
 @keyframes orbFloat2{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.12)}66%{transform:translate(-25px,25px) scale(.92)}}
@@ -95,12 +97,12 @@ body.light-theme .bg-orb-3{background:rgba(0,122,255,.05)}
 .bg-star-3{top:70%;left:25%;animation:shoot 14s 9s ease-in-out infinite}
 @keyframes shoot{0%{opacity:0;transform:translate(0,0)}1%{opacity:1}4%{opacity:.6;transform:translate(120px,-40px);box-shadow:-90px 30px 2px rgba(255,255,255,.15),-60px 20px 2px rgba(255,255,255,.25),-30px 10px 2px rgba(255,255,255,.35)}6%{opacity:0;transform:translate(180px,-60px)}100%{opacity:0}}
 
-.bg-pulse{position:fixed;width:400px;height:400px;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,149,0,.04) 0%,transparent 60%);pointer-events:none;z-index:5;animation:pulse 8s ease-in-out infinite}
-body.ev-mode .bg-pulse{background:radial-gradient(circle,rgba(48,209,88,.04) 0%,transparent 60%)}
+.bg-pulse{position:fixed;width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,149,0,.08) 0%,transparent 60%);pointer-events:none;z-index:5;animation:pulse 8s ease-in-out infinite}
+body.ev-mode .bg-pulse{background:radial-gradient(circle,rgba(48,209,88,.08) 0%,transparent 60%)}
 @keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.4}50%{transform:translate(-50%,-50%) scale(1.2);opacity:.8}}
 
 .bg-particles{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:5;overflow:hidden}
-.bg-particle{position:absolute;background:rgba(255,255,255,.3);border-radius:50%;animation:pFloat linear infinite}
+.bg-particle{position:absolute;background:rgba(255,255,255,.4);border-radius:50%;animation:pFloat linear infinite}
 @keyframes pFloat{0%{transform:translateY(100vh);opacity:0}10%{opacity:.8}90%{opacity:.8}100%{transform:translateY(-10vh);opacity:0}}
 
 .bg-grid{position:fixed;top:0;left:0;right:0;bottom:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:5;opacity:.5;mask-image:radial-gradient(ellipse at 50% 30%,black 20%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at 50% 30%,black 20%,transparent 70%)}
