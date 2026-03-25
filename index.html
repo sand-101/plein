@@ -790,6 +790,68 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
 .limit-overlay,.onboarding-overlay{z-index:10001}
 .trip-page{z-index:10002}
 .drive-page{z-index:10003}
+/* ===== ANIMATED NUMBERS ===== */
+.anim-num{
+    display:inline-block;
+    transition:transform .15s ease;
+    font-variant-numeric:tabular-nums;
+}
+.anim-num.tick{
+    animation:numTick .3s ease;
+}
+@keyframes numTick{
+    0%{transform:translateY(0);opacity:1}
+    30%{transform:translateY(-4px);opacity:.7}
+    60%{transform:translateY(2px)}
+    100%{transform:translateY(0);opacity:1}
+}
+
+/* Compteur qui défile vers le haut */
+.anim-num.up{
+    animation:numUp .4s ease;
+}
+@keyframes numUp{
+    0%{transform:translateY(8px);opacity:0}
+    100%{transform:translateY(0);opacity:1}
+}
+
+/* Compteur qui défile vers le bas */
+.anim-num.down{
+    animation:numDown .4s ease;
+}
+@keyframes numDown{
+    0%{transform:translateY(-8px);opacity:0}
+    100%{transform:translateY(0);opacity:1}
+}
+
+/* Pulse pour les gros chiffres */
+.anim-num.pulse{
+    animation:numPulse .3s ease;
+}
+@keyframes numPulse{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.08)}
+    100%{transform:scale(1)}
+}
+
+/* Couleur flash quand ça change */
+.anim-num.flash-green{
+    animation:numFlashGreen .5s ease;
+}
+@keyframes numFlashGreen{
+    0%{color:inherit}
+    30%{color:#30d158}
+    100%{color:inherit}
+}
+
+.anim-num.flash-red{
+    animation:numFlashRed .5s ease;
+}
+@keyframes numFlashRed{
+    0%{color:inherit}
+    30%{color:#ff3b30}
+    100%{color:inherit}
+}
     </style>
 
 </head>
@@ -2121,8 +2183,7 @@ function updateTankUI() {
     var hSub = document.getElementById('hSub');
     if (hSub && appMode !== 'ev') hSub.textContent = TL.sub.replace('{n}', tank);
 
-    var cap = document.getElementById('sCap');
-    if (cap) cap.textContent = tank + ' L';
+    animateNumber('sCap', tank, {suffix:' L'});
 
     var bar = document.getElementById('tankBar');
     if (bar) {
@@ -2214,38 +2275,36 @@ function calc() {
     var cost = add * prc;
     var full = tank * prc;
 
-    // Gauge
+    // Gauge (pas de changement)
     try {
         gFill.style.strokeDashoffset = arcLen - (arcLen * lvl / 100);
         gFill.style.stroke = gColor(lvl);
         needleEl.style.transform = 'rotate(' + (-90 + (lvl / 100) * 180) + 'deg)';
     } catch(e) {}
 
-    var dPct = document.getElementById('dPct');
-    if (dPct) dPct.textContent = lvl;
-
+    // Animated values
+    animateText('dPct', '' + lvl);
+    
     var dLiters = document.getElementById('dLiters');
     if (dLiters) dLiters.textContent = TL.inTank.replace('{n}', fmt(cL));
 
-    // Animated counter fuel
-    var newFuelAmount = cost;
-    animateCounter('rAmountValue', 'rAmountFlash', 'rAmountDelta', lastFuelAmount, newFuelAmount, 400);
-    lastFuelAmount = newFuelAmount;
+    // Main amount (uses existing animateCounter if available)
+    if (typeof animateCounter === 'function') {
+        animateCounter('rAmountValue', 'rAmountFlash', 'rAmountDelta', lastFuelAmount, cost, 400);
+        lastFuelAmount = cost;
+    } else {
+        animateNumber('rAmount', cost, {format:'currency'});
+    }
 
     var rDetail = document.getElementById('rDetail');
     if (rDetail) rDetail.textContent = fmt(add) + ' L × ' + fmtPS(prc) + ' ' + C.symbol + '/L';
 
-    var sAdd = document.getElementById('sAdd');
-    if (sAdd) sAdd.textContent = fmt(add) + ' L';
+    // Stats with animation
+    animateNumber('sAdd', add, {format:'decimal', decimals:1, suffix:' L'});
+    animateNumber('sCur', cL, {format:'decimal', decimals:1, suffix:' L'});
+    animateNumber('sFull', full, {format:'currency'});
 
-    var sCur = document.getElementById('sCur');
-    if (sCur) sCur.textContent = fmt(cL) + ' L';
-
-    var sFull = document.getElementById('sFull');
-    if (sFull) sFull.textContent = fmtCur(full);
-
-    // ===== ALERT FIX =====
-    // ALERT
+    // Alert
     var alertBox = document.getElementById('alertBox');
     if (alertBox) {
         if (lvl <= 12) {
@@ -2262,7 +2321,12 @@ function calc() {
             b.classList.toggle('on', parseInt(b.dataset.l) === lvl);
         });
     }
-	try { updateShareUI(); } catch(e) {}
+
+    // Slider color
+    try { colorizeSlider(document.getElementById('sLevel'), lvl); } catch(e) {}
+
+    // Share + history
+    try { updateShareUI(); } catch(e) {}
 }
 
 // ==================== STEPPER ====================
@@ -3802,56 +3866,63 @@ function evCalc() {
     var currentKwh = (evLvl / 100) * evBatt;
     var kwhToAdd = evBatt - currentKwh;
     var cost = kwhToAdd * evPrice;
-
-    // Time calculation (minutes)
     var chargeMinutes = (kwhToAdd / evChargePower) * 60;
-
-    // Range calculation
     var matchedVehicle = EV_VEHICLES.find(function(v) { return v.kWh === evBatt; });
     var rangePerKwh = matchedVehicle ? matchedVehicle.range / matchedVehicle.kWh : 6.5;
     var rangeGained = kwhToAdd * rangePerKwh;
-
     var ei = EV_I18N[lang] || EV_I18N.en;
 
-    // Animated counter EV
-    var newEvAmount = cost;
-    animateCounter('evCostValue', 'evCostFlash', 'evCostDelta', lastEvAmount, newEvAmount, 400);
-    lastEvAmount = newEvAmount;
+    // Main amount
+    if (typeof animateCounter === 'function') {
+        animateCounter('evCostValue', 'evCostFlash', 'evCostDelta', lastEvAmount, cost, 400);
+        lastEvAmount = cost;
+    } else {
+        animateNumber('evCost', cost, {format:'currency'});
+    }
 
     var detailEl = document.getElementById('evDetail');
     if (detailEl) detailEl.textContent = kwhToAdd.toFixed(1) + ' kWh × ' + evPrice.toFixed(2).replace('.', C.decSep) + ' ' + C.symbol + '/kWh';
 
-    var kwhAddEl = document.getElementById('evKwhAdd');
-    if (kwhAddEl) kwhAddEl.textContent = kwhToAdd.toFixed(1) + ' kWh';
+    // Animated stats
+    animateNumber('evKwhAdd', kwhToAdd, {format:'decimal', decimals:1, suffix:' kWh'});
 
+    // Time
     var timeEl = document.getElementById('evTimeStat');
     if (timeEl) {
+        var timeText;
         if (chargeMinutes < 60) {
-            timeEl.textContent = Math.round(chargeMinutes) + ' ' + ei.minUnit;
+            timeText = Math.round(chargeMinutes) + ' ' + ei.minUnit;
         } else {
             var h = Math.floor(chargeMinutes / 60);
             var m = Math.round(chargeMinutes % 60);
-            timeEl.textContent = h + ei.hourUnit + ' ' + (m > 0 ? m + ei.minUnit : '');
+            timeText = h + ei.hourUnit + (m > 0 ? ' ' + m + ei.minUnit : '');
         }
+        animateText('evTimeStat', timeText);
     }
 
-    var rangeEl = document.getElementById('evRangeStat');
-    if (rangeEl) rangeEl.textContent = Math.round(rangeGained) + ' ' + ei.kmUnit;
+    // Range
+    animateNumber('evRangeStat', Math.round(rangeGained), {suffix:' ' + ei.kmUnit});
 
+    // Cap
     var capEl = document.getElementById('evCapStat');
     if (capEl) capEl.textContent = evBatt + ' kWh';
 
-    // Update gauge
+    // Gauge
     updateEvGauge();
 
-    // Quick btns highlight
+    // Quick btns
     var qbtns = document.getElementById('evQuickBtns');
     if (qbtns) {
         qbtns.querySelectorAll('.q-btn').forEach(function(b) {
             b.classList.toggle('on', parseInt(b.dataset.l) === evLvl);
         });
     }
-	try { updateShareUI(); } catch(e) {}
+
+    // Slider color
+    try { colorizeEvSlider(document.getElementById('evLevel'), evLvl); } catch(e) {}
+
+    // Share
+    try { updateShareUI(); } catch(e) {}
 }
 
 // ==================== EV TEXTS ====================
@@ -4063,7 +4134,7 @@ function updateHistoryUI() {
     var badge = document.getElementById('historyCount');
     if (badge) badge.textContent = filtered.length;
 
-    // Stats
+    // Stats calculation
     var now = new Date();
     var thisMonth = filtered.filter(function(e) {
         var d = new Date(e.date);
@@ -4072,18 +4143,16 @@ function updateHistoryUI() {
     var monthTotal = thisMonth.reduce(function(s, e) { return s + e.totalCost; }, 0);
     var avgCost = filtered.length ? filtered.reduce(function(s, e) { return s + e.totalCost; }, 0) / filtered.length : 0;
 
-    var hStatTotal = document.getElementById('hStatTotal');
-    if (hStatTotal) hStatTotal.textContent = fmtCur(monthTotal);
+    // Stats with animation
+    animateNumber('hStatTotal', monthTotal, {format:'currency'});
+    animateNumber('hStatAvg', avgCost, {format:'currency'});
+    animateNumber('hStatCount', filtered.length, {});
+
+    // Stats labels
     var hStatTotalL = document.getElementById('hStatTotalL');
     if (hStatTotalL) hStatTotalL.textContent = hi.month;
-
-    var hStatAvg = document.getElementById('hStatAvg');
-    if (hStatAvg) hStatAvg.textContent = fmtCur(avgCost);
     var hStatAvgL = document.getElementById('hStatAvgL');
     if (hStatAvgL) hStatAvgL.textContent = isEv ? hi.avgEv : hi.avg;
-
-    var hStatCount = document.getElementById('hStatCount');
-    if (hStatCount) hStatCount.textContent = filtered.length;
     var hStatCountL = document.getElementById('hStatCountL');
     if (hStatCountL) hStatCountL.textContent = isEv ? hi.countEv : hi.count;
 
@@ -6506,6 +6575,116 @@ function initBgParticles() {
 
         container.appendChild(p);
     }
+}
+// ==================== ANIMATED NUMBERS ====================
+var animNumCache = {};
+
+function animateNumber(elementId, newValue, options) {
+    var el = document.getElementById(elementId);
+    if (!el) return;
+
+    options = options || {};
+    var format = options.format || 'text';
+    var duration = options.duration || 400;
+    var suffix = options.suffix || '';
+    var prefix = options.prefix || '';
+    var decimals = options.decimals !== undefined ? options.decimals : -1;
+    var animate = options.animate !== false;
+
+    var newText;
+    var newNum = parseFloat(newValue);
+
+    // Format the value
+    if (format === 'currency') {
+        newText = fmtCur(newNum);
+    } else if (format === 'decimal' && decimals >= 0) {
+        newText = prefix + newNum.toFixed(decimals).replace('.', C.decSep) + suffix;
+    } else {
+        newText = prefix + newValue + suffix;
+    }
+
+    // Check if value actually changed
+    var cacheKey = elementId;
+    var oldValue = animNumCache[cacheKey];
+
+    if (oldValue === newText) return;
+    animNumCache[cacheKey] = newText;
+
+    // Skip animation on first render
+    if (oldValue === undefined || !animate) {
+        el.textContent = newText;
+        return;
+    }
+
+    var oldNum = parseFloat(oldValue) || 0;
+    var direction = newNum > oldNum ? 'up' : newNum < oldNum ? 'down' : 'none';
+
+    // For countable numbers, animate the count
+    if (!isNaN(newNum) && !isNaN(oldNum) && Math.abs(newNum - oldNum) > 0.001) {
+        var startTime = performance.now();
+        var diff = newNum - oldNum;
+
+        function tick(now) {
+            var elapsed = now - startTime;
+            var progress = Math.min(elapsed / duration, 1);
+
+            // Ease out cubic
+            var ease = 1 - Math.pow(1 - progress, 3);
+            var current = oldNum + diff * ease;
+
+            // Format current value
+            if (format === 'currency') {
+                el.textContent = fmtCur(current);
+            } else if (format === 'decimal' && decimals >= 0) {
+                el.textContent = prefix + current.toFixed(decimals).replace('.', C.decSep) + suffix;
+            } else {
+                el.textContent = prefix + Math.round(current) + suffix;
+            }
+
+            if (progress < 1) {
+                requestAnimationFrame(tick);
+            } else {
+                el.textContent = newText;
+
+                // Add animation class
+                el.classList.remove('tick', 'up', 'down', 'pulse', 'flash-green', 'flash-red');
+                el.classList.add('anim-num');
+
+                if (direction === 'up') {
+                    el.classList.add('flash-green', 'up');
+                } else if (direction === 'down') {
+                    el.classList.add('flash-red', 'down');
+                } else {
+                    el.classList.add('tick');
+                }
+
+                // Clean up
+                setTimeout(function() {
+                    el.classList.remove('tick', 'up', 'down', 'pulse', 'flash-green', 'flash-red');
+                }, 500);
+            }
+        }
+
+        requestAnimationFrame(tick);
+    } else {
+        // Non-numeric change — just tick
+        el.textContent = newText;
+        el.classList.remove('tick', 'up', 'down', 'pulse', 'flash-green', 'flash-red');
+        el.classList.add('anim-num', 'tick');
+        setTimeout(function() {
+            el.classList.remove('tick');
+        }, 300);
+    }
+}
+
+// Simple text change with animation
+function animateText(elementId, newText) {
+    var el = document.getElementById(elementId);
+    if (!el) return;
+    if (el.textContent === newText) return;
+    el.classList.add('anim-num', 'tick');
+    el.textContent = newText;
+    setTimeout(function() { el.classList.remove('tick'); }, 300);
 }
 window.addEventListener('load', init);
 // Register Service Worker
