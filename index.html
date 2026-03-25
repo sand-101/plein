@@ -119,17 +119,74 @@ body.light-theme::after {
     }
 }
 
-/* Glassmorphism cards enhanced */
+/* Cards with better contrast */
 .card {
-    background: rgba(28,28,30,0.75);
+    background: rgba(28,28,30,0.92);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.06);
 }
 
 body.light-theme .card {
-    background: rgba(255,255,255,0.8);
-    border: 1px solid rgba(0,0,0,0.05);
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Premium card — slightly different */
+.premium-card {
+    background: rgba(28,28,30,0.95);
+    border: 1px solid rgba(255,204,0,0.12);
+}
+
+/* Stations card */
+.stations-card {
+    background: rgba(28,28,30,0.95);
+}
+
+/* Result cards — solid for readability */
+.res-card, .ev-res-card {
+    background: rgba(25,25,29,0.95);
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Stat boxes inside cards */
+.stat {
+    background: rgba(44,44,46,0.9);
+}
+
+/* Price row */
+.price-row {
+    background: rgba(44,44,46,0.9);
+}
+
+/* Station items */
+.station-item {
+    background: rgba(44,44,46,0.9);
+}
+
+/* History items */
+.history-item {
+    background: rgba(44,44,46,0.9);
+}
+
+/* FAQ items */
+.faq-item {
+    background: rgba(44,44,46,0.9);
+}
+
+/* Speed buttons */
+.speed-btn {
+    background: rgba(44,44,46,0.5);
+}
+
+/* Quick buttons */
+.q-btn {
+    background: rgba(44,44,46,0.9);
+}
+
+/* Gauge card — darker for contrast */
+.gauge-card, .ev-gauge-card {
+    background: rgba(23,23,26,0.95);
 }
         .app{max-width:420px;margin:0 auto;padding:12px 18px 50px}
         .lang-bar{display:flex;justify-content:center;gap:4px;padding:14px 0 2px;flex-wrap:wrap}
