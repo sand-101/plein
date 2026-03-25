@@ -119,74 +119,297 @@ body.light-theme::after {
     }
 }
 
-/* Cards with better contrast */
+/* ===== CARDS — CONTRASTE OPTIMAL ===== */
+
+/* Base card — fond semi-transparent gris foncé */
 .card {
-    background: rgba(28,28,30,0.92);
+    background: rgba(30,30,35,0.93);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.07);
+}
+
+/* Tous les textes dans les cartes — toujours clairs */
+.card, .card * {
+    color: inherit;
+}
+.card {
+    color: #f0f0f0;
+}
+
+/* Labels gris — plus lumineux */
+.card-label {
+    color: #a0a0a5;
+}
+
+/* Éléments internes des cartes */
+.stat {
+    background: rgba(50,50,55,0.8);
+    color: #f0f0f0;
+}
+.stat-v { color: #ffffff; }
+.stat-l { color: #a0a0a5; }
+
+.price-row {
+    background: rgba(50,50,55,0.8);
+}
+
+.station-item {
+    background: rgba(50,50,55,0.8);
+    color: #f0f0f0;
+}
+.station-name { color: #ffffff; }
+.station-addr { color: #a0a0a5; }
+.station-dist { color: #8e8e93; }
+.station-price { color: #ffffff; }
+
+.history-item {
+    background: rgba(50,50,55,0.8);
+    color: #f0f0f0;
+}
+
+.faq-item {
+    background: rgba(50,50,55,0.8);
+}
+.faq-q { color: #f0f0f0; }
+.faq-a { color: #b0b0b5; }
+
+.q-btn {
+    background: rgba(50,50,55,0.9);
+    color: #f0f0f0;
+}
+
+.speed-btn {
+    background: rgba(50,50,55,0.5);
+    color: #f0f0f0;
+}
+
+/* Gauge cards */
+.gauge-card, .ev-gauge-card {
+    background: rgba(25,25,30,0.95);
+}
+
+/* Result cards */
+.res-card, .ev-res-card {
+    background: rgba(28,28,33,0.95);
     border: 1px solid rgba(255,255,255,0.06);
 }
 
-body.light-theme .card {
-    background: rgba(255,255,255,0.92);
-    border: 1px solid rgba(0,0,0,0.06);
-}
-
-/* Premium card — slightly different */
+/* Premium card */
 .premium-card {
-    background: rgba(28,28,30,0.95);
+    background: rgba(30,30,28,0.95);
     border: 1px solid rgba(255,204,0,0.12);
 }
 
-/* Stations card */
-.stations-card {
-    background: rgba(28,28,30,0.95);
+/* ===== PILLS / BOUTONS ACTIFS — texte toujours lisible ===== */
+
+/* Pills sélectionnées (orange) — texte BLANC au lieu de noir */
+.pill.on {
+    background: #ff9500;
+    border-color: #ff9500;
+    color: #ffffff;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
-/* Result cards — solid for readability */
-.res-card, .ev-res-card {
-    background: rgba(25,25,29,0.95);
+/* Presets tank sélectionnés */
+.tp.on {
+    background: #ff9500;
+    border-color: #ff9500;
+    color: #ffffff;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* EV presets sélectionnés */
+.ev-preset.on {
+    background: #30d158;
+    border-color: #30d158;
+    color: #ffffff;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Speed buttons sélectionnés */
+.speed-btn.on {
+    background: #30d158;
+    border-color: #30d158;
+    color: #ffffff;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Fuel filter sélectionné */
+.ff-btn.on {
+    background: #007aff;
+    border-color: #007aff;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* Quick buttons actifs */
+.q-btn.on {
+    background: #ff9500;
+    color: #ffffff;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+body.ev-mode .q-btn.on {
+    background: #30d158;
+}
+
+/* Currency pill active */
+.cur-pill.on {
+    background: #ff9500;
+    border-color: #ff9500;
+    color: #ffffff;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Lang button active */
+.lang-btn.on {
+    border-color: #ff9500;
+    background: rgba(50,50,55,0.9);
+}
+
+/* Connector filter */
+.conn-btn.on {
+    background: #30d158;
+    border-color: #30d158;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* Conso presets */
+.conso-preset.on {
+    background: #007aff;
+    border-color: #007aff;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* ===== STEPPER ===== */
+.stepper {
+    background: rgba(50,50,55,0.8);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.stepper button {
+    color: #ff9500;
+}
+
+/* ===== MODE TOGGLE ===== */
+.mode-toggle {
+    background: rgba(30,30,35,0.9);
+    border: 1px solid rgba(255,255,255,0.06);
+}
+.mode-btn {
+    color: #a0a0a5;
+}
+.mode-btn.active {
+    background: rgba(50,50,55,0.9);
+    color: #ffffff;
+}
+.mode-btn.active.fuel {
+    background: linear-gradient(135deg, #ff9500, #ff6723);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+.mode-btn.active.ev {
+    background: linear-gradient(135deg, #30d158, #00c853);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* ===== PREMIUM PLANS — texte blanc ===== */
+.plan-btn {
+    background: rgba(50,50,55,0.8);
+    border: 2px solid rgba(255,255,255,0.08);
+    color: #f0f0f0;
+}
+.plan-btn.pop {
+    border-color: #ffd700;
+    background: rgba(255,215,0,0.08);
+}
+.plan-price { color: #ffffff; }
+.plan-period { color: #a0a0a5; }
+.plan-save { color: #30d158; }
+.plan-cta {
+    background: linear-gradient(135deg, #ffd700, #ffaa00);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* ===== PREMIUM BADGE ===== */
+.premium-badge {
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* ===== CONTENT SECTIONS ===== */
+.content-toggle {
+    background: rgba(30,30,35,0.93);
+    color: #f0f0f0;
+}
+.content-toggle:active {
+    background: rgba(50,50,55,0.9);
+}
+.article-content h2 { color: #ffffff; }
+.article-content h3 { color: #e5e5ea; }
+.article-content p { color: #b0b0b5; }
+.article-content ul { color: #b0b0b5; }
+.article-content strong { color: #f0f0f0; }
+.about-content p { color: #b0b0b5; }
+.about-content strong { color: #f0f0f0; }
+.legal-content p { color: #b0b0b5; }
+.legal-content strong { color: #f0f0f0; }
+
+/* ===== TANK INFO ===== */
+.tank-val { color: #ffffff; }
+.tank-val span { color: #a0a0a5; }
+.tank-sub { color: #8e8e93; }
+
+/* ===== VEHICLE ITEMS ===== */
+.vehicle-item {
+    background: rgba(50,50,55,0.8);
+    color: #f0f0f0;
+}
+.vi-name { color: #ffffff; }
+.vi-detail { color: #a0a0a5; }
+
+/* ===== BADGES ===== */
+.badge-item {
+    background: rgba(50,50,55,0.8);
+    color: #f0f0f0;
+}
+.badge-item.locked { opacity: 0.5; }
+.badge-name { color: #f0f0f0; }
+.badge-desc { color: #a0a0a5; }
+
+/* ===== SHARE PREVIEW ===== */
+.share-card-preview {
+    background: rgba(30,30,35,0.95);
     border: 1px solid rgba(255,255,255,0.06);
 }
 
-/* Stat boxes inside cards */
-.stat {
-    background: rgba(44,44,46,0.9);
+/* ===== LIGHT THEME OVERRIDE ===== */
+body.light-theme .card {
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(0,0,0,0.06);
+    color: #1c1c1e;
 }
-
-/* Price row */
-.price-row {
-    background: rgba(44,44,46,0.9);
-}
-
-/* Station items */
-.station-item {
-    background: rgba(44,44,46,0.9);
-}
-
-/* History items */
-.history-item {
-    background: rgba(44,44,46,0.9);
-}
-
-/* FAQ items */
-.faq-item {
-    background: rgba(44,44,46,0.9);
-}
-
-/* Speed buttons */
-.speed-btn {
-    background: rgba(44,44,46,0.5);
-}
-
-/* Quick buttons */
-.q-btn {
-    background: rgba(44,44,46,0.9);
-}
-
-/* Gauge card — darker for contrast */
-.gauge-card, .ev-gauge-card {
-    background: rgba(23,23,26,0.95);
+body.light-theme .stat { background: #f0f0f5; color: #1c1c1e; }
+body.light-theme .stat-v { color: #1c1c1e; }
+body.light-theme .stat-l { color: #6e6e73; }
+body.light-theme .station-item { background: #f0f0f5; color: #1c1c1e; }
+body.light-theme .faq-item { background: #f0f0f5; }
+body.light-theme .faq-q { color: #1c1c1e; }
+body.light-theme .q-btn { background: #e5e5ea; color: #1c1c1e; }
+body.light-theme .pill.on,
+body.light-theme .tp.on,
+body.light-theme .cur-pill.on {
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
         .app{max-width:420px;margin:0 auto;padding:12px 18px 50px}
         .lang-bar{display:flex;justify-content:center;gap:4px;padding:14px 0 2px;flex-wrap:wrap}
