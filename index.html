@@ -53,38 +53,14 @@
         /* ===== ULTIMATE BACKGROUND ===== */
 body {
     background: #050508;
+    min-height: 100vh;
+}
+
+.app {
     position: relative;
+    z-index: 2;
 }
 
-/* Mesh gradient */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background:
-        radial-gradient(ellipse at 15% 15%, rgba(255,149,0,0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 85% 85%, rgba(88,86,214,0.05) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 0%, rgba(0,122,255,0.03) 0%, transparent 40%),
-        radial-gradient(ellipse at 0% 60%, rgba(48,209,88,0.03) 0%, transparent 40%);
-    animation: meshShift 25s ease-in-out infinite alternate;
-    pointer-events: none;
-    z-index: -2;
-}
-
-/* Subtle grid overlay */
-body::after {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image:
-        linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
-    background-size: 40px 40px;
-    mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 70%);
-    -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 70%);
-    pointer-events: none;
-    z-index: -1;
-}
 
 /* EV mode — green/blue tones */
 body.ev-mode::before {
@@ -826,6 +802,8 @@ body.ev-mode .ev-only{display:block}
         max-width: 420px;
         width: 100%;
         padding: 12px 18px 50px;
+		position: relative;
+    z-index: 2;
     }
     .mode-toggle {
         max-width: 100%;
@@ -1093,6 +1071,7 @@ body.ev-mode .app::before {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255,255,255,0.1);
+	z-index: 1000;
 }
 
 /* Cookie banner amélioré */
@@ -2298,51 +2277,52 @@ body.ev-mode .trip-cost-value{
     position: fixed;
     border-radius: 50%;
     pointer-events: none;
-    z-index: -1;
+    z-index: 1;
     filter: blur(80px);
+    will-change: transform;
 }
 
 .bg-orb-1 {
     width: 300px; height: 300px;
     top: -100px; right: -50px;
-    background: radial-gradient(circle, rgba(255,149,0,0.07) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,149,0,0.08) 0%, transparent 70%);
     animation: orbFloat1 20s ease-in-out infinite;
 }
 
 .bg-orb-2 {
     width: 350px; height: 350px;
     bottom: -100px; left: -80px;
-    background: radial-gradient(circle, rgba(88,86,214,0.06) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(88,86,214,0.07) 0%, transparent 70%);
     animation: orbFloat2 25s ease-in-out infinite;
 }
 
 .bg-orb-3 {
     width: 250px; height: 250px;
     top: 40%; left: -60px;
-    background: radial-gradient(circle, rgba(0,122,255,0.05) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0,122,255,0.06) 0%, transparent 70%);
     animation: orbFloat3 18s ease-in-out infinite;
 }
 
 /* EV mode — green/blue orbs */
 body.ev-mode .bg-orb-1 {
-    background: radial-gradient(circle, rgba(48,209,88,0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(48,209,88,0.09) 0%, transparent 70%);
 }
 body.ev-mode .bg-orb-2 {
-    background: radial-gradient(circle, rgba(0,199,190,0.06) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0,199,190,0.07) 0%, transparent 70%);
 }
 body.ev-mode .bg-orb-3 {
-    background: radial-gradient(circle, rgba(48,209,88,0.05) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(48,209,88,0.06) 0%, transparent 70%);
 }
 
-/* Light theme — subtle warm tones */
+/* Light theme */
 body.light-theme .bg-orb-1 {
-    background: radial-gradient(circle, rgba(255,149,0,0.05) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,149,0,0.06) 0%, transparent 70%);
 }
 body.light-theme .bg-orb-2 {
     background: radial-gradient(circle, rgba(88,86,214,0.04) 0%, transparent 70%);
 }
 body.light-theme .bg-orb-3 {
-    background: radial-gradient(circle, rgba(0,122,255,0.03) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0,122,255,0.04) 0%, transparent 70%);
 }
 
 @keyframes orbFloat1 {
@@ -2366,14 +2346,14 @@ body.light-theme .bg-orb-3 {
     66% { transform: translate(-50px, -30px) scale(0.95); }
 }
 
-/* ===== SHOOTING STAR (occasional) ===== */
+/* Étoiles filantes */
 .bg-star {
     position: fixed;
     width: 2px; height: 2px;
     background: #fff;
     border-radius: 50%;
     pointer-events: none;
-    z-index: -1;
+    z-index: 1;
     opacity: 0;
 }
 
@@ -2402,21 +2382,21 @@ body.light-theme .bg-orb-3 {
     100% { opacity: 0; }
 }
 
-/* ===== SUBTLE PULSE GLOW ===== */
+/* Pulse central */
 .bg-pulse {
     position: fixed;
     width: 500px; height: 500px;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,149,0,0.02) 0%, transparent 60%);
+    background: radial-gradient(circle, rgba(255,149,0,0.03) 0%, transparent 60%);
     pointer-events: none;
-    z-index: -1;
+    z-index: 1;
     animation: bgPulse 8s ease-in-out infinite;
 }
 
 body.ev-mode .bg-pulse {
-    background: radial-gradient(circle, rgba(48,209,88,0.02) 0%, transparent 60%);
+    background: radial-gradient(circle, rgba(48,209,88,0.03) 0%, transparent 60%);
 }
 
 @keyframes bgPulse {
@@ -2424,29 +2404,58 @@ body.ev-mode .bg-pulse {
     50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
 }
 
-/* ===== FLOATING PARTICLES ===== */
+/* Particules flottantes */
 .bg-particles {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     pointer-events: none;
-    z-index: -1;
+    z-index: 1;
     overflow: hidden;
 }
 
 .bg-particle {
     position: absolute;
     width: 2px; height: 2px;
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.2);
     border-radius: 50%;
     animation: particleFloat linear infinite;
 }
 
 @keyframes particleFloat {
     0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
     100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
 }
+/* Grille subtile */
+.bg-grid {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+body.light-theme .bg-grid {
+    background-image:
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+}
+
+/* Toasts et overlays au-dessus de tout */
+.save-toast { z-index: 1000; }
+.limit-overlay { z-index: 10001; }
+.onboarding-overlay { z-index: 10001; }
+.vehicle-modal-overlay { z-index: 10000; }
+.badge-toast { z-index: 10000; }
+.drive-page { z-index: 10003; }
+.trip-page { z-index: 10002; }
+#cookieBanner { z-index: 9999; }
     </style>
 
 </head>
@@ -2461,6 +2470,7 @@ body.ev-mode .bg-pulse {
 <div class="bg-star bg-star-3"></div>
 <div class="bg-pulse"></div>
 <div class="bg-particles" id="bgParticles"></div>
+<div class="bg-grid"></div>
 <!-- PULL TO REFRESH -->
 <div class="ptr-container" id="ptrContainer">
     <div class="ptr-indicator" id="ptrIndicator">
