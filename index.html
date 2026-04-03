@@ -6151,50 +6151,82 @@ async function calculateRoute() {
     }
 }
 
-// ===== TRIP MAP =====
 function drawTripMap() {
     var wrap = document.getElementById('tripMapWrap');
     if (!wrap) return;
     wrap.classList.remove('hidden');
 
-    if (!tripLeafletMap) {
-        tripLeafletMap = L.map('tripMap', {zoomControl:false, attributionControl:false}).setView([48.8, 2.3], 6);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {maxZoom:18}).addTo(tripLeafletMap);
-        tripMarkersLayer = L.layerGroup().addTo(tripLeafletMap);
-        tripRouteLayer = L.layerGroup().addTo(tripLeafletMap);
-    }
+    // Attendre que le conteneur soit visible
+    setTimeout(function() {
+        if (!tripLeafletMap) {
+            // Vérifie que le div existe et a une taille
+            var mapDiv = document.getElementById('tripMap');
+            if (!mapDiv) return;
+            
+            // Force la taille
+            mapDiv.style.width = '100%';
+            mapDiv.style.height = '250px';
 
-    tripRouteLayer.clearLayers();
-    tripMarkersLayer.clearLayers();
+            tripLeafletMap = L.map('tripMap', {
+                zoomControl: false,
+                attributionControl: false
+            }).setView([48.8, 2.3], 6);
 
-    // Draw route line
-    if (tripRouteCoords.length) {
-        var latLngs = tripRouteCoords.map(function(c) { return [c[1], c[0]]; });
-        var routeLine = L.polyline(latLngs, {
-            color: appMode === 'ev' ? '#30d158' : '#007aff',
-            weight: 4, opacity: 0.8
-        });
-        tripRouteLayer.addLayer(routeLine);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 18
+            }).addTo(tripLeafletMap);
 
-        // Start marker
-        var startIcon = L.divIcon({
-            html:'<div style="width:16px;height:16px;background:#30d158;border:3px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(48,209,88,.5)"></div>',
-            className:'',iconSize:[16,16],iconAnchor:[8,8]
-        });
-        L.marker([tripStartCoords.lat, tripStartCoords.lon], {icon:startIcon}).addTo(tripMarkersLayer);
+            tripMarkersLayer = L.layerGroup().addTo(tripLeafletMap);
+            tripRouteLayer = L.layerGroup().addTo(tripLeafletMap);
+        }
 
-        // End marker
-        var endIcon = L.divIcon({
-            html:'<div style="width:16px;height:16px;background:#ff3b30;border:3px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(255,59,48,.5)"></div>',
-            className:'',iconSize:[16,16],iconAnchor:[8,8]
-        });
-        L.marker([tripEndCoords.lat, tripEndCoords.lon], {icon:endIcon}).addTo(tripMarkersLayer);
+        // Clear old layers
+        tripRouteLayer.clearLayers();
+        tripMarkersLayer.clearLayers();
 
-        // Fit bounds
-        tripLeafletMap.fitBounds(routeLine.getBounds(), {padding:[30,30]});
-    }
+        // Draw route
+        if (tripRouteCoords.length) {
+            var latLngs = tripRouteCoords.map(function(c) { return [c[1], c[0]]; });
 
-    setTimeout(function() { tripLeafletMap.invalidateSize(); }, 200);
+            var routeLine = L.polyline(latLngs, {
+                color: appMode === 'ev' ? '#30d158' : '#007aff',
+                weight: 4,
+                opacity: 0.8
+            });
+            tripRouteLayer.addLayer(routeLine);
+
+            // Start marker
+            if (tripStartCoords) {
+                var startIcon = L.divIcon({
+                    html: '<div style="width:16px;height:16px;background:#30d158;border:3px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(48,209,88,.5)"></div>',
+                    className: '',
+                    iconSize: [16, 16],
+                    iconAnchor: [8, 8]
+                });
+                L.marker([tripStartCoords.lat, tripStartCoords.lon], {icon: startIcon}).addTo(tripMarkersLayer);
+            }
+
+            // End marker
+            if (tripEndCoords) {
+                var endIcon = L.divIcon({
+                    html: '<div style="width:16px;height:16px;background:#ff3b30;border:3px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(255,59,48,.5)"></div>',
+                    className: '',
+                    iconSize: [16, 16],
+                    iconAnchor: [8, 8]
+                });
+                L.marker([tripEndCoords.lat, tripEndCoords.lon], {icon: endIcon}).addTo(tripMarkersLayer);
+            }
+
+            // Fit bounds
+            try {
+                tripLeafletMap.fitBounds(routeLine.getBounds(), {padding: [30, 30]});
+            } catch(e) {}
+        }
+
+        // Force resize
+        tripLeafletMap.invalidateSize();
+
+    }, 300);
 }
 
 // ===== STATIONS ON ROUTE =====
@@ -7685,9 +7717,9 @@ if ('serviceWorker' in navigator) {
         </div>
 
         <!-- Carte du trajet -->
-        <div class="trip-map-wrap hidden" id="tripMapWrap">
-            <div id="tripMap"></div>
-        </div>
+        <<div class="trip-map-wrap hidden" id="tripMapWrap">
+    <div id="tripMap" style="width:100%;height:250px"></div>
+</div>
 
         <!-- Info route -->
         <div class="trip-route-info hidden" id="tripRouteInfo">
