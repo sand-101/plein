@@ -1030,6 +1030,124 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
 .best-time-icon{font-size:28px;margin-bottom:6px}
 .best-time-title{font-size:14px;font-weight:700;color:#30d158;margin-bottom:4px}
 .best-time-text{font-size:13px;color:#aaa;line-height:1.5}
+
+/* ===== TRIP ADDRESSES + MAP ===== */
+.trip-addr-field{margin-bottom:12px;position:relative}
+.trip-addr-row{
+    display:flex;align-items:center;
+    background:rgba(50,50,55,.8);border-radius:12px;
+    overflow:hidden;border:2px solid transparent;
+    transition:border-color .2s;
+}
+.trip-addr-row:focus-within{border-color:#007aff}
+.trip-addr-row .ta-icon{
+    padding:12px 14px;font-size:16px;
+    background:rgba(0,122,255,.08);flex-shrink:0;
+}
+.trip-addr-row .ta-icon.start{color:#30d158}
+.trip-addr-row .ta-icon.end{color:#ff3b30}
+.trip-addr-row input[type=text]{
+    flex:1;background:transparent;border:none;
+    color:#fff;font-size:15px;font-weight:500;
+    padding:14px 10px;outline:none;
+    font-family:-apple-system,sans-serif;
+    -webkit-user-select:text;user-select:text;
+}
+.trip-addr-row input::placeholder{color:#48484a}
+.trip-addr-row .ta-clear{
+    padding:12px;font-size:16px;color:#636366;
+    background:none;border:none;cursor:pointer;
+}
+.trip-addr-row .ta-clear:active{color:#ff3b30}
+
+/* Suggestions autocomplete */
+.trip-suggestions{
+    position:absolute;top:100%;left:0;right:0;
+    background:rgba(30,30,35,.98);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:0 0 12px 12px;
+    max-height:200px;overflow-y:auto;
+    z-index:100;display:none;
+}
+.trip-suggestions.show{display:block}
+.trip-suggestion{
+    padding:12px 14px;cursor:pointer;
+    display:flex;align-items:center;gap:10px;
+    transition:background .1s;
+    border-bottom:1px solid rgba(255,255,255,.03);
+}
+.trip-suggestion:active,.trip-suggestion:hover{background:rgba(255,255,255,.05)}
+.trip-suggestion .ts-icon{color:#8e8e93;font-size:14px;flex-shrink:0}
+.trip-suggestion .ts-text{font-size:13px;color:#e5e5ea;line-height:1.3}
+.trip-suggestion .ts-sub{font-size:11px;color:#636366}
+
+/* GPS button */
+.trip-gps-btn{
+    padding:8px 14px;border-radius:10px;border:none;
+    background:rgba(0,122,255,.12);color:#007aff;
+    font-size:12px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;gap:4px;
+    margin-top:6px;
+}
+.trip-gps-btn:active{transform:scale(.95)}
+
+/* Swap button */
+.trip-swap-btn{
+    width:36px;height:36px;border-radius:50%;
+    background:rgba(50,50,55,.8);border:1px solid #3a3a3c;
+    color:#fff;font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    margin:-6px auto;position:relative;z-index:10;
+    transition:all .15s;
+}
+.trip-swap-btn:active{transform:scale(.9) rotate(180deg);background:#007aff}
+
+/* Route map */
+.trip-map-wrap{
+    margin-top:14px;border-radius:14px;overflow:hidden;
+    height:250px;background:rgba(50,50,55,.8);
+    position:relative;border:1px solid rgba(255,255,255,.05);
+}
+.trip-map-wrap.hidden{display:none}
+#tripMap{width:100%;height:100%}
+
+/* Route info */
+.trip-route-info{
+    display:flex;gap:8px;margin-top:10px;
+}
+.trip-route-info.hidden{display:none}
+.tri-item{
+    flex:1;background:rgba(50,50,55,.6);
+    border-radius:10px;padding:10px;text-align:center;
+}
+.tri-value{font-size:16px;font-weight:700;color:#fff}
+.tri-label{font-size:9px;color:#8e8e93;text-transform:uppercase;margin-top:2px}
+
+/* Stations on route */
+.trip-stations{margin-top:14px}
+.trip-stations.hidden{display:none}
+.trip-stations-title{font-size:13px;font-weight:600;color:#007aff;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.trip-station-item{
+    display:flex;align-items:center;gap:12px;
+    padding:12px;background:rgba(50,50,55,.6);
+    border-radius:12px;margin-bottom:8px;
+    cursor:pointer;transition:all .15s;
+}
+.trip-station-item:active{transform:scale(.98)}
+.trip-station-km{
+    min-width:50px;text-align:center;
+    font-size:12px;font-weight:700;color:#007aff;
+}
+.trip-station-info{flex:1;min-width:0}
+.trip-station-name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trip-station-dist{font-size:11px;color:#636366;margin-top:1px}
+.trip-station-price{font-size:16px;font-weight:700;flex-shrink:0}
+.trip-station-price.fuel-c{color:#ff9500}
+.trip-station-price.ev-c{color:#30d158}
+
     </style>
 
 </head>
@@ -2337,6 +2455,7 @@ function rebuildAll() {
 	try { updateDriveBtnText(); } catch(e) {}
 	try { updateCookieBannerTexts(); } catch(e) {}
 	try { updatePriceAlertUI(); } catch(e) {}
+	try { updateTripUI(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -5807,40 +5926,45 @@ function updateVehiclesUI() {
         '</div>';
     }).join('');
 }
-// ==================== CALCUL TRAJET — PAGE ====================
+// ==================== CALCUL TRAJET AVEC ADRESSES ====================
 var tripConso = 6.5;
 var tripEvConso = 17;
+var tripStartCoords = null;
+var tripEndCoords = null;
+var tripRouteCoords = [];
+var tripLeafletMap = null;
+var tripMarkersLayer = null;
+var tripRouteLayer = null;
+var searchTimeout = null;
+
+// Max stations visible sans premium
+var TRIP_FREE_STATIONS = 2;
 
 var TRIP_I18N = {
-    fr:{launcher:'Calculer un trajet',back:'Retour',pageTitle:'🗺️ Trajet',distTitle:'📍 Distance',consoTitle:'⛽ Consommation',evConsoTitle:'🔋 Consommation',priceTitle:'💶 Prix actuel',calc:'Calculer le coût',costLabel:'Coût du trajet',liters:'Litres',kwhUsed:'kWh',stops:'Arrêts',stopsEv:'Recharges',per100:'/100 km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Arrêts recharge',evStopsDetail:'{stops} arrêt(s) · ~{time} min · {kwh} kWh/arrêt',compareTitle:'⚖️ Essence vs Électrique',fuelCost:'Coût essence',evCost:'Coût électrique',savings:'Économie',shareTxt:'Partager ce calcul',shareMsg:'🗺️ Trajet {dist} km\n💰 Coût : {cost}\n⛽ {fuel}\n\nCalculé avec Easy Refuel\nhttps://easy-refuel.eu',city:'Ville',mixed:'Mixte',highway:'Autoroute',suv:'SUV',evCity:'Ville',evMixed:'Mixte',evHighway:'Autoroute',evFast:'Sportif',perL:'/L',perKwh:'/kWh'},
-    en:{launcher:'Calculate a trip',back:'Back',pageTitle:'🗺️ Trip',distTitle:'📍 Distance',consoTitle:'⛽ Consumption',evConsoTitle:'🔋 Consumption',priceTitle:'💶 Current price',calc:'Calculate cost',costLabel:'Trip cost',liters:'Liters',kwhUsed:'kWh',stops:'Stops',stopsEv:'Charges',per100:'/100 km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Charging stops',evStopsDetail:'{stops} stop(s) · ~{time} min · {kwh} kWh/stop',compareTitle:'⚖️ Fuel vs Electric',fuelCost:'Fuel cost',evCost:'Electric cost',savings:'Savings',shareTxt:'Share this calculation',shareMsg:'🗺️ Trip {dist} km\n💰 Cost: {cost}\n⛽ {fuel}\n\nCalculated with Easy Refuel\nhttps://easy-refuel.eu',city:'City',mixed:'Mixed',highway:'Highway',suv:'SUV',evCity:'City',evMixed:'Mixed',evHighway:'Highway',evFast:'Sport',perL:'/L',perKwh:'/kWh'},
-    es:{launcher:'Calcular un viaje',back:'Volver',pageTitle:'🗺️ Viaje',distTitle:'📍 Distancia',consoTitle:'⛽ Consumo',evConsoTitle:'🔋 Consumo',priceTitle:'💶 Precio actual',calc:'Calcular coste',costLabel:'Coste del viaje',liters:'Litros',kwhUsed:'kWh',stops:'Paradas',stopsEv:'Recargas',per100:'/100 km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Paradas de recarga',evStopsDetail:'{stops} parada(s) · ~{time} min · {kwh} kWh',compareTitle:'⚖️ Gasolina vs Eléctrico',fuelCost:'Gasolina',evCost:'Eléctrico',savings:'Ahorro',shareTxt:'Compartir',shareMsg:'🗺️ Viaje {dist} km\n💰 Coste: {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'Ciudad',mixed:'Mixto',highway:'Autopista',suv:'SUV',evCity:'Ciudad',evMixed:'Mixto',evHighway:'Autopista',evFast:'Deportivo',perL:'/L',perKwh:'/kWh'},
-    de:{launcher:'Reise berechnen',back:'Zurück',pageTitle:'🗺️ Reise',distTitle:'📍 Entfernung',consoTitle:'⛽ Verbrauch',evConsoTitle:'🔋 Verbrauch',priceTitle:'💶 Aktueller Preis',calc:'Kosten berechnen',costLabel:'Reisekosten',liters:'Liter',kwhUsed:'kWh',stops:'Stopps',stopsEv:'Ladestopps',per100:'/100 km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Ladestopps',evStopsDetail:'{stops} Stopp(s) · ~{time} Min · {kwh} kWh',compareTitle:'⚖️ Benzin vs Elektrisch',fuelCost:'Benzin',evCost:'Elektrisch',savings:'Ersparnis',shareTxt:'Teilen',shareMsg:'🗺️ Reise {dist} km\n💰 Kosten: {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'Stadt',mixed:'Gemischt',highway:'Autobahn',suv:'SUV',evCity:'Stadt',evMixed:'Gemischt',evHighway:'Autobahn',evFast:'Sportlich',perL:'/L',perKwh:'/kWh'},
-    it:{launcher:'Calcola viaggio',back:'Indietro',pageTitle:'🗺️ Viaggio',distTitle:'📍 Distanza',consoTitle:'⛽ Consumo',evConsoTitle:'🔋 Consumo',priceTitle:'💶 Prezzo attuale',calc:'Calcola',costLabel:'Costo viaggio',liters:'Litri',kwhUsed:'kWh',stops:'Soste',stopsEv:'Ricariche',per100:'/100 km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Soste ricarica',evStopsDetail:'{stops} sosta(e) · ~{time} min · {kwh} kWh',compareTitle:'⚖️ Benzina vs Elettrico',fuelCost:'Benzina',evCost:'Elettrico',savings:'Risparmio',shareTxt:'Condividi',shareMsg:'🗺️ Viaggio {dist} km\n💰 Costo: {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'Città',mixed:'Misto',highway:'Autostrada',suv:'SUV',evCity:'Città',evMixed:'Misto',evHighway:'Autostrada',evFast:'Sportivo',perL:'/L',perKwh:'/kWh'},
-    pt:{launcher:'Calcular viagem',back:'Voltar',pageTitle:'🗺️ Viagem',distTitle:'📍 Distância',consoTitle:'⛽ Consumo',evConsoTitle:'🔋 Consumo',priceTitle:'💶 Preço atual',calc:'Calcular',costLabel:'Custo',liters:'Litros',kwhUsed:'kWh',stops:'Paragens',stopsEv:'Cargas',per100:'/100 km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Paragens de carga',evStopsDetail:'{stops} paragem(ns) · ~{time} min · {kwh} kWh',compareTitle:'⚖️ Gasolina vs Elétrico',fuelCost:'Gasolina',evCost:'Elétrico',savings:'Poupança',shareTxt:'Partilhar',shareMsg:'🗺️ Viagem {dist} km\n💰 Custo: {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'Cidade',mixed:'Misto',highway:'Autoestrada',suv:'SUV',evCity:'Cidade',evMixed:'Misto',evHighway:'Autoestrada',evFast:'Desportivo',perL:'/L',perKwh:'/kWh'},
-    ru:{launcher:'Рассчитать поездку',back:'Назад',pageTitle:'🗺️ Поездка',distTitle:'📍 Расстояние',consoTitle:'⛽ Расход',evConsoTitle:'🔋 Расход',priceTitle:'💶 Текущая цена',calc:'Рассчитать',costLabel:'Стоимость',liters:'Литры',kwhUsed:'кВт·ч',stops:'Остановки',stopsEv:'Зарядки',per100:'/100 км',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ Остановки',evStopsDetail:'{stops} ост. · ~{time} мин · {kwh} кВт·ч',compareTitle:'⚖️ Бензин vs Электро',fuelCost:'Бензин',evCost:'Электро',savings:'Экономия',shareTxt:'Поделиться',shareMsg:'🗺️ Поездка {dist} км\n💰 Стоимость: {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'Город',mixed:'Смешанный',highway:'Трасса',suv:'Кроссовер',evCity:'Город',evMixed:'Смешанный',evHighway:'Трасса',evFast:'Спорт',perL:'/л',perKwh:'/кВт·ч'},
-    zh:{launcher:'计算行程',back:'返回',pageTitle:'🗺️ 行程',distTitle:'📍 距离',consoTitle:'⛽ 油耗',evConsoTitle:'🔋 电耗',priceTitle:'💶 当前价格',calc:'计算',costLabel:'行程费用',liters:'升',kwhUsed:'kWh',stops:'停靠',stopsEv:'充电',per100:'/100km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ 充电停靠',evStopsDetail:'{stops}次·~{time}分钟·{kwh}kWh',compareTitle:'⚖️ 汽油vs电动',fuelCost:'汽油',evCost:'电动',savings:'节省',shareTxt:'分享',shareMsg:'🗺️ {dist}km\n💰 {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'城市',mixed:'综合',highway:'高速',suv:'SUV',evCity:'城市',evMixed:'综合',evHighway:'高速',evFast:'运动',perL:'/L',perKwh:'/kWh'},
-    ja:{launcher:'旅行計算',back:'戻る',pageTitle:'🗺️ 旅行',distTitle:'📍 距離',consoTitle:'⛽ 燃費',evConsoTitle:'🔋 電費',priceTitle:'💶 現在の価格',calc:'計算',costLabel:'旅行費用',liters:'L',kwhUsed:'kWh',stops:'停車',stopsEv:'充電',per100:'/100km',detail:'{fuel} × {price} = {cost}',evStopsTitle:'⚡ 充電停車',evStopsDetail:'{stops}回·~{time}分·{kwh}kWh',compareTitle:'⚖️ ガソリンvs電気',fuelCost:'ガソリン',evCost:'電気',savings:'節約',shareTxt:'共有',shareMsg:'🗺️ {dist}km\n💰 {cost}\n⛽ {fuel}\n\nhttps://easy-refuel.eu',city:'市街地',mixed:'混合',highway:'高速',suv:'SUV',evCity:'市街地',evMixed:'混合',evHighway:'高速',evFast:'スポーツ',perL:'/L',perKwh:'/kWh'}
+    fr:{launcher:'Calculer un trajet',back:'Retour',pageTitle:'🗺️ Trajet',addrTitle:'📍 Itinéraire',startPh:'Adresse de départ',endPh:'Adresse d\'arrivée',gps:'Ma position actuelle',distLabel:'📏 Distance',distAuto:'Distance auto-calculée',consoTitle:'⛽ Consommation',evConsoTitle:'🔋 Consommation',priceTitle:'💶 Prix actuel',calc:'Calculer le coût',costLabel:'Coût du trajet',liters:'Litres',kwhUsed:'kWh',stops:'Arrêts',stopsEv:'Recharges',per100:'/100 km',detail:'{fuel} × {price} = {cost}',routeDist:'Distance',routeTime:'Durée',routeStops:'Arrêts',stationsTitle:'⛽ Stations sur le trajet',stationsTitleEv:'🔋 Bornes sur le trajet',stationsMore:'💎 Voir toutes les stations ({n})',evStopsTitle:'⚡ Arrêts recharge',evStopsDetail:'{stops} arrêt(s) · ~{time} min · {kwh} kWh/arrêt',compareTitle:'⚖️ Essence vs Électrique',fuelCost:'Coût essence',evCost:'Coût électrique',savings:'Économie',shareTxt:'Partager ce calcul',shareMsg:'🗺️ Trajet {from} → {to}\n📏 {dist} km\n💰 Coût : {cost}\n\nhttps://easy-refuel.eu',city:'Ville',mixed:'Mixte',highway:'Autoroute',suv:'SUV',evCity:'Ville',evMixed:'Mixte',evHighway:'Autoroute',evFast:'Sportif',perL:'/L',perKwh:'/kWh',searching:'Recherche...', noRoute:'Impossible de calculer l\'itinéraire',kmFromStart:'km du départ'},
+    en:{launcher:'Calculate a trip',back:'Back',pageTitle:'🗺️ Trip',addrTitle:'📍 Route',startPh:'Starting address',endPh:'Destination address',gps:'My current location',distLabel:'📏 Distance',distAuto:'Auto-calculated distance',consoTitle:'⛽ Consumption',evConsoTitle:'🔋 Consumption',priceTitle:'💶 Current price',calc:'Calculate cost',costLabel:'Trip cost',liters:'Liters',kwhUsed:'kWh',stops:'Stops',stopsEv:'Charges',per100:'/100 km',detail:'{fuel} × {price} = {cost}',routeDist:'Distance',routeTime:'Duration',routeStops:'Stops',stationsTitle:'⛽ Stations on route',stationsTitleEv:'🔋 Chargers on route',stationsMore:'💎 See all stations ({n})',evStopsTitle:'⚡ Charging stops',evStopsDetail:'{stops} stop(s) · ~{time} min · {kwh} kWh/stop',compareTitle:'⚖️ Fuel vs Electric',fuelCost:'Fuel cost',evCost:'Electric cost',savings:'Savings',shareTxt:'Share',shareMsg:'🗺️ Trip {from} → {to}\n📏 {dist} km\n💰 Cost: {cost}\n\nhttps://easy-refuel.eu',city:'City',mixed:'Mixed',highway:'Highway',suv:'SUV',evCity:'City',evMixed:'Mixed',evHighway:'Highway',evFast:'Sport',perL:'/L',perKwh:'/kWh',searching:'Searching...',noRoute:'Could not calculate route',kmFromStart:'km from start'},
+    es:{launcher:'Calcular un viaje',back:'Volver',pageTitle:'🗺️ Viaje',addrTitle:'📍 Ruta',startPh:'Dirección de salida',endPh:'Dirección de llegada',gps:'Mi ubicación actual',distLabel:'📏 Distancia',distAuto:'Distancia auto-calculada',consoTitle:'⛽ Consumo',evConsoTitle:'🔋 Consumo',priceTitle:'💶 Precio actual',calc:'Calcular coste',costLabel:'Coste del viaje',liters:'Litros',kwhUsed:'kWh',stops:'Paradas',stopsEv:'Recargas',per100:'/100 km',detail:'{fuel} × {price} = {cost}',routeDist:'Distancia',routeTime:'Duración',routeStops:'Paradas',stationsTitle:'⛽ Gasolineras en ruta',stationsTitleEv:'🔋 Cargadores en ruta',stationsMore:'💎 Ver todas ({n})',evStopsTitle:'⚡ Paradas de recarga',evStopsDetail:'{stops} parada(s) · ~{time} min',compareTitle:'⚖️ Gasolina vs Eléctrico',fuelCost:'Gasolina',evCost:'Eléctrico',savings:'Ahorro',shareTxt:'Compartir',shareMsg:'🗺️ Viaje {from} → {to}\n📏 {dist} km\n💰 {cost}\n\nhttps://easy-refuel.eu',city:'Ciudad',mixed:'Mixto',highway:'Autopista',suv:'SUV',evCity:'Ciudad',evMixed:'Mixto',evHighway:'Autopista',evFast:'Deportivo',perL:'/L',perKwh:'/kWh',searching:'Buscando...',noRoute:'No se pudo calcular la ruta',kmFromStart:'km desde salida'},
+    de:{launcher:'Reise berechnen',back:'Zurück',pageTitle:'🗺️ Reise',addrTitle:'📍 Route',startPh:'Startadresse',endPh:'Zieladresse',gps:'Mein aktueller Standort',distLabel:'📏 Entfernung',distAuto:'Auto-berechnete Entfernung',consoTitle:'⛽ Verbrauch',evConsoTitle:'🔋 Verbrauch',priceTitle:'💶 Aktueller Preis',calc:'Kosten berechnen',costLabel:'Reisekosten',liters:'Liter',kwhUsed:'kWh',stops:'Stopps',stopsEv:'Ladestopps',per100:'/100 km',detail:'{fuel} × {price} = {cost}',routeDist:'Entfernung',routeTime:'Dauer',routeStops:'Stopps',stationsTitle:'⛽ Tankstellen auf der Route',stationsTitleEv:'🔋 Ladestationen auf der Route',stationsMore:'💎 Alle anzeigen ({n})',evStopsTitle:'⚡ Ladestopps',evStopsDetail:'{stops} Stopp(s) · ~{time} Min',compareTitle:'⚖️ Benzin vs Elektrisch',fuelCost:'Benzin',evCost:'Elektrisch',savings:'Ersparnis',shareTxt:'Teilen',shareMsg:'🗺️ {from} → {to}\n📏 {dist} km\n💰 {cost}\n\nhttps://easy-refuel.eu',city:'Stadt',mixed:'Gemischt',highway:'Autobahn',suv:'SUV',evCity:'Stadt',evMixed:'Gemischt',evHighway:'Autobahn',evFast:'Sportlich',perL:'/L',perKwh:'/kWh',searching:'Suche...',noRoute:'Route konnte nicht berechnet werden',kmFromStart:'km vom Start'}
 };
+
+// Add fallbacks for missing languages
+['it','pt','ru','zh','ja'].forEach(function(l) {
+    if (!TRIP_I18N[l]) TRIP_I18N[l] = TRIP_I18N.en;
+});
 
 function getTripI18n() { return TRIP_I18N[lang] || TRIP_I18N.en; }
 
-// Open/close page
+// ===== PAGE OPEN/CLOSE =====
 window.openTripPage = function() {
     haptic('medium');
     var page = document.getElementById('tripPage');
     if (!page) return;
-    
-    // Prevent body scroll
     document.body.style.overflow = 'hidden';
-    
     page.classList.add('open');
+    page.scrollTop = 0;
     updateTripPageUI();
     buildConsoPresets();
-    
-    // Scroll to top of trip page
-    page.scrollTop = 0;
-	trackEvent('open_trip_page');
+    history.pushState({tripOpen:true}, '');
 };
 
 window.closeTripPage = function() {
@@ -5851,67 +5975,351 @@ window.closeTripPage = function() {
     page.classList.remove('open');
 };
 
+// ===== GEOCODING (Nominatim) =====
+function searchAddress(query, callback) {
+    if (!query || query.length < 3) { callback([]); return; }
+    var url = 'https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(query) + '&format=json&limit=5&addressdetails=1&accept-language=' + lang;
+    fetch(url, {headers:{'User-Agent':'EasyRefuel/1.0'}})
+        .then(function(r) { return r.json(); })
+        .then(function(data) { callback(data || []); })
+        .catch(function() { callback([]); });
+}
 
-// Push state when opening trip page (so back button works)
-var origOpenTrip = window.openTripPage;
-window.openTripPage = function() {
-    history.pushState({tripOpen: true}, '');
-    origOpenTrip();
+function setupAddressInput(inputId, suggestionsId, coordsSetter) {
+    var input = document.getElementById(inputId);
+    var suggestions = document.getElementById(suggestionsId);
+    if (!input || !suggestions) return;
+
+    input.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        var q = input.value.trim();
+        if (q.length < 3) { suggestions.classList.remove('show'); return; }
+        searchTimeout = setTimeout(function() {
+            searchAddress(q, function(results) {
+                if (!results.length) { suggestions.classList.remove('show'); return; }
+                suggestions.innerHTML = results.map(function(r, i) {
+                    return '<div class="trip-suggestion" data-lat="' + r.lat + '" data-lon="' + r.lon + '" data-name="' + (r.display_name || '').replace(/"/g, '') + '">' +
+                        '<span class="ts-icon">📍</span>' +
+                        '<div><div class="ts-text">' + (r.display_name || '').split(',').slice(0, 2).join(',') + '</div>' +
+                        '<div class="ts-sub">' + (r.display_name || '').split(',').slice(2, 4).join(',') + '</div></div>' +
+                    '</div>';
+                }).join('');
+                suggestions.classList.add('show');
+
+                suggestions.querySelectorAll('.trip-suggestion').forEach(function(s) {
+                    s.addEventListener('click', function() {
+                        haptic('light');
+                        var lat = parseFloat(s.dataset.lat);
+                        var lon = parseFloat(s.dataset.lon);
+                        var name = s.dataset.name;
+                        input.value = name.split(',').slice(0, 2).join(',');
+                        coordsSetter({lat:lat, lon:lon, name:name});
+                        suggestions.classList.remove('show');
+                        tryAutoCalculateRoute();
+                    });
+                });
+            });
+        }, 400);
+    });
+
+    input.addEventListener('blur', function() {
+        setTimeout(function() { suggestions.classList.remove('show'); }, 200);
+    });
+}
+
+// ===== GPS =====
+window.useGPSForTrip = function(which) {
+    haptic('medium');
+    var ti = getTripI18n();
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(
+        function(pos) {
+            var lat = pos.coords.latitude;
+            var lon = pos.coords.longitude;
+            // Reverse geocode
+            fetch('https://nominatim.openstreetmap.org/reverse?lat=' + lat + '&lon=' + lon + '&format=json&accept-language=' + lang, {headers:{'User-Agent':'EasyRefuel/1.0'}})
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var name = data.display_name || (lat.toFixed(4) + ', ' + lon.toFixed(4));
+                    var shortName = name.split(',').slice(0, 2).join(',');
+                    if (which === 'start') {
+                        tripStartCoords = {lat:lat, lon:lon, name:name};
+                        var input = document.getElementById('tripStartInput');
+                        if (input) input.value = shortName;
+                    } else {
+                        tripEndCoords = {lat:lat, lon:lon, name:name};
+                        var input = document.getElementById('tripEndInput');
+                        if (input) input.value = shortName;
+                    }
+                    tryAutoCalculateRoute();
+                    showToast('📍 ' + ti.gps + ' ✅');
+                });
+        },
+        function() { showToast('❌ GPS'); }
+    );
 };
 
-// Swipe right to close
-(function() {
-    var page = document.getElementById('tripPage');
-    if (!page) return;
-    
-    var startX = 0;
-    var startY = 0;
-    var tracking = false;
-    
-    page.addEventListener('touchstart', function(e) {
-        var touch = e.touches[0];
-        startX = touch.clientX;
-        startY = touch.clientY;
-        // Only track if starting from left edge (40px)
-        tracking = startX < 40;
-    }, {passive: true});
-    
-    page.addEventListener('touchmove', function(e) {
-        if (!tracking) return;
-        var touch = e.touches[0];
-        var dx = touch.clientX - startX;
-        var dy = Math.abs(touch.clientY - startY);
-        
-        // Must be more horizontal than vertical
-        if (dx > 20 && dx > dy) {
-            page.style.transform = 'translateX(' + Math.max(0, dx) + 'px)';
-            page.style.transition = 'none';
-        }
-    }, {passive: true});
-    
-    page.addEventListener('touchend', function(e) {
-        if (!tracking) return;
-        tracking = false;
-        
-        var touch = e.changedTouches[0];
-        var dx = touch.clientX - startX;
-        
-        page.style.transition = '';
-        
-        if (dx > 100) {
-            // Swipe enough → close
-            closeTripPage();
-        } else {
-            // Not enough → snap back
-            page.style.transform = '';
-        }
-    }, {passive: true});
-})();
+window.clearTripInput = function(which) {
+    haptic('light');
+    if (which === 'start') {
+        tripStartCoords = null;
+        var input = document.getElementById('tripStartInput');
+        if (input) input.value = '';
+    } else {
+        tripEndCoords = null;
+        var input = document.getElementById('tripEndInput');
+        if (input) input.value = '';
+    }
+};
 
-// Build presets
-function buildConsoPresets() {
+window.swapTripAddresses = function() {
+    haptic('medium');
+    var temp = tripStartCoords;
+    tripStartCoords = tripEndCoords;
+    tripEndCoords = temp;
+    var startInput = document.getElementById('tripStartInput');
+    var endInput = document.getElementById('tripEndInput');
+    if (startInput && endInput) {
+        var tempVal = startInput.value;
+        startInput.value = endInput.value;
+        endInput.value = tempVal;
+    }
+    tryAutoCalculateRoute();
+};
+
+// ===== ROUTING (OSRM) =====
+function tryAutoCalculateRoute() {
+    if (!tripStartCoords || !tripEndCoords) return;
+    calculateRoute();
+}
+
+async function calculateRoute() {
+    if (!tripStartCoords || !tripEndCoords) return;
     var ti = getTripI18n();
 
+    try {
+        var url = 'https://router.project-osrm.org/route/v1/driving/' +
+            tripStartCoords.lon + ',' + tripStartCoords.lat + ';' +
+            tripEndCoords.lon + ',' + tripEndCoords.lat +
+            '?overview=full&geometries=geojson&steps=false';
+
+        var resp = await fetch(url);
+        var data = await resp.json();
+
+        if (!data.routes || !data.routes.length) {
+            showToast('❌ ' + ti.noRoute);
+            return;
+        }
+
+        var route = data.routes[0];
+        var distKm = (route.distance / 1000).toFixed(1);
+        var durationMin = Math.round(route.duration / 60);
+        tripRouteCoords = route.geometry.coordinates;
+
+        // Update distance input
+        var distInput = document.getElementById('tripDist');
+        if (distInput) distInput.value = Math.round(distKm);
+
+        // Show route info
+        var routeInfo = document.getElementById('tripRouteInfo');
+        if (routeInfo) routeInfo.classList.remove('hidden');
+
+        animateNumber('triDist', distKm, {suffix:' km'});
+
+        var hours = Math.floor(durationMin / 60);
+        var mins = durationMin % 60;
+        var timeText = hours > 0 ? hours + 'h' + (mins > 0 ? mins : '') : mins + 'min';
+        animateText('triTime', timeText);
+
+        var triDistL = document.getElementById('triDistL');
+        if (triDistL) triDistL.textContent = ti.routeDist;
+        var triTimeL = document.getElementById('triTimeL');
+        if (triTimeL) triTimeL.textContent = ti.routeTime;
+        var triStopsL = document.getElementById('triStopsL');
+        if (triStopsL) triStopsL.textContent = ti.routeStops;
+
+        // Draw map
+        drawTripMap();
+
+        // Find stations along route
+        await findStationsOnRoute();
+
+    } catch(e) {
+        console.error(e);
+        showToast('❌ ' + ti.noRoute);
+    }
+}
+
+// ===== TRIP MAP =====
+function drawTripMap() {
+    var wrap = document.getElementById('tripMapWrap');
+    if (!wrap) return;
+    wrap.classList.remove('hidden');
+
+    if (!tripLeafletMap) {
+        tripLeafletMap = L.map('tripMap', {zoomControl:false, attributionControl:false}).setView([48.8, 2.3], 6);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {maxZoom:18}).addTo(tripLeafletMap);
+        tripMarkersLayer = L.layerGroup().addTo(tripLeafletMap);
+        tripRouteLayer = L.layerGroup().addTo(tripLeafletMap);
+    }
+
+    tripRouteLayer.clearLayers();
+    tripMarkersLayer.clearLayers();
+
+    // Draw route line
+    if (tripRouteCoords.length) {
+        var latLngs = tripRouteCoords.map(function(c) { return [c[1], c[0]]; });
+        var routeLine = L.polyline(latLngs, {
+            color: appMode === 'ev' ? '#30d158' : '#007aff',
+            weight: 4, opacity: 0.8
+        });
+        tripRouteLayer.addLayer(routeLine);
+
+        // Start marker
+        var startIcon = L.divIcon({
+            html:'<div style="width:16px;height:16px;background:#30d158;border:3px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(48,209,88,.5)"></div>',
+            className:'',iconSize:[16,16],iconAnchor:[8,8]
+        });
+        L.marker([tripStartCoords.lat, tripStartCoords.lon], {icon:startIcon}).addTo(tripMarkersLayer);
+
+        // End marker
+        var endIcon = L.divIcon({
+            html:'<div style="width:16px;height:16px;background:#ff3b30;border:3px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(255,59,48,.5)"></div>',
+            className:'',iconSize:[16,16],iconAnchor:[8,8]
+        });
+        L.marker([tripEndCoords.lat, tripEndCoords.lon], {icon:endIcon}).addTo(tripMarkersLayer);
+
+        // Fit bounds
+        tripLeafletMap.fitBounds(routeLine.getBounds(), {padding:[30,30]});
+    }
+
+    setTimeout(function() { tripLeafletMap.invalidateSize(); }, 200);
+}
+
+// ===== STATIONS ON ROUTE =====
+async function findStationsOnRoute() {
+    if (!tripRouteCoords.length) return;
+    var ti = getTripI18n();
+    var isEv = appMode === 'ev';
+
+    // Sample points along the route (every ~30km)
+    var totalDist = parseFloat(document.getElementById('tripDist').value) || 300;
+    var sampleInterval = Math.max(5, Math.floor(tripRouteCoords.length / Math.max(1, totalDist / 30)));
+    var samplePoints = [];
+    for (var i = 0; i < tripRouteCoords.length; i += sampleInterval) {
+        samplePoints.push(tripRouteCoords[i]);
+    }
+    if (samplePoints.length > 10) samplePoints = samplePoints.slice(0, 10);
+
+    var allStations = [];
+    var seenIds = {};
+
+    // Search stations near each sample point
+    for (var p = 0; p < Math.min(samplePoints.length, 5); p++) {
+        var pt = samplePoints[p];
+        try {
+            var amenity = isEv ? 'charging_station' : 'fuel';
+            var query = '[out:json][timeout:8];node["amenity"="' + amenity + '"](around:3000,' + pt[1] + ',' + pt[0] + ');out body 10;';
+            var resp = await fetch('https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query));
+            var data = await resp.json();
+
+            (data.elements || []).forEach(function(e) {
+                if (seenIds[e.id]) return;
+                seenIds[e.id] = true;
+
+                // Calculate km from start
+                var kmFromStart = 0;
+                var minDistToRoute = Infinity;
+                for (var r = 0; r < tripRouteCoords.length; r += 10) {
+                    var d = haversine(e.lat, e.lon, tripRouteCoords[r][1], tripRouteCoords[r][0]);
+                    if (d < minDistToRoute) {
+                        minDistToRoute = d;
+                        kmFromStart = (r / tripRouteCoords.length) * totalDist;
+                    }
+                }
+
+                allStations.push({
+                    id: e.id.toString(),
+                    name: e.tags?.brand || e.tags?.name || e.tags?.operator || 'Station',
+                    lat: e.lat,
+                    lon: e.lon,
+                    kmFromStart: Math.round(kmFromStart),
+                    distFromRoute: minDistToRoute,
+                    price: null
+                });
+            });
+        } catch(ex) {}
+    }
+
+    // Sort by km from start
+    allStations.sort(function(a, b) { return a.kmFromStart - b.kmFromStart; });
+
+    // Display
+    var stationsDiv = document.getElementById('tripStationsOnRoute');
+    var stationsList = document.getElementById('tripStationsList');
+    var stationsTitle = document.getElementById('tripStationsTitle');
+
+    if (stationsDiv && stationsList) {
+        if (!allStations.length) {
+            stationsDiv.classList.add('hidden');
+            return;
+        }
+
+        stationsDiv.classList.remove('hidden');
+        if (stationsTitle) stationsTitle.textContent = isEv ? ti.stationsTitleEv : ti.stationsTitle;
+
+        var premium = isPremium();
+        var visibleStations = premium ? allStations : allStations.slice(0, TRIP_FREE_STATIONS);
+        var hiddenCount = allStations.length - visibleStations.length;
+        var priceClass = isEv ? 'ev-c' : 'fuel-c';
+
+        var html = visibleStations.map(function(s) {
+            return '<a class="trip-station-item" href="https://maps.apple.com/?daddr=' + s.lat + ',' + s.lon + '&dirflg=d" target="_blank">' +
+                '<div class="trip-station-km">' + s.kmFromStart + ' km</div>' +
+                '<div class="trip-station-info">' +
+                    '<div class="trip-station-name">' + s.name + '</div>' +
+                    '<div class="trip-station-dist">' + ti.kmFromStart + '</div>' +
+                '</div>' +
+                '<div class="trip-station-price ' + priceClass + '">' + (s.price ? s.price.toFixed(2) : '—') + '</div>' +
+            '</a>';
+        }).join('');
+
+        // Premium upsell
+        if (hiddenCount > 0) {
+            html += '<button onclick="window.open(STRIPE_M,\'_blank\')" style="' +
+                'width:100%;padding:14px;border:none;border-radius:12px;' +
+                'background:linear-gradient(135deg,rgba(255,215,0,.1),rgba(255,149,0,.08));' +
+                'border:1.5px dashed rgba(255,215,0,.25);' +
+                'color:#ffd700;font-size:13px;font-weight:600;' +
+                'font-family:-apple-system,sans-serif;cursor:pointer;' +
+                'margin-top:8px;text-align:center">' +
+                ti.stationsMore.replace('{n}', allStations.length) +
+            '</button>';
+        }
+
+        stationsList.innerHTML = html;
+
+        // Stops count
+        animateText('triStops', '' + allStations.length);
+
+        // Add station markers to map
+        if (tripMarkersLayer) {
+            visibleStations.forEach(function(s, i) {
+                var color = isEv ? '#30d158' : '#ff9500';
+                var icon = L.divIcon({
+                    html:'<div style="background:' + color + ';color:#000;padding:2px 6px;border-radius:8px;font-size:10px;font-weight:700;font-family:-apple-system,sans-serif;white-space:nowrap;box-shadow:0 2px 4px rgba(0,0,0,.3)">' + s.name.substring(0, 10) + '</div>',
+                    className:'',iconAnchor:[25,12]
+                });
+                L.marker([s.lat, s.lon], {icon:icon}).addTo(tripMarkersLayer);
+            });
+        }
+    }
+}
+
+// ===== PRESETS =====
+function buildConsoPresets() {
+    var ti = getTripI18n();
     var w = document.getElementById('consoPresets');
     if (w) {
         var presets = [{v:5.5,l:ti.city},{v:6.5,l:ti.mixed},{v:7.5,l:ti.highway},{v:9.0,l:ti.suv}];
@@ -5931,7 +6339,6 @@ function buildConsoPresets() {
             w.appendChild(btn);
         });
     }
-
     var wEv = document.getElementById('evConsoPresets');
     if (wEv) {
         var evP = [{v:14,l:ti.evCity},{v:17,l:ti.evMixed},{v:20,l:ti.evHighway},{v:24,l:ti.evFast}];
@@ -5953,29 +6360,27 @@ function buildConsoPresets() {
     }
 }
 
-// Update page UI
+// ===== UPDATE PAGE UI =====
 function updateTripPageUI() {
     var ti = getTripI18n();
     var isEv = appMode === 'ev';
+    var setText = function(id, txt) { var el = document.getElementById(id); if (el) el.textContent = txt; };
 
-    var backText = document.getElementById('tripBackText');
-    if (backText) backText.textContent = ti.back;
-    var pageTitle = document.getElementById('tripPageTitle');
-    if (pageTitle) pageTitle.textContent = ti.pageTitle;
-    var distTitle = document.getElementById('tripDistTitle');
-    if (distTitle) distTitle.textContent = ti.distTitle;
-    var consoTitle = document.getElementById('tripConsoTitle');
-    if (consoTitle) consoTitle.textContent = ti.consoTitle;
-    var evConsoTitle = document.getElementById('tripEvConsoTitle');
-    if (evConsoTitle) evConsoTitle.textContent = ti.evConsoTitle;
-    var priceTitle = document.getElementById('tripPriceTitle');
-    if (priceTitle) priceTitle.textContent = ti.priceTitle;
-    var calcText = document.getElementById('tripCalcText');
-    if (calcText) calcText.textContent = ti.calc;
-    var shareText = document.getElementById('tripShareText');
-    if (shareText) shareText.textContent = ti.shareTxt;
+    setText('creditBackText', ti.back);
+    setText('tripPageTitle', ti.pageTitle);
+    setText('tripAddrTitle', ti.addrTitle);
+    setText('tripDistLabel', ti.distLabel);
+    setText('tripConsoTitle', ti.consoTitle);
+    setText('tripEvConsoTitle', ti.evConsoTitle);
+    setText('tripPriceTitle', ti.priceTitle);
+    setText('tripCalcText', ti.calc);
+    setText('tripGpsText', ti.gps);
 
-    // Current price display
+    var startInput = document.getElementById('tripStartInput');
+    if (startInput) startInput.placeholder = ti.startPh;
+    var endInput = document.getElementById('tripEndInput');
+    if (endInput) endInput.placeholder = ti.endPh;
+
     var curPrice = document.getElementById('tripCurrentPrice');
     var curUnit = document.getElementById('tripCurrentPriceUnit');
     if (isEv) {
@@ -5986,23 +6391,24 @@ function updateTripPageUI() {
         if (curUnit) curUnit.textContent = ti.perL;
     }
 
-    // Apply fuel-only / ev-only visibility
+    // Visibility
     var page = document.getElementById('tripPage');
     if (page) {
-        page.querySelectorAll('.fuel-only').forEach(function(el) {
-            el.style.display = isEv ? 'none' : 'block';
-        });
-        page.querySelectorAll('.ev-only').forEach(function(el) {
-            el.style.display = isEv ? 'block' : 'none';
-        });
+        page.querySelectorAll('.fuel-only').forEach(function(el) { el.style.display = isEv ? 'none' : 'block'; });
+        page.querySelectorAll('.ev-only').forEach(function(el) { el.style.display = isEv ? 'block' : 'none'; });
     }
 
-    // Hide results until calculated
-    var results = document.getElementById('tripResults');
-    if (results) results.classList.add('hidden');
+    var result = document.getElementById('tripResults');
+    if (result) result.classList.add('hidden');
+    var mapWrap = document.getElementById('tripMapWrap');
+    if (mapWrap) mapWrap.classList.add('hidden');
+    var routeInfo = document.getElementById('tripRouteInfo');
+    if (routeInfo) routeInfo.classList.add('hidden');
+    var stationsOnRoute = document.getElementById('tripStationsOnRoute');
+    if (stationsOnRoute) stationsOnRoute.classList.add('hidden');
 }
 
-// Calculate
+// ===== CALCULATE TRIP =====
 window.calculateTrip = function() {
     haptic('success');
     var ti = getTripI18n();
@@ -6033,7 +6439,7 @@ window.calculateTrip = function() {
         var evStopsDetail = document.getElementById('tripEvStopsDetail');
         if (evStopsDetail) evStopsDetail.textContent = ti.evStopsDetail.replace('{stops}', stops).replace('{time}', timePerStop).replace('{kwh}', usable.toFixed(0));
 
-        showTripCompare(ti, dist, null, totalCost, true);
+        showTripCompare(ti, dist, null, totalCost);
     } else {
         var consoInput = document.getElementById('tripConso');
         var conso = consoInput ? parseFloat(consoInput.value) || 6.5 : 6.5;
@@ -6047,15 +6453,11 @@ window.calculateTrip = function() {
         var evStops = document.getElementById('tripEvStops');
         if (evStops) evStops.style.display = 'none';
 
-        showTripCompare(ti, dist, totalCost, null, false);
+        showTripCompare(ti, dist, totalCost, null);
     }
 
     if (results) results.scrollIntoView({behavior:'smooth', block:'start'});
-	trackEvent('calculate_trip', {
-        mode: appMode,
-        distance: dist,
-        cost: totalCost
-    });
+    try { trackEvent('calculate_trip', {mode:appMode, distance:dist, hasRoute:!!tripRouteCoords.length}); } catch(e) {}
 };
 
 function setTripResult(ti, dist, costStr, fuelStr, priceStr, statFuel, statFuelL, stops, stopsL, per100) {
@@ -6079,11 +6481,10 @@ function setTripResult(ti, dist, costStr, fuelStr, priceStr, statFuel, statFuelL
     if (spl) spl.textContent = ti.per100;
 }
 
-function showTripCompare(ti, dist, fuelCost, evCostVal, isEv) {
+function showTripCompare(ti, dist, fuelCost, evCostVal) {
     var fuelC = fuelCost || (dist / 100) * 6.5 * prc;
     var evC = evCostVal || (dist / 100) * 17 * 0.35;
     var savings = fuelC - evC;
-
     var compareTitle = document.getElementById('tripCompareTitle');
     if (compareTitle) compareTitle.textContent = ti.compareTitle;
     var compareContent = document.getElementById('tripCompareContent');
@@ -6095,7 +6496,7 @@ function showTripCompare(ti, dist, fuelCost, evCostVal, isEv) {
     }
 }
 
-// Share trip
+// ===== SHARE TRIP =====
 window.shareTrip = function() {
     haptic('medium');
     var ti = getTripI18n();
@@ -6103,35 +6504,30 @@ window.shareTrip = function() {
     var dist = distInput ? distInput.value : '300';
     var costValue = document.getElementById('tripCostValue');
     var cost = costValue ? costValue.textContent : '';
-    var fuelDetail = document.getElementById('tripCostDetail');
-    var fuel = fuelDetail ? fuelDetail.textContent : '';
+    var startInput = document.getElementById('tripStartInput');
+    var endInput = document.getElementById('tripEndInput');
+    var from = startInput ? startInput.value || '?' : '?';
+    var to = endInput ? endInput.value || '?' : '?';
 
-    var text = ti.shareMsg.replace('{dist}', dist).replace('{cost}', cost).replace('{fuel}', fuel);
-
+    var text = ti.shareMsg.replace('{from}', from).replace('{to}', to).replace('{dist}', dist).replace('{cost}', cost);
     if (navigator.share) {
         navigator.share({title:'Easy Refuel', text:text, url:'https://easy-refuel.eu'}).catch(function() {});
     } else {
-        navigator.clipboard.writeText(text).then(function() {
-            showToast('📋 Copied!');
-        }).catch(function() {});
+        navigator.clipboard.writeText(text).then(function() { showToast('📋 Copied!'); }).catch(function() {});
     }
     try { trackGameEvent('share'); } catch(e) {}
 };
 
-// Update launcher text
 function updateTripUI() {
     var ti = getTripI18n();
     var launcher = document.getElementById('tripLauncherText');
     if (launcher) launcher.textContent = ti.launcher;
 }
 
-// Input listeners
-var tripDistInput = document.getElementById('tripDist');
-if (tripDistInput) {
-    tripDistInput.addEventListener('focus', function() {
-        setTimeout(function() { tripDistInput.scrollIntoView({behavior:'smooth', block:'center'}); }, 300);
-    });
-}
+// ===== INIT ADDRESS INPUTS =====
+setupAddressInput('tripStartInput', 'tripStartSuggestions', function(coords) { tripStartCoords = coords; });
+setupAddressInput('tripEndInput', 'tripEndSuggestions', function(coords) { tripEndCoords = coords; });
+
 // ==================== WIDGET / MINI DASHBOARD ====================
 var widgetData = JSON.parse(localStorage.getItem('widgetData') || '{}');
 
@@ -7243,16 +7639,76 @@ if ('serviceWorker' in navigator) {
     <div class="trip-header-spacer"></div>
 </div>
 
-        <!-- Distance -->
-        <div class="trip-section">
-            <div class="trip-section-title" id="tripDistTitle">📍 Distance</div>
-            <div class="trip-field">
+        <!-- Adresses -->
+        <div class="credit-section">
+            <div class="credit-section-title" id="tripAddrTitle">📍 Itinéraire</div>
+
+            <!-- Départ -->
+            <div class="trip-addr-field" id="tripStartField">
+                <div class="trip-addr-row">
+                    <span class="ta-icon start">📍</span>
+                    <input type="text" id="tripStartInput"
+                           placeholder="Adresse de départ"
+                           autocomplete="off">
+                    <button class="ta-clear" onclick="clearTripInput('start')">✕</button>
+                </div>
+                <div class="trip-suggestions" id="tripStartSuggestions"></div>
+                <button class="trip-gps-btn" onclick="useGPSForTrip('start')">
+                    📍 <span id="tripGpsText">Ma position actuelle</span>
+                </button>
+            </div>
+
+            <!-- Swap -->
+            <button class="trip-swap-btn" onclick="swapTripAddresses()">⇅</button>
+
+            <!-- Arrivée -->
+            <div class="trip-addr-field" id="tripEndField">
+                <div class="trip-addr-row">
+                    <span class="ta-icon end">🏁</span>
+                    <input type="text" id="tripEndInput"
+                           placeholder="Adresse d'arrivée"
+                           autocomplete="off">
+                    <button class="ta-clear" onclick="clearTripInput('end')">✕</button>
+                </div>
+                <div class="trip-suggestions" id="tripEndSuggestions"></div>
+            </div>
+
+            <!-- Distance (auto-calculée ou manuelle) -->
+            <div class="trip-field" style="margin-top:12px">
+                <label class="credit-label" id="tripDistLabel">📏 Distance (auto-calculée)</label>
                 <div class="trip-input-row">
-                    <span class="trip-icon">📍</span>
-                    <input type="number" id="tripDist" value="300" min="1" max="9999" step="1" inputmode="numeric" placeholder="300">
+                    <span class="trip-icon">📏</span>
+                    <input type="number" id="tripDist" value="0" min="1" max="9999" step="1" inputmode="numeric" placeholder="300">
                     <span class="trip-unit">km</span>
                 </div>
             </div>
+        </div>
+
+        <!-- Carte du trajet -->
+        <div class="trip-map-wrap hidden" id="tripMapWrap">
+            <div id="tripMap"></div>
+        </div>
+
+        <!-- Info route -->
+        <div class="trip-route-info hidden" id="tripRouteInfo">
+            <div class="tri-item">
+                <div class="tri-value" id="triDist">0 km</div>
+                <div class="tri-label" id="triDistL">Distance</div>
+            </div>
+            <div class="tri-item">
+                <div class="tri-value" id="triTime">0h</div>
+                <div class="tri-label" id="triTimeL">Durée</div>
+            </div>
+            <div class="tri-item">
+                <div class="tri-value" id="triStops">0</div>
+                <div class="tri-label" id="triStopsL">Arrêts</div>
+            </div>
+        </div>
+
+        <!-- Stations sur le trajet -->
+        <div class="trip-stations hidden" id="tripStationsOnRoute">
+            <div class="trip-stations-title" id="tripStationsTitle">⛽ Stations sur le trajet</div>
+            <div id="tripStationsList"></div>
         </div>
 
         <!-- Consommation fuel -->
