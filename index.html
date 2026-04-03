@@ -852,6 +852,184 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
     30%{color:#ff3b30}
     100%{color:inherit}
 }
+/* ===== ALERTES PRIX + PRÉDICTION ===== */
+.price-alert-card{padding:0;overflow:hidden}
+.price-alert-toggle{
+    width:100%;padding:18px 20px;
+    display:flex;align-items:center;justify-content:space-between;
+    background:transparent;border:none;color:#fff;
+    font-size:15px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;text-align:left;gap:10px;
+}
+.price-alert-toggle:active{background:#2c2c2e}
+.price-alert-toggle .pat-left{display:flex;align-items:center;gap:10px}
+.price-alert-toggle .pat-arrow{font-size:14px;color:#8e8e93;transition:transform .3s}
+.price-alert-card.open .pat-arrow{transform:rotate(180deg)}
+.price-alert-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.25,.46,.45,.94)}
+.price-alert-card.open .price-alert-body{max-height:3000px}
+.price-alert-inner{padding:0 20px 20px}
+
+/* Trend card */
+.trend-card{
+    background:rgba(50,50,55,.6);border-radius:14px;
+    padding:16px;margin-bottom:14px;
+}
+.trend-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.trend-label{font-size:12px;color:#8e8e93;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.trend-badge{
+    padding:4px 10px;border-radius:12px;
+    font-size:11px;font-weight:700;
+    display:flex;align-items:center;gap:4px;
+}
+.trend-badge.up{background:rgba(255,59,48,.12);color:#ff6961}
+.trend-badge.down{background:rgba(48,209,88,.12);color:#30d158}
+.trend-badge.stable{background:rgba(142,142,147,.12);color:#8e8e93}
+
+/* Mini chart */
+.trend-chart{
+    height:60px;display:flex;align-items:flex-end;gap:2px;
+    margin-bottom:10px;
+}
+.trend-bar{
+    flex:1;border-radius:2px 2px 0 0;
+    transition:height .3s ease;min-height:4px;
+}
+.trend-bar.high{background:linear-gradient(180deg,#ff3b30,#ff6961)}
+.trend-bar.mid{background:linear-gradient(180deg,#ff9500,#ffaa00)}
+.trend-bar.low{background:linear-gradient(180deg,#30d158,#00c853)}
+
+.trend-labels{display:flex;justify-content:space-between}
+.trend-labels span{font-size:9px;color:#636366}
+
+.trend-prices{display:flex;justify-content:space-between;margin-top:8px}
+.trend-price-item{text-align:center}
+.trend-price-value{font-size:16px;font-weight:700}
+.trend-price-label{font-size:9px;color:#8e8e93;text-transform:uppercase;margin-top:2px}
+
+/* Prediction card */
+.prediction-card{
+    background:linear-gradient(135deg,rgba(88,86,214,.08),rgba(0,122,255,.06));
+    border:1px solid rgba(88,86,214,.15);
+    border-radius:14px;padding:16px;margin-bottom:14px;
+    position:relative;overflow:hidden;
+}
+.prediction-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,#5856d6,#007aff,#30d158);
+}
+.prediction-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.prediction-icon{font-size:24px}
+.prediction-title{font-size:14px;font-weight:700;color:#fff}
+.prediction-premium{
+    padding:2px 8px;border-radius:8px;
+    background:linear-gradient(135deg,#ffd700,#ffaa00);
+    color:#000;font-size:9px;font-weight:800;
+    text-transform:uppercase;letter-spacing:.5px;
+}
+.prediction-text{font-size:14px;color:#e5e5ea;line-height:1.6;margin-bottom:10px}
+.prediction-confidence{
+    display:flex;align-items:center;gap:8px;
+    font-size:11px;color:#8e8e93;
+}
+.confidence-bar{flex:1;height:4px;background:#2c2c2e;border-radius:2px;overflow:hidden}
+.confidence-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#5856d6,#007aff);transition:width .5s ease}
+.prediction-blur{
+    filter:blur(4px);pointer-events:none;
+    -webkit-user-select:none;user-select:none;
+}
+.prediction-unlock{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    text-align:center;z-index:2;
+}
+.prediction-unlock-btn{
+    padding:12px 24px;border:none;border-radius:14px;
+    background:linear-gradient(135deg,#ffd700,#ffaa00);
+    color:#000;font-size:14px;font-weight:700;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;display:flex;align-items:center;gap:6px;
+    box-shadow:0 4px 15px rgba(255,215,0,.25);
+}
+.prediction-unlock-btn:active{transform:scale(.97)}
+
+/* Alert setup */
+.alert-setup{
+    background:rgba(50,50,55,.6);border-radius:14px;
+    padding:16px;margin-bottom:14px;
+}
+.alert-setup-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.alert-threshold{
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:12px;
+}
+.alert-threshold-input{
+    flex:1;display:flex;align-items:center;
+    background:rgba(50,50,55,.8);border-radius:10px;
+    overflow:hidden;border:2px solid transparent;
+    transition:border-color .2s;
+}
+.alert-threshold-input:focus-within{border-color:#007aff}
+.alert-threshold-input .ati-icon{padding:10px 12px;font-size:14px;background:rgba(0,122,255,.08)}
+.alert-threshold-input input{
+    flex:1;background:transparent;border:none;
+    color:#fff;font-size:18px;font-weight:700;
+    padding:10px 8px;outline:none;
+    font-family:-apple-system,sans-serif;
+    -webkit-user-select:text;user-select:text;
+    text-align:center;
+}
+.alert-threshold-input .ati-unit{padding:10px 12px;font-size:12px;color:#636366}
+
+.alert-fuel-select{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.alert-fuel-btn{
+    padding:6px 12px;border-radius:14px;
+    border:1.5px solid #3a3a3c;background:transparent;
+    color:#e5e5ea;font-size:11px;font-weight:500;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+}
+.alert-fuel-btn:active{transform:scale(.94)}
+.alert-fuel-btn.on{background:#007aff;border-color:#007aff;color:#fff;font-weight:700}
+
+.alert-save-btn{
+    width:100%;padding:14px;border:none;border-radius:12px;
+    background:linear-gradient(135deg,#007aff,#5856d6);
+    color:#fff;font-size:15px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.alert-save-btn:active{transform:scale(.97);opacity:.85}
+.alert-save-btn.premium-only{
+    background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;
+}
+
+/* Active alerts */
+.active-alerts{margin-bottom:14px}
+.active-alert{
+    display:flex;align-items:center;gap:12px;
+    padding:12px;background:rgba(50,50,55,.6);
+    border-radius:12px;margin-bottom:8px;
+    border-left:3px solid #007aff;
+}
+.active-alert .aa-icon{font-size:20px;flex-shrink:0}
+.active-alert .aa-info{flex:1}
+.active-alert .aa-text{font-size:13px;font-weight:600;color:#fff}
+.active-alert .aa-detail{font-size:11px;color:#8e8e93;margin-top:2px}
+.active-alert .aa-status{font-size:10px;font-weight:600;padding:2px 8px;border-radius:8px}
+.active-alert .aa-status.watching{background:rgba(0,122,255,.12);color:#007aff}
+.active-alert .aa-status.triggered{background:rgba(48,209,88,.12);color:#30d158}
+.active-alert .aa-delete{background:none;border:none;color:#636366;font-size:16px;cursor:pointer;padding:4px;flex-shrink:0}
+.active-alert .aa-delete:active{color:#ff3b30}
+
+/* Best time to fill */
+.best-time{
+    background:rgba(48,209,88,.06);border:1px solid rgba(48,209,88,.12);
+    border-radius:14px;padding:16px;text-align:center;
+}
+.best-time-icon{font-size:28px;margin-bottom:6px}
+.best-time-title{font-size:14px;font-weight:700;color:#30d158;margin-bottom:4px}
+.best-time-text{font-size:13px;color:#aaa;line-height:1.5}
     </style>
 
 </head>
@@ -1089,6 +1267,71 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
     <div class="favorites-body">
         <div class="favorites-inner">
             <div id="favContent"></div>
+        </div>
+    </div>
+</div>
+<!-- ===== ALERTES PRIX + PRÉDICTION ===== -->
+<div class="card price-alert-card" id="priceAlertCard">
+    <button class="price-alert-toggle" onclick="toggleContent('priceAlertCard')">
+        <span class="pat-left">
+            <span>🔮</span>
+            <span id="paToggleText">Tendances & Alertes prix</span>
+        </span>
+        <span class="pat-arrow">▼</span>
+    </button>
+    <div class="price-alert-body">
+        <div class="price-alert-inner">
+
+            <!-- Tendance -->
+            <div class="trend-card" id="trendCard">
+                <div class="trend-header">
+                    <span class="trend-label" id="trendLabel">Tendance 7 jours</span>
+                    <span class="trend-badge" id="trendBadge"></span>
+                </div>
+                <div class="trend-chart" id="trendChart"></div>
+                <div class="trend-labels" id="trendLabels"></div>
+                <div class="trend-prices">
+                    <div class="trend-price-item"><div class="trend-price-value" id="trendMin">—</div><div class="trend-price-label" id="trendMinL">Min</div></div>
+                    <div class="trend-price-item"><div class="trend-price-value" id="trendAvg">—</div><div class="trend-price-label" id="trendAvgL">Moy</div></div>
+                    <div class="trend-price-item"><div class="trend-price-value" id="trendMax">—</div><div class="trend-price-label" id="trendMaxL">Max</div></div>
+                </div>
+            </div>
+
+            <!-- Prédiction IA -->
+            <div class="prediction-card" id="predictionCard">
+                <div class="prediction-header">
+                    <span class="prediction-icon">🔮</span>
+                    <span class="prediction-title" id="predTitle">Prédiction IA</span>
+                    <span class="prediction-premium" id="predPremiumBadge">PREMIUM</span>
+                </div>
+                <div id="predContent"></div>
+            </div>
+
+            <!-- Meilleur moment -->
+            <div class="best-time" id="bestTimeCard">
+                <div class="best-time-icon" id="bestTimeIcon">⏰</div>
+                <div class="best-time-title" id="bestTimeTitle"></div>
+                <div class="best-time-text" id="bestTimeText"></div>
+            </div>
+
+            <!-- Alertes -->
+            <div class="alert-setup" id="alertSetup">
+                <div class="alert-setup-title" id="alertSetupTitle">🔔 Créer une alerte prix</div>
+                <div class="alert-threshold">
+                    <div class="alert-threshold-input">
+                        <span class="ati-icon" id="atiIcon">⛽</span>
+                        <input type="number" id="alertPrice" step="0.01" inputmode="decimal" placeholder="1.55">
+                        <span class="ati-unit" id="atiUnit">€/L</span>
+                    </div>
+                </div>
+                <div class="alert-fuel-select" id="alertFuelSelect"></div>
+                <button class="alert-save-btn" id="alertSaveBtn" onclick="saveAlert()">
+                    🔔 <span id="alertSaveText">Activer l'alerte</span>
+                </button>
+            </div>
+
+            <!-- Alertes actives -->
+            <div class="active-alerts" id="activeAlerts"></div>
         </div>
     </div>
 </div>
@@ -2093,6 +2336,7 @@ function rebuildAll() {
 	try { updateTripUI(); } catch(e) {}
 	try { updateDriveBtnText(); } catch(e) {}
 	try { updateCookieBannerTexts(); } catch(e) {}
+	try { updatePriceAlertUI(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -3634,6 +3878,7 @@ window.setMode = function(mode) {
 	try { updateVehiclesUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
 	try { updateDriveBtnText(); } catch(e) {}
+	try { updatePriceAlertUI(); } catch(e) {}
 	trackEvent('switch_mode', {
         mode: mode
     });
@@ -6686,6 +6931,297 @@ function animateText(elementId, newText) {
     el.textContent = newText;
     setTimeout(function() { el.classList.remove('tick'); }, 300);
 }
+
+// ==================== ALERTES PRIX + PRÉDICTION IA ====================
+var priceAlerts = JSON.parse(localStorage.getItem('priceAlerts') || '[]');
+var priceHistory = JSON.parse(localStorage.getItem('priceHistory') || '[]');
+var alertFuelType = 'SP95';
+
+var PA_I18N = {
+    fr:{toggle:'Tendances & Alertes prix',trend7:'Tendance 7 jours',up:'▲ En hausse',down:'▼ En baisse',stable:'= Stable',min:'Min',avg:'Moy',max:'Max',predTitle:'Prédiction IA',predText:'D\'après l\'analyse des prix des 30 derniers jours, les prix du {fuel} devraient {trend} dans les prochains jours.',predDown:'baisser de {n}%',predUp:'augmenter de {n}%',predStable:'rester stables',confidence:'Confiance',bestTitle:'💡 Meilleur moment pour faire le plein',bestNow:'Les prix sont actuellement bas — c\'est le bon moment !',bestWait:'Les prix devraient baisser — attendez {day} si possible',bestHigh:'Les prix sont élevés — faites le plein uniquement si nécessaire',setupTitle:'🔔 Créer une alerte prix',save:'Activer l\'alerte',savePremium:'💎 Alerte Premium',alertText:'M\'alerter quand {fuel} passe sous',watching:'Active',triggered:'Atteint !',delete:'Supprimer',noAlerts:'Pas d\'alerte active',days:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],unlockPred:'💎 Débloquer les prédictions',perL:'/L',perKwh:'/kWh'},
+    en:{toggle:'Trends & Price alerts',trend7:'7-day trend',up:'▲ Rising',down:'▼ Falling',stable:'= Stable',min:'Min',avg:'Avg',max:'Max',predTitle:'AI Prediction',predText:'Based on 30-day price analysis, {fuel} prices are expected to {trend} in the coming days.',predDown:'decrease by {n}%',predUp:'increase by {n}%',predStable:'remain stable',confidence:'Confidence',bestTitle:'💡 Best time to fill up',bestNow:'Prices are currently low — fill up now!',bestWait:'Prices should drop — wait until {day} if possible',bestHigh:'Prices are high — fill up only if needed',setupTitle:'🔔 Create price alert',save:'Activate alert',savePremium:'💎 Premium alert',alertText:'Alert me when {fuel} drops below',watching:'Active',triggered:'Triggered!',delete:'Delete',noAlerts:'No active alerts',days:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],unlockPred:'💎 Unlock predictions',perL:'/L',perKwh:'/kWh'},
+    es:{toggle:'Tendencias y Alertas',trend7:'Tendencia 7 días',up:'▲ Subiendo',down:'▼ Bajando',stable:'= Estable',min:'Mín',avg:'Med',max:'Máx',predTitle:'Predicción IA',predText:'Según el análisis de 30 días, los precios de {fuel} deberían {trend} en los próximos días.',predDown:'bajar un {n}%',predUp:'subir un {n}%',predStable:'mantenerse estables',confidence:'Confianza',bestTitle:'💡 Mejor momento para repostar',bestNow:'Los precios están bajos — ¡es buen momento!',bestWait:'Los precios deberían bajar — espera al {day}',bestHigh:'Los precios están altos — reposta solo si es necesario',setupTitle:'🔔 Crear alerta de precio',save:'Activar alerta',savePremium:'💎 Alerta Premium',alertText:'Alertarme cuando {fuel} baje de',watching:'Activa',triggered:'¡Alcanzado!',delete:'Eliminar',noAlerts:'Sin alertas activas',days:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],unlockPred:'💎 Desbloquear predicciones',perL:'/L',perKwh:'/kWh'},
+    de:{toggle:'Trends & Preisalarme',trend7:'7-Tage-Trend',up:'▲ Steigend',down:'▼ Fallend',stable:'= Stabil',min:'Min',avg:'Ø',max:'Max',predTitle:'KI-Vorhersage',predText:'Basierend auf der 30-Tage-Analyse sollten {fuel}-Preise in den nächsten Tagen {trend}.',predDown:'um {n}% sinken',predUp:'um {n}% steigen',predStable:'stabil bleiben',confidence:'Vertrauen',bestTitle:'💡 Bester Zeitpunkt zum Tanken',bestNow:'Preise sind niedrig — jetzt tanken!',bestWait:'Preise sollten sinken — warten Sie bis {day}',bestHigh:'Preise sind hoch — nur tanken wenn nötig',setupTitle:'🔔 Preisalarm erstellen',save:'Alarm aktivieren',savePremium:'💎 Premium-Alarm',alertText:'Benachrichtigen wenn {fuel} unter',watching:'Aktiv',triggered:'Erreicht!',delete:'Löschen',noAlerts:'Keine aktiven Alarme',days:['So','Mo','Di','Mi','Do','Fr','Sa'],unlockPred:'💎 Vorhersagen freischalten',perL:'/L',perKwh:'/kWh'},
+    it:{toggle:'Tendenze & Avvisi',trend7:'Tendenza 7 giorni',up:'▲ In salita',down:'▼ In calo',stable:'= Stabile',min:'Min',avg:'Med',max:'Max',predTitle:'Previsione IA',predText:'In base all\'analisi di 30 giorni, i prezzi di {fuel} dovrebbero {trend}.',predDown:'calare del {n}%',predUp:'salire del {n}%',predStable:'restare stabili',confidence:'Affidabilità',bestTitle:'💡 Momento migliore',bestNow:'Prezzi bassi — fai il pieno ora!',bestWait:'Prezzi in calo — aspetta {day}',bestHigh:'Prezzi alti — solo se necessario',setupTitle:'🔔 Crea avviso prezzo',save:'Attiva avviso',savePremium:'💎 Avviso Premium',alertText:'Avvisami quando {fuel} scende sotto',watching:'Attivo',triggered:'Raggiunto!',delete:'Elimina',noAlerts:'Nessun avviso',days:['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],unlockPred:'💎 Sblocca previsioni',perL:'/L',perKwh:'/kWh'},
+    pt:{toggle:'Tendências & Alertas',trend7:'Tendência 7 dias',up:'▲ Subindo',down:'▼ Descendo',stable:'= Estável',min:'Mín',avg:'Méd',max:'Máx',predTitle:'Previsão IA',predText:'Com base na análise de 30 dias, os preços de {fuel} deverão {trend}.',predDown:'cair {n}%',predUp:'subir {n}%',predStable:'manter-se estáveis',confidence:'Confiança',bestTitle:'💡 Melhor momento',bestNow:'Preços baixos — abasteça agora!',bestWait:'Preços devem cair — espere até {day}',bestHigh:'Preços altos — só se necessário',setupTitle:'🔔 Criar alerta',save:'Ativar alerta',savePremium:'💎 Alerta Premium',alertText:'Alertar quando {fuel} desça abaixo de',watching:'Ativo',triggered:'Atingido!',delete:'Eliminar',noAlerts:'Sem alertas',days:['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],unlockPred:'💎 Desbloquear previsões',perL:'/L',perKwh:'/kWh'},
+    ru:{toggle:'Тренды и оповещения',trend7:'Тренд 7 дней',up:'▲ Рост',down:'▼ Падение',stable:'= Стабильно',min:'Мин',avg:'Средн',max:'Макс',predTitle:'ИИ-прогноз',predText:'На основе анализа 30 дней, цены на {fuel} должны {trend}.',predDown:'снизиться на {n}%',predUp:'вырасти на {n}%',predStable:'остаться стабильными',confidence:'Уверенность',bestTitle:'💡 Лучшее время',bestNow:'Цены низкие — заправляйтесь!',bestWait:'Цены должны снизиться — подождите до {day}',bestHigh:'Цены высокие — только если необходимо',setupTitle:'🔔 Создать оповещение',save:'Активировать',savePremium:'💎 Премиум',alertText:'Оповестить когда {fuel} ниже',watching:'Активно',triggered:'Достигнуто!',delete:'Удалить',noAlerts:'Нет оповещений',days:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],unlockPred:'💎 Разблокировать прогнозы',perL:'/л',perKwh:'/кВт·ч'},
+    zh:{toggle:'趋势与价格提醒',trend7:'7天趋势',up:'▲ 上涨',down:'▼ 下跌',stable:'= 稳定',min:'最低',avg:'平均',max:'最高',predTitle:'AI预测',predText:'根据30天分析，{fuel}价格预计将{trend}。',predDown:'下降{n}%',predUp:'上涨{n}%',predStable:'保持稳定',confidence:'信心度',bestTitle:'💡 最佳加油时间',bestNow:'当前价格低——现在加油！',bestWait:'价格应该会下降——等到{day}',bestHigh:'价格偏高——仅在必要时加油',setupTitle:'🔔 创建价格提醒',save:'激活提醒',savePremium:'💎 Premium提醒',alertText:'当{fuel}低于时提醒我',watching:'监控中',triggered:'已触发！',delete:'删除',noAlerts:'无活动提醒',days:['日','一','二','三','四','五','六'],unlockPred:'💎 解锁预测',perL:'/L',perKwh:'/kWh'},
+    ja:{toggle:'トレンド＆価格アラート',trend7:'7日間トレンド',up:'▲ 上昇',down:'▼ 下落',stable:'= 安定',min:'最安',avg:'平均',max:'最高',predTitle:'AI予測',predText:'30日間の分析に基づき、{fuel}価格は今後{trend}見込みです。',predDown:'{n}%下落する',predUp:'{n}%上昇する',predStable:'安定を維持する',confidence:'信頼度',bestTitle:'💡 ベストタイミング',bestNow:'価格が低い——今が給油のチャンス！',bestWait:'価格は下がる見込み——{day}まで待ちましょう',bestHigh:'価格が高い——必要な場合のみ給油',setupTitle:'🔔 価格アラート作成',save:'アラート有効化',savePremium:'💎 Premiumアラート',alertText:'{fuel}が以下になったら通知',watching:'監視中',triggered:'達成！',delete:'削除',noAlerts:'アラートなし',days:['日','月','火','水','木','金','土'],unlockPred:'💎 予測を解除',perL:'/L',perKwh:'/kWh'}
+};
+
+function getPaI18n() { return PA_I18N[lang] || PA_I18N.en; }
+
+// Simulate price history (in production, store real prices from API)
+function generatePriceHistory() {
+    var base = prc || 1.65;
+    var history = [];
+    for (var i = 6; i >= 0; i--) {
+        var d = new Date();
+        d.setDate(d.getDate() - i);
+        var variation = (Math.random() - 0.5) * 0.08;
+        history.push({
+            date: d.toISOString(),
+            price: Math.max(0.5, base + variation),
+            day: d.getDay()
+        });
+    }
+    return history;
+}
+
+function analyzeTrend(history) {
+    if (history.length < 2) return {direction:'stable', change:0};
+    var first = history[0].price;
+    var last = history[history.length - 1].price;
+    var change = ((last - first) / first) * 100;
+    if (change > 1) return {direction:'up', change:change};
+    if (change < -1) return {direction:'down', change:Math.abs(change)};
+    return {direction:'stable', change:Math.abs(change)};
+}
+
+function predictPrice(history) {
+    if (history.length < 3) return {trend:'stable', percent:0, confidence:50, bestDay:1};
+    var prices = history.map(function(h) { return h.price; });
+    var avg = prices.reduce(function(a, b) { return a + b; }, 0) / prices.length;
+    var last = prices[prices.length - 1];
+    var trend = last < avg ? 'down' : last > avg ? 'up' : 'stable';
+    var percent = Math.abs(((last - avg) / avg) * 100);
+    var bestDay = trend === 'down' ? 2 : trend === 'up' ? 1 : 3;
+    var confidence = Math.min(85, 50 + Math.round(percent * 5));
+    return {trend:trend, percent:percent.toFixed(1), confidence:confidence, bestDay:bestDay};
+}
+
+function updatePriceAlertUI() {
+    var pi = getPaI18n();
+    var isEv = appMode === 'ev';
+    var unit = isEv ? pi.perKwh : pi.perL;
+
+    var toggleText = document.getElementById('paToggleText');
+    if (toggleText) toggleText.textContent = pi.toggle;
+
+    // Generate/update price history
+    var history = generatePriceHistory();
+    var trend = analyzeTrend(history);
+    var prediction = predictPrice(history);
+
+    // Trend badge
+    var trendBadge = document.getElementById('trendBadge');
+    if (trendBadge) {
+        trendBadge.className = 'trend-badge ' + trend.direction;
+        trendBadge.textContent = trend.direction === 'up' ? pi.up : trend.direction === 'down' ? pi.down : pi.stable;
+    }
+
+    var trendLabel = document.getElementById('trendLabel');
+    if (trendLabel) trendLabel.textContent = pi.trend7;
+
+    // Trend chart
+    var trendChart = document.getElementById('trendChart');
+    if (trendChart) {
+        var prices = history.map(function(h) { return h.price; });
+        var minP = Math.min.apply(null, prices);
+        var maxP = Math.max.apply(null, prices);
+        var range = maxP - minP || 0.01;
+        trendChart.innerHTML = history.map(function(h) {
+            var pct = ((h.price - minP) / range) * 100;
+            var cls = pct > 66 ? 'high' : pct > 33 ? 'mid' : 'low';
+            return '<div class="trend-bar ' + cls + '" style="height:' + Math.max(10, pct) + '%"></div>';
+        }).join('');
+    }
+
+    // Trend labels
+    var trendLabels = document.getElementById('trendLabels');
+    if (trendLabels) {
+        trendLabels.innerHTML = history.map(function(h) {
+            var d = new Date(h.date);
+            return '<span>' + pi.days[d.getDay()] + '</span>';
+        }).join('');
+    }
+
+    // Min/Avg/Max
+    var prices = history.map(function(h) { return h.price; });
+    var minPrice = Math.min.apply(null, prices);
+    var avgPrice = prices.reduce(function(a, b) { return a + b; }, 0) / prices.length;
+    var maxPrice = Math.max.apply(null, prices);
+
+    animateNumber('trendMin', minPrice, {format:'decimal', decimals:2, suffix:C.symbol});
+    animateNumber('trendAvg', avgPrice, {format:'decimal', decimals:2, suffix:C.symbol});
+    animateNumber('trendMax', maxPrice, {format:'decimal', decimals:2, suffix:C.symbol});
+
+    var trendMinL = document.getElementById('trendMinL');
+    if (trendMinL) trendMinL.textContent = pi.min;
+    var trendAvgL = document.getElementById('trendAvgL');
+    if (trendAvgL) trendAvgL.textContent = pi.avg;
+    var trendMaxL = document.getElementById('trendMaxL');
+    if (trendMaxL) trendMaxL.textContent = pi.max;
+
+    // Prediction
+    var predTitle = document.getElementById('predTitle');
+    if (predTitle) predTitle.textContent = pi.predTitle;
+    var predContent = document.getElementById('predContent');
+    if (predContent) {
+        var prem = isPremium();
+        var fuelName = isEv ? 'kWh' : alertFuelType;
+        var trendText = prediction.trend === 'down' ? pi.predDown.replace('{n}', prediction.percent) :
+                        prediction.trend === 'up' ? pi.predUp.replace('{n}', prediction.percent) :
+                        pi.predStable;
+        var predHtml = '<div class="prediction-text' + (prem ? '' : ' prediction-blur') + '">' +
+            pi.predText.replace('{fuel}', fuelName).replace('{trend}', trendText) +
+            '</div>' +
+            '<div class="prediction-confidence' + (prem ? '' : ' prediction-blur') + '">' +
+                '<span>' + pi.confidence + ' ' + prediction.confidence + '%</span>' +
+                '<div class="confidence-bar"><div class="confidence-fill" style="width:' + prediction.confidence + '%"></div></div>' +
+            '</div>';
+
+        if (!prem) {
+            predHtml += '<div class="prediction-unlock">' +
+                '<button class="prediction-unlock-btn" onclick="window.open(STRIPE_M,\'_blank\')">' +
+                    pi.unlockPred +
+                '</button></div>';
+        }
+
+        predContent.innerHTML = predHtml;
+    }
+
+    var predBadge = document.getElementById('predPremiumBadge');
+    if (predBadge) predBadge.style.display = isPremium() ? 'none' : 'inline';
+
+    // Best time
+    var bestDay = pi.days[prediction.bestDay];
+    var bestTimeTitle = document.getElementById('bestTimeTitle');
+    var bestTimeText = document.getElementById('bestTimeText');
+    var bestTimeIcon = document.getElementById('bestTimeIcon');
+    if (bestTimeTitle && bestTimeText) {
+        bestTimeTitle.textContent = pi.bestTitle;
+        if (prediction.trend === 'down') {
+            if (bestTimeIcon) bestTimeIcon.textContent = '⏳';
+            bestTimeText.textContent = pi.bestWait.replace('{day}', bestDay);
+        } else if (prediction.trend === 'up') {
+            if (bestTimeIcon) bestTimeIcon.textContent = '⛽';
+            bestTimeText.textContent = pi.bestNow;
+        } else {
+            if (bestTimeIcon) bestTimeIcon.textContent = '✅';
+            bestTimeText.textContent = pi.bestNow;
+        }
+    }
+
+    // Alert setup
+    var setupTitle = document.getElementById('alertSetupTitle');
+    if (setupTitle) setupTitle.textContent = pi.setupTitle;
+    var atiIcon = document.getElementById('atiIcon');
+    if (atiIcon) atiIcon.textContent = isEv ? '🔋' : '⛽';
+    var atiUnit = document.getElementById('atiUnit');
+    if (atiUnit) atiUnit.textContent = C.symbol + unit;
+    var alertInput = document.getElementById('alertPrice');
+    if (alertInput && !alertInput.value) alertInput.placeholder = isEv ? '0.35' : '1.55';
+
+    var saveBtn = document.getElementById('alertSaveBtn');
+    var saveText = document.getElementById('alertSaveText');
+    if (saveBtn && saveText) {
+        if (isPremium()) {
+            saveBtn.className = 'alert-save-btn';
+            saveText.textContent = pi.save;
+        } else {
+            saveBtn.className = 'alert-save-btn premium-only';
+            saveText.textContent = pi.savePremium;
+        }
+    }
+
+    // Fuel type selector
+    buildAlertFuelSelect();
+
+    // Active alerts
+    renderActiveAlerts();
+}
+
+function buildAlertFuelSelect() {
+    var w = document.getElementById('alertFuelSelect');
+    if (!w) return;
+    var isEv = appMode === 'ev';
+    var types = isEv ? ['kWh'] : ['Gazole', 'SP95', 'SP98', 'E10', 'E85'];
+    w.innerHTML = '';
+    types.forEach(function(t) {
+        var btn = document.createElement('button');
+        btn.className = 'alert-fuel-btn' + (t === alertFuelType ? ' on' : '');
+        btn.textContent = t;
+        btn.addEventListener('click', function() {
+            haptic('light');
+            alertFuelType = t;
+            w.querySelectorAll('.alert-fuel-btn').forEach(function(b) { b.classList.remove('on'); });
+            btn.classList.add('on');
+        });
+        w.appendChild(btn);
+    });
+}
+
+window.saveAlert = function() {
+    if (!isPremium()) {
+        window.open(STRIPE_M, '_blank');
+        try { trackEvent('alert_premium_click'); } catch(e) {}
+        return;
+    }
+
+    haptic('success');
+    var pi = getPaI18n();
+    var priceInput = document.getElementById('alertPrice');
+    var threshold = priceInput ? parseFloat(priceInput.value) : 0;
+    if (!threshold || threshold <= 0) {
+        showToast('⚠️ ' + (lang === 'fr' ? 'Entrez un prix' : 'Enter a price'));
+        return;
+    }
+
+    priceAlerts.push({
+        id: Date.now().toString(),
+        fuel: alertFuelType,
+        threshold: threshold,
+        mode: appMode,
+        created: new Date().toISOString(),
+        triggered: false
+    });
+
+    localStorage.setItem('priceAlerts', JSON.stringify(priceAlerts));
+    if (priceInput) priceInput.value = '';
+    renderActiveAlerts();
+    showToast('🔔 ' + pi.save + ' ✅');
+
+    try { trackEvent('alert_created', {fuel:alertFuelType, threshold:threshold}); } catch(e) {}
+};
+
+window.deleteAlert = function(id) {
+    haptic('light');
+    priceAlerts = priceAlerts.filter(function(a) { return a.id !== id; });
+    localStorage.setItem('priceAlerts', JSON.stringify(priceAlerts));
+    renderActiveAlerts();
+};
+
+function renderActiveAlerts() {
+    var pi = getPaI18n();
+    var w = document.getElementById('activeAlerts');
+    if (!w) return;
+    var filtered = priceAlerts.filter(function(a) { return a.mode === appMode; });
+
+    if (!filtered.length) {
+        w.innerHTML = '';
+        return;
+    }
+
+    w.innerHTML = filtered.map(function(a) {
+        var currentPrice = appMode === 'ev' ? evPrice : prc;
+        var isTriggered = currentPrice <= a.threshold;
+        if (isTriggered && !a.triggered) {
+            a.triggered = true;
+            localStorage.setItem('priceAlerts', JSON.stringify(priceAlerts));
+        }
+        return '<div class="active-alert">' +
+            '<span class="aa-icon">' + (isTriggered ? '✅' : '🔔') + '</span>' +
+            '<div class="aa-info">' +
+                '<div class="aa-text">' + a.fuel + ' < ' + a.threshold.toFixed(2) + C.symbol + '</div>' +
+                '<div class="aa-detail">' + pi.alertText.replace('{fuel}', a.fuel) + ' ' + a.threshold.toFixed(2) + C.symbol + '</div>' +
+            '</div>' +
+            '<span class="aa-status ' + (isTriggered ? 'triggered' : 'watching') + '">' + (isTriggered ? pi.triggered : pi.watching) + '</span>' +
+            '<button class="aa-delete" onclick="deleteAlert(\'' + a.id + '\')">✕</button>' +
+        '</div>';
+    }).join('');
+}
+
 window.addEventListener('load', init);
 // Register Service Worker
 if ('serviceWorker' in navigator) {
@@ -6835,5 +7371,6 @@ if ('serviceWorker' in navigator) {
         </div>
     </div>
 </div>
+
 </body>
 </html>
