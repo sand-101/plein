@@ -5971,6 +5971,17 @@ window.openTripPage = function() {
     page.scrollTop = 0;
     updateTripPageUI();
     buildConsoPresets();
+    
+    // Init address autocomplete (must be done when page is visible)
+    setupAddressInput('tripStartInput', 'tripStartSuggestions', function(coords) { 
+        tripStartCoords = coords; 
+        tryAutoCalculateRoute();
+    });
+    setupAddressInput('tripEndInput', 'tripEndSuggestions', function(coords) { 
+        tripEndCoords = coords;
+        tryAutoCalculateRoute();
+    });
+    
     history.pushState({tripOpen:true}, '');
 };
 
@@ -6583,9 +6594,7 @@ function updateTripUI() {
     if (launcher) launcher.textContent = ti.launcher;
 }
 
-// ===== INIT ADDRESS INPUTS =====
-setupAddressInput('tripStartInput', 'tripStartSuggestions', function(coords) { tripStartCoords = coords; });
-setupAddressInput('tripEndInput', 'tripEndSuggestions', function(coords) { tripEndCoords = coords; });
+
 
 // ==================== WIDGET / MINI DASHBOARD ====================
 var widgetData = JSON.parse(localStorage.getItem('widgetData') || '{}');
@@ -7683,32 +7692,29 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 </script>
-<!-- ===== TRIP PAGE (fullscreen) ===== -->
+<!-- ===== TRIP PAGE ===== -->
 <div class="trip-page" id="tripPage">
     <div class="trip-page-inner">
 
-        <!-- Header with big back button -->
-<div class="trip-header">
-    <a href="javascript:void(0)" class="trip-back" id="tripBackBtn" 
-       ontouchstart="closeTripPage()" onclick="closeTripPage()">
-        <span style="font-size:22px">‹</span>
-        <span id="tripBackText">Retour</span>
-    </a>
-    <span class="trip-page-title" id="tripPageTitle">🗺️ Trajet</span>
-    <div class="trip-header-spacer"></div>
-</div>
+        <!-- Header -->
+        <div class="trip-header">
+            <a href="javascript:void(0)" class="trip-back"
+               ontouchstart="closeTripPage()" onclick="closeTripPage()">
+                <span style="font-size:22px">‹</span>
+                <span id="tripBackText">Retour</span>
+            </a>
+            <span class="trip-page-title" id="tripPageTitle">🗺️ Trajet</span>
+            <div class="trip-header-spacer"></div>
+        </div>
 
         <!-- Adresses -->
         <div class="trip-section">
-    <div class="trip-section-title" id="tripAddrTitle">📍 Trajet</div>
+            <div class="trip-section-title" id="tripAddrTitle">📍 Itinéraire</div>
 
-            <!-- Départ -->
             <div class="trip-addr-field" id="tripStartField">
                 <div class="trip-addr-row">
                     <span class="ta-icon start">📍</span>
-                    <input type="text" id="tripStartInput"
-                           placeholder="Adresse de départ"
-                           autocomplete="off">
+                    <input type="text" id="tripStartInput" placeholder="Adresse de départ" autocomplete="off">
                     <button class="ta-clear" onclick="clearTripInput('start')">✕</button>
                 </div>
                 <div class="trip-suggestions" id="tripStartSuggestions"></div>
@@ -7717,24 +7723,19 @@ if ('serviceWorker' in navigator) {
                 </button>
             </div>
 
-            <!-- Swap -->
             <button class="trip-swap-btn" onclick="swapTripAddresses()">⇅</button>
 
-            <!-- Arrivée -->
             <div class="trip-addr-field" id="tripEndField">
                 <div class="trip-addr-row">
                     <span class="ta-icon end">🏁</span>
-                    <input type="text" id="tripEndInput"
-                           placeholder="Adresse d'arrivée"
-                           autocomplete="off">
+                    <input type="text" id="tripEndInput" placeholder="Adresse d'arrivée" autocomplete="off">
                     <button class="ta-clear" onclick="clearTripInput('end')">✕</button>
                 </div>
                 <div class="trip-suggestions" id="tripEndSuggestions"></div>
             </div>
 
-            <!-- Distance (auto-calculée ou manuelle) -->
             <div class="trip-field" style="margin-top:12px">
-                <label class="trip-label" id="tripDistLabel">📏 Distance (auto-calculée)</label>
+                <label class="trip-section-title" id="tripDistLabel">📏 Distance</label>
                 <div class="trip-input-row">
                     <span class="trip-icon">📏</span>
                     <input type="number" id="tripDist" value="0" min="1" max="9999" step="1" inputmode="numeric" placeholder="300">
@@ -7743,12 +7744,12 @@ if ('serviceWorker' in navigator) {
             </div>
         </div>
 
-        <!-- Carte du trajet -->
-        <<div class="trip-map-wrap hidden" id="tripMapWrap">
-    <div id="tripMap" style="width:100%;height:250px"></div>
-</div>
+        <!-- Carte -->
+        <div class="trip-map-wrap hidden" id="tripMapWrap">
+            <div id="tripMap" style="width:100%;height:250px"></div>
+        </div>
 
-        <!-- Info route -->
+        <!-- Route info -->
         <div class="trip-route-info hidden" id="tripRouteInfo">
             <div class="tri-item">
                 <div class="tri-value" id="triDist">0 km</div>
@@ -7805,52 +7806,33 @@ if ('serviceWorker' in navigator) {
             </div>
         </div>
 
-        <!-- Calculate -->
+        <!-- Calculer -->
         <button class="trip-calc-btn" onclick="calculateTrip()">
             🧮 <span id="tripCalcText">Calculer le coût</span>
         </button>
 
-        <!-- Results -->
+        <!-- Résultats -->
         <div class="trip-results hidden" id="tripResults">
-
-            <!-- Main cost -->
             <div class="trip-main-cost">
                 <div class="trip-cost-label" id="tripCostLabel">Coût du trajet</div>
                 <div class="trip-cost-value" id="tripCostValue">0 €</div>
                 <div class="trip-cost-detail" id="tripCostDetail"></div>
             </div>
-
-            <!-- Stats -->
             <div class="trip-stats">
-                <div class="trip-stat">
-                    <div class="trip-stat-v" id="tripStatFuel">0</div>
-                    <div class="trip-stat-l" id="tripStatFuelL">Litres</div>
-                </div>
-                <div class="trip-stat">
-                    <div class="trip-stat-v" id="tripStatStops">0</div>
-                    <div class="trip-stat-l" id="tripStatStopsL">Arrêts</div>
-                </div>
-                <div class="trip-stat">
-                    <div class="trip-stat-v" id="tripStatPer100">0 €</div>
-                    <div class="trip-stat-l" id="tripStatPer100L">/100 km</div>
-                </div>
+                <div class="trip-stat"><div class="trip-stat-v" id="tripStatFuel">0</div><div class="trip-stat-l" id="tripStatFuelL">Litres</div></div>
+                <div class="trip-stat"><div class="trip-stat-v" id="tripStatStops">0</div><div class="trip-stat-l" id="tripStatStopsL">Arrêts</div></div>
+                <div class="trip-stat"><div class="trip-stat-v" id="tripStatPer100">0 €</div><div class="trip-stat-l" id="tripStatPer100L">/100 km</div></div>
             </div>
-
-            <!-- EV stops -->
             <div class="trip-ev-stops ev-only" id="tripEvStops" style="display:none">
                 <div class="trip-ev-stops-title" id="tripEvStopsTitle">⚡ Arrêts recharge</div>
                 <div class="trip-ev-stops-detail" id="tripEvStopsDetail"></div>
             </div>
-
-            <!-- Compare -->
             <div class="trip-compare" id="tripCompare">
                 <div class="trip-compare-title" id="tripCompareTitle">⚖️ Essence vs Électrique</div>
                 <div id="tripCompareContent"></div>
             </div>
-
-            <!-- Share trip -->
             <button class="trip-share-btn" onclick="shareTrip()">
-                📤 <span id="tripShareText">Partager ce calcul</span>
+                📤 <span id="tripShareText">Partager</span>
             </button>
         </div>
     </div>
