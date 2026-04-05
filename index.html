@@ -6448,16 +6448,27 @@ function updateTripPageUI() {
 }
 
 // ===== CALCULATE TRIP =====
-window.calculateTrip = async function() {
+window.calculateTrip = function() {
     haptic('success');
     var ti = getTripI18n();
     var isEv = appMode === 'ev';
 
-    // Auto-calculate route if addresses are set
+    // Auto-calculate route if addresses are set but no route yet
     if (tripStartCoords && tripEndCoords && !tripRouteCoords.length) {
-        await calculateRoute();
+        calculateRoute().then(function() {
+            doTripCalc();
+        }).catch(function() {
+            doTripCalc();
+        });
+        return;
     }
 
+    doTripCalc();
+};
+
+function doTripCalc() {
+    var ti = getTripI18n();
+    var isEv = appMode === 'ev';
     var distInput = document.getElementById('tripDist');
     var dist = distInput ? parseFloat(distInput.value) || 300 : 300;
 
@@ -6465,17 +6476,6 @@ window.calculateTrip = async function() {
         showToast('📏 ' + ti.distLabel);
         return;
     }
-
-    var results = document.getElementById('tripResults');
-    if (results) results.classList.remove('hidden');
-
-    // ... reste du code identique ...
-
-function doTripCalculation() {
-    var ti = getTripI18n();
-    var isEv = appMode === 'ev';
-    var distInput = document.getElementById('tripDist');
-    var dist = distInput ? parseFloat(distInput.value) || 300 : 300;
 
     var results = document.getElementById('tripResults');
     if (results) results.classList.remove('hidden');
@@ -6498,7 +6498,7 @@ function doTripCalculation() {
         var evStopsTitle = document.getElementById('tripEvStopsTitle');
         if (evStopsTitle) evStopsTitle.textContent = ti.evStopsTitle;
         var evStopsDetail = document.getElementById('tripEvStopsDetail');
-        if (evStopsDetail) evStopsDetail.textContent = ti.evStopsDetail.replace('{stops}', stops).replace('{time}', timePerStop).replace('{kwh}', usable.toFixed(0));
+        if (evStopsDetail && ti.evStopsDetail) evStopsDetail.textContent = ti.evStopsDetail.replace('{stops}', stops).replace('{time}', timePerStop).replace('{kwh}', usable.toFixed(0));
 
         showTripCompare(ti, dist, null, totalCost);
     } else {
@@ -6518,45 +6518,8 @@ function doTripCalculation() {
     }
 
     if (results) results.scrollIntoView({behavior:'smooth', block:'start'});
-    try { trackEvent('calculate_trip', {mode:appMode, distance:dist, hasRoute:!!tripRouteCoords.length}); } catch(e) {}
-};
-
-function setTripResult(ti, dist, costStr, fuelStr, priceStr, statFuel, statFuelL, stops, stopsL, per100) {
-    var costValue = document.getElementById('tripCostValue');
-    if (costValue) costValue.textContent = costStr;
-    var costLabel = document.getElementById('tripCostLabel');
-    if (costLabel) costLabel.textContent = ti.costLabel;
-    var costDetail = document.getElementById('tripCostDetail');
-    if (costDetail) costDetail.textContent = ti.detail.replace('{fuel}', fuelStr).replace('{price}', priceStr).replace('{cost}', costStr);
-    var sf = document.getElementById('tripStatFuel');
-    if (sf) sf.textContent = statFuel;
-    var sfl = document.getElementById('tripStatFuelL');
-    if (sfl) sfl.textContent = statFuelL;
-    var ss = document.getElementById('tripStatStops');
-    if (ss) ss.textContent = stops;
-    var ssl = document.getElementById('tripStatStopsL');
-    if (ssl) ssl.textContent = stopsL;
-    var sp = document.getElementById('tripStatPer100');
-    if (sp) sp.textContent = per100;
-    var spl = document.getElementById('tripStatPer100L');
-    if (spl) spl.textContent = ti.per100;
+    try { trackEvent('calculate_trip', {mode:appMode, distance:dist}); } catch(e) {}
 }
-
-function showTripCompare(ti, dist, fuelCost, evCostVal) {
-    var fuelC = fuelCost || (dist / 100) * 6.5 * prc;
-    var evC = evCostVal || (dist / 100) * 17 * 0.35;
-    var savings = fuelC - evC;
-    var compareTitle = document.getElementById('tripCompareTitle');
-    if (compareTitle) compareTitle.textContent = ti.compareTitle;
-    var compareContent = document.getElementById('tripCompareContent');
-    if (compareContent) {
-        compareContent.innerHTML =
-            '<div class="trip-compare-row"><span class="tcr-label">⛽ ' + ti.fuelCost + '</span><span class="tcr-value">' + fmtCur(fuelC) + '</span></div>' +
-            '<div class="trip-compare-row"><span class="tcr-label">🔋 ' + ti.evCost + '</span><span class="tcr-value">' + fmtCur(evC) + '</span></div>' +
-            '<div class="trip-compare-row trip-compare-divider"><span class="tcr-label">💰 ' + ti.savings + '</span><span class="tcr-savings">' + (savings > 0 ? '−' : '+') + fmtCur(Math.abs(savings)) + '</span></div>';
-    }
-}
-
 // ===== SHARE TRIP =====
 window.shareTrip = function() {
     haptic('medium');
