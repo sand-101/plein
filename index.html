@@ -681,8 +681,15 @@ body.ev-mode .amount-particle{background:#30d158}
 .trip-back:active{opacity:.5}
 .trip-page-title{font-size:17px;font-weight:700;position:absolute;left:50%;transform:translateX(-50%);pointer-events:none;color:#fff}
 .trip-header-spacer{width:80px}
-.trip-section{background:rgba(30,30,35,.93);border-radius:16px;padding:20px;margin-top:14px}
-.trip-section-title{font-size:13px;font-weight:600;color:#8e8e93;text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
+.trip-section{
+    background:rgba(30,30,35,.93);border-radius:16px;
+    padding:20px;margin-top:14px;
+}
+.trip-section-title{
+    font-size:13px;font-weight:600;color:#8e8e93;
+    text-transform:uppercase;letter-spacing:.5px;
+    margin-bottom:14px;
+}
 .trip-field{margin-bottom:14px}
 .trip-input-row{display:flex;align-items:center;background:rgba(50,50,55,.8);border-radius:12px;overflow:hidden;border:2px solid transparent;transition:border-color .2s}
 .trip-input-row:focus-within{border-color:#007aff}
@@ -6398,7 +6405,7 @@ function updateTripPageUI() {
     var isEv = appMode === 'ev';
     var setText = function(id, txt) { var el = document.getElementById(id); if (el) el.textContent = txt; };
 
-    setText('creditBackText', ti.back);
+    setText('tripBackText', ti.back);
     setText('tripPageTitle', ti.pageTitle);
     setText('tripAddrTitle', ti.addrTitle);
     setText('tripDistLabel', ti.distLabel);
@@ -6441,8 +6448,30 @@ function updateTripPageUI() {
 }
 
 // ===== CALCULATE TRIP =====
-window.calculateTrip = function() {
+window.calculateTrip = async function() {
     haptic('success');
+    var ti = getTripI18n();
+    var isEv = appMode === 'ev';
+
+    // Auto-calculate route if addresses are set
+    if (tripStartCoords && tripEndCoords && !tripRouteCoords.length) {
+        await calculateRoute();
+    }
+
+    var distInput = document.getElementById('tripDist');
+    var dist = distInput ? parseFloat(distInput.value) || 300 : 300;
+
+    if (dist <= 0) {
+        showToast('📏 ' + ti.distLabel);
+        return;
+    }
+
+    var results = document.getElementById('tripResults');
+    if (results) results.classList.remove('hidden');
+
+    // ... reste du code identique ...
+
+function doTripCalculation() {
     var ti = getTripI18n();
     var isEv = appMode === 'ev';
     var distInput = document.getElementById('tripDist');
@@ -7672,8 +7701,8 @@ if ('serviceWorker' in navigator) {
 </div>
 
         <!-- Adresses -->
-        <div class="credit-section">
-            <div class="credit-section-title" id="tripAddrTitle">📍 Itinéraire</div>
+        <div class="trip-section">
+    <div class="trip-section-title" id="tripAddrTitle">📍 Trajet</div>
 
             <!-- Départ -->
             <div class="trip-addr-field" id="tripStartField">
@@ -7707,7 +7736,7 @@ if ('serviceWorker' in navigator) {
 
             <!-- Distance (auto-calculée ou manuelle) -->
             <div class="trip-field" style="margin-top:12px">
-                <label class="credit-label" id="tripDistLabel">📏 Distance (auto-calculée)</label>
+                <label class="trip-label" id="tripDistLabel">📏 Distance (auto-calculée)</label>
                 <div class="trip-input-row">
                     <span class="trip-icon">📏</span>
                     <input type="number" id="tripDist" value="0" min="1" max="9999" step="1" inputmode="numeric" placeholder="300">
