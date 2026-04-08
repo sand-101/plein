@@ -1154,7 +1154,122 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
 .trip-station-price{font-size:16px;font-weight:700;flex-shrink:0}
 .trip-station-price.fuel-c{color:#ff9500}
 .trip-station-price.ev-c{color:#30d158}
+/* ===== ÉCONOMIES TOTALES ===== */
+.savings-card{
+    padding:20px;
+    background:linear-gradient(145deg,rgba(48,209,88,.06),rgba(0,122,255,.04));
+    border:1px solid rgba(48,209,88,.12);
+    position:relative;overflow:hidden;
+}
+.savings-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,#30d158,#00c853,#007aff);
+}
 
+.savings-header{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:16px;
+}
+.savings-title-row{display:flex;align-items:center;gap:10px}
+.savings-icon{font-size:28px;animation:savingsFloat 3s ease-in-out infinite}
+@keyframes savingsFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.savings-title{font-size:15px;font-weight:700;color:#fff}
+.savings-since{font-size:11px;color:#636366}
+
+/* Big savings counter */
+.savings-big{
+    text-align:center;padding:20px 0;
+    margin-bottom:16px;
+}
+.savings-label{font-size:12px;color:#8e8e93;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.savings-amount{
+    font-size:52px;font-weight:800;letter-spacing:-2px;
+    background:linear-gradient(135deg,#30d158,#00c853);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;line-height:1.1;
+    filter:drop-shadow(0 0 20px rgba(48,209,88,.15));
+}
+.savings-equivalent{font-size:13px;color:#8e8e93;margin-top:8px;line-height:1.5}
+.savings-equivalent strong{color:#30d158}
+
+/* Stats grid */
+.savings-stats{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;
+    margin-bottom:16px;
+}
+.savings-stat{
+    background:rgba(0,0,0,.2);border-radius:12px;
+    padding:12px;text-align:center;
+}
+.savings-stat-v{font-size:18px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+.savings-stat-l{font-size:9px;color:#8e8e93;text-transform:uppercase;letter-spacing:.3px;margin-top:3px}
+
+/* Monthly chart */
+.savings-chart-section{margin-bottom:16px}
+.savings-chart-title{font-size:12px;color:#8e8e93;font-weight:600;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.savings-chart{
+    height:80px;display:flex;align-items:flex-end;gap:4px;
+    background:rgba(0,0,0,.15);border-radius:10px;
+    padding:10px;
+}
+.savings-bar{
+    flex:1;border-radius:3px 3px 0 0;
+    background:linear-gradient(180deg,#30d158,#00c853);
+    transition:height .5s ease;min-height:4px;
+    position:relative;
+}
+.savings-bar::after{
+    content:attr(data-label);
+    position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);
+    font-size:8px;color:#636366;white-space:nowrap;
+}
+.savings-chart-labels{display:flex;justify-content:space-around;margin-top:18px}
+.savings-chart-labels span{font-size:9px;color:#636366}
+
+/* CO2 badge */
+.savings-co2{
+    display:flex;align-items:center;gap:12px;
+    padding:14px;background:rgba(0,0,0,.2);
+    border-radius:12px;margin-bottom:16px;
+}
+.savings-co2-icon{font-size:28px;flex-shrink:0}
+.savings-co2-info{flex:1}
+.savings-co2-value{font-size:16px;font-weight:700;color:#30d158}
+.savings-co2-label{font-size:11px;color:#8e8e93;margin-top:2px}
+
+/* Milestones */
+.savings-milestones{margin-bottom:16px}
+.savings-milestone-title{font-size:12px;color:#8e8e93;font-weight:600;margin-bottom:10px}
+.savings-milestone{
+    display:flex;align-items:center;gap:10px;
+    padding:10px;background:rgba(0,0,0,.15);
+    border-radius:10px;margin-bottom:6px;
+}
+.savings-milestone.reached{background:rgba(48,209,88,.08);border:1px solid rgba(48,209,88,.15)}
+.savings-milestone.next{opacity:.5}
+.savings-milestone-icon{font-size:20px;flex-shrink:0}
+.savings-milestone-info{flex:1}
+.savings-milestone-name{font-size:13px;font-weight:600;color:#fff}
+.savings-milestone-desc{font-size:10px;color:#8e8e93;margin-top:1px}
+.savings-milestone-check{font-size:14px;flex-shrink:0}
+
+/* Progress to next milestone */
+.savings-progress{margin-bottom:16px}
+.savings-progress-title{font-size:11px;color:#8e8e93;margin-bottom:6px;display:flex;justify-content:space-between}
+.savings-progress-bar{height:8px;background:rgba(0,0,0,.2);border-radius:4px;overflow:hidden}
+.savings-progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#30d158,#00c853);transition:width .5s ease}
+
+/* Share savings button */
+.savings-share-btn{
+    width:100%;padding:14px;border:none;border-radius:12px;
+    background:linear-gradient(135deg,#30d158,#00c853);
+    color:#000;font-size:15px;font-weight:700;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    box-shadow:0 4px 15px rgba(48,209,88,.2);
+}
+.savings-share-btn:active{transform:scale(.97);opacity:.85}
     </style>
 
 </head>
@@ -1360,7 +1475,80 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
         </div>
     </div>
 </div>
+<!-- ===== ÉCONOMIES TOTALES ===== -->
+<div class="card savings-card" id="savingsCard">
+    <div class="savings-header">
+        <div class="savings-title-row">
+            <span class="savings-icon">💰</span>
+            <div>
+                <div class="savings-title" id="savingsTitle">Vos économies</div>
+                <div class="savings-since" id="savingsSince"></div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Big counter -->
+    <div class="savings-big">
+        <div class="savings-label" id="savingsLabel">Total économisé</div>
+        <div class="savings-amount" id="savingsAmount">0 €</div>
+        <div class="savings-equivalent" id="savingsEquiv"></div>
+    </div>
+
+    <!-- Stats -->
+    <div class="savings-stats">
+        <div class="savings-stat">
+            <div class="savings-stat-v" id="savStatFills">0</div>
+            <div class="savings-stat-l" id="savStatFillsL">Pleins</div>
+        </div>
+        <div class="savings-stat">
+            <div class="savings-stat-v" id="savStatStations">0</div>
+            <div class="savings-stat-l" id="savStatStationsL">Stations</div>
+        </div>
+        <div class="savings-stat">
+            <div class="savings-stat-v" id="savStatAvg">0 €</div>
+            <div class="savings-stat-l" id="savStatAvgL">Moy/plein</div>
+        </div>
+    </div>
+
+    <!-- Monthly chart -->
+    <div class="savings-chart-section">
+        <div class="savings-chart-title">
+            <span id="savChartTitle">Économies par mois</span>
+        </div>
+        <div class="savings-chart" id="savingsChart"></div>
+    </div>
+
+    <!-- CO2 -->
+    <div class="savings-co2" id="savingsCo2">
+        <span class="savings-co2-icon">🌿</span>
+        <div class="savings-co2-info">
+            <div class="savings-co2-value" id="savCo2Value">0 kg</div>
+            <div class="savings-co2-label" id="savCo2Label">CO₂ évité en choisissant les stations optimales</div>
+        </div>
+    </div>
+
+    <!-- Progress to next milestone -->
+    <div class="savings-progress" id="savingsProgress">
+        <div class="savings-progress-title">
+            <span id="savProgressLabel">Prochain objectif</span>
+            <span id="savProgressTarget"></span>
+        </div>
+        <div class="savings-progress-bar">
+            <div class="savings-progress-fill" id="savProgressFill" style="width:0%"></div>
+        </div>
+    </div>
+
+    <!-- Milestones -->
+    <div class="savings-milestones" id="savingsMilestones">
+        <div class="savings-milestone-title" id="savMilestonesTitle">🎯 Objectifs</div>
+        <div id="savMilestonesList"></div>
+    </div>
+
+    <!-- Share -->
+    <button class="savings-share-btn" onclick="shareSavings()">
+        📤 <span id="savShareText">Partager mes économies</span>
+    </button>
+</div>
 <!-- STATIONS -->
     <div class="card stations-card">
         <div class="card-label" id="lStations">📍 Stations à proximité</div>
@@ -2463,6 +2651,7 @@ function rebuildAll() {
 	try { updateCookieBannerTexts(); } catch(e) {}
 	try { updatePriceAlertUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
+	try { updateSavingsUI(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -3029,6 +3218,19 @@ window.useStationPrice = function(price) {
     iPrice.value = cur === 'JPY' ? prc.toFixed(0) : prc.toFixed(2);
     document.querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
     save(); calc();
+	// Track savings
+    try {
+        if (stationsData && stationsData.length) {
+            var allPrices = [];
+            stationsData.forEach(function(s) {
+                Object.values(s.fuels).forEach(function(f) {
+                    if (f.price && f.price > 0) allPrices.push(f.price);
+                });
+            });
+            var avgP = allPrices.length ? allPrices.reduce(function(a,b){return a+b},0) / allPrices.length : 0;
+            trackSavings(price, avgP);
+        }
+    } catch(e) {}
     showToast('✅ ' + TL.usePrice + ' : ' + fmtPS(price) + ' ' + C.symbol);
     document.querySelector('.res-card').scrollIntoView({behavior:'smooth', block:'center'});
 	trackEvent('use_station_price', {
@@ -4005,6 +4207,7 @@ window.setMode = function(mode) {
 	try { updateTripUI(); } catch(e) {}
 	try { updateDriveBtnText(); } catch(e) {}
 	try { updatePriceAlertUI(); } catch(e) {}
+	try { updateSavingsUI(); } catch(e) {}
 	trackEvent('switch_mode', {
         mode: mode
     });
@@ -4430,6 +4633,16 @@ window.saveCurrentFill = function() {
 
     updateHistoryUI();
     showToast('💾 ' + (appMode === 'ev' ? hi.saveEv : hi.save) + ' ✅');
+	// Track savings from fill
+    try {
+        savingsData.totalSaved = (savingsData.totalSaved || 0) + (entry.totalCost * 0.05);
+        savingsData.cheapestChoices = (savingsData.cheapestChoices || 0) + 1;
+        var monthKey = new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0');
+        if (!savingsData.monthlySavings) savingsData.monthlySavings = {};
+        savingsData.monthlySavings[monthKey] = (savingsData.monthlySavings[monthKey] || 0) + (entry.totalCost * 0.05);
+        localStorage.setItem('savingsData', JSON.stringify(savingsData));
+        updateSavingsUI();
+    } catch(e) {}
 	trackEvent('save_fill', {
         mode: appMode,
         cost: entry.totalCost,
@@ -7685,6 +7898,222 @@ function renderActiveAlerts() {
         '</div>';
     }).join('');
 }
+
+// ==================== ÉCONOMIES TOTALES ====================
+var savingsData = JSON.parse(localStorage.getItem('savingsData') || '{}');
+if (!savingsData.firstUse) {
+    savingsData.firstUse = new Date().toISOString();
+    savingsData.totalSaved = 0;
+    savingsData.cheapestChoices = 0;
+    savingsData.monthlySavings = {};
+    localStorage.setItem('savingsData', JSON.stringify(savingsData));
+}
+
+var SAV_MILESTONES = [
+    {amount:10, icon:'🌱', names:{fr:'Premiers pas',en:'First steps',es:'Primeros pasos',de:'Erste Schritte',it:'Primi passi',pt:'Primeiros passos',ru:'Первые шаги',zh:'第一步',ja:'最初の一歩'}},
+    {amount:50, icon:'🌿', names:{fr:'Éco-conducteur',en:'Eco-driver',es:'Eco-conductor',de:'Öko-Fahrer',it:'Eco-guidatore',pt:'Eco-condutor',ru:'Эко-водитель',zh:'环保司机',ja:'エコドライバー'}},
+    {amount:100, icon:'💚', names:{fr:'Économe confirmé',en:'Confirmed saver',es:'Ahorrador confirmado',de:'Bestätigter Sparer',it:'Risparmiatore confermato',pt:'Poupador confirmado',ru:'Опытный экономист',zh:'节约达人',ja:'節約上手'}},
+    {amount:250, icon:'💰', names:{fr:'Maître des économies',en:'Savings master',es:'Maestro del ahorro',de:'Sparmeister',it:'Maestro del risparmio',pt:'Mestre da poupança',ru:'Мастер экономии',zh:'省钱大师',ja:'節約マスター'}},
+    {amount:500, icon:'🏆', names:{fr:'Champion du plein',en:'Fill-up champion',es:'Campeón del repostaje',de:'Tankchampion',it:'Campione del pieno',pt:'Campeão do depósito',ru:'Чемпион заправки',zh:'加油冠军',ja:'給油チャンピオン'}},
+    {amount:1000, icon:'👑', names:{fr:'Légende Easy Refuel',en:'Easy Refuel Legend',es:'Leyenda Easy Refuel',de:'Easy Refuel Legende',it:'Leggenda Easy Refuel',pt:'Lenda Easy Refuel',ru:'Легенда Easy Refuel',zh:'Easy Refuel传奇',ja:'Easy Refuelレジェンド'}}
+];
+
+var SAV_I18N = {
+    fr:{title:'Vos économies',label:'Total économisé',since:'Depuis le {d}',fills:'Pleins',fillsEv:'Recharges',stations:'Stations',stationsEv:'Bornes',avg:'Moy/plein',avgEv:'Moy/charge',chartTitle:'Économies par mois',co2Label:'CO₂ évité en choisissant les stations optimales',progressLabel:'Prochain objectif',milestonesTitle:'🎯 Objectifs',share:'Partager mes économies',shareMsg:'💰 J\'ai économisé {amount} sur mes pleins grâce à Easy Refuel !\n⛽ {fills} pleins · 📍 {stations} stations\n🌿 {co2} kg CO₂ évité\n\nhttps://easy-refuel.eu',equivCoffee:'{n} cafés ☕',equivNetflix:'{n} mois de Netflix 🎬',equivFull:'{n} pleins gratuits ⛽',months:['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc']},
+    en:{title:'Your savings',label:'Total saved',since:'Since {d}',fills:'Fill-ups',fillsEv:'Charges',stations:'Stations',stationsEv:'Chargers',avg:'Avg/fill',avgEv:'Avg/charge',chartTitle:'Monthly savings',co2Label:'CO₂ avoided by choosing optimal stations',progressLabel:'Next goal',milestonesTitle:'🎯 Goals',share:'Share my savings',shareMsg:'💰 I saved {amount} on fuel with Easy Refuel!\n⛽ {fills} fill-ups · 📍 {stations} stations\n🌿 {co2} kg CO₂ avoided\n\nhttps://easy-refuel.eu',equivCoffee:'{n} coffees ☕',equivNetflix:'{n} months Netflix 🎬',equivFull:'{n} free fill-ups ⛽',months:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']},
+    es:{title:'Tus ahorros',label:'Total ahorrado',since:'Desde el {d}',fills:'Repostajes',fillsEv:'Recargas',stations:'Gasolineras',stationsEv:'Cargadores',avg:'Media',avgEv:'Media/carga',chartTitle:'Ahorro mensual',co2Label:'CO₂ evitado eligiendo las gasolineras óptimas',progressLabel:'Próximo objetivo',milestonesTitle:'🎯 Objetivos',share:'Compartir mis ahorros',shareMsg:'💰 ¡He ahorrado {amount} con Easy Refuel!\n⛽ {fills} repostajes · 📍 {stations} gasolineras\n🌿 {co2} kg CO₂ evitado\n\nhttps://easy-refuel.eu',equivCoffee:'{n} cafés ☕',equivNetflix:'{n} meses de Netflix 🎬',equivFull:'{n} depósitos gratis ⛽',months:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']},
+    de:{title:'Ihre Ersparnisse',label:'Gesamt gespart',since:'Seit {d}',fills:'Tankungen',fillsEv:'Ladungen',stations:'Tankstellen',stationsEv:'Ladestationen',avg:'Ø/Tankung',avgEv:'Ø/Ladung',chartTitle:'Monatliche Ersparnis',co2Label:'CO₂ vermieden durch optimale Tankstellen',progressLabel:'Nächstes Ziel',milestonesTitle:'🎯 Ziele',share:'Ersparnisse teilen',shareMsg:'💰 Ich habe {amount} mit Easy Refuel gespart!\n⛽ {fills} Tankungen · 📍 {stations} Tankstellen\n🌿 {co2} kg CO₂\n\nhttps://easy-refuel.eu',equivCoffee:'{n} Kaffees ☕',equivNetflix:'{n} Monate Netflix 🎬',equivFull:'{n} gratis Tankungen ⛽',months:['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez']},
+    it:{title:'I tuoi risparmi',label:'Totale risparmiato',since:'Dal {d}',fills:'Pieni',fillsEv:'Ricariche',stations:'Stazioni',stationsEv:'Stazioni',avg:'Media',avgEv:'Media/ricarica',chartTitle:'Risparmio mensile',co2Label:'CO₂ evitata',progressLabel:'Prossimo obiettivo',milestonesTitle:'🎯 Obiettivi',share:'Condividi',shareMsg:'💰 Ho risparmiato {amount} con Easy Refuel!\n\nhttps://easy-refuel.eu',equivCoffee:'{n} caffè ☕',equivNetflix:'{n} mesi Netflix 🎬',equivFull:'{n} pieni gratis ⛽',months:['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic']},
+    pt:{title:'Suas economias',label:'Total economizado',since:'Desde {d}',fills:'Abastecimentos',fillsEv:'Cargas',stations:'Postos',stationsEv:'Carregadores',avg:'Média',avgEv:'Média/carga',chartTitle:'Economia mensal',co2Label:'CO₂ evitado',progressLabel:'Próximo objetivo',milestonesTitle:'🎯 Objetivos',share:'Partilhar',shareMsg:'💰 Economizei {amount} com Easy Refuel!\n\nhttps://easy-refuel.eu',equivCoffee:'{n} cafés ☕',equivNetflix:'{n} meses Netflix 🎬',equivFull:'{n} depósitos grátis ⛽',months:['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']},
+    ru:{title:'Ваша экономия',label:'Всего сэкономлено',since:'С {d}',fills:'Заправок',fillsEv:'Зарядок',stations:'АЗС',stationsEv:'Зарядок',avg:'Средн.',avgEv:'Средн./зарядка',chartTitle:'По месяцам',co2Label:'CO₂ сэкономлено',progressLabel:'Следующая цель',milestonesTitle:'🎯 Цели',share:'Поделиться',shareMsg:'💰 Сэкономил {amount} с Easy Refuel!\n\nhttps://easy-refuel.eu',equivCoffee:'{n} кофе ☕',equivNetflix:'{n} мес. Netflix 🎬',equivFull:'{n} заправок бесплатно ⛽',months:['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек']},
+    zh:{title:'您的节省',label:'总共节省',since:'自{d}起',fills:'加油',fillsEv:'充电',stations:'站点',stationsEv:'充电站',avg:'平均',avgEv:'平均/充电',chartTitle:'月度节省',co2Label:'通过选择最优站点减少的CO₂',progressLabel:'下一个目标',milestonesTitle:'🎯 目标',share:'分享',shareMsg:'💰 通过Easy Refuel节省了{amount}!\n\nhttps://easy-refuel.eu',equivCoffee:'{n}杯咖啡☕',equivNetflix:'{n}个月Netflix🎬',equivFull:'{n}次免费加油⛽',months:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']},
+    ja:{title:'あなたの節約',label:'合計節約額',since:'{d}から',fills:'給油',fillsEv:'充電',stations:'GS',stationsEv:'充電スタンド',avg:'平均',avgEv:'平均/充電',chartTitle:'月別節約',co2Label:'最適なGS選択で削減したCO₂',progressLabel:'次の目標',milestonesTitle:'🎯 目標',share:'共有',shareMsg:'💰 Easy Refuelで{amount}節約!\n\nhttps://easy-refuel.eu',equivCoffee:'{n}杯のコーヒー☕',equivNetflix:'{n}ヶ月Netflix🎬',equivFull:'{n}回の無料給油⛽',months:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']}
+};
+
+function getSavI18n() { return SAV_I18N[lang] || SAV_I18N.en; }
+
+// Track savings when user uses a station price
+function trackSavings(stationPrice, avgPrice) {
+    if (!stationPrice || !avgPrice || stationPrice >= avgPrice) return;
+    var litersToAdd = tank - (lvl / 100) * tank;
+    var saved = (avgPrice - stationPrice) * litersToAdd;
+    if (saved <= 0) return;
+
+    savingsData.totalSaved = (savingsData.totalSaved || 0) + saved;
+    savingsData.cheapestChoices = (savingsData.cheapestChoices || 0) + 1;
+
+    // Monthly tracking
+    var monthKey = new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0');
+    if (!savingsData.monthlySavings) savingsData.monthlySavings = {};
+    savingsData.monthlySavings[monthKey] = (savingsData.monthlySavings[monthKey] || 0) + saved;
+
+    localStorage.setItem('savingsData', JSON.stringify(savingsData));
+    updateSavingsUI();
+}
+
+function calculateTotalSavings() {
+    var totalSaved = savingsData.totalSaved || 0;
+    var totalFills = fillHistory.length;
+    var uniqueStations = {};
+    fillHistory.forEach(function(f) { if (f.station) uniqueStations[f.station] = true; });
+    var stationCount = Object.keys(uniqueStations).length || savingsData.cheapestChoices || 0;
+    var avgPerFill = totalFills > 0 ? totalSaved / totalFills : 0;
+
+    // Estimate CO2 saved (driving to closer/cheaper station saves ~0.5kg CO2 per trip)
+    var co2Saved = (savingsData.cheapestChoices || 0) * 0.5;
+
+    return {
+        total: totalSaved,
+        fills: totalFills,
+        stations: stationCount,
+        avgPerFill: avgPerFill,
+        co2: co2Saved
+    };
+}
+
+function updateSavingsUI() {
+    var si = getSavI18n();
+    var isEv = appMode === 'ev';
+    var stats = calculateTotalSavings();
+
+    // Title
+    var savingsTitle = document.getElementById('savingsTitle');
+    if (savingsTitle) savingsTitle.textContent = si.title;
+
+    // Since date
+    var savingsSince = document.getElementById('savingsSince');
+    if (savingsSince && savingsData.firstUse) {
+        var d = new Date(savingsData.firstUse);
+        var dateStr = d.toLocaleDateString(lang === 'fr' ? 'fr-FR' : lang, {day:'numeric', month:'short', year:'numeric'});
+        savingsSince.textContent = si.since.replace('{d}', dateStr);
+    }
+
+    // Big amount
+    var savingsLabel = document.getElementById('savingsLabel');
+    if (savingsLabel) savingsLabel.textContent = si.label;
+    animateNumber('savingsAmount', stats.total, {format:'currency'});
+
+    // Equivalents
+    var savingsEquiv = document.getElementById('savingsEquiv');
+    if (savingsEquiv) {
+        var coffees = Math.floor(stats.total / 3);
+        var netflix = Math.floor(stats.total / 14);
+        var fullTanks = Math.floor(stats.total / 60);
+        var equivParts = [];
+        if (coffees > 0) equivParts.push(si.equivCoffee.replace('{n}', coffees));
+        if (netflix > 0) equivParts.push(si.equivNetflix.replace('{n}', netflix));
+        if (fullTanks > 0) equivParts.push(si.equivFull.replace('{n}', fullTanks));
+        savingsEquiv.innerHTML = equivParts.length ? '≈ ' + equivParts.join(' · ') : '';
+    }
+
+    // Stats
+    animateNumber('savStatFills', stats.fills, {});
+    var savStatFillsL = document.getElementById('savStatFillsL');
+    if (savStatFillsL) savStatFillsL.textContent = isEv ? si.fillsEv : si.fills;
+
+    animateNumber('savStatStations', stats.stations, {});
+    var savStatStationsL = document.getElementById('savStatStationsL');
+    if (savStatStationsL) savStatStationsL.textContent = isEv ? si.stationsEv : si.stations;
+
+    animateNumber('savStatAvg', stats.avgPerFill, {format:'currency'});
+    var savStatAvgL = document.getElementById('savStatAvgL');
+    if (savStatAvgL) savStatAvgL.textContent = isEv ? si.avgEv : si.avg;
+
+    // Monthly chart
+    var savChartTitle = document.getElementById('savChartTitle');
+    if (savChartTitle) savChartTitle.textContent = si.chartTitle;
+
+    var chart = document.getElementById('savingsChart');
+    if (chart) {
+        var monthly = savingsData.monthlySavings || {};
+        var now = new Date();
+        var bars = [];
+        for (var i = 5; i >= 0; i--) {
+            var d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            var key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+            var val = monthly[key] || 0;
+            var monthName = si.months[d.getMonth()];
+            bars.push({val:val, label:monthName});
+        }
+        var maxVal = Math.max.apply(null, bars.map(function(b) { return b.val; })) || 1;
+        chart.innerHTML = bars.map(function(b) {
+            var h = (b.val / maxVal) * 100;
+            return '<div class="savings-bar" style="height:' + Math.max(4, h) + '%" data-label="' + b.label + '" title="' + fmtCur(b.val) + '"></div>';
+        }).join('');
+    }
+
+    // CO2
+    var savCo2Value = document.getElementById('savCo2Value');
+    if (savCo2Value) savCo2Value.textContent = stats.co2.toFixed(1) + ' kg';
+    var savCo2Label = document.getElementById('savCo2Label');
+    if (savCo2Label) savCo2Label.textContent = si.co2Label;
+
+    // Progress to next milestone
+    var nextMilestone = null;
+    for (var m = 0; m < SAV_MILESTONES.length; m++) {
+        if (stats.total < SAV_MILESTONES[m].amount) {
+            nextMilestone = SAV_MILESTONES[m];
+            break;
+        }
+    }
+
+    var savProgressLabel = document.getElementById('savProgressLabel');
+    if (savProgressLabel) savProgressLabel.textContent = si.progressLabel;
+    var savProgressTarget = document.getElementById('savProgressTarget');
+    var savProgressFill = document.getElementById('savProgressFill');
+    if (nextMilestone) {
+        var prevAmount = m > 0 ? SAV_MILESTONES[m - 1].amount : 0;
+        var progress = ((stats.total - prevAmount) / (nextMilestone.amount - prevAmount)) * 100;
+        if (savProgressTarget) savProgressTarget.textContent = nextMilestone.icon + ' ' + fmtCur(nextMilestone.amount);
+        if (savProgressFill) savProgressFill.style.width = Math.min(100, Math.max(0, progress)) + '%';
+    } else {
+        if (savProgressTarget) savProgressTarget.textContent = '👑 MAX';
+        if (savProgressFill) savProgressFill.style.width = '100%';
+    }
+
+    // Milestones
+    var savMilestonesTitle = document.getElementById('savMilestonesTitle');
+    if (savMilestonesTitle) savMilestonesTitle.textContent = si.milestonesTitle;
+    var savMilestonesList = document.getElementById('savMilestonesList');
+    if (savMilestonesList) {
+        savMilestonesList.innerHTML = SAV_MILESTONES.map(function(ms) {
+            var reached = stats.total >= ms.amount;
+            var isNext = !reached && (!nextMilestone || ms.amount === nextMilestone.amount);
+            var name = ms.names[lang] || ms.names.en;
+            return '<div class="savings-milestone ' + (reached ? 'reached' : isNext ? '' : 'next') + '">' +
+                '<span class="savings-milestone-icon">' + ms.icon + '</span>' +
+                '<div class="savings-milestone-info">' +
+                    '<div class="savings-milestone-name">' + name + '</div>' +
+                    '<div class="savings-milestone-desc">' + fmtCur(ms.amount) + '</div>' +
+                '</div>' +
+                '<span class="savings-milestone-check">' + (reached ? '✅' : '⬜') + '</span>' +
+            '</div>';
+        }).join('');
+    }
+
+    // Share text
+    var savShareText = document.getElementById('savShareText');
+    if (savShareText) savShareText.textContent = si.share;
+}
+
+window.shareSavings = function() {
+    haptic('medium');
+    var si = getSavI18n();
+    var stats = calculateTotalSavings();
+    var text = si.shareMsg
+        .replace('{amount}', fmtCur(stats.total))
+        .replace('{fills}', stats.fills)
+        .replace('{stations}', stats.stations)
+        .replace('{co2}', stats.co2.toFixed(1));
+
+    if (navigator.share) {
+        navigator.share({title:'Easy Refuel', text:text, url:'https://easy-refuel.eu'}).catch(function() {});
+    } else {
+        navigator.clipboard.writeText(text).then(function() { showToast('📋 Copied!'); }).catch(function() {});
+    }
+    try { trackGameEvent('share'); } catch(e) {}
+    try { trackEvent('share_savings', {total:stats.total}); } catch(e) {}
+};
 
 window.addEventListener('load', init);
 // Register Service Worker
