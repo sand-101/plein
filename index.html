@@ -1321,6 +1321,36 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
     box-shadow:0 4px 15px rgba(48,209,88,.2);
 }
 .savings-share-btn:active{transform:scale(.97);opacity:.85}
+/* ===== TOGGLE LANGUES/MONNAIES ===== */
+.locale-toggle-btn{
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    margin:0 auto 8px;padding:8px 16px;
+    border:none;border-radius:20px;
+    background:rgba(50,50,55,.6);
+    color:#8e8e93;font-size:12px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .2s;
+}
+.locale-toggle-btn:active{transform:scale(.95)}
+.locale-toggle-btn .ltb-flag{font-size:16px}
+.locale-toggle-btn .ltb-arrow{
+    font-size:10px;transition:transform .3s;
+}
+.locale-toggle-btn.open .ltb-arrow{transform:rotate(180deg)}
+
+.locale-panel{
+    max-height:0;overflow:hidden;
+    transition:max-height .3s cubic-bezier(.25,.46,.45,.94),
+               opacity .3s ease,
+               margin .3s ease;
+    opacity:0;
+    margin-bottom:0;
+}
+.locale-panel.open{
+    max-height:200px;
+    opacity:1;
+    margin-bottom:8px;
+}
     </style>
 
 </head>
@@ -1441,8 +1471,17 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
 </div>
 <div class="save-toast" id="toast">💾</div>
 <div class="app">
+    <!-- TOGGLE LANGUES/MONNAIES -->
+<button class="locale-toggle-btn" id="localeToggle" onclick="toggleLocalePanel()">
+    <span class="ltb-flag" id="ltbFlag">🇫🇷</span>
+    <span id="ltbText">Français · €</span>
+    <span class="ltb-arrow">▼</span>
+</button>
+
+<div class="locale-panel" id="localePanel">
     <div class="lang-bar" id="langBar"></div>
     <div class="currency-bar" id="curBar"></div>
+</div>
     <!--<div class="header">
         <h1 id="hTitle">⛽ Plein d'Essence</h1>
       <p class="sub" id="hSub">Réservoir 42 L</p> -->
@@ -2589,11 +2628,18 @@ function setLang(code) {
         b.classList.toggle('on', Object.keys(LANGS)[i] === lang);
     });
     buildCurBar();
+	try { updateLocaleToggleBtn(); } catch(e) {}
     rebuildAll();
     showToast(TL.toastLang.replace('{n}', TL.name));
 	trackEvent('change_language', {
         language: code
     });
+	// Auto-close locale panel
+    localePanelOpen = false;
+    var panel = document.getElementById('localePanel');
+    var toggleBtn = document.getElementById('localeToggle');
+    if (panel) panel.classList.remove('open');
+    if (toggleBtn) toggleBtn.classList.remove('open');
 }
 
 function setCurrency(code) {
@@ -2611,6 +2657,12 @@ function setCurrency(code) {
     });
     rebuildAll();
     showToast(TL.toastCur.replace('{n}', C.symbol + ' ' + C.code));
+	try { updateLocaleToggleBtn(); } catch(e) {}
+	localePanelOpen = false;
+    var panel = document.getElementById('localePanel');
+    var toggleBtn = document.getElementById('localeToggle');
+    if (panel) panel.classList.remove('open');
+    if (toggleBtn) toggleBtn.classList.remove('open');
 }
 
 // ==================== REBUILD ALL ====================
@@ -2636,6 +2688,7 @@ function rebuildAll() {
 	try { updatePriceAlertUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
 	try { updateSavingsLauncher(); } catch(e) {}
+	try { updateLocaleToggleBtn(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -8137,6 +8190,29 @@ function updateSavingsLauncher() {
     if (el) el.textContent = si.title;
     var amount = document.getElementById('savingsLauncherAmount');
     if (amount) amount.textContent = fmtCur(savingsData.totalSaved || 0);
+}
+
+// ==================== TOGGLE LOCALE PANEL ====================
+var localePanelOpen = false;
+
+window.toggleLocalePanel = function() {
+    haptic('light');
+    localePanelOpen = !localePanelOpen;
+    var panel = document.getElementById('localePanel');
+    var btn = document.getElementById('localeToggle');
+    if (panel) panel.classList.toggle('open', localePanelOpen);
+    if (btn) btn.classList.toggle('open', localePanelOpen);
+};
+
+function updateLocaleToggleBtn() {
+    var btn = document.getElementById('localeToggle');
+    if (!btn) return;
+    var flag = document.getElementById('ltbFlag');
+    var text = document.getElementById('ltbText');
+    
+    var langData = LANGS[lang];
+    if (flag && langData) flag.textContent = langData.flag;
+    if (text && langData) text.textContent = langData.name + ' · ' + C.symbol;
 }
 
 window.addEventListener('load', init);
