@@ -1479,11 +1479,182 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
 .active-alert .aa-delete{background:none;border:none;color:#636366;font-size:16px;cursor:pointer;padding:4px;flex-shrink:0}
 .active-alert .aa-delete:active{color:#ff3b30}
 
+/* ===== THÈMES VISUELS ===== */
+.theme-btn{
+    position:fixed;top:14px;right:14px;z-index:999;
+    width:38px;height:38px;border-radius:50%;border:none;
+    background:rgba(30,30,35,.9);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.08);
+    color:#fff;font-size:18px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 12px rgba(0,0,0,.3);
+    transition:all .2s;
+}
+.theme-btn:active{transform:scale(.9)}
+
+/* Theme picker modal */
+.theme-picker{
+    display:none;position:fixed;inset:0;
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    z-index:10001;align-items:flex-end;justify-content:center;
+    padding:20px;
+}
+.theme-picker.show{display:flex}
+.theme-picker-card{
+    background:#1c1c1e;border-radius:20px 20px 0 0;
+    padding:24px;max-width:420px;width:100%;
+    animation:themeSlideUp .3s ease;
+    max-height:80vh;overflow-y:auto;
+}
+@keyframes themeSlideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.theme-picker-title{font-size:18px;font-weight:700;text-align:center;margin-bottom:18px;color:#fff}
+
+/* Theme grid */
+.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.theme-option{
+    padding:14px;border-radius:14px;
+    border:2px solid rgba(255,255,255,.06);
+    cursor:pointer;transition:all .2s;
+    text-align:center;position:relative;
+    overflow:hidden;
+}
+.theme-option:active{transform:scale(.97)}
+.theme-option.active{border-color:#007aff;box-shadow:0 0 15px rgba(0,122,255,.2)}
+.theme-option .to-preview{
+    height:40px;border-radius:8px;margin-bottom:10px;
+    position:relative;overflow:hidden;
+}
+.theme-option .to-name{font-size:13px;font-weight:600;color:#fff}
+.theme-option .to-check{
+    position:absolute;top:8px;right:8px;
+    width:20px;height:20px;border-radius:50%;
+    background:#007aff;color:#fff;font-size:12px;
+    display:none;align-items:center;justify-content:center;
+}
+.theme-option.active .to-check{display:flex}
+
+/* Color accent selector */
+.accent-section{margin-bottom:16px}
+.accent-title{font-size:13px;font-weight:600;color:#8e8e93;margin-bottom:10px}
+.accent-grid{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.accent-btn{
+    width:36px;height:36px;border-radius:50%;
+    border:3px solid transparent;cursor:pointer;
+    transition:all .2s;position:relative;
+}
+.accent-btn:active{transform:scale(.9)}
+.accent-btn.active{border-color:#fff;box-shadow:0 0 12px rgba(255,255,255,.3)}
+.accent-btn .ab-check{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:14px;display:none;
+    text-shadow:0 1px 3px rgba(0,0,0,.5);
+}
+.accent-btn.active .ab-check{display:block}
+
+/* Close button */
+.theme-close{
+    width:100%;padding:14px;border:none;border-radius:14px;
+    background:rgba(50,50,55,.8);color:#fff;
+    font-size:15px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+}
+.theme-close:active{transform:scale(.97);background:#3a3a3c}
+
+/* ===== THEME VARIANTS ===== */
+
+/* Midnight Blue */
+body.theme-midnight{background:#080b14}
+body.theme-midnight .bg-orb-1{background:rgba(0,71,171,.15)}
+body.theme-midnight .bg-orb-2{background:rgba(88,86,214,.12)}
+body.theme-midnight .bg-orb-3{background:rgba(0,122,255,.10)}
+
+/* Forest Green */
+body.theme-forest{background:#060f08}
+body.theme-forest .bg-orb-1{background:rgba(48,209,88,.12)}
+body.theme-forest .bg-orb-2{background:rgba(0,150,80,.10)}
+body.theme-forest .bg-orb-3{background:rgba(48,209,88,.08)}
+
+/* Sunset */
+body.theme-sunset{background:#120808}
+body.theme-sunset .bg-orb-1{background:rgba(255,100,50,.15)}
+body.theme-sunset .bg-orb-2{background:rgba(255,59,48,.10)}
+body.theme-sunset .bg-orb-3{background:rgba(255,149,0,.08)}
+
+/* Purple Night */
+body.theme-purple{background:#0a0812}
+body.theme-purple .bg-orb-1{background:rgba(175,82,222,.15)}
+body.theme-purple .bg-orb-2{background:rgba(88,86,214,.12)}
+body.theme-purple .bg-orb-3{background:rgba(191,90,242,.08)}
+
+/* Ocean */
+body.theme-ocean{background:#060d12}
+body.theme-ocean .bg-orb-1{background:rgba(0,199,190,.12)}
+body.theme-ocean .bg-orb-2{background:rgba(0,122,255,.10)}
+body.theme-ocean .bg-orb-3{background:rgba(100,210,255,.08)}
+
+/* AMOLED Black */
+body.theme-amoled{background:#000000}
+body.theme-amoled .card{background:rgba(15,15,15,.95);border-color:rgba(255,255,255,.04)}
+body.theme-amoled .bg-orb-1,.body.theme-amoled .bg-orb-2,.body.theme-amoled .bg-orb-3{opacity:.5}
+
+/* ===== ACCENT COLORS ===== */
+body.accent-orange .app::before{background:linear-gradient(90deg,#ff9500,#ff6723,#30d158,#007aff,#5856d6)}
+body.accent-blue .app::before{background:linear-gradient(90deg,#007aff,#5856d6,#30d158,#007aff)}
+body.accent-green .app::before{background:linear-gradient(90deg,#30d158,#00c853,#007aff,#30d158)}
+body.accent-red .app::before{background:linear-gradient(90deg,#ff3b30,#ff6961,#ff9500,#ff3b30)}
+body.accent-purple .app::before{background:linear-gradient(90deg,#af52de,#5856d6,#007aff,#af52de)}
+body.accent-pink .app::before{background:linear-gradient(90deg,#ff2d55,#ff375f,#ff6961,#ff2d55)}
+body.accent-cyan .app::before{background:linear-gradient(90deg,#00c7be,#64d2ff,#007aff,#00c7be)}
+
+body.accent-blue .pill.on,body.accent-blue .tp.on,body.accent-blue .q-btn.on,body.accent-blue .cur-pill.on{background:#007aff;border-color:#007aff}
+body.accent-green .pill.on,body.accent-green .tp.on,body.accent-green .q-btn.on,body.accent-green .cur-pill.on{background:#30d158;border-color:#30d158}
+body.accent-red .pill.on,body.accent-red .tp.on,body.accent-red .q-btn.on,body.accent-red .cur-pill.on{background:#ff3b30;border-color:#ff3b30}
+body.accent-purple .pill.on,body.accent-purple .tp.on,body.accent-purple .q-btn.on,body.accent-purple .cur-pill.on{background:#af52de;border-color:#af52de}
+body.accent-pink .pill.on,body.accent-pink .tp.on,body.accent-pink .q-btn.on,body.accent-pink .cur-pill.on{background:#ff2d55;border-color:#ff2d55}
+body.accent-cyan .pill.on,body.accent-cyan .tp.on,body.accent-cyan .q-btn.on,body.accent-cyan .cur-pill.on{background:#00c7be;border-color:#00c7be}
+
     </style>
 
 </head>
 
 <body>
+<!-- THEME BUTTON -->
+<button class="theme-btn" id="themeBtn" onclick="openThemePicker()">🎨</button>
+
+<!-- THEME PICKER -->
+<div class="theme-picker" id="themePicker">
+    <div class="theme-picker-card">
+        <div class="theme-picker-title" id="themePickerTitle">🎨 Thème</div>
+
+        <!-- Themes -->
+        <div class="theme-grid" id="themeGrid"></div>
+
+        <!-- Accent color -->
+        <div class="accent-section">
+            <div class="accent-title" id="accentTitle">Couleur d'accent</div>
+            <div class="accent-grid" id="accentGrid"></div>
+        </div>
+
+        <!-- Light/Dark toggle -->
+        <div style="display:flex;gap:10px;margin-bottom:16px">
+            <button class="duo-btn" id="darkModeBtn" onclick="setLightDark('dark')" style="flex:1;flex-direction:row;padding:12px">
+                <span>🌙</span>
+                <span id="darkModeText">Sombre</span>
+            </button>
+            <button class="duo-btn" id="lightModeBtn" onclick="setLightDark('light')" style="flex:1;flex-direction:row;padding:12px">
+                <span>☀️</span>
+                <span id="lightModeText">Clair</span>
+            </button>
+        </div>
+
+        <button class="theme-close" onclick="closeThemePicker()">
+            <span id="themeCloseText">Fermer</span>
+        </button>
+    </div>
+</div>
 <!-- ANIMATED BACKGROUND -->
 <div class="bg-orb bg-orb-1"></div>
 <div class="bg-orb bg-orb-2"></div>
@@ -3419,6 +3590,7 @@ function init() {
 
     // Ads
     checkAdSlots();
+	applyFullTheme();
 	 // Colorise sliders au démarrage
     colorizeSlider(document.getElementById('sLevel'), lvl);
     colorizeEvSlider(document.getElementById('evLevel'), evLvl);
@@ -8690,6 +8862,157 @@ function updateDuoFavAlert() {
         var alertTexts = {fr:'Tendances',en:'Trends',es:'Tendencias',de:'Trends',it:'Tendenze',pt:'Tendências',ru:'Тренды',zh:'趋势',ja:'トレンド'};
         duoAlertText.textContent = alertTexts[lang] || alertTexts.en;
     }
+}
+// ==================== THÈMES VISUELS ====================
+var currentThemeColor = localStorage.getItem('themeColor') || 'default';
+var currentAccent = localStorage.getItem('accentColor') || 'orange';
+var currentMode = localStorage.getItem('theme') || 'dark';
+
+var THEMES = [
+    {id:'default', name:{fr:'Défaut',en:'Default',es:'Por defecto',de:'Standard',it:'Predefinito',pt:'Padrão',ru:'По умолчанию',zh:'默认',ja:'デフォルト'}, bg:'#050508', preview:'linear-gradient(135deg,#0a0a0f,#1c1c2e)'},
+    {id:'midnight', name:{fr:'Minuit bleu',en:'Midnight blue',es:'Azul medianoche',de:'Mitternachtsblau',it:'Blu notte',pt:'Azul meia-noite',ru:'Полночь',zh:'午夜蓝',ja:'ミッドナイトブルー'}, bg:'#080b14', preview:'linear-gradient(135deg,#080b14,#0a1628)'},
+    {id:'forest', name:{fr:'Forêt',en:'Forest',es:'Bosque',de:'Wald',it:'Foresta',pt:'Floresta',ru:'Лес',zh:'森林',ja:'フォレスト'}, bg:'#060f08', preview:'linear-gradient(135deg,#060f08,#0a1e10)'},
+    {id:'sunset', name:{fr:'Coucher de soleil',en:'Sunset',es:'Atardecer',de:'Sonnenuntergang',it:'Tramonto',pt:'Pôr do sol',ru:'Закат',zh:'日落',ja:'サンセット'}, bg:'#120808', preview:'linear-gradient(135deg,#120808,#1e0a0a)'},
+    {id:'purple', name:{fr:'Nuit violette',en:'Purple night',es:'Noche púrpura',de:'Lila Nacht',it:'Notte viola',pt:'Noite roxa',ru:'Фиолетовая ночь',zh:'紫夜',ja:'パープルナイト'}, bg:'#0a0812', preview:'linear-gradient(135deg,#0a0812,#140e20)'},
+    {id:'ocean', name:{fr:'Océan',en:'Ocean',es:'Océano',de:'Ozean',it:'Oceano',pt:'Oceano',ru:'Океан',zh:'海洋',ja:'オーシャン'}, bg:'#060d12', preview:'linear-gradient(135deg,#060d12,#0a1820)'},
+    {id:'amoled', name:{fr:'AMOLED noir',en:'AMOLED black',es:'AMOLED negro',de:'AMOLED schwarz',it:'AMOLED nero',pt:'AMOLED preto',ru:'AMOLED чёрный',zh:'AMOLED黑',ja:'AMOLED黒'}, bg:'#000000', preview:'linear-gradient(135deg,#000000,#0a0a0a)'}
+];
+
+var ACCENTS = [
+    {id:'orange', color:'#ff9500'},
+    {id:'blue', color:'#007aff'},
+    {id:'green', color:'#30d158'},
+    {id:'red', color:'#ff3b30'},
+    {id:'purple', color:'#af52de'},
+    {id:'pink', color:'#ff2d55'},
+    {id:'cyan', color:'#00c7be'}
+];
+
+var THEME_I18N = {
+    fr:{title:'🎨 Thème',accent:'Couleur d\'accent',dark:'Sombre',light:'Clair',close:'Fermer'},
+    en:{title:'🎨 Theme',accent:'Accent color',dark:'Dark',light:'Light',close:'Close'},
+    es:{title:'🎨 Tema',accent:'Color de acento',dark:'Oscuro',light:'Claro',close:'Cerrar'},
+    de:{title:'🎨 Design',accent:'Akzentfarbe',dark:'Dunkel',light:'Hell',close:'Schließen'},
+    it:{title:'🎨 Tema',accent:'Colore accento',dark:'Scuro',light:'Chiaro',close:'Chiudi'},
+    pt:{title:'🎨 Tema',accent:'Cor de destaque',dark:'Escuro',light:'Claro',close:'Fechar'},
+    ru:{title:'🎨 Тема',accent:'Цвет акцента',dark:'Тёмная',light:'Светлая',close:'Закрыть'},
+    zh:{title:'🎨 主题',accent:'强调色',dark:'深色',light:'浅色',close:'关闭'},
+    ja:{title:'🎨 テーマ',accent:'アクセントカラー',dark:'ダーク',light:'ライト',close:'閉じる'}
+};
+
+function getThemeI18n() { return THEME_I18N[lang] || THEME_I18N.en; }
+
+window.openThemePicker = function() {
+    haptic('medium');
+    var picker = document.getElementById('themePicker');
+    if (picker) picker.classList.add('show');
+    renderThemePicker();
+};
+
+window.closeThemePicker = function() {
+    haptic('light');
+    var picker = document.getElementById('themePicker');
+    if (picker) picker.classList.remove('show');
+};
+
+// Click overlay to close
+var tp = document.getElementById('themePicker');
+if (tp) tp.addEventListener('click', function(e) { if (e.target === this) closeThemePicker(); });
+
+function renderThemePicker() {
+    var ti = getThemeI18n();
+
+    var titleEl = document.getElementById('themePickerTitle');
+    if (titleEl) titleEl.textContent = ti.title;
+    var accentTitle = document.getElementById('accentTitle');
+    if (accentTitle) accentTitle.textContent = ti.accent;
+    var darkText = document.getElementById('darkModeText');
+    if (darkText) darkText.textContent = ti.dark;
+    var lightText = document.getElementById('lightModeText');
+    if (lightText) lightText.textContent = ti.light;
+    var closeText = document.getElementById('themeCloseText');
+    if (closeText) closeText.textContent = ti.close;
+
+    // Theme grid
+    var grid = document.getElementById('themeGrid');
+    if (grid) {
+        grid.innerHTML = THEMES.map(function(t) {
+            var name = t.name[lang] || t.name.en;
+            return '<div class="theme-option' + (currentThemeColor === t.id ? ' active' : '') + '" onclick="setThemeColor(\'' + t.id + '\')">' +
+                '<div class="to-preview" style="background:' + t.preview + '"></div>' +
+                '<div class="to-name">' + name + '</div>' +
+                '<div class="to-check">✓</div>' +
+            '</div>';
+        }).join('');
+    }
+
+    // Accent grid
+    var accGrid = document.getElementById('accentGrid');
+    if (accGrid) {
+        accGrid.innerHTML = ACCENTS.map(function(a) {
+            return '<div class="accent-btn' + (currentAccent === a.id ? ' active' : '') + '" style="background:' + a.color + '" onclick="setAccentColor(\'' + a.id + '\')">' +
+                '<span class="ab-check">✓</span>' +
+            '</div>';
+        }).join('');
+    }
+
+    // Light/dark highlight
+    var darkBtn = document.getElementById('darkModeBtn');
+    var lightBtn = document.getElementById('lightModeBtn');
+    if (darkBtn) darkBtn.style.borderColor = currentMode === 'dark' ? '#007aff' : 'rgba(255,255,255,.06)';
+    if (lightBtn) lightBtn.style.borderColor = currentMode === 'light' ? '#007aff' : 'rgba(255,255,255,.06)';
+}
+
+window.setThemeColor = function(id) {
+    haptic('medium');
+    currentThemeColor = id;
+    localStorage.setItem('themeColor', id);
+    applyFullTheme();
+    renderThemePicker();
+};
+
+window.setAccentColor = function(id) {
+    haptic('light');
+    currentAccent = id;
+    localStorage.setItem('accentColor', id);
+    applyFullTheme();
+    renderThemePicker();
+};
+
+window.setLightDark = function(mode) {
+    haptic('medium');
+    currentMode = mode;
+    localStorage.setItem('theme', mode);
+    applyFullTheme();
+    renderThemePicker();
+};
+
+function applyFullTheme() {
+    // Remove all theme classes
+    THEMES.forEach(function(t) {
+        document.body.classList.remove('theme-' + t.id);
+    });
+    ACCENTS.forEach(function(a) {
+        document.body.classList.remove('accent-' + a.id);
+    });
+    document.body.classList.remove('light-theme');
+
+    // Apply theme color
+    if (currentThemeColor !== 'default') {
+        document.body.classList.add('theme-' + currentThemeColor);
+    }
+
+    // Apply accent
+    document.body.classList.add('accent-' + currentAccent);
+
+    // Apply light/dark
+    if (currentMode === 'light') {
+        document.body.classList.add('light-theme');
+    }
+
+    // Update theme button icon
+    var btn = document.getElementById('themeBtn');
+    if (btn) btn.textContent = currentMode === 'light' ? '☀️' : '🎨';
 }
 
 window.addEventListener('load', init);
