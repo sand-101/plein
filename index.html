@@ -1481,8 +1481,11 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
 
 /* ===== THÈMES VISUELS ===== */
 .theme-btn{
-    position:fixed;top:14px;right:14px;z-index:999;
-    width:38px;height:38px;border-radius:50%;border:none;
+    position:fixed;
+    top:calc(14px + env(safe-area-inset-top));
+    right:14px;
+    z-index:999;
+    width:38px;height:38px;border-radius:50%;
     background:rgba(30,30,35,.9);
     backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
     border:1px solid rgba(255,255,255,.08);
@@ -1490,7 +1493,10 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
     display:flex;align-items:center;justify-content:center;
     box-shadow:0 2px 12px rgba(0,0,0,.3);
     transition:all .2s;
+    -webkit-tap-highlight-color:rgba(255,255,255,.1);
+    min-height:44px;min-width:44px;
 }
+
 .theme-btn:active{transform:scale(.9)}
 
 /* Theme picker modal */
