@@ -482,32 +482,6 @@ body.ev-mode .share-card-preview::before{background:linear-gradient(90deg,#30d15
 .share-method.twitter{border-color:#1da1f2;color:#1da1f2}
 .share-method.copy{border-color:#ff9500;color:#ff9500}
 
-/* ===== FAVORIS ===== */
-.favorites-card{padding:0;overflow:hidden}
-.favorites-toggle{width:100%;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;background:transparent;border:none;color:#fff;font-size:15px;font-weight:600;font-family:-apple-system,sans-serif;cursor:pointer;text-align:left;gap:10px}
-.favorites-toggle:active{background:#2c2c2e}
-.favorites-toggle .ft-left{display:flex;align-items:center;gap:10px}
-.favorites-toggle .ft-badge{background:#ffd700;color:#000;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;min-width:24px;text-align:center}
-.favorites-toggle .ft-arrow{font-size:14px;color:#8e8e93;transition:transform .3s}
-.favorites-card.open .ft-arrow{transform:rotate(180deg)}
-.favorites-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.25,.46,.45,.94)}
-.favorites-card.open .favorites-body{max-height:2000px}
-.favorites-inner{padding:0 20px 20px}
-.fav-empty{text-align:center;padding:24px 16px;color:#636366;font-size:13px;line-height:1.5}
-.fav-empty-icon{font-size:32px;margin-bottom:8px}
-.fav-list{display:flex;flex-direction:column;gap:8px}
-.fav-item{display:flex;align-items:center;gap:12px;padding:14px;background:rgba(50,50,55,.8);border-radius:13px;cursor:pointer;transition:all .15s;position:relative;color:#f0f0f0}
-.fav-item:active{transform:scale(.98);background:#3a3a3c}
-.fav-item .fav-rank{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:#3a3a3c}
-.fav-item .fav-info{flex:1;min-width:0}
-.fav-item .fav-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
-.fav-item .fav-addr{font-size:11px;color:#8e8e93;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.fav-item .fav-added{font-size:10px;color:#636366;margin-top:1px}
-.fav-item .fav-actions{display:flex;gap:4px;flex-shrink:0}
-.fav-item .fav-nav{padding:6px 12px;border-radius:8px;border:none;background:rgba(0,122,255,.12);color:#007aff;font-size:11px;font-weight:600;font-family:-apple-system,sans-serif;cursor:pointer}
-.fav-item .fav-nav:active{opacity:.7}
-.fav-item .fav-remove{padding:6px 8px;border-radius:8px;border:none;background:rgba(255,59,48,.1);color:#ff3b30;font-size:13px;cursor:pointer}
-.fav-item .fav-remove:active{opacity:.7}
 
 /* ===== QR CODE ===== */
 .qr-card{padding:20px;text-align:center}
@@ -859,184 +833,6 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
     30%{color:#ff3b30}
     100%{color:inherit}
 }
-/* ===== ALERTES PRIX + PRÉDICTION ===== */
-.price-alert-card{padding:0;overflow:hidden}
-.price-alert-toggle{
-    width:100%;padding:18px 20px;
-    display:flex;align-items:center;justify-content:space-between;
-    background:transparent;border:none;color:#fff;
-    font-size:15px;font-weight:600;
-    font-family:-apple-system,sans-serif;
-    cursor:pointer;text-align:left;gap:10px;
-}
-.price-alert-toggle:active{background:#2c2c2e}
-.price-alert-toggle .pat-left{display:flex;align-items:center;gap:10px}
-.price-alert-toggle .pat-arrow{font-size:14px;color:#8e8e93;transition:transform .3s}
-.price-alert-card.open .pat-arrow{transform:rotate(180deg)}
-.price-alert-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.25,.46,.45,.94)}
-.price-alert-card.open .price-alert-body{max-height:3000px}
-.price-alert-inner{padding:0 20px 20px}
-
-/* Trend card */
-.trend-card{
-    background:rgba(50,50,55,.6);border-radius:14px;
-    padding:16px;margin-bottom:14px;
-}
-.trend-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.trend-label{font-size:12px;color:#8e8e93;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
-.trend-badge{
-    padding:4px 10px;border-radius:12px;
-    font-size:11px;font-weight:700;
-    display:flex;align-items:center;gap:4px;
-}
-.trend-badge.up{background:rgba(255,59,48,.12);color:#ff6961}
-.trend-badge.down{background:rgba(48,209,88,.12);color:#30d158}
-.trend-badge.stable{background:rgba(142,142,147,.12);color:#8e8e93}
-
-/* Mini chart */
-.trend-chart{
-    height:60px;display:flex;align-items:flex-end;gap:2px;
-    margin-bottom:10px;
-}
-.trend-bar{
-    flex:1;border-radius:2px 2px 0 0;
-    transition:height .3s ease;min-height:4px;
-}
-.trend-bar.high{background:linear-gradient(180deg,#ff3b30,#ff6961)}
-.trend-bar.mid{background:linear-gradient(180deg,#ff9500,#ffaa00)}
-.trend-bar.low{background:linear-gradient(180deg,#30d158,#00c853)}
-
-.trend-labels{display:flex;justify-content:space-between}
-.trend-labels span{font-size:9px;color:#636366}
-
-.trend-prices{display:flex;justify-content:space-between;margin-top:8px}
-.trend-price-item{text-align:center}
-.trend-price-value{font-size:16px;font-weight:700}
-.trend-price-label{font-size:9px;color:#8e8e93;text-transform:uppercase;margin-top:2px}
-
-/* Prediction card */
-.prediction-card{
-    background:linear-gradient(135deg,rgba(88,86,214,.08),rgba(0,122,255,.06));
-    border:1px solid rgba(88,86,214,.15);
-    border-radius:14px;padding:16px;margin-bottom:14px;
-    position:relative;overflow:hidden;
-}
-.prediction-card::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,#5856d6,#007aff,#30d158);
-}
-.prediction-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.prediction-icon{font-size:24px}
-.prediction-title{font-size:14px;font-weight:700;color:#fff}
-.prediction-premium{
-    padding:2px 8px;border-radius:8px;
-    background:linear-gradient(135deg,#ffd700,#ffaa00);
-    color:#000;font-size:9px;font-weight:800;
-    text-transform:uppercase;letter-spacing:.5px;
-}
-.prediction-text{font-size:14px;color:#e5e5ea;line-height:1.6;margin-bottom:10px}
-.prediction-confidence{
-    display:flex;align-items:center;gap:8px;
-    font-size:11px;color:#8e8e93;
-}
-.confidence-bar{flex:1;height:4px;background:#2c2c2e;border-radius:2px;overflow:hidden}
-.confidence-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#5856d6,#007aff);transition:width .5s ease}
-.prediction-blur{
-    filter:blur(4px);pointer-events:none;
-    -webkit-user-select:none;user-select:none;
-}
-.prediction-unlock{
-    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    text-align:center;z-index:2;
-}
-.prediction-unlock-btn{
-    padding:12px 24px;border:none;border-radius:14px;
-    background:linear-gradient(135deg,#ffd700,#ffaa00);
-    color:#000;font-size:14px;font-weight:700;
-    font-family:-apple-system,sans-serif;
-    cursor:pointer;display:flex;align-items:center;gap:6px;
-    box-shadow:0 4px 15px rgba(255,215,0,.25);
-}
-.prediction-unlock-btn:active{transform:scale(.97)}
-
-/* Alert setup */
-.alert-setup{
-    background:rgba(50,50,55,.6);border-radius:14px;
-    padding:16px;margin-bottom:14px;
-}
-.alert-setup-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.alert-threshold{
-    display:flex;align-items:center;gap:10px;
-    margin-bottom:12px;
-}
-.alert-threshold-input{
-    flex:1;display:flex;align-items:center;
-    background:rgba(50,50,55,.8);border-radius:10px;
-    overflow:hidden;border:2px solid transparent;
-    transition:border-color .2s;
-}
-.alert-threshold-input:focus-within{border-color:#007aff}
-.alert-threshold-input .ati-icon{padding:10px 12px;font-size:14px;background:rgba(0,122,255,.08)}
-.alert-threshold-input input{
-    flex:1;background:transparent;border:none;
-    color:#fff;font-size:18px;font-weight:700;
-    padding:10px 8px;outline:none;
-    font-family:-apple-system,sans-serif;
-    -webkit-user-select:text;user-select:text;
-    text-align:center;
-}
-.alert-threshold-input .ati-unit{padding:10px 12px;font-size:12px;color:#636366}
-
-.alert-fuel-select{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-.alert-fuel-btn{
-    padding:6px 12px;border-radius:14px;
-    border:1.5px solid #3a3a3c;background:transparent;
-    color:#e5e5ea;font-size:11px;font-weight:500;
-    font-family:-apple-system,sans-serif;
-    cursor:pointer;transition:all .15s;
-}
-.alert-fuel-btn:active{transform:scale(.94)}
-.alert-fuel-btn.on{background:#007aff;border-color:#007aff;color:#fff;font-weight:700}
-
-.alert-save-btn{
-    width:100%;padding:14px;border:none;border-radius:12px;
-    background:linear-gradient(135deg,#007aff,#5856d6);
-    color:#fff;font-size:15px;font-weight:600;
-    font-family:-apple-system,sans-serif;
-    cursor:pointer;transition:all .15s;
-    display:flex;align-items:center;justify-content:center;gap:8px;
-}
-.alert-save-btn:active{transform:scale(.97);opacity:.85}
-.alert-save-btn.premium-only{
-    background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;
-}
-
-/* Active alerts */
-.active-alerts{margin-bottom:14px}
-.active-alert{
-    display:flex;align-items:center;gap:12px;
-    padding:12px;background:rgba(50,50,55,.6);
-    border-radius:12px;margin-bottom:8px;
-    border-left:3px solid #007aff;
-}
-.active-alert .aa-icon{font-size:20px;flex-shrink:0}
-.active-alert .aa-info{flex:1}
-.active-alert .aa-text{font-size:13px;font-weight:600;color:#fff}
-.active-alert .aa-detail{font-size:11px;color:#8e8e93;margin-top:2px}
-.active-alert .aa-status{font-size:10px;font-weight:600;padding:2px 8px;border-radius:8px}
-.active-alert .aa-status.watching{background:rgba(0,122,255,.12);color:#007aff}
-.active-alert .aa-status.triggered{background:rgba(48,209,88,.12);color:#30d158}
-.active-alert .aa-delete{background:none;border:none;color:#636366;font-size:16px;cursor:pointer;padding:4px;flex-shrink:0}
-.active-alert .aa-delete:active{color:#ff3b30}
-
-/* Best time to fill */
-.best-time{
-    background:rgba(48,209,88,.06);border:1px solid rgba(48,209,88,.12);
-    border-radius:14px;padding:16px;text-align:center;
-}
-.best-time-icon{font-size:28px;margin-bottom:6px}
-.best-time-title{font-size:14px;font-weight:700;color:#30d158;margin-bottom:4px}
-.best-time-text{font-size:13px;color:#aaa;line-height:1.5}
 
 /* ===== TRIP ADDRESSES + MAP ===== */
 .trip-addr-field{margin-bottom:12px;position:relative}
@@ -1570,6 +1366,46 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
     background:rgba(30,30,35,.93);border-radius:16px;
     padding:20px;margin-top:14px;
 }
+/* ===== FAVORIS + ALERTES PAGES ===== */
+.fav-page,.alert-page{
+    position:fixed;inset:0;background:#0a0a0f;
+    z-index:10002;transform:translateX(100%);
+    transition:transform .35s cubic-bezier(.25,.46,.45,.94);
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.fav-page.open,.alert-page.open{transform:translateX(0)}
+.fav-page-inner,.alert-page-inner{max-width:420px;margin:0 auto;padding:0 18px 50px}
+
+.page-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 0 14px;position:sticky;top:0;
+    background:rgba(10,10,15,.97);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    z-index:2;border-bottom:1px solid rgba(255,255,255,.05);
+}
+.page-back{
+    color:#007aff;font-size:17px;font-weight:600;
+    font-family:-apple-system,sans-serif;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
+    padding:14px 16px 14px 4px;margin:-14px 0 -14px -4px;
+    min-width:100px;min-height:48px;
+    -webkit-tap-highlight-color:rgba(0,122,255,.15);
+    text-decoration:none;-webkit-user-select:none;
+    user-select:none;touch-action:manipulation;
+}
+.page-back:active{opacity:.5}
+.page-title{font-size:17px;font-weight:700;position:absolute;left:50%;transform:translateX(-50%);color:#fff;pointer-events:none}
+.page-header-spacer{width:80px}
+
+.page-section{
+    background:rgba(30,30,35,.93);border-radius:16px;
+    padding:20px;margin-top:14px;
+}
+.page-section-title{
+    font-size:13px;font-weight:600;color:#8e8e93;
+    text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;
+}
 
     </style>
 
@@ -1810,86 +1646,18 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
         <div id="osmNote" class="osm-note" style="display:none"></div>
         <div class="station-list hidden" id="stationList"></div>
     </div>
-	<!-- ===== FAVORIS STATIONS ===== -->
-<div class="card favorites-card" id="favoritesCard">
-    <button class="favorites-toggle" onclick="toggleContent('favoritesCard')">
-        <span class="ft-left">
-            <span>⭐</span>
-            <span id="favToggleText">Mes stations favorites</span>
-            <span class="ft-badge" id="favCount">0</span>
-        </span>
-        <span class="ft-arrow">▼</span>
+<!-- ===== FAVORIS + ALERTES — MÊME LIGNE ===== -->
+<div class="duo-row">
+    <button class="duo-btn" onclick="openFavPage()" style="border-color:rgba(255,215,0,.12)">
+        <span class="duo-icon">⭐</span>
+        <span class="duo-text" id="duoFavText">Favoris</span>
+        <span class="duo-badge" id="duoFavCount">0</span>
     </button>
-    <div class="favorites-body">
-        <div class="favorites-inner">
-            <div id="favContent"></div>
-        </div>
-    </div>
-</div>
-<!-- ===== ALERTES PRIX + PRÉDICTION ===== -->
-<div class="card price-alert-card" id="priceAlertCard">
-    <button class="price-alert-toggle" onclick="toggleContent('priceAlertCard')">
-        <span class="pat-left">
-            <span>🔮</span>
-            <span id="paToggleText">Tendances & Alertes prix</span>
-        </span>
-        <span class="pat-arrow">▼</span>
+    <button class="duo-btn" onclick="openAlertPage()" style="border-color:rgba(88,86,214,.12)">
+        <span class="duo-icon">🔮</span>
+        <span class="duo-text" id="duoAlertText">Alertes</span>
+        <span class="duo-badge" id="duoAlertCount">0</span>
     </button>
-    <div class="price-alert-body">
-        <div class="price-alert-inner">
-
-            <!-- Tendance -->
-            <div class="trend-card" id="trendCard">
-                <div class="trend-header">
-                    <span class="trend-label" id="trendLabel">Tendance 7 jours</span>
-                    <span class="trend-badge" id="trendBadge"></span>
-                </div>
-                <div class="trend-chart" id="trendChart"></div>
-                <div class="trend-labels" id="trendLabels"></div>
-                <div class="trend-prices">
-                    <div class="trend-price-item"><div class="trend-price-value" id="trendMin">—</div><div class="trend-price-label" id="trendMinL">Min</div></div>
-                    <div class="trend-price-item"><div class="trend-price-value" id="trendAvg">—</div><div class="trend-price-label" id="trendAvgL">Moy</div></div>
-                    <div class="trend-price-item"><div class="trend-price-value" id="trendMax">—</div><div class="trend-price-label" id="trendMaxL">Max</div></div>
-                </div>
-            </div>
-
-            <!-- Prédiction IA -->
-            <div class="prediction-card" id="predictionCard">
-                <div class="prediction-header">
-                    <span class="prediction-icon">🔮</span>
-                    <span class="prediction-title" id="predTitle">Prédiction IA</span>
-                    <span class="prediction-premium" id="predPremiumBadge">PREMIUM</span>
-                </div>
-                <div id="predContent"></div>
-            </div>
-
-            <!-- Meilleur moment -->
-            <div class="best-time" id="bestTimeCard">
-                <div class="best-time-icon" id="bestTimeIcon">⏰</div>
-                <div class="best-time-title" id="bestTimeTitle"></div>
-                <div class="best-time-text" id="bestTimeText"></div>
-            </div>
-
-            <!-- Alertes -->
-            <div class="alert-setup" id="alertSetup">
-                <div class="alert-setup-title" id="alertSetupTitle">🔔 Créer une alerte prix</div>
-                <div class="alert-threshold">
-                    <div class="alert-threshold-input">
-                        <span class="ati-icon" id="atiIcon">⛽</span>
-                        <input type="number" id="alertPrice" step="0.01" inputmode="decimal" placeholder="1.55">
-                        <span class="ati-unit" id="atiUnit">€/L</span>
-                    </div>
-                </div>
-                <div class="alert-fuel-select" id="alertFuelSelect"></div>
-                <button class="alert-save-btn" id="alertSaveBtn" onclick="saveAlert()">
-                    🔔 <span id="alertSaveText">Activer l'alerte</span>
-                </button>
-            </div>
-
-            <!-- Alertes actives -->
-            <div class="active-alerts" id="activeAlerts"></div>
-        </div>
-    </div>
 </div>
 <!-- ===== BADGES + CLASSEMENT — MÊME LIGNE ===== -->
 <div class="duo-row">
@@ -2883,18 +2651,17 @@ function rebuildAll() {
     try { updateEditorialContent(); } catch(e) {}
 	try { updateHistoryUI(); } catch(e) {}
 	try { updateShareUI(); } catch(e) {}
-	try { updateFavoritesUI(); } catch(e) {}
 	try { updateQRUI(); } catch(e) {}
 	try { updateVehiclesUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
 	try { updateDriveBtnText(); } catch(e) {}
 	try { updateCookieBannerTexts(); } catch(e) {}
-	try { updatePriceAlertUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
 	try { updateSavingsLauncher(); } catch(e) {}
 	try { updateLocaleToggleBtn(); } catch(e) {}
 	try { updateBadgesUI(); } catch(e) {}
     try { updateDuoButtons(); } catch(e) {}
+	try { updateDuoFavAlert(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -4449,8 +4216,8 @@ window.setMode = function(mode) {
 	try { updateVehiclesUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
 	try { updateDriveBtnText(); } catch(e) {}
-	try { updatePriceAlertUI(); } catch(e) {}
 	try { updateSavingsLauncher(); } catch(e) {}
+	try { updateDuoFavAlert(); } catch(e) {}
 	trackEvent('switch_mode', {
         mode: mode
     });
@@ -8703,6 +8470,156 @@ function updateDuoButtons() {
         if (duoRankingRank) duoRankingRank.textContent = '#' + (myIdx + 1);
     } catch(e) {}
 }
+// ==================== FAV + ALERT PAGES ====================
+
+// Favoris page
+window.openFavPage = function() {
+    haptic('medium');
+    var page = document.getElementById('favPage');
+    if (!page) return;
+    document.body.style.overflow = 'hidden';
+    page.classList.add('open');
+    page.scrollTop = 0;
+    renderFavPageContent();
+    updateFavPageTexts();
+    history.pushState({favOpen:true}, '');
+};
+
+window.closeFavPage = function() {
+    haptic('light');
+    var page = document.getElementById('favPage');
+    if (!page) return;
+    document.body.style.overflow = '';
+    page.classList.remove('open');
+};
+
+// Alert page
+window.openAlertPage = function() {
+    haptic('medium');
+    var page = document.getElementById('alertPage');
+    if (!page) return;
+    document.body.style.overflow = 'hidden';
+    page.classList.add('open');
+    page.scrollTop = 0;
+    updatePriceAlertUI();
+    updateAlertPageTexts();
+    history.pushState({alertOpen:true}, '');
+};
+
+window.closeAlertPage = function() {
+    haptic('light');
+    var page = document.getElementById('alertPage');
+    if (!page) return;
+    document.body.style.overflow = '';
+    page.classList.remove('open');
+};
+
+// Back button handler
+window.addEventListener('popstate', function() {
+    var favPage = document.getElementById('favPage');
+    if (favPage && favPage.classList.contains('open')) { closeFavPage(); return; }
+    var alertPage = document.getElementById('alertPage');
+    if (alertPage && alertPage.classList.contains('open')) { closeAlertPage(); return; }
+});
+
+function updateFavPageTexts() {
+    var fi = getFavI18n();
+    var backs = {fr:'Retour',en:'Back',es:'Volver',de:'Zurück',it:'Indietro',pt:'Voltar',ru:'Назад',zh:'返回',ja:'戻る'};
+    var titles = {fr:'⭐ Mes favoris',en:'⭐ My favorites',es:'⭐ Mis favoritos',de:'⭐ Meine Favoriten',it:'⭐ I miei preferiti',pt:'⭐ Meus favoritos',ru:'⭐ Избранное',zh:'⭐ 我的收藏',ja:'⭐ お気に入り'};
+    var backEl = document.getElementById('favBackText');
+    if (backEl) backEl.textContent = backs[lang] || backs.en;
+    var titleEl = document.getElementById('favPageTitle');
+    if (titleEl) titleEl.textContent = titles[lang] || titles.en;
+}
+
+function updateAlertPageTexts() {
+    var pi = getPaI18n();
+    var backs = {fr:'Retour',en:'Back',es:'Volver',de:'Zurück',it:'Indietro',pt:'Voltar',ru:'Назад',zh:'返回',ja:'戻る'};
+    var titles = {fr:'🔮 Tendances & Alertes',en:'🔮 Trends & Alerts',es:'🔮 Tendencias y Alertas',de:'🔮 Trends & Alarme',it:'🔮 Tendenze & Avvisi',pt:'🔮 Tendências & Alertas',ru:'🔮 Тренды и оповещения',zh:'🔮 趋势与提醒',ja:'🔮 トレンド＆アラート'};
+    var backEl = document.getElementById('alertBackText');
+    if (backEl) backEl.textContent = backs[lang] || backs.en;
+    var titleEl = document.getElementById('alertPageTitle');
+    if (titleEl) titleEl.textContent = titles[lang] || titles.en;
+}
+
+function renderFavPageContent() {
+    var fi = getFavI18n();
+    var isEv = appMode === 'ev';
+    var filtered = favorites.filter(function(f) { return f.mode === appMode; });
+
+    var content = document.getElementById('favPageList');
+    if (!content) return;
+
+    if (!filtered.length) {
+        content.innerHTML =
+            '<div class="fav-empty">' +
+                '<div class="fav-empty-icon">⭐</div>' +
+                '<p>' + (isEv ? fi.emptyEv : fi.empty) + '</p>' +
+            '</div>';
+        return;
+    }
+
+    content.innerHTML = '<div class="fav-list">' +
+        filtered.map(function(f) {
+            var d = new Date(f.date);
+            var dateStr = d.toLocaleDateString(lang === 'fr' ? 'fr-FR' : lang, {day:'numeric', month:'short'});
+            return '<div class="fav-item">' +
+                '<div class="fav-rank">⭐</div>' +
+                '<div class="fav-info">' +
+                    '<div class="fav-name">' + escH(f.name) + '</div>' +
+                    '<div class="fav-addr">' + escH(f.addr) + (f.city ? ', ' + escH(f.city) : '') + '</div>' +
+                    '<div class="fav-added">' + fi.addedOn + ' ' + dateStr + '</div>' +
+                '</div>' +
+                '<div class="fav-actions">' +
+                    '<a class="fav-nav" href="https://maps.apple.com/?daddr=' + f.lat + ',' + f.lon + '&dirflg=d" onclick="event.stopPropagation()">' + fi.navigate + ' →</a>' +
+                    '<button class="fav-remove" onclick="event.stopPropagation();removeFavoriteAndRefresh(\'' + f.id + '\')">✕</button>' +
+                '</div>' +
+            '</div>';
+        }).join('') +
+    '</div>';
+}
+
+window.removeFavoriteAndRefresh = function(stationId) {
+    var fi = getFavI18n();
+    var idx = favorites.findIndex(function(f) { return f.id === stationId; });
+    if (idx >= 0) {
+        favorites.splice(idx, 1);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        renderFavPageContent();
+        updateDuoFavAlert();
+        showToast('⭐ ' + fi.removed);
+    }
+};
+
+// Update duo buttons
+function updateDuoFavAlert() {
+    var fi = getFavI18n();
+    var pi = getPaI18n();
+    var isEv = appMode === 'ev';
+
+    // Fav count
+    var favFiltered = favorites.filter(function(f) { return f.mode === appMode; });
+    var duoFavCount = document.getElementById('duoFavCount');
+    if (duoFavCount) duoFavCount.textContent = favFiltered.length;
+
+    var duoFavText = document.getElementById('duoFavText');
+    if (duoFavText) {
+        var favTexts = {fr:'Favoris',en:'Favorites',es:'Favoritos',de:'Favoriten',it:'Preferiti',pt:'Favoritos',ru:'Избранное',zh:'收藏',ja:'お気に入り'};
+        duoFavText.textContent = favTexts[lang] || favTexts.en;
+    }
+
+    // Alert count
+    var alertFiltered = priceAlerts.filter(function(a) { return a.mode === appMode; });
+    var duoAlertCount = document.getElementById('duoAlertCount');
+    if (duoAlertCount) duoAlertCount.textContent = alertFiltered.length;
+
+    var duoAlertText = document.getElementById('duoAlertText');
+    if (duoAlertText) {
+        var alertTexts = {fr:'Tendances',en:'Trends',es:'Tendencias',de:'Trends',it:'Tendenze',pt:'Tendências',ru:'Тренды',zh:'趋势',ja:'トレンド'};
+        duoAlertText.textContent = alertTexts[lang] || alertTexts.en;
+    }
+}
+
 window.addEventListener('load', init);
 // Register Service Worker
 if ('serviceWorker' in navigator) {
@@ -9065,6 +8982,102 @@ if ('serviceWorker' in navigator) {
     <div class="bt-name" id="btName"></div>
     <div class="bt-desc" id="btDesc"></div>
     <button class="bt-close" onclick="closeBadgeToast()">OK !</button>
+</div>
+<!-- ===== FAVORIS PAGE ===== -->
+<div class="fav-page" id="favPage">
+    <div class="fav-page-inner">
+        <div class="page-header">
+            <a href="javascript:void(0)" class="page-back"
+               ontouchstart="closeFavPage()" onclick="closeFavPage()">
+                <span style="font-size:22px">‹</span>
+                <span id="favBackText">Retour</span>
+            </a>
+            <span class="page-title" id="favPageTitle">⭐ Favoris</span>
+            <div class="page-header-spacer"></div>
+        </div>
+
+        <!-- Fav list -->
+        <div class="page-section" id="favPageContent">
+            <div id="favPageList"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ALERTES PAGE ===== -->
+<div class="alert-page" id="alertPage">
+    <div class="alert-page-inner">
+        <div class="page-header">
+            <a href="javascript:void(0)" class="page-back"
+               ontouchstart="closeAlertPage()" onclick="closeAlertPage()">
+                <span style="font-size:22px">‹</span>
+                <span id="alertBackText">Retour</span>
+            </a>
+            <span class="page-title" id="alertPageTitle">🔮 Tendances & Alertes</span>
+            <div class="page-header-spacer"></div>
+        </div>
+
+        <!-- Trend -->
+        <div class="page-section">
+            <div class="trend-card" id="trendCard" style="margin:0;background:transparent;padding:0">
+                <div class="trend-header">
+                    <span class="trend-label" id="trendLabel">Tendance 7 jours</span>
+                    <span class="trend-badge" id="trendBadge"></span>
+                </div>
+                <div class="trend-chart" id="trendChart"></div>
+                <div class="trend-labels" id="trendLabels"></div>
+                <div class="trend-prices">
+                    <div class="trend-price-item"><div class="trend-price-value" id="trendMin">—</div><div class="trend-price-label" id="trendMinL">Min</div></div>
+                    <div class="trend-price-item"><div class="trend-price-value" id="trendAvg">—</div><div class="trend-price-label" id="trendAvgL">Moy</div></div>
+                    <div class="trend-price-item"><div class="trend-price-value" id="trendMax">—</div><div class="trend-price-label" id="trendMaxL">Max</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prediction -->
+        <div class="page-section">
+            <div class="prediction-card" id="predictionCard" style="margin:0">
+                <div class="prediction-header">
+                    <span class="prediction-icon">🔮</span>
+                    <span class="prediction-title" id="predTitle">Prédiction IA</span>
+                    <span class="prediction-premium" id="predPremiumBadge">PREMIUM</span>
+                </div>
+                <div id="predContent"></div>
+            </div>
+        </div>
+
+        <!-- Best time -->
+        <div class="page-section">
+            <div class="best-time" id="bestTimeCard" style="margin:0">
+                <div class="best-time-icon" id="bestTimeIcon">⏰</div>
+                <div class="best-time-title" id="bestTimeTitle"></div>
+                <div class="best-time-text" id="bestTimeText"></div>
+            </div>
+        </div>
+
+        <!-- Alert setup -->
+        <div class="page-section">
+            <div class="alert-setup" id="alertSetup" style="margin:0;background:transparent;padding:0">
+                <div class="alert-setup-title" id="alertSetupTitle">🔔 Créer une alerte prix</div>
+                <div class="alert-threshold">
+                    <div class="alert-threshold-input">
+                        <span class="ati-icon" id="atiIcon">⛽</span>
+                        <input type="number" id="alertPrice" step="0.01" inputmode="decimal" placeholder="1.55">
+                        <span class="ati-unit" id="atiUnit">€/L</span>
+                    </div>
+                </div>
+                <div class="alert-fuel-select" id="alertFuelSelect"></div>
+                <button class="alert-save-btn" id="alertSaveBtn" onclick="saveAlert()">
+                    🔔 <span id="alertSaveText">Activer l'alerte</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Active alerts -->
+        <div class="page-section" id="activeAlertsSection">
+            <div class="page-section-title" id="activeAlertsTitle">🔔 Alertes actives</div>
+            <div class="active-alerts" id="activeAlerts"></div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
