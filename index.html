@@ -1154,6 +1154,57 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
 .trip-station-price{font-size:16px;font-weight:700;flex-shrink:0}
 .trip-station-price.fuel-c{color:#ff9500}
 .trip-station-price.ev-c{color:#30d158}
+
+/* ===== ÉCONOMIES — BOUTON + PAGE ===== */
+.savings-launcher{
+    width:100%;padding:16px;border:none;border-radius:14px;
+    background:linear-gradient(135deg,#30d158,#00c853);
+    color:#000;font-size:15px;font-weight:700;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    box-shadow:0 4px 15px rgba(48,209,88,.25);
+}
+.savings-launcher:active{transform:scale(.97);opacity:.85}
+.savings-launcher-amount{
+    padding:4px 12px;border-radius:20px;
+    background:rgba(0,0,0,.2);color:#fff;
+    font-size:14px;font-weight:800;
+}
+
+.savings-page{
+    position:fixed;inset:0;
+    background:#0a0a0f;
+    z-index:10002;
+    transform:translateX(100%);
+    transition:transform .35s cubic-bezier(.25,.46,.45,.94);
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.savings-page.open{transform:translateX(0)}
+.savings-page-inner{max-width:420px;margin:0 auto;padding:0 18px 50px}
+
+.savings-header-bar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 0 14px;position:sticky;top:0;
+    background:rgba(10,10,15,.97);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    z-index:2;border-bottom:1px solid rgba(255,255,255,.05);
+}
+.savings-back{
+    color:#007aff;font-size:17px;font-weight:600;
+    font-family:-apple-system,sans-serif;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
+    padding:14px 16px 14px 4px;margin:-14px 0 -14px -4px;
+    min-width:100px;min-height:48px;
+    -webkit-tap-highlight-color:rgba(0,122,255,.15);
+    text-decoration:none;-webkit-user-select:none;
+    user-select:none;touch-action:manipulation;
+}
+.savings-back:active{opacity:.5}
+.savings-page-title{font-size:17px;font-weight:700;position:absolute;left:50%;transform:translateX(-50%);color:#fff;pointer-events:none}
+.savings-header-spacer{width:80px}
 /* ===== ÉCONOMIES TOTALES ===== */
 .savings-card{
     padding:20px;
@@ -1475,78 +1526,11 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
         </div>
     </div>
 </div>
-<!-- ===== ÉCONOMIES TOTALES ===== -->
-<div class="card savings-card" id="savingsCard">
-    <div class="savings-header">
-        <div class="savings-title-row">
-            <span class="savings-icon">💰</span>
-            <div>
-                <div class="savings-title" id="savingsTitle">Vos économies</div>
-                <div class="savings-since" id="savingsSince"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Big counter -->
-    <div class="savings-big">
-        <div class="savings-label" id="savingsLabel">Total économisé</div>
-        <div class="savings-amount" id="savingsAmount">0 €</div>
-        <div class="savings-equivalent" id="savingsEquiv"></div>
-    </div>
-
-    <!-- Stats -->
-    <div class="savings-stats">
-        <div class="savings-stat">
-            <div class="savings-stat-v" id="savStatFills">0</div>
-            <div class="savings-stat-l" id="savStatFillsL">Pleins</div>
-        </div>
-        <div class="savings-stat">
-            <div class="savings-stat-v" id="savStatStations">0</div>
-            <div class="savings-stat-l" id="savStatStationsL">Stations</div>
-        </div>
-        <div class="savings-stat">
-            <div class="savings-stat-v" id="savStatAvg">0 €</div>
-            <div class="savings-stat-l" id="savStatAvgL">Moy/plein</div>
-        </div>
-    </div>
-
-    <!-- Monthly chart -->
-    <div class="savings-chart-section">
-        <div class="savings-chart-title">
-            <span id="savChartTitle">Économies par mois</span>
-        </div>
-        <div class="savings-chart" id="savingsChart"></div>
-    </div>
-
-    <!-- CO2 -->
-    <div class="savings-co2" id="savingsCo2">
-        <span class="savings-co2-icon">🌿</span>
-        <div class="savings-co2-info">
-            <div class="savings-co2-value" id="savCo2Value">0 kg</div>
-            <div class="savings-co2-label" id="savCo2Label">CO₂ évité en choisissant les stations optimales</div>
-        </div>
-    </div>
-
-    <!-- Progress to next milestone -->
-    <div class="savings-progress" id="savingsProgress">
-        <div class="savings-progress-title">
-            <span id="savProgressLabel">Prochain objectif</span>
-            <span id="savProgressTarget"></span>
-        </div>
-        <div class="savings-progress-bar">
-            <div class="savings-progress-fill" id="savProgressFill" style="width:0%"></div>
-        </div>
-    </div>
-
-    <!-- Milestones -->
-    <div class="savings-milestones" id="savingsMilestones">
-        <div class="savings-milestone-title" id="savMilestonesTitle">🎯 Objectifs</div>
-        <div id="savMilestonesList"></div>
-    </div>
-
-    <!-- Share -->
-    <button class="savings-share-btn" onclick="shareSavings()">
-        📤 <span id="savShareText">Partager mes économies</span>
+<!-- ===== BOUTON ÉCONOMIES ===== -->
+<div class="card" style="padding:18px">
+    <button class="savings-launcher" onclick="openSavingsPage()">
+        💰 <span id="savingsLauncherText">Mes économies</span>
+        <span class="savings-launcher-amount" id="savingsLauncherAmount">0 €</span>
     </button>
 </div>
 <!-- STATIONS -->
@@ -2651,7 +2635,7 @@ function rebuildAll() {
 	try { updateCookieBannerTexts(); } catch(e) {}
 	try { updatePriceAlertUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
-	try { updateSavingsUI(); } catch(e) {}
+	try { updateSavingsLauncher(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -4207,7 +4191,7 @@ window.setMode = function(mode) {
 	try { updateTripUI(); } catch(e) {}
 	try { updateDriveBtnText(); } catch(e) {}
 	try { updatePriceAlertUI(); } catch(e) {}
-	try { updateSavingsUI(); } catch(e) {}
+	try { updateSavingsLauncher(); } catch(e) {}
 	trackEvent('switch_mode', {
         mode: mode
     });
@@ -8114,6 +8098,46 @@ window.shareSavings = function() {
     try { trackGameEvent('share'); } catch(e) {}
     try { trackEvent('share_savings', {total:stats.total}); } catch(e) {}
 };
+window.openSavingsPage = function() {
+    haptic('medium');
+    var page = document.getElementById('savingsPage');
+    if (!page) return;
+    document.body.style.overflow = 'hidden';
+    page.classList.add('open');
+    page.scrollTop = 0;
+    updateSavingsUI();
+    updateSavingsPageTexts();
+    history.pushState({savingsOpen:true}, '');
+};
+
+window.closeSavingsPage = function() {
+    haptic('light');
+    var page = document.getElementById('savingsPage');
+    if (!page) return;
+    document.body.style.overflow = '';
+    page.classList.remove('open');
+};
+
+window.addEventListener('popstate', function() {
+    var page = document.getElementById('savingsPage');
+    if (page && page.classList.contains('open')) closeSavingsPage();
+});
+
+function updateSavingsPageTexts() {
+    var si = getSavI18n();
+    var backs = {fr:'Retour',en:'Back',es:'Volver',de:'Zurück',it:'Indietro',pt:'Voltar',ru:'Назад',zh:'返回',ja:'戻る'};
+    var setText = function(id, txt) { var el = document.getElementById(id); if (el) el.textContent = txt; };
+    setText('savingsBackText', backs[lang] || backs.en);
+    setText('savingsPageTitle', '💰 ' + si.title);
+}
+
+function updateSavingsLauncher() {
+    var si = getSavI18n();
+    var el = document.getElementById('savingsLauncherText');
+    if (el) el.textContent = si.title;
+    var amount = document.getElementById('savingsLauncherAmount');
+    if (amount) amount.textContent = fmtCur(savingsData.totalSaved || 0);
+}
 
 window.addEventListener('load', init);
 // Register Service Worker
@@ -8297,6 +8321,89 @@ if ('serviceWorker' in navigator) {
         </div>
     </div>
 </div>
+<!-- ===== SAVINGS PAGE ===== -->
+<div class="savings-page" id="savingsPage">
+    <div class="savings-page-inner">
+        <div class="savings-header-bar">
+            <a href="javascript:void(0)" class="savings-back"
+               ontouchstart="closeSavingsPage()" onclick="closeSavingsPage()">
+                <span style="font-size:22px">‹</span>
+                <span id="savingsBackText">Retour</span>
+            </a>
+            <span class="savings-page-title" id="savingsPageTitle">💰 Économies</span>
+            <div class="savings-header-spacer"></div>
+        </div>
 
+        <!-- Big counter -->
+        <div class="savings-card" style="margin-top:14px">
+            <div class="savings-big">
+                <div class="savings-label" id="savingsLabel">Total économisé</div>
+                <div class="savings-amount" id="savingsAmount">0 €</div>
+                <div class="savings-equivalent" id="savingsEquiv"></div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="savings-card" style="margin-top:14px;padding:16px">
+            <div class="savings-stats">
+                <div class="savings-stat">
+                    <div class="savings-stat-v" id="savStatFills">0</div>
+                    <div class="savings-stat-l" id="savStatFillsL">Pleins</div>
+                </div>
+                <div class="savings-stat">
+                    <div class="savings-stat-v" id="savStatStations">0</div>
+                    <div class="savings-stat-l" id="savStatStationsL">Stations</div>
+                </div>
+                <div class="savings-stat">
+                    <div class="savings-stat-v" id="savStatAvg">0 €</div>
+                    <div class="savings-stat-l" id="savStatAvgL">Moy/plein</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly chart -->
+        <div class="savings-card" style="margin-top:14px;padding:16px">
+            <div class="savings-chart-title">
+                <span id="savChartTitle">Économies par mois</span>
+            </div>
+            <div class="savings-chart" id="savingsChart"></div>
+        </div>
+
+        <!-- CO2 -->
+        <div class="savings-card" style="margin-top:14px;padding:16px">
+            <div class="savings-co2" id="savingsCo2" style="margin:0">
+                <span class="savings-co2-icon">🌿</span>
+                <div class="savings-co2-info">
+                    <div class="savings-co2-value" id="savCo2Value">0 kg</div>
+                    <div class="savings-co2-label" id="savCo2Label">CO₂ évité</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="savings-card" style="margin-top:14px;padding:16px">
+            <div class="savings-progress" id="savingsProgress" style="margin:0">
+                <div class="savings-progress-title">
+                    <span id="savProgressLabel">Prochain objectif</span>
+                    <span id="savProgressTarget"></span>
+                </div>
+                <div class="savings-progress-bar">
+                    <div class="savings-progress-fill" id="savProgressFill" style="width:0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Milestones -->
+        <div class="savings-card" style="margin-top:14px;padding:16px">
+            <div class="savings-milestone-title" id="savMilestonesTitle">🎯 Objectifs</div>
+            <div id="savMilestonesList"></div>
+        </div>
+
+        <!-- Share -->
+        <button class="savings-share-btn" onclick="shareSavings()" style="margin-top:14px">
+            📤 <span id="savShareText">Partager mes économies</span>
+        </button>
+    </div>
+</div>
 </body>
 </html>
