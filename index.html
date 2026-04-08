@@ -1511,6 +1511,65 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
     margin-top:14px;
 }
 .ranking-share:active{transform:scale(.97);background:#3a3a3c}
+/* ===== DUO BUTTONS + BADGES PAGE ===== */
+.duo-row{display:flex;gap:10px;margin-bottom:14px}
+.duo-btn{
+    flex:1;padding:14px 10px;border:none;border-radius:14px;
+    background:rgba(30,30,35,.93);
+    border:1.5px solid rgba(255,255,255,.06);
+    color:#fff;font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;flex-direction:column;
+    align-items:center;gap:6px;text-align:center;
+}
+.duo-btn:active{transform:scale(.97);border-color:rgba(255,255,255,.12)}
+.duo-icon{font-size:24px}
+.duo-text{font-size:12px;color:#8e8e93;font-weight:600}
+.duo-badge{
+    padding:2px 10px;border-radius:10px;
+    background:rgba(50,50,55,.8);
+    font-size:11px;font-weight:700;color:#fff;
+}
+.duo-badge.gold{background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000}
+.duo-btn.badges-btn:hover{border-color:rgba(88,86,214,.3)}
+.duo-btn.ranking-btn:hover{border-color:rgba(255,215,0,.3)}
+
+/* Badges page */
+.badges-page{
+    position:fixed;inset:0;background:#0a0a0f;
+    z-index:10002;transform:translateX(100%);
+    transition:transform .35s cubic-bezier(.25,.46,.45,.94);
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.badges-page.open{transform:translateX(0)}
+.badges-page-inner{max-width:420px;margin:0 auto;padding:0 18px 50px}
+
+.badges-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 0 14px;position:sticky;top:0;
+    background:rgba(10,10,15,.97);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    z-index:2;border-bottom:1px solid rgba(255,255,255,.05);
+}
+.badges-back{
+    color:#007aff;font-size:17px;font-weight:600;
+    font-family:-apple-system,sans-serif;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
+    padding:14px 16px 14px 4px;margin:-14px 0 -14px -4px;
+    min-width:100px;min-height:48px;
+    -webkit-tap-highlight-color:rgba(0,122,255,.15);
+    text-decoration:none;-webkit-user-select:none;
+    user-select:none;touch-action:manipulation;
+}
+.badges-back:active{opacity:.5}
+.badges-page-title{font-size:17px;font-weight:700;position:absolute;left:50%;transform:translateX(-50%);color:#fff;pointer-events:none}
+.badges-header-spacer{width:80px}
+
+.badges-section{
+    background:rgba(30,30,35,.93);border-radius:16px;
+    padding:20px;margin-top:14px;
+}
 
     </style>
 
@@ -1832,38 +1891,17 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
         </div>
     </div>
 </div>
-<!-- ===== GAMIFICATION ===== -->
-<div class="card badges-card" id="badgesCard">
-    <button class="badges-toggle" onclick="toggleContent('badgesCard')">
-        <span class="bt-left">
-            <span>🏆</span>
-            <span id="badgesToggleText">Mes badges</span>
-        </span>
-        <span class="bt-progress" id="badgesProgress">0/12</span>
-        <span class="bt-arrow">▼</span>
+<!-- ===== BADGES + CLASSEMENT — MÊME LIGNE ===== -->
+<div class="duo-row">
+    <button class="duo-btn badges-btn" onclick="openBadgesPage()">
+        <span class="duo-icon">🏅</span>
+        <span class="duo-text" id="duoBadgesText">Badges</span>
+        <span class="duo-badge" id="duoBadgesCount">0/12</span>
     </button>
-    <div class="badges-body">
-        <div class="badges-inner">
-            <div class="level-section">
-                <div class="level-header">
-                    <span class="level-title" id="levelTitle">Niveau 1</span>
-                    <span class="level-xp" id="levelXp">0 / 100 XP</span>
-                </div>
-                <div class="level-bar-wrap">
-                    <div class="level-bar" id="levelBar" style="width:0%"></div>
-                </div>
-                <div class="level-next" id="levelNext"></div>
-            </div>
-            <div class="badges-grid" id="badgesGrid"></div>
-            <div class="game-stats" id="gameStats"></div>
-        </div>
-    </div>
-</div>
-<!-- ===== BOUTON CLASSEMENT ===== -->
-<div class="card" style="padding:14px">
-    <button class="ranking-launcher" onclick="openRankingPage()">
-        🏆 <span id="rankingLauncherText">Classement</span>
-        <span class="rl-rank" id="rankingLauncherRank">#—</span>
+    <button class="duo-btn ranking-btn" onclick="openRankingPage()">
+        <span class="duo-icon">🏆</span>
+        <span class="duo-text" id="duoRankingText">Classement</span>
+        <span class="duo-badge gold" id="duoRankingRank">#—</span>
     </button>
 </div>
 <!-- BADGE UNLOCK TOAST -->
@@ -2847,7 +2885,6 @@ function rebuildAll() {
 	try { updateShareUI(); } catch(e) {}
 	try { updateFavoritesUI(); } catch(e) {}
 	try { updateQRUI(); } catch(e) {}
-	try { updateBadgesUI(); } catch(e) {}
 	try { updateVehiclesUI(); } catch(e) {}
 	try { updateTripUI(); } catch(e) {}
 	try { updateDriveBtnText(); } catch(e) {}
@@ -2856,7 +2893,8 @@ function rebuildAll() {
 	try { updateTripUI(); } catch(e) {}
 	try { updateSavingsLauncher(); } catch(e) {}
 	try { updateLocaleToggleBtn(); } catch(e) {}
-	try { updateRankingLauncher(); } catch(e) {}
+	try { updateBadgesUI(); } catch(e) {}
+    try { updateDuoButtons(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -8604,6 +8642,67 @@ function updateRankingLauncher() {
     if (el) el.textContent = ri.launcher;
 }
 
+// ==================== BADGES PAGE ====================
+window.openBadgesPage = function() {
+    haptic('medium');
+    var page = document.getElementById('badgesPage');
+    if (!page) return;
+    document.body.style.overflow = 'hidden';
+    page.classList.add('open');
+    page.scrollTop = 0;
+    updateBadgesUI();
+    updateBadgesPageTexts();
+    history.pushState({badgesOpen:true}, '');
+};
+
+window.closeBadgesPage = function() {
+    haptic('light');
+    var page = document.getElementById('badgesPage');
+    if (!page) return;
+    document.body.style.overflow = '';
+    page.classList.remove('open');
+};
+
+window.addEventListener('popstate', function() {
+    var page = document.getElementById('badgesPage');
+    if (page && page.classList.contains('open')) closeBadgesPage();
+});
+
+function updateBadgesPageTexts() {
+    var backs = {fr:'Retour',en:'Back',es:'Volver',de:'Zurück',it:'Indietro',pt:'Voltar',ru:'Назад',zh:'返回',ja:'戻る'};
+    var titles = {fr:'🏅 Badges',en:'🏅 Badges',es:'🏅 Insignias',de:'🏅 Abzeichen',it:'🏅 Badge',pt:'🏅 Emblemas',ru:'🏅 Значки',zh:'🏅 徽章',ja:'🏅 バッジ'};
+    var backEl = document.getElementById('badgesBackText');
+    if (backEl) backEl.textContent = backs[lang] || backs.en;
+    var titleEl = document.getElementById('badgesPageTitle');
+    if (titleEl) titleEl.textContent = titles[lang] || titles.en;
+}
+
+// ==================== DUO BUTTONS UPDATE ====================
+function updateDuoButtons() {
+    var gi = getGameI18n();
+    var ri = getRankI18n();
+
+    // Badges count
+    var unlockedCount = 0;
+    BADGES.forEach(function(b) { if (gameData.badges[b.id]) unlockedCount++; });
+    var duoBadgesCount = document.getElementById('duoBadgesCount');
+    if (duoBadgesCount) duoBadgesCount.textContent = unlockedCount + '/' + BADGES.length;
+    var duoBadgesText = document.getElementById('duoBadgesText');
+    if (duoBadgesText) duoBadgesText.textContent = gi.toggle;
+
+    // Ranking
+    var duoRankingText = document.getElementById('duoRankingText');
+    if (duoRankingText) duoRankingText.textContent = ri.launcher;
+
+    // Calculate rank
+    try {
+        var community = generateCommunity();
+        community.sort(function(a, b) { return b.xp - a.xp; });
+        var myIdx = community.findIndex(function(c) { return c.isMe; });
+        var duoRankingRank = document.getElementById('duoRankingRank');
+        if (duoRankingRank) duoRankingRank.textContent = '#' + (myIdx + 1);
+    } catch(e) {}
+}
 window.addEventListener('load', init);
 // Register Service Worker
 if ('serviceWorker' in navigator) {
@@ -8919,6 +9018,53 @@ if ('serviceWorker' in navigator) {
             📤 <span id="rankingShareText">Partager mon classement</span>
         </button>
     </div>
+</div>
+<!-- ===== BADGES PAGE ===== -->
+<div class="badges-page" id="badgesPage">
+    <div class="badges-page-inner">
+        <div class="badges-header">
+            <a href="javascript:void(0)" class="badges-back"
+               ontouchstart="closeBadgesPage()" onclick="closeBadgesPage()">
+                <span style="font-size:22px">‹</span>
+                <span id="badgesBackText">Retour</span>
+            </a>
+            <span class="badges-page-title" id="badgesPageTitle">🏅 Badges</span>
+            <div class="badges-header-spacer"></div>
+        </div>
+
+        <!-- Level -->
+        <div class="badges-section">
+            <div class="level-section" style="margin:0">
+                <div class="level-header">
+                    <span class="level-title" id="levelTitle">Niveau 1</span>
+                    <span class="level-xp" id="levelXp">0 / 100 XP</span>
+                </div>
+                <div class="level-bar-wrap">
+                    <div class="level-bar" id="levelBar" style="width:0%"></div>
+                </div>
+                <div class="level-next" id="levelNext"></div>
+            </div>
+        </div>
+
+        <!-- Badges grid -->
+        <div class="badges-section">
+            <div class="badges-grid" id="badgesGrid"></div>
+        </div>
+
+        <!-- Game stats -->
+        <div class="badges-section">
+            <div class="game-stats" id="gameStats" style="margin:0"></div>
+        </div>
+    </div>
+</div>
+
+<!-- BADGE TOAST (keep outside) -->
+<div class="badge-toast" id="badgeToast">
+    <div class="bt-icon" id="btIcon">🏆</div>
+    <div class="bt-title" id="btTitle">Badge débloqué !</div>
+    <div class="bt-name" id="btName"></div>
+    <div class="bt-desc" id="btDesc"></div>
+    <button class="bt-close" onclick="closeBadgeToast()">OK !</button>
 </div>
 </body>
 </html>
