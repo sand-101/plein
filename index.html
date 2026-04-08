@@ -1351,6 +1351,167 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
     opacity:1;
     margin-bottom:8px;
 }
+
+/* ===== CLASSEMENT COMMUNAUTAIRE ===== */
+.ranking-launcher{
+    width:100%;padding:14px;border:none;border-radius:14px;
+    background:linear-gradient(135deg,rgba(255,149,0,.1),rgba(255,215,0,.08));
+    border:1.5px solid rgba(255,215,0,.15);
+    color:#fff;font-size:14px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.ranking-launcher:active{transform:scale(.97);border-color:#ffd700}
+.ranking-launcher .rl-rank{
+    padding:3px 10px;border-radius:12px;
+    background:linear-gradient(135deg,#ffd700,#ffaa00);
+    color:#000;font-size:12px;font-weight:800;
+}
+
+/* Ranking page */
+.ranking-page{
+    position:fixed;inset:0;background:#0a0a0f;
+    z-index:10002;transform:translateX(100%);
+    transition:transform .35s cubic-bezier(.25,.46,.45,.94);
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.ranking-page.open{transform:translateX(0)}
+.ranking-page-inner{max-width:420px;margin:0 auto;padding:0 18px 50px}
+
+.ranking-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 0 14px;position:sticky;top:0;
+    background:rgba(10,10,15,.97);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    z-index:2;border-bottom:1px solid rgba(255,255,255,.05);
+}
+.ranking-back{
+    color:#007aff;font-size:17px;font-weight:600;
+    font-family:-apple-system,sans-serif;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
+    padding:14px 16px 14px 4px;margin:-14px 0 -14px -4px;
+    min-width:100px;min-height:48px;
+    -webkit-tap-highlight-color:rgba(0,122,255,.15);
+    text-decoration:none;-webkit-user-select:none;
+    user-select:none;touch-action:manipulation;
+}
+.ranking-back:active{opacity:.5}
+.ranking-page-title{font-size:17px;font-weight:700;position:absolute;left:50%;transform:translateX(-50%);color:#fff;pointer-events:none}
+.ranking-header-spacer{width:80px}
+
+/* My rank card */
+.my-rank-card{
+    margin-top:14px;padding:20px;
+    background:linear-gradient(145deg,rgba(255,215,0,.08),rgba(255,149,0,.05));
+    border:1.5px solid rgba(255,215,0,.15);
+    border-radius:16px;text-align:center;
+    position:relative;overflow:hidden;
+}
+.my-rank-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,#ffd700,#ff9500,#ffd700);
+}
+.my-rank-position{font-size:48px;font-weight:800;color:#ffd700;letter-spacing:-2px}
+.my-rank-label{font-size:12px;color:#8e8e93;margin-top:2px}
+.my-rank-percentile{
+    display:inline-block;margin-top:8px;
+    padding:4px 14px;border-radius:20px;
+    background:rgba(48,209,88,.1);color:#30d158;
+    font-size:13px;font-weight:700;
+}
+.my-rank-stats{
+    display:flex;gap:8px;margin-top:14px;justify-content:center;
+}
+.my-rank-stat{
+    padding:8px 16px;background:rgba(0,0,0,.2);
+    border-radius:10px;text-align:center;
+}
+.my-rank-stat-v{font-size:16px;font-weight:700;color:#fff}
+.my-rank-stat-l{font-size:9px;color:#8e8e93;text-transform:uppercase;margin-top:2px}
+
+/* Tabs */
+.ranking-tabs{
+    display:flex;gap:8px;margin-top:14px;
+    background:rgba(30,30,35,.9);border-radius:12px;padding:4px;
+}
+.ranking-tab{
+    flex:1;padding:10px;border:none;border-radius:9px;
+    background:transparent;color:#8e8e93;
+    font-size:13px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .2s;text-align:center;
+}
+.ranking-tab:active{transform:scale(.97)}
+.ranking-tab.on{background:rgba(50,50,55,.9);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+
+/* Leaderboard */
+.ranking-list{margin-top:14px}
+.ranking-item{
+    display:flex;align-items:center;gap:12px;
+    padding:14px;background:rgba(30,30,35,.93);
+    border-radius:14px;margin-bottom:8px;
+    transition:all .15s;position:relative;
+}
+.ranking-item.me{
+    border:1.5px solid rgba(255,215,0,.2);
+    background:rgba(255,215,0,.04);
+}
+.ranking-item.top3{
+    border:1px solid rgba(255,215,0,.1);
+}
+
+.ranking-pos{
+    width:36px;height:36px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:800;flex-shrink:0;
+}
+.ranking-pos.gold{background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000}
+.ranking-pos.silver{background:linear-gradient(135deg,#c0c0c0,#a0a0a0);color:#000}
+.ranking-pos.bronze{background:linear-gradient(135deg,#cd7f32,#a0522d);color:#fff}
+.ranking-pos.normal{background:rgba(50,50,55,.8);color:#fff}
+
+.ranking-user{flex:1;min-width:0}
+.ranking-name{font-size:14px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ranking-detail{font-size:11px;color:#8e8e93;margin-top:2px;display:flex;align-items:center;gap:6px}
+.ranking-badge{font-size:12px}
+.ranking-value{
+    font-size:18px;font-weight:700;flex-shrink:0;
+    color:#ffd700;font-variant-numeric:tabular-nums;
+}
+
+/* Premium blur */
+.ranking-blur{
+    filter:blur(4px);pointer-events:none;
+    -webkit-user-select:none;user-select:none;
+}
+.ranking-unlock{
+    text-align:center;padding:20px;margin-top:-60px;
+    position:relative;z-index:2;
+}
+.ranking-unlock-btn{
+    padding:14px 28px;border:none;border-radius:14px;
+    background:linear-gradient(135deg,#ffd700,#ffaa00);
+    color:#000;font-size:15px;font-weight:700;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;box-shadow:0 4px 15px rgba(255,215,0,.25);
+    display:inline-flex;align-items:center;gap:8px;
+}
+.ranking-unlock-btn:active{transform:scale(.97)}
+
+/* Share ranking */
+.ranking-share{
+    width:100%;padding:14px;border:none;border-radius:14px;
+    background:rgba(50,50,55,.8);color:#fff;
+    font-size:14px;font-weight:600;
+    font-family:-apple-system,sans-serif;
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    margin-top:14px;
+}
+.ranking-share:active{transform:scale(.97);background:#3a3a3c}
+
     </style>
 
 </head>
@@ -1698,7 +1859,13 @@ body.ev-mode .trip-cost-value{background:linear-gradient(135deg,#30d158,#00c853)
         </div>
     </div>
 </div>
-
+<!-- ===== BOUTON CLASSEMENT ===== -->
+<div class="card" style="padding:14px">
+    <button class="ranking-launcher" onclick="openRankingPage()">
+        🏆 <span id="rankingLauncherText">Classement</span>
+        <span class="rl-rank" id="rankingLauncherRank">#—</span>
+    </button>
+</div>
 <!-- BADGE UNLOCK TOAST -->
 <div class="badge-toast" id="badgeToast">
     <div class="bt-icon" id="btIcon">🏆</div>
@@ -2689,6 +2856,7 @@ function rebuildAll() {
 	try { updateTripUI(); } catch(e) {}
 	try { updateSavingsLauncher(); } catch(e) {}
 	try { updateLocaleToggleBtn(); } catch(e) {}
+	try { updateRankingLauncher(); } catch(e) {}
 
     // EV
     try { applyEvTexts(); } catch(e) {}
@@ -8214,6 +8382,227 @@ function updateLocaleToggleBtn() {
     if (flag && langData) flag.textContent = langData.flag;
     if (text && langData) text.textContent = langData.name + ' · ' + C.symbol;
 }
+// ==================== CLASSEMENT COMMUNAUTAIRE ====================
+var rankingTab = 'xp';
+
+// Simulated community (in production → backend API)
+function generateCommunity() {
+    var names = [
+        'Pierre_75','Maria_BCN','Hans_BER','Luigi_ROM','Ana_LIS',
+        'James_LON','Yuki_TKY','Chen_SHA','Olga_MSK','João_RIO',
+        'Sophie_PAR','Carlos_MAD','Emma_MUN','Marco_MIL','Lisa_AMS',
+        'Ahmed_CAS','Kim_SEL','Raj_DEL','Alex_NYC','Romy_FRA',
+        'Thomas_LYO','Isabella_FLR','Oscar_STO','Nina_VIE','Leo_ZUR'
+    ];
+    var community = [];
+    for (var i = 0; i < 25; i++) {
+        var xp = Math.floor(Math.random() * 2000) + 50;
+        var saved = Math.floor(Math.random() * 500) + 10;
+        var badges = Math.floor(Math.random() * 10) + 1;
+        community.push({
+            name: names[i],
+            xp: xp,
+            saved: saved,
+            badges: badges,
+            level: xp < 100 ? 1 : xp < 300 ? 2 : xp < 600 ? 3 : xp < 1000 ? 4 : 5,
+            isMe: false
+        });
+    }
+    // Add current user
+    var unlockedBadges = 0;
+    BADGES.forEach(function(b) { if (gameData.badges[b.id]) unlockedBadges++; });
+    community.push({
+        name: '★ ' + (lang === 'fr' ? 'VOUS' : lang === 'es' ? 'TÚ' : lang === 'de' ? 'SIE' : 'YOU'),
+        xp: gameData.xp || 0,
+        saved: savingsData.totalSaved || 0,
+        badges: unlockedBadges,
+        level: getLevel().level,
+        isMe: true
+    });
+    return community;
+}
+
+var RANK_I18N = {
+    fr:{launcher:'Classement',back:'Retour',pageTitle:'🏆 Classement',myPos:'Votre position',top:'Top {n}%',xp:'XP',savings:'Économies',badges:'Badges',saved:'Économisé',share:'Partager mon classement',shareMsg:'🏆 Je suis #{rank} au classement Easy Refuel !\n💰 {saved} économisés · ⭐ {xp} XP\n\nhttps://easy-refuel.eu',unlock:'💎 Voir le classement complet',freeLimit:'Top 5 gratuit · Classement complet en Premium'},
+    en:{launcher:'Ranking',back:'Back',pageTitle:'🏆 Ranking',myPos:'Your position',top:'Top {n}%',xp:'XP',savings:'Savings',badges:'Badges',saved:'Saved',share:'Share my ranking',shareMsg:'🏆 I\'m #{rank} on Easy Refuel ranking!\n💰 {saved} saved · ⭐ {xp} XP\n\nhttps://easy-refuel.eu',unlock:'💎 See full ranking',freeLimit:'Top 5 free · Full ranking in Premium'},
+    es:{launcher:'Clasificación',back:'Volver',pageTitle:'🏆 Clasificación',myPos:'Tu posición',top:'Top {n}%',xp:'XP',savings:'Ahorros',badges:'Insignias',saved:'Ahorrado',share:'Compartir',shareMsg:'🏆 ¡Soy #{rank} en Easy Refuel!\n💰 {saved} ahorrado · ⭐ {xp} XP\n\nhttps://easy-refuel.eu',unlock:'💎 Ver clasificación completa',freeLimit:'Top 5 gratis · Completo en Premium'},
+    de:{launcher:'Rangliste',back:'Zurück',pageTitle:'🏆 Rangliste',myPos:'Ihre Position',top:'Top {n}%',xp:'XP',savings:'Ersparnisse',badges:'Abzeichen',saved:'Gespart',share:'Teilen',shareMsg:'🏆 Ich bin #{rank} bei Easy Refuel!\n💰 {saved} gespart · ⭐ {xp} XP\n\nhttps://easy-refuel.eu',unlock:'💎 Volle Rangliste',freeLimit:'Top 5 gratis · Komplett in Premium'},
+    it:{launcher:'Classifica',back:'Indietro',pageTitle:'🏆 Classifica',myPos:'La tua posizione',top:'Top {n}%',xp:'XP',savings:'Risparmi',badges:'Badge',saved:'Risparmiato',share:'Condividi',shareMsg:'🏆 Sono #{rank} su Easy Refuel!\n\nhttps://easy-refuel.eu',unlock:'💎 Classifica completa',freeLimit:'Top 5 gratis · Completa in Premium'},
+    pt:{launcher:'Classificação',back:'Voltar',pageTitle:'🏆 Classificação',myPos:'Sua posição',top:'Top {n}%',xp:'XP',savings:'Economias',badges:'Emblemas',saved:'Economizado',share:'Partilhar',shareMsg:'🏆 Sou #{rank} no Easy Refuel!\n\nhttps://easy-refuel.eu',unlock:'💎 Classificação completa',freeLimit:'Top 5 grátis'},
+    ru:{launcher:'Рейтинг',back:'Назад',pageTitle:'🏆 Рейтинг',myPos:'Ваша позиция',top:'Топ {n}%',xp:'XP',savings:'Экономия',badges:'Значки',saved:'Сэкономлено',share:'Поделиться',shareMsg:'🏆 Я #{rank} в Easy Refuel!\n\nhttps://easy-refuel.eu',unlock:'💎 Полный рейтинг',freeLimit:'Топ 5 бесплатно'},
+    zh:{launcher:'排行榜',back:'返回',pageTitle:'🏆 排行榜',myPos:'您的排名',top:'前{n}%',xp:'XP',savings:'节省',badges:'徽章',saved:'已节省',share:'分享',shareMsg:'🏆 我在Easy Refuel排名#{rank}!\n\nhttps://easy-refuel.eu',unlock:'💎 查看完整排行榜',freeLimit:'免费Top 5'},
+    ja:{launcher:'ランキング',back:'戻る',pageTitle:'🏆 ランキング',myPos:'あなたの順位',top:'上位{n}%',xp:'XP',savings:'節約',badges:'バッジ',saved:'節約額',share:'共有',shareMsg:'🏆 Easy Refuelで#{rank}位!\n\nhttps://easy-refuel.eu',unlock:'💎 全ランキング',freeLimit:'Top 5無料'}
+};
+
+function getRankI18n() { return RANK_I18N[lang] || RANK_I18N.en; }
+
+window.openRankingPage = function() {
+    haptic('medium');
+    var page = document.getElementById('rankingPage');
+    if (!page) return;
+    document.body.style.overflow = 'hidden';
+    page.classList.add('open');
+    page.scrollTop = 0;
+    updateRankingPage();
+    history.pushState({rankingOpen:true}, '');
+};
+
+window.closeRankingPage = function() {
+    haptic('light');
+    var page = document.getElementById('rankingPage');
+    if (!page) return;
+    document.body.style.overflow = '';
+    page.classList.remove('open');
+};
+
+window.addEventListener('popstate', function() {
+    var page = document.getElementById('rankingPage');
+    if (page && page.classList.contains('open')) closeRankingPage();
+});
+
+window.setRankingTab = function(tab) {
+    haptic('light');
+    rankingTab = tab;
+    document.querySelectorAll('.ranking-tab').forEach(function(t) { t.classList.remove('on'); });
+    event.target.closest('.ranking-tab').classList.add('on');
+    renderRankingList();
+};
+
+function updateRankingPage() {
+    var ri = getRankI18n();
+    var setText = function(id, txt) { var el = document.getElementById(id); if (el) el.textContent = txt; };
+
+    var backs = {fr:'Retour',en:'Back',es:'Volver',de:'Zurück',it:'Indietro',pt:'Voltar',ru:'Назад',zh:'返回',ja:'戻る'};
+    setText('rankingBackText', backs[lang] || backs.en);
+    setText('rankingPageTitle', ri.pageTitle);
+    setText('myRankLabel', ri.myPos);
+    setText('myRankSavedL', ri.saved);
+    setText('myRankBadgesL', ri.badges);
+    setText('tabXP', ri.xp);
+    setText('tabSavings', ri.savings);
+    setText('tabBadges', ri.badges);
+    setText('rankingShareText', ri.share);
+
+    // Generate and sort community
+    var community = generateCommunity();
+    community.sort(function(a, b) { return b.xp - a.xp; });
+
+    // Find my rank
+    var myIdx = community.findIndex(function(c) { return c.isMe; });
+    var myRank = myIdx + 1;
+    var percentile = Math.round((1 - myIdx / community.length) * 100);
+
+    setText('myRankPos', '#' + myRank);
+    var pctEl = document.getElementById('myRankPct');
+    if (pctEl) pctEl.textContent = ri.top.replace('{n}', percentile);
+
+    animateNumber('myRankXP', gameData.xp || 0, {});
+    animateNumber('myRankSaved', savingsData.totalSaved || 0, {format:'currency'});
+    var unlockedBadges = 0;
+    BADGES.forEach(function(b) { if (gameData.badges[b.id]) unlockedBadges++; });
+    animateNumber('myRankBadges', unlockedBadges, {});
+
+    // Update launcher
+    var launcherRank = document.getElementById('rankingLauncherRank');
+    if (launcherRank) launcherRank.textContent = '#' + myRank;
+
+    renderRankingList();
+}
+
+function renderRankingList() {
+    var ri = getRankI18n();
+    var list = document.getElementById('rankingList');
+    if (!list) return;
+
+    var community = generateCommunity();
+    var sortKey = rankingTab;
+    community.sort(function(a, b) { return b[sortKey] - a[sortKey]; });
+
+    var premium = isPremium();
+    var maxVisible = premium ? community.length : 5;
+    var myIdx = community.findIndex(function(c) { return c.isMe; });
+
+    var html = community.slice(0, maxVisible).map(function(user, i) {
+        var posClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : 'normal';
+        var value;
+        if (rankingTab === 'xp') value = user.xp + ' XP';
+        else if (rankingTab === 'savings') value = fmtCur(user.saved);
+        else value = user.badges + ' 🏅';
+
+        var levelIcons = ['🌱','🌿','🌳','⭐','💎','👑','🏆'];
+        var levelIcon = levelIcons[Math.min(user.level - 1, levelIcons.length - 1)];
+
+        return '<div class="ranking-item' + (user.isMe ? ' me' : '') + (i < 3 ? ' top3' : '') + '">' +
+            '<div class="ranking-pos ' + posClass + '">' + (i === 0 ? '👑' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1)) + '</div>' +
+            '<div class="ranking-user">' +
+                '<div class="ranking-name">' + user.name + '</div>' +
+                '<div class="ranking-detail">' +
+                    '<span class="ranking-badge">' + levelIcon + '</span>' +
+                    'Lv.' + user.level +
+                '</div>' +
+            '</div>' +
+            '<div class="ranking-value">' + value + '</div>' +
+        '</div>';
+    }).join('');
+
+    // Premium upsell
+    if (!premium && community.length > maxVisible) {
+        html += '<div style="position:relative">';
+        // Blurred items
+        for (var b = maxVisible; b < Math.min(maxVisible + 3, community.length); b++) {
+            html += '<div class="ranking-item ranking-blur">' +
+                '<div class="ranking-pos normal">' + (b + 1) + '</div>' +
+                '<div class="ranking-user"><div class="ranking-name">██████</div><div class="ranking-detail">Lv.?</div></div>' +
+                '<div class="ranking-value">???</div></div>';
+        }
+        html += '<div class="ranking-unlock">' +
+            '<button class="ranking-unlock-btn" onclick="window.open(STRIPE_M,\'_blank\')">' + ri.unlock + '</button>' +
+            '<div style="font-size:11px;color:#636366;margin-top:8px">' + ri.freeLimit + '</div>' +
+        '</div></div>';
+
+        // Show user's rank if not in top 5
+        if (myIdx >= maxVisible) {
+            var me = community[myIdx];
+            var meValue;
+            if (rankingTab === 'xp') meValue = me.xp + ' XP';
+            else if (rankingTab === 'savings') meValue = fmtCur(me.saved);
+            else meValue = me.badges + ' 🏅';
+            html += '<div style="text-align:center;padding:10px;color:#636366;font-size:11px">···</div>';
+            html += '<div class="ranking-item me">' +
+                '<div class="ranking-pos normal">' + (myIdx + 1) + '</div>' +
+                '<div class="ranking-user"><div class="ranking-name">' + me.name + '</div><div class="ranking-detail">Lv.' + me.level + '</div></div>' +
+                '<div class="ranking-value">' + meValue + '</div></div>';
+        }
+    }
+
+    list.innerHTML = html;
+}
+
+window.shareRanking = function() {
+    haptic('medium');
+    var ri = getRankI18n();
+    var community = generateCommunity();
+    community.sort(function(a, b) { return b.xp - a.xp; });
+    var myIdx = community.findIndex(function(c) { return c.isMe; });
+
+    var text = ri.shareMsg
+        .replace('{rank}', myIdx + 1)
+        .replace('{saved}', fmtCur(savingsData.totalSaved || 0))
+        .replace('{xp}', gameData.xp || 0);
+
+    if (navigator.share) {
+        navigator.share({title:'Easy Refuel', text:text, url:'https://easy-refuel.eu'}).catch(function() {});
+    } else {
+        navigator.clipboard.writeText(text).then(function() { showToast('📋 Copied!'); }).catch(function() {});
+    }
+    try { trackGameEvent('share'); } catch(e) {}
+};
+
+function updateRankingLauncher() {
+    var ri = getRankI18n();
+    var el = document.getElementById('rankingLauncherText');
+    if (el) el.textContent = ri.launcher;
+}
 
 window.addEventListener('load', init);
 // Register Service Worker
@@ -8478,6 +8867,56 @@ if ('serviceWorker' in navigator) {
         <!-- Share -->
         <button class="savings-share-btn" onclick="shareSavings()" style="margin-top:14px">
             📤 <span id="savShareText">Partager mes économies</span>
+        </button>
+    </div>
+</div>
+<!-- ===== RANKING PAGE ===== -->
+<div class="ranking-page" id="rankingPage">
+    <div class="ranking-page-inner">
+        <div class="ranking-header">
+            <a href="javascript:void(0)" class="ranking-back"
+               ontouchstart="closeRankingPage()" onclick="closeRankingPage()">
+                <span style="font-size:22px">‹</span>
+                <span id="rankingBackText">Retour</span>
+            </a>
+            <span class="ranking-page-title" id="rankingPageTitle">🏆 Classement</span>
+            <div class="ranking-header-spacer"></div>
+        </div>
+
+        <!-- My rank -->
+        <div class="my-rank-card">
+            <div class="my-rank-position" id="myRankPos">#1</div>
+            <div class="my-rank-label" id="myRankLabel">Votre position</div>
+            <div class="my-rank-percentile" id="myRankPct">Top 15%</div>
+            <div class="my-rank-stats">
+                <div class="my-rank-stat">
+                    <div class="my-rank-stat-v" id="myRankXP">0</div>
+                    <div class="my-rank-stat-l">XP</div>
+                </div>
+                <div class="my-rank-stat">
+                    <div class="my-rank-stat-v" id="myRankSaved">0€</div>
+                    <div class="my-rank-stat-l" id="myRankSavedL">Économisé</div>
+                </div>
+                <div class="my-rank-stat">
+                    <div class="my-rank-stat-v" id="myRankBadges">0</div>
+                    <div class="my-rank-stat-l" id="myRankBadgesL">Badges</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="ranking-tabs" id="rankingTabs">
+            <button class="ranking-tab on" onclick="setRankingTab('xp')"><span id="tabXP">XP</span></button>
+            <button class="ranking-tab" onclick="setRankingTab('savings')"><span id="tabSavings">Économies</span></button>
+            <button class="ranking-tab" onclick="setRankingTab('badges')"><span id="tabBadges">Badges</span></button>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="ranking-list" id="rankingList"></div>
+
+        <!-- Share -->
+        <button class="ranking-share" onclick="shareRanking()">
+            📤 <span id="rankingShareText">Partager mon classement</span>
         </button>
     </div>
 </div>
